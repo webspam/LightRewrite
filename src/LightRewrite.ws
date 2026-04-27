@@ -254,6 +254,7 @@ function DisableLightRewrite() {
 
             if (spotLight) {
                 spotLight.RestoreLightRewriteOriginalValues();
+                spotLight.SetEnabled(true);
             }
         }
     }
