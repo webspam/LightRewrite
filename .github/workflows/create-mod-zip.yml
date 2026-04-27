@@ -11,6 +11,10 @@ on:
         description: "Release name (optional, defaults to tag)"
         required: false
         type: string
+      summary:
+        description: "One-line summary (optional)"
+        required: false
+        type: string
       prerelease:
         description: "Mark as pre-release"
         required: false
@@ -26,6 +30,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Create folder structure and copy files
         run: |
@@ -35,6 +41,30 @@ jobs:
       - name: Create zip file
         run: |
           zip -r modLightRewrite.zip mods/
+
+      - name: Build release notes
+        run: |
+          # Collect commits since the last tag, or all commits if this is the first release
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            CHANGES=$(git log "$LAST_TAG"..HEAD --oneline --no-merges)
+          else
+            CHANGES=$(git log --oneline --no-merges)
+          fi
+
+          {
+            SUMMARY="${{ inputs.summary }}"
+            if [ -n "$SUMMARY" ]; then
+              echo "$SUMMARY"
+              echo ""
+            fi
+            echo "## Changes"
+            if [ -n "$CHANGES" ]; then
+              echo "$CHANGES" | while IFS= read -r line; do echo "- $line"; done
+            else
+              echo "_No changes since last release._"
+            fi
+          } > release-notes.md
 
       - name: Create Draft Release
         run: |
@@ -49,6 +79,7 @@ jobs:
           gh release create "${{ inputs.tag }}" \
             --title "$RELEASE_TITLE" \
             --draft \
+            --notes-file release-notes.md \
             $PRERELEASE_FLAG \
             modLightRewrite.zip
         env:
