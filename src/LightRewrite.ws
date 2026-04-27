@@ -33,6 +33,10 @@ enum ELightRewriteType {
 @addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
 @addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
 
+// Tag valid light rewrite entities as they spawn.
+@addField(W3GameParams) public var LR_CANDLE_TAG      : name;
+@addField(W3GameParams) public var LR_TORCH_TAG       : name;
+
 struct SLightRewriteOriginalValues {
     var hasBeenSaved : bool;
 
@@ -202,7 +206,7 @@ public function IsLightRewritable() : bool {
 public function IdentifyLightRewriteType() {
     var editorName : string;
 
-    if (HasCheckedLightRewriteType() || !HasTag(theGame.params.TAG_OPEN_FIRE)) return;
+    if (HasCheckedLightRewriteType()) return;
 
     editorName = StrAfterLast(ToString(), StrChar(92));
 
@@ -210,11 +214,13 @@ public function IdentifyLightRewriteType() {
         LogLightRewrite("Found candle: " + editorName);
 
         lightRewriteLightType = LRT_Candle;
+        AddTag(theGame.params.LR_CANDLE_TAG);
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + editorName);
 
         lightRewriteLightType = LRT_Torch;
+        AddTag(theGame.params.LR_TORCH_TAG);
     }
     else {
         lightRewriteLightType = LRT_Unknown;
