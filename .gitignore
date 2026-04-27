@@ -1,0 +1,6 @@
+# Build output
+mods/
+
+# Scripts
+build.ps1
+debug.ps1
