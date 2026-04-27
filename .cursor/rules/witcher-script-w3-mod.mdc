@@ -1,0 +1,70 @@
+---
+description: Witcher 3 modding conventions for Witcher Script (.ws)
+globs: "**/*.ws"
+alwaysApply: false
+---
+
+# Witcher Script (The Witcher 3)
+
+## Language
+
+- Witcher Script is Red Engine script, **syntax-close to ActionScript 3**, not TypeScript, Java, or C#.
+- Do **not** assume npm types, a TS compiler, or C++ builds for `.ws` changes.
+- Prefer patterns from **nearby vanilla or mod code** over guessed engine APIs.
+- `name` type uses single quotes `'`
+  - A `name` becomes a symbol in backend code.
+- `string` type uses double quotes `"`
+
+## Layout in this repo
+
+- Mod scripts: `mods/modAbsoluteCamera/content/scripts/` (`.ws`).
+- Patched game scripts mirror vanilla paths under `content/scripts/game/...`.
+
+## Style (match this project)
+
+- Use explicit types on members and functions (`: float`, `: string`, `: bool`, `: name`, etc.).
+- Initialize fields with `default` on its own line when the codebase does:
+
+```ws
+private var isEnabled : bool;  default isEnabled = true;
+```
+
+- Use `enum`, `class`, `function`, and `switch` in the same style as surrounding files.
+- Use `LogChannel` or project helpers (e.g. `LogRC`) consistently with existing files.
+
+## XML user config (`user_config_matrix`)
+
+- `displayName` values in XML config files are **localization/display keys**, not free-form strings.
+- They are looked up in a localization table, so they must be **alphanumeric with `.` or `_` only** — no spaces, hyphens, or other special characters.
+
+```xml
+<!-- BAD — spaces and hyphens are not valid in a display key -->
+<Group id="ModName_General" displayName="Mods.ModName.ModName - General" />
+<Var id="CandleBrightness" displayName="Candle Brightness" />
+
+<!-- GOOD -->
+<Group id="ModName_General" displayName="Mods.ModName.ModName_General" />
+<Var id="CandleBrightness" displayName="Mods.ModName.CandleBrightness" />
+```
+
+## Modding discipline
+
+- Keep diffs **small** on huge patched files (e.g. `r4Player.ws`).
+- Preserve comments and call order unless behavior must change.
+- Avoid renaming symbols that may be referenced from XML, other scripts, or tooling.
+
+## Verification
+
+- There is **no in-repo compiler** here; verification requires human intervention.
+
+## Avoid TS-style shortcuts
+
+```ws
+// BAD (TypeScript optional chaining — not Witcher Script)
+// foo?.bar
+
+// GOOD (explicit guard)
+if (foo) {
+    foo.bar;
+}
+```
