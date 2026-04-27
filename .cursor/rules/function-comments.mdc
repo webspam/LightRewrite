@@ -1,0 +1,47 @@
+---
+description: Function comment style — purpose-driven, not pseudo-code
+globs: "**/*.ws"
+alwaysApply: false
+---
+
+# Function Comments
+
+Add a brief comment above a function when its role isn't immediately obvious from the signature alone. Skip it when the function is short enough that the body says everything.
+
+## The comment must explain _why_ the function is called, not _what_ it does
+
+A comment that rephrases the body in prose adds no value and must not be used.
+
+```ws
+// ❌ BAD — restates the code
+// Checks if lightRewriteSettings is null, creates it if so, then returns it.
+public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
+
+// ✅ GOOD — explains the impetus / caller contract
+// Gets the LightRewrite settings singleton - lazy initialised
+public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
+```
+
+```ws
+// ❌ BAD — restates the code
+// Calls wrappedMethod then calls OptionValueChanged on lightRewriteSettings.
+function OnOptionValueChanged(...) { ... }
+
+// ✅ GOOD — explains why this wrapper exists
+// Forward every option-change event to the settings object for filtering.
+function OnOptionValueChanged(...) { ... }
+```
+
+## When to omit a comment entirely
+
+Omit when the function name + signature make the purpose self-evident:
+
+```ws
+// No comment needed — name is the full explanation
+public function IsEnabled() : bool { return isEnabled; }
+```
+
+## Style
+
+- One line is almost always enough; two lines at most.
+- Write in plain English, imperative or declarative — no full stops required.
