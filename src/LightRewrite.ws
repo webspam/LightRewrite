@@ -14,11 +14,10 @@
 // import class CSpotLightComponent extends CLightComponent {}
 
 // Store global light rewrite parameters on the game params object.
-@addField(W3GameParams)
-public var LR_ATTENUATION : float;
-public var LR_SHADOW_FADE_DISTANCE : float;
-public var LR_SHADOW_FADE_RANGE : float;
-public var LR_SHADOW_BLEND_FACTOR : float;
+@addField(W3GameParams) public var LR_ATTENUATION : float;
+@addField(W3GameParams) public var LR_SHADOW_FADE_DISTANCE : float;
+@addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
+@addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
 
 @wrapMethod(W3GameParams)
 function Init() {
