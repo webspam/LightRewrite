@@ -15,6 +15,14 @@ public function GetLightRewriteSettings() : CLightRewriteSettings {
     return lightRewriteSettings;
 }
 
+// Ensure the LightRewrite settings are read before the game starts.
+@wrapMethod(CR4Game)
+function OnGameStarting(restored : bool) {
+    wrappedMethod(restored);
+
+    theGame.GetLightRewriteSettings().ReadGameConfig();
+}
+
 @addField(CR4IngameMenu)
 private var lightRewriteSettings : CLightRewriteSettings;
 
@@ -23,6 +31,7 @@ function OnConfigUI() {
     wrappedMethod();
 
     lightRewriteSettings = theGame.GetLightRewriteSettings();
+    lightRewriteSettings.ReadGameConfig();
 }
 
 // Forward every option-change event to the settings object for filtering.
@@ -35,11 +44,4 @@ function OnOptionValueChanged(groupId : int, optionName : name, optionValue : st
     if (lightRewriteSettings) lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
 
     return wrappedReturnValue;
-}
-
-// Perform the initial settings read each time the player loads into the world.
-@wrapMethod(CR4Player)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    wrappedMethod(spawnData);
-    theGame.GetLightRewriteSettings().ReadGameConfig();
 }
