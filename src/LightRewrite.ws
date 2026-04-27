@@ -174,7 +174,7 @@ function OnSpawned(spawnData : SEntitySpawnData) {
     if (!spawnData.restored && theGame.params.LR_ENABLED) {
         IdentifyLightRewriteType();
 
-        if (lightRewriteLightType != LRT_None) CandleLightRewrite();
+        if (IsLightRewritable()) CandleLightRewrite();
     }
 
     wrappedMethod(spawnData);
