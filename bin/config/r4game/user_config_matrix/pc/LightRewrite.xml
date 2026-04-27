@@ -13,7 +13,7 @@
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
-                displayType="SLIDER;0;1;1" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;2;2" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 

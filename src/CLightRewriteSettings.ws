@@ -57,9 +57,12 @@ class CLightRewriteSettings {
     }
 
     // If mod config has never been initialised, set the default values and save them.
+    // Handles migration from older versions by writing any keys added since the stored version.
     public function EnsureGameConfigIsInitialised() {
-        // Never initialised - set all defaults.
-        if (!gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION)) {
+        var initVersion : string = gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION);
+
+        // Never initialised - write all defaults.
+        if (!initVersion) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, theGame.params.LR_SHADOW_FADE_DISTANCE);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, theGame.params.LR_SHADOW_FADE_RANGE);
@@ -71,7 +74,16 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(TORCH_GROUP, RADIUS, theGame.params.LR_TORCH_RADIUS);
             gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
 
-            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "1");
+            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "2");
+
+            theGame.SaveUserSettings();
+        }
+        // v1 → v2: write the per-source attenuation keys that did not exist in v1.
+        else if (initVersion == "1") {
+            gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, theGame.params.LR_CANDLE_ATTENUATION);
+            gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
+
+            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "2");
 
             theGame.SaveUserSettings();
         }
