@@ -27,7 +27,8 @@ enum ELightRewriteType {
 @addField(W3GameParams) public var LR_CANDLE_RADIUS      : float;
 @addField(W3GameParams) public var LR_TORCH_BRIGHTNESS   : float;
 @addField(W3GameParams) public var LR_TORCH_RADIUS       : float;
-@addField(W3GameParams) public var LR_ATTENUATION        : float;
+@addField(W3GameParams) public var LR_CANDLE_ATTENUATION : float;
+@addField(W3GameParams) public var LR_TORCH_ATTENUATION  : float;
 @addField(W3GameParams) public var LR_SHADOW_FADE_DISTANCE : float;
 @addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
 @addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
@@ -87,23 +88,24 @@ function CandleLightRewrite() {
     var pointLight : CPointLightComponent;
     var i : int;
 
-    var brightness, radius : float;
+    var brightness, radius, attenuation : float;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
 
-    var attenuation : float = theGame.params.LR_ATTENUATION;
     var shadowFadeDistance : float = theGame.params.LR_SHADOW_FADE_DISTANCE;
     var shadowFadeRange : float = theGame.params.LR_SHADOW_FADE_RANGE;
     var shadowBlendFactor : float = theGame.params.LR_SHADOW_BLEND_FACTOR;
 
     if (lightRewriteLightType == LRT_Candle) {
-        brightness = theGame.params.LR_CANDLE_BRIGHTNESS;
-        radius = theGame.params.LR_CANDLE_RADIUS;
+        brightness  = theGame.params.LR_CANDLE_BRIGHTNESS;
+        radius      = theGame.params.LR_CANDLE_RADIUS;
+        attenuation = theGame.params.LR_CANDLE_ATTENUATION;
     }
     else if (lightRewriteLightType == LRT_Torch) {
-        brightness = theGame.params.LR_TORCH_BRIGHTNESS;
-        radius = theGame.params.LR_TORCH_RADIUS;
+        brightness  = theGame.params.LR_TORCH_BRIGHTNESS;
+        radius      = theGame.params.LR_TORCH_RADIUS;
+        attenuation = theGame.params.LR_TORCH_ATTENUATION;
     }
 
     // Clusters of candles emit most of their light via a single spotlight.
