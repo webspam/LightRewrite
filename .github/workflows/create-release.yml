@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       summary:
-        description: "One-line summary (optional)"
+        description: "Release summary (optional, appears above auto-generated notes)"
         required: false
         type: string
       prerelease:
@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - name: Create folder structure and copy files
         run: |
@@ -41,30 +39,6 @@ jobs:
       - name: Create zip file
         run: |
           zip -r modLightRewrite.zip mods/
-
-      - name: Build release notes
-        run: |
-          # Collect commits since the last tag, or all commits if this is the first release
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -n "$LAST_TAG" ]; then
-            CHANGES=$(git log "$LAST_TAG"..HEAD --no-merges --format="- %H %s")
-          else
-            CHANGES=$(git log --no-merges --format="- %H %s")
-          fi
-
-          {
-            SUMMARY="${{ inputs.summary }}"
-            if [ -n "$SUMMARY" ]; then
-              echo "$SUMMARY"
-              echo ""
-            fi
-            echo "## Changes"
-            if [ -n "$CHANGES" ]; then
-              echo "$CHANGES"
-            else
-              echo "_No changes since last release._"
-            fi
-          } > release-notes.md
 
       - name: Create Draft Release
         run: |
@@ -76,10 +50,17 @@ jobs:
           if [ -z "$RELEASE_TITLE" ]; then
             RELEASE_TITLE="${{ inputs.tag }}"
           fi
+          
+          NOTES_FLAG="--generate-notes"
+          if [ -n "${{ inputs.summary }}" ]; then
+            echo "${{ inputs.summary }}" > summary.md
+            NOTES_FLAG="--notes-file summary.md --generate-notes"
+          fi
+          
           gh release create "${{ inputs.tag }}" \
             --title "$RELEASE_TITLE" \
             --draft \
-            --notes-file release-notes.md \
+            $NOTES_FLAG \
             $PRERELEASE_FLAG \
             modLightRewrite.zip
         env:
