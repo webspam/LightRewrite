@@ -29,10 +29,11 @@ function OnConfigUI() {
 @wrapMethod(CR4IngameMenu)
 function OnOptionValueChanged(groupId : int, optionName : name, optionValue : string) {
     var wrappedReturnValue : bool;
+
     wrappedReturnValue = wrappedMethod(groupId, optionName, optionValue);
-    if (lightRewriteSettings) {
-        lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
-    }
+
+    if (lightRewriteSettings) lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
+
     return wrappedReturnValue;
 }
 
