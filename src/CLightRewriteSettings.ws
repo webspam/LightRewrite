@@ -5,6 +5,43 @@
  *
  * Stored as a singleton on CR4Game via GetLightRewriteSettings() (watchSettings.ws).
  */
+
+// Reads all LightRewrite settings from the game config and stores them on
+// this W3GameParams instance.
+// W3GameParams fields can only be written from within a method on the class itself.
+@addMethod(W3GameParams)
+public function ReadLightRewriteConfig() {
+    var val : string;
+    var gameConfig : CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
+
+    LR_ENABLED = gameConfig.GetVarValue('LightRewrite_General', 'Enabled');
+    if (!LR_ENABLED) return;
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'CandleBrightness');
+    if (val != "") LR_CANDLE_BRIGHTNESS = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'CandleRadius');
+    if (val != "") LR_CANDLE_RADIUS = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'TorchBrightness');
+    if (val != "") LR_TORCH_BRIGHTNESS = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'TorchRadius');
+    if (val != "") LR_TORCH_RADIUS = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'Attenuation');
+    if (val != "") LR_ATTENUATION = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'ShadowFadeDistance');
+    if (val != "") LR_SHADOW_FADE_DISTANCE = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'ShadowFadeRange');
+    if (val != "") LR_SHADOW_FADE_RANGE = StringToFloat(val);
+
+    val = gameConfig.GetVarValue('LightRewrite_Lighting', 'ShadowBlendFactor');
+    if (val != "") LR_SHADOW_BLEND_FACTOR = StringToFloat(val);
+}
+
 class CLightRewriteSettings {
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP  : name; default GENERAL_GROUP  = 'LightRewrite_General';
@@ -29,39 +66,10 @@ class CLightRewriteSettings {
         return groupId == generalGroupId || groupId == lightingGroupId;
     }
 
-    // Reads current values from the game config and writes them to theGame.params.
-    // Called on player spawn (startup read) and on every relevant option-change event.
-    // Guards against empty strings returned before the user has opened the mod menu,
-    // so the W3GameParams defaults are preserved on the first load.
+    // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
+    // its own fields directly. Called on player spawn and on option-change events.
     public function ReadGameConfig() {
-        var val : string;
-
-        theGame.params.LR_ENABLED = gameConfig.GetVarValue(GENERAL_GROUP, 'Enabled');
-        if (!theGame.params.LR_ENABLED) { return; }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'CandleBrightness');
-        if (val != "") { theGame.params.LR_CANDLE_BRIGHTNESS = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'CandleRadius');
-        if (val != "") { theGame.params.LR_CANDLE_RADIUS = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'TorchBrightness');
-        if (val != "") { theGame.params.LR_TORCH_BRIGHTNESS = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'TorchRadius');
-        if (val != "") { theGame.params.LR_TORCH_RADIUS = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'Attenuation');
-        if (val != "") { theGame.params.LR_ATTENUATION = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'ShadowFadeDistance');
-        if (val != "") { theGame.params.LR_SHADOW_FADE_DISTANCE = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'ShadowFadeRange');
-        if (val != "") { theGame.params.LR_SHADOW_FADE_RANGE = StringToFloat(val); }
-
-        val = gameConfig.GetVarValue(LIGHTING_GROUP, 'ShadowBlendFactor');
-        if (val != "") { theGame.params.LR_SHADOW_BLEND_FACTOR = StringToFloat(val); }
+        theGame.params.ReadLightRewriteConfig();
     }
 
     // Called by the CR4IngameMenu wrapper for every option-change event.
