@@ -14,14 +14,25 @@
 // import class CSpotLightComponent extends CLightComponent {}
 
 // Store global light rewrite parameters on the game params object.
-@addField(W3GameParams) public var LR_ATTENUATION : float;
+// These defaults are overwritten at runtime by CLightRewriteSettings.ReadGameConfig().
+@addField(W3GameParams) public var LR_ENABLED            : bool;
+@addField(W3GameParams) public var LR_CANDLE_BRIGHTNESS  : float;
+@addField(W3GameParams) public var LR_CANDLE_RADIUS      : float;
+@addField(W3GameParams) public var LR_TORCH_BRIGHTNESS   : float;
+@addField(W3GameParams) public var LR_TORCH_RADIUS       : float;
+@addField(W3GameParams) public var LR_ATTENUATION        : float;
 @addField(W3GameParams) public var LR_SHADOW_FADE_DISTANCE : float;
 @addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
 @addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
 
 @wrapMethod(W3GameParams)
 function Init() {
-    LR_ATTENUATION = 1.0f;
+    LR_ENABLED            = true;
+    LR_CANDLE_BRIGHTNESS  = 5.5f;
+    LR_CANDLE_RADIUS      = 9.f;
+    LR_TORCH_BRIGHTNESS   = 30.f;
+    LR_TORCH_RADIUS       = 20.f;
+    LR_ATTENUATION        = 1.0f;
     LR_SHADOW_FADE_DISTANCE = 10.f;
     LR_SHADOW_FADE_RANGE = 3.f;
     LR_SHADOW_BLEND_FACTOR = 1.f;
@@ -100,7 +111,7 @@ function OnSpawned(spawnData : SEntitySpawnData) {
     var isTorch : bool;
     var editorName, discard : string;
 
-    if (!spawnData.restored && HasTag(theGame.params.TAG_OPEN_FIRE)) {
+    if (!spawnData.restored && theGame.params.LR_ENABLED && HasTag(theGame.params.TAG_OPEN_FIRE)) {
         editorName = StrAfterLast(ToString(), StrChar(92));
 
         isCandle = StrFindFirst(editorName, "candle") != -1;
@@ -108,8 +119,8 @@ function OnSpawned(spawnData : SEntitySpawnData) {
 
         LogRC("Spawned: " + editorName + " -- isCandle: " + isCandle + " / isTorch: " + isTorch);
 
-        if (isCandle) CandleLightRewrite(5.5f, 9.f);
-        else if (isTorch) CandleLightRewrite(30.f, 20.f);
+        if (isCandle) CandleLightRewrite(theGame.params.LR_CANDLE_BRIGHTNESS, theGame.params.LR_CANDLE_RADIUS);
+        else if (isTorch) CandleLightRewrite(theGame.params.LR_TORCH_BRIGHTNESS, theGame.params.LR_TORCH_RADIUS);
     }
 
     wrappedMethod(spawnData);
