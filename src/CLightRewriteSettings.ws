@@ -16,6 +16,7 @@ class CLightRewriteSettings {
 
     private var gameConfig : CInGameConfigWrapper;
 
+    // Resolve group IDs from the config wrapper; called once at singleton creation.
     public function Init() {
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
