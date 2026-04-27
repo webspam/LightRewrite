@@ -47,9 +47,9 @@ jobs:
           # Collect commits since the last tag, or all commits if this is the first release
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           if [ -n "$LAST_TAG" ]; then
-            CHANGES=$(git log "$LAST_TAG"..HEAD --oneline --no-merges)
+            CHANGES=$(git log "$LAST_TAG"..HEAD --no-merges --format="- %H %s")
           else
-            CHANGES=$(git log --oneline --no-merges)
+            CHANGES=$(git log --no-merges --format="- %H %s")
           fi
 
           {
@@ -60,7 +60,7 @@ jobs:
             fi
             echo "## Changes"
             if [ -n "$CHANGES" ]; then
-              echo "$CHANGES" | while IFS= read -r line; do echo "- $line"; done
+              echo "$CHANGES"
             else
               echo "_No changes since last release._"
             fi
