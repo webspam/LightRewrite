@@ -66,8 +66,20 @@ class CLightRewriteSettings {
 
         if (initVersion == CONFIG_VERSION) return;
 
+        // v1 → v2: promote the old global attenuation value to both per-source keys.
+        if (initVersion == "1") {
+            var oldAttenuation : string = gameConfig.GetVarValue(GENERAL_GROUP, ATTENUATION);
+
+            if (StringToFloat(oldAttenuation, -1.f) != -1.f) {
+                gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, oldAttenuation);
+                gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, oldAttenuation);
+            } else {
+                gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, theGame.params.LR_CANDLE_ATTENUATION);
+                gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
+            }
+        }
         // Never initialised - write all defaults.
-        if (!initVersion) {
+        else if (!initVersion) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, theGame.params.LR_SHADOW_FADE_DISTANCE);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, theGame.params.LR_SHADOW_FADE_RANGE);
@@ -78,20 +90,10 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(TORCH_GROUP, BRIGHTNESS, theGame.params.LR_TORCH_BRIGHTNESS);
             gameConfig.SetVarValue(TORCH_GROUP, RADIUS, theGame.params.LR_TORCH_RADIUS);
             gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
-
-            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "2");
-
-            theGame.SaveUserSettings();
         }
-        // v1 → v2: write the per-source attenuation keys that did not exist in v1.
-        else if (initVersion == "1") {
-            gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, theGame.params.LR_CANDLE_ATTENUATION);
-            gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
 
-            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "2");
-
-            theGame.SaveUserSettings();
-        }
+        gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
+        theGame.SaveUserSettings();
     }
 
     // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
