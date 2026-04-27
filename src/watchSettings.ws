@@ -5,7 +5,7 @@
 @addField(CR4Game)
 private var lightRewriteSettings : CLightRewriteSettings;
 
-// Lazy-initialise and return the settings singleton.
+// Gets the LightRewrite settings singleton - lazy initialised
 @addMethod(CR4Game)
 public function GetLightRewriteSettings() : CLightRewriteSettings {
     if (!lightRewriteSettings) {
@@ -18,10 +18,10 @@ public function GetLightRewriteSettings() : CLightRewriteSettings {
 @addField(CR4IngameMenu)
 private var lightRewriteSettings : CLightRewriteSettings;
 
-// Capture the singleton reference when the in-game menu UI is built.
 @wrapMethod(CR4IngameMenu)
 function OnConfigUI() {
     wrappedMethod();
+
     lightRewriteSettings = theGame.GetLightRewriteSettings();
 }
 
