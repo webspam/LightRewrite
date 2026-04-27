@@ -63,12 +63,13 @@ class CLightRewriteSettings {
     // Handles migration from older versions by writing any keys added since the stored version.
     public function EnsureGameConfigIsInitialised() {
         var initVersion : string = gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION);
+        var oldAttenuation : string;
 
         if (initVersion == CONFIG_VERSION) return;
 
         // v1 → v2: promote the old global attenuation value to both per-source keys.
         if (initVersion == "1") {
-            var oldAttenuation : string = gameConfig.GetVarValue(GENERAL_GROUP, ATTENUATION);
+            oldAttenuation = gameConfig.GetVarValue(GENERAL_GROUP, ATTENUATION);
 
             if (StringToFloat(oldAttenuation, -1.f) != -1.f) {
                 gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, oldAttenuation);
