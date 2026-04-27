@@ -106,8 +106,6 @@ function CandleLightRewrite() {
         radius = theGame.params.LR_TORCH_RADIUS;
     }
 
-    LogLightRewrite("CandleLightRewrite: " + ToString() + " - brightness: " + brightness + " - radius: " + radius);
-
     // Clusters of candles emit most of their light via a single spotlight.
     // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
     spotLight = (CSpotLightComponent)GetComponent('CSpotLightComponent0');
@@ -207,12 +205,14 @@ public function IdentifyLightRewriteType() {
     editorName = StrAfterLast(ToString(), StrChar(92));
 
     if (StrFindFirst(editorName, "candle") != -1) {
-        lightRewriteLightType = LRT_Candle;
         LogLightRewrite("Found candle: " + editorName);
+
+        lightRewriteLightType = LRT_Candle;
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
-        lightRewriteLightType = LRT_Torch;
         LogLightRewrite("Found torch: " + editorName);
+
+        lightRewriteLightType = LRT_Torch;
     }
     else {
         lightRewriteLightType = LRT_Unknown;

@@ -137,6 +137,8 @@ class CLightRewriteSettings {
 
         GetAllNearbyEntities(entities);
 
+        LogLightRewrite("Enabling " + entities.Size() + " nearby entities");
+
         for (i = 0; i < entities.Size(); i += 1) {
             entities[i].CandleLightRewrite();
         }
@@ -147,6 +149,8 @@ class CLightRewriteSettings {
         var entities : array<CGameplayEntity>;
 
         GetAllNearbyEntities(entities);
+
+        LogLightRewrite("Disabling " + entities.Size() + " nearby entities");
 
         for (i = 0; i < entities.Size(); i += 1) {
             entities[i].DisableLightRewrite();
