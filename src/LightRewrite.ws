@@ -117,7 +117,7 @@ function OnSpawned(spawnData : SEntitySpawnData) {
         isCandle = StrFindFirst(editorName, "candle") != -1;
         isTorch = StrFindFirst(editorName, "torch") != -1;
 
-        LogRC("Spawned: " + editorName + " -- isCandle: " + isCandle + " / isTorch: " + isTorch);
+        LogLightRewrite("Spawned: " + editorName + " -- isCandle: " + isCandle + " / isTorch: " + isTorch);
 
         if (isCandle) CandleLightRewrite(theGame.params.LR_CANDLE_BRIGHTNESS, theGame.params.LR_CANDLE_RADIUS);
         else if (isTorch) CandleLightRewrite(theGame.params.LR_TORCH_BRIGHTNESS, theGame.params.LR_TORCH_RADIUS);
