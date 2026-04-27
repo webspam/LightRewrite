@@ -43,7 +43,8 @@ class CLightRewriteSettings {
         params.LR_CANDLE_RADIUS         = 9.f;
         params.LR_TORCH_BRIGHTNESS      = 30.f;
         params.LR_TORCH_RADIUS          = 20.f;
-        params.LR_ATTENUATION           = 1.0f;
+        params.LR_CANDLE_ATTENUATION    = 1.0f;
+        params.LR_TORCH_ATTENUATION     = 1.0f;
         params.LR_SHADOW_FADE_DISTANCE  = 10.f;
         params.LR_SHADOW_FADE_RANGE     = 3.f;
         params.LR_SHADOW_BLEND_FACTOR   = 1.f;
@@ -60,14 +61,15 @@ class CLightRewriteSettings {
         // Never initialised - set all defaults.
         if (!gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION)) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
-            gameConfig.SetVarValue(GENERAL_GROUP, ATTENUATION, theGame.params.LR_ATTENUATION);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, theGame.params.LR_SHADOW_FADE_DISTANCE);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, theGame.params.LR_SHADOW_FADE_RANGE);
             gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, theGame.params.LR_SHADOW_BLEND_FACTOR);
             gameConfig.SetVarValue(CANDLE_GROUP, BRIGHTNESS, theGame.params.LR_CANDLE_BRIGHTNESS);
             gameConfig.SetVarValue(CANDLE_GROUP, RADIUS, theGame.params.LR_CANDLE_RADIUS);
+            gameConfig.SetVarValue(CANDLE_GROUP, ATTENUATION, theGame.params.LR_CANDLE_ATTENUATION);
             gameConfig.SetVarValue(TORCH_GROUP, BRIGHTNESS, theGame.params.LR_TORCH_BRIGHTNESS);
             gameConfig.SetVarValue(TORCH_GROUP, RADIUS, theGame.params.LR_TORCH_RADIUS);
+            gameConfig.SetVarValue(TORCH_GROUP, ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
 
             gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "1");
 
@@ -92,14 +94,17 @@ class CLightRewriteSettings {
         val = gameConfig.GetVarValue(CANDLE_GROUP, RADIUS);
         if (val != "") params.LR_CANDLE_RADIUS = StringToFloat(val);
 
+        val = gameConfig.GetVarValue(CANDLE_GROUP, ATTENUATION);
+        if (val != "") params.LR_CANDLE_ATTENUATION = StringToFloat(val);
+
         val = gameConfig.GetVarValue(TORCH_GROUP, BRIGHTNESS);
         if (val != "") params.LR_TORCH_BRIGHTNESS = StringToFloat(val);
 
         val = gameConfig.GetVarValue(TORCH_GROUP, RADIUS);
         if (val != "") params.LR_TORCH_RADIUS = StringToFloat(val);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, ATTENUATION);
-        if (val != "") params.LR_ATTENUATION = StringToFloat(val);
+        val = gameConfig.GetVarValue(TORCH_GROUP, ATTENUATION);
+        if (val != "") params.LR_TORCH_ATTENUATION = StringToFloat(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE);
         if (val != "") params.LR_SHADOW_FADE_DISTANCE = StringToFloat(val);
