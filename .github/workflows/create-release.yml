@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag (e.g., v1.0.0)"
+        description: "Tag (e.g., v1.0.0)"
         required: true
         type: string
-      release_name:
-        description: "Release name (optional, defaults to tag)"
+      title:
+        description: "Title (defaults to tag)"
         required: false
         type: string
       summary:
-        description: "Release summary (optional, appears above auto-generated notes)"
+        description: "Summary (appears above auto-generated notes)"
         required: false
         type: string
       prerelease:
@@ -46,7 +46,7 @@ jobs:
           if [ "${{ inputs.prerelease }}" = "true" ]; then
             PRERELEASE_FLAG="--prerelease"
           fi
-          RELEASE_TITLE="${{ inputs.release_name }}"
+          RELEASE_TITLE="${{ inputs.title }}"
           if [ -z "$RELEASE_TITLE" ]; then
             RELEASE_TITLE="${{ inputs.tag }}"
           fi
