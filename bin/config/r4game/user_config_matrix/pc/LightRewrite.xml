@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<UserConfig>
+    <Group id="LightRewrite_General" displayName="LightRewrite - General">
+        <VisibleVars>
+            <Var id="Enabled" displayName="Enabled" displayType="TOGGLE" />
+        </VisibleVars>
+    </Group>
+
+    <Group id="LightRewrite_Lighting" displayName="LightRewrite - Lighting">
+        <VisibleVars>
+            <Var id="CandleBrightness"   displayName="Candle Brightness"      displayType="SLIDER;0;20;201" />
+            <Var id="CandleRadius"       displayName="Candle Radius"           displayType="SLIDER;1;30;30" />
+            <Var id="TorchBrightness"    displayName="Torch Brightness"        displayType="SLIDER;0;100;101" />
+            <Var id="TorchRadius"        displayName="Torch Radius"            displayType="SLIDER;1;50;50" />
+            <Var id="Attenuation"        displayName="Attenuation"             displayType="SLIDER;0;5;51" />
+            <Var id="ShadowFadeDistance" displayName="Shadow Fade Distance"    displayType="SLIDER;0;50;51" />
+            <Var id="ShadowFadeRange"    displayName="Shadow Fade Range"       displayType="SLIDER;0;20;21" />
+            <Var id="ShadowBlendFactor"  displayName="Shadow Blend Factor"     displayType="SLIDER;0;1;11" />
+        </VisibleVars>
+    </Group>
+</UserConfig>
