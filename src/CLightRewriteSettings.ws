@@ -119,9 +119,14 @@ class CLightRewriteSettings {
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
-            if (isEnabled != theGame.params.LR_ENABLED) {
-                if (theGame.params.LR_ENABLED) EnableAllNearbyEntities();
-                else DisableAllNearbyEntities();
+            // If we've just turned the mod off, disable all nearby entities.
+            if (isEnabled != theGame.params.LR_ENABLED && !theGame.params.LR_ENABLED) {
+                DisableAllNearbyEntities();
+            }
+
+            // Otherwise, if we changed any setting AND the mod is enabled, run the light rewrite.
+            else if (theGame.params.LR_ENABLED) {
+                EnableAllNearbyEntities();
             }
         }
     }
