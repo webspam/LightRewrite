@@ -13,6 +13,13 @@
 
 // import class CSpotLightComponent extends CLightComponent {}
 
+enum ELightRewriteType {
+    LRT_None,
+    LRT_Unknown,
+    LRT_Candle,
+    LRT_Torch,
+}
+
 // Store global light rewrite parameters on the game params object.
 // These defaults are overwritten at runtime by CLightRewriteSettings.ReadGameConfig().
 @addField(W3GameParams) public var LR_ENABLED            : bool;
@@ -25,27 +32,62 @@
 @addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
 @addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
 
-@wrapMethod(W3GameParams)
-function Init() {
-    LR_ENABLED            = true;
-    LR_CANDLE_BRIGHTNESS  = 5.5f;
-    LR_CANDLE_RADIUS      = 9.f;
-    LR_TORCH_BRIGHTNESS   = 30.f;
-    LR_TORCH_RADIUS       = 20.f;
-    LR_ATTENUATION        = 1.0f;
-    LR_SHADOW_FADE_DISTANCE = 10.f;
-    LR_SHADOW_FADE_RANGE = 3.f;
-    LR_SHADOW_BLEND_FACTOR = 1.f;
+struct SLightRewriteOriginalValues {
+    var hasBeenSaved : bool;
 
-    return wrappedMethod();
+    var brightness : float;
+    var radius : float;
+    var attenuation : float;
+    var shadowFadeDistance : float;
+    var shadowFadeRange : float;
+    var shadowBlendFactor : float;
+    var color : Color;
 }
+
+@addField(CLightComponent) public var lightRewriteOriginalValues : SLightRewriteOriginalValues;
+
+@addMethod(CLightComponent)
+public function SaveLightRewriteOriginalValues() {
+    if (lightRewriteOriginalValues.hasBeenSaved) return;
+
+    lightRewriteOriginalValues.hasBeenSaved = true;
+
+    lightRewriteOriginalValues.brightness = brightness;
+    lightRewriteOriginalValues.radius = radius;
+    lightRewriteOriginalValues.attenuation = attenuation;
+    lightRewriteOriginalValues.shadowFadeDistance = shadowFadeDistance;
+    lightRewriteOriginalValues.shadowFadeRange = shadowFadeRange;
+    lightRewriteOriginalValues.shadowBlendFactor = shadowBlendFactor;
+    lightRewriteOriginalValues.color = color;
+}
+
+@addMethod(CLightComponent)
+public function RestoreLightRewriteOriginalValues() {
+    if (!lightRewriteOriginalValues.hasBeenSaved) return;
+
+    SetEnabled(false);
+    
+    brightness = lightRewriteOriginalValues.brightness;
+    radius = lightRewriteOriginalValues.radius;
+    attenuation = lightRewriteOriginalValues.attenuation;
+    shadowFadeDistance = lightRewriteOriginalValues.shadowFadeDistance;
+    shadowFadeRange = lightRewriteOriginalValues.shadowFadeRange;
+    shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
+    color = lightRewriteOriginalValues.color;
+
+    SetEnabled(true);
+}
+
+@addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 
 // Rewrite a single candle / torch entity
 @addMethod(CGameplayEntity)
-function CandleLightRewrite(brightness, radius : float) {
+function CandleLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
+
+    var brightness, radius : float;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
@@ -55,6 +97,17 @@ function CandleLightRewrite(brightness, radius : float) {
     var shadowFadeRange : float = theGame.params.LR_SHADOW_FADE_RANGE;
     var shadowBlendFactor : float = theGame.params.LR_SHADOW_BLEND_FACTOR;
 
+    if (lightRewriteLightType == LRT_Candle) {
+        brightness = theGame.params.LR_CANDLE_BRIGHTNESS;
+        radius = theGame.params.LR_CANDLE_RADIUS;
+    }
+    else if (lightRewriteLightType == LRT_Torch) {
+        brightness = theGame.params.LR_TORCH_BRIGHTNESS;
+        radius = theGame.params.LR_TORCH_RADIUS;
+    }
+
+    LogLightRewrite("CandleLightRewrite: " + ToString() + " - brightness: " + brightness + " - radius: " + radius);
+
     // Clusters of candles emit most of their light via a single spotlight.
     // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
     spotLight = (CSpotLightComponent)GetComponent('CSpotLightComponent0');
@@ -63,6 +116,8 @@ function CandleLightRewrite(brightness, radius : float) {
         pointLight = (CPointLightComponent)components[i];
 
         if (pointLight) {
+            pointLight.SaveLightRewriteOriginalValues();
+
             pointLight.SetEnabled(false);
 
             pointLight.brightness = brightness;
@@ -100,28 +155,102 @@ function DisableAllSpotlightComponents() {
     for (i = 0; i < count; i += 1) {
         lightComponent = (CSpotLightComponent)components[i];
 
-        if (lightComponent) lightComponent.SetEnabled(false);
+        if (lightComponent) {
+            lightComponent.SaveLightRewriteOriginalValues();
+            lightComponent.SetEnabled(false);
+        }
     }
 }
 
 // Identify light sources, and rewrite matched entities to work properly with RT.
 @wrapMethod(CGameplayEntity)
 function OnSpawned(spawnData : SEntitySpawnData) {
-    var isCandle : bool;
-    var isTorch : bool;
-    var editorName, discard : string;
+    var editorName : string;
 
-    if (!spawnData.restored && theGame.params.LR_ENABLED && HasTag(theGame.params.TAG_OPEN_FIRE)) {
-        editorName = StrAfterLast(ToString(), StrChar(92));
+    if (!spawnData.restored && theGame.params.LR_ENABLED) {
+        IdentifyLightRewriteType();
 
-        isCandle = StrFindFirst(editorName, "candle") != -1;
-        isTorch = StrFindFirst(editorName, "torch") != -1;
-
-        LogLightRewrite("Spawned: " + editorName + " -- isCandle: " + isCandle + " / isTorch: " + isTorch);
-
-        if (isCandle) CandleLightRewrite(theGame.params.LR_CANDLE_BRIGHTNESS, theGame.params.LR_CANDLE_RADIUS);
-        else if (isTorch) CandleLightRewrite(theGame.params.LR_TORCH_BRIGHTNESS, theGame.params.LR_TORCH_RADIUS);
+        if (lightRewriteLightType != LRT_None) CandleLightRewrite();
     }
 
     wrappedMethod(spawnData);
+}
+
+@wrapMethod(CGameplayEntity)
+function AddTag(tag : name) {
+    wrappedMethod(tag);
+
+    if (tag == theGame.params.TAG_OPEN_FIRE) {
+        IdentifyLightRewriteType();
+    }
+}
+
+// This entity has already confirmed its light rewrite type.
+@addMethod(CGameplayEntity)
+public function HasCheckedLightRewriteType() : bool {
+    return lightRewriteLightType != LRT_None;
+}
+
+// This entity is a valid light rewrite target.
+@addMethod(CGameplayEntity)
+public function IsLightRewritable() : bool {
+    return lightRewriteLightType != LRT_Unknown && lightRewriteLightType != LRT_None;
+}
+
+// If this is an open fire, identify the light rewrite type of this entity.
+@addMethod(CGameplayEntity)
+public function IdentifyLightRewriteType() {
+    var editorName : string;
+
+    if (HasCheckedLightRewriteType() || !HasTag(theGame.params.TAG_OPEN_FIRE)) return;
+
+    editorName = StrAfterLast(ToString(), StrChar(92));
+
+    if (StrFindFirst(editorName, "candle") != -1) {
+        lightRewriteLightType = LRT_Candle;
+        LogLightRewrite("Found candle: " + editorName);
+    }
+    else if (StrFindFirst(editorName, "torch") != -1) {
+        lightRewriteLightType = LRT_Torch;
+        LogLightRewrite("Found torch: " + editorName);
+    }
+    else {
+        lightRewriteLightType = LRT_Unknown;
+    }
+}
+
+@addMethod(CGameplayEntity)
+function DisableLightRewrite() {
+    var spotLight : CSpotLightComponent;
+    var pointLight : CPointLightComponent;
+    var i : int;
+
+    var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
+    var count : int = components.Size();
+
+    for (i = 0; i < count; i += 1) {
+        pointLight = (CPointLightComponent)components[i];
+
+        if (pointLight) {
+            pointLight.RestoreLightRewriteOriginalValues();
+        }
+    }
+
+    // Remove spotlights from candles that have point lights (should be all candles).
+    if (count > 0) {
+        components = GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
+
+        for (i = 0; i < count; i += 1) {
+            spotLight = (CSpotLightComponent)components[i];
+
+            if (spotLight) {
+                spotLight.RestoreLightRewriteOriginalValues();
+            }
+        }
+    }
+}
+
+function LogLightRewrite(msg : string) {
+    LogChannel('LightRewrite', msg);
 }

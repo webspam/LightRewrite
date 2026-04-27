@@ -31,10 +31,22 @@ class CLightRewriteSettings {
 
     // Resolve group IDs from the config wrapper; called once at singleton creation.
     public function Init() {
+        var params : W3GameParams = theGame.params;
+        
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
         candleGroupId = gameConfig.GetGroupIdx(CANDLE_GROUP);
         torchGroupId = gameConfig.GetGroupIdx(TORCH_GROUP);
+
+        params.LR_ENABLED               = true;
+        params.LR_CANDLE_BRIGHTNESS     = 5.5f;
+        params.LR_CANDLE_RADIUS         = 9.f;
+        params.LR_TORCH_BRIGHTNESS      = 30.f;
+        params.LR_TORCH_RADIUS          = 20.f;
+        params.LR_ATTENUATION           = 1.0f;
+        params.LR_SHADOW_FADE_DISTANCE  = 10.f;
+        params.LR_SHADOW_FADE_RANGE     = 3.f;
+        params.LR_SHADOW_BLEND_FACTOR   = 1.f;
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
@@ -43,11 +55,33 @@ class CLightRewriteSettings {
         return groupId == generalGroupId || groupId == candleGroupId || groupId == torchGroupId;
     }
 
+    // If mod config has never been initialised, set the default values and save them.
+    public function EnsureGameConfigIsInitialised() {
+        // Never initialised - set all defaults.
+        if (!gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION)) {
+            gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
+            gameConfig.SetVarValue(GENERAL_GROUP, ATTENUATION, theGame.params.LR_ATTENUATION);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, theGame.params.LR_SHADOW_FADE_DISTANCE);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, theGame.params.LR_SHADOW_FADE_RANGE);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, theGame.params.LR_SHADOW_BLEND_FACTOR);
+            gameConfig.SetVarValue(CANDLE_GROUP, BRIGHTNESS, theGame.params.LR_CANDLE_BRIGHTNESS);
+            gameConfig.SetVarValue(CANDLE_GROUP, RADIUS, theGame.params.LR_CANDLE_RADIUS);
+            gameConfig.SetVarValue(TORCH_GROUP, BRIGHTNESS, theGame.params.LR_TORCH_BRIGHTNESS);
+            gameConfig.SetVarValue(TORCH_GROUP, RADIUS, theGame.params.LR_TORCH_RADIUS);
+
+            gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, "1");
+
+            theGame.SaveUserSettings();
+        }
+    }
+
     // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
     // its own fields directly. Called on player spawn and on option-change events.
     public function ReadGameConfig() {
         var val : string;
         var params : W3GameParams = theGame.params;
+
+        EnsureGameConfigIsInitialised();
 
         params.LR_ENABLED = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
         if (!params.LR_ENABLED) return;
@@ -80,8 +114,53 @@ class CLightRewriteSettings {
     // Called by the CR4IngameMenu wrapper for every option-change event.
     // Filters to this mod's groups before refreshing the params cache.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
+        var isEnabled : bool = theGame.params.LR_ENABLED;
+
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
+
+            if (isEnabled != theGame.params.LR_ENABLED) {
+                if (theGame.params.LR_ENABLED) EnableAllNearbyEntities();
+                else DisableAllNearbyEntities();
+            }
+        }
+    }
+
+    private function EnableAllNearbyEntities() {
+        var i : int;
+        var entities : array<CGameplayEntity>;
+
+        GetAllNearbyEntities(entities);
+
+        for (i = 0; i < entities.Size(); i += 1) {
+            entities[i].CandleLightRewrite();
+        }
+    }
+
+    private function DisableAllNearbyEntities() {
+        var i : int;
+        var entities : array<CGameplayEntity>;
+
+        GetAllNearbyEntities(entities);
+
+        for (i = 0; i < entities.Size(); i += 1) {
+            entities[i].DisableLightRewrite();
+        }
+    }
+
+    private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
+        var interimEntities : array<CGameplayEntity>;
+        var i : int;
+        var entity : CGameplayEntity;
+
+        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1500);
+        for (i = 0; i < interimEntities.Size(); i += 1) {
+            entity = interimEntities[i];
+            entity.IdentifyLightRewriteType();
+
+            if (entity.IsLightRewritable()) {
+                entities.PushBack(entity);
+            }
         }
     }
 }
