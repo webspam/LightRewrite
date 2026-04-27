@@ -33,12 +33,12 @@ jobs:
 
       - name: Create folder structure and copy files
         run: |
-          mkdir -p mods/modLightRewrite/content/scripts/local
-          cp -r src/* mods/modLightRewrite/content/scripts/local/
+          mkdir -p mods/modLightRewrite/content/scripts/local/modLightRewrite
+          cp -r src/* mods/modLightRewrite/content/scripts/local/modLightRewrite/
 
       - name: Create zip file
         run: |
-          zip -r modLightRewrite-${{ inputs.tag }}.zip mods/
+          zip -r modLightRewrite-${{ inputs.tag }}.zip mods/ bin/
 
       - name: Create Draft Release
         run: |
@@ -50,13 +50,13 @@ jobs:
           if [ -z "$RELEASE_TITLE" ]; then
             RELEASE_TITLE="${{ inputs.tag }}"
           fi
-          
+
           NOTES_FLAG="--generate-notes"
           if [ -n "${{ inputs.summary }}" ]; then
             echo "${{ inputs.summary }}" > summary.md
             NOTES_FLAG="--notes-file summary.md --generate-notes"
           fi
-          
+
           gh release create "${{ inputs.tag }}" \
             --title "$RELEASE_TITLE" \
             --draft \

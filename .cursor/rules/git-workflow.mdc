@@ -1,0 +1,33 @@
+---
+description: Git workflow for agents - branch per feature, commit per edit
+alwaysApply: true
+---
+
+# Git Workflow
+
+## Work on a branch
+
+Before starting any feature or task, ensure you are on a dedicated branch (not `main`/`master`).
+
+```bash
+git checkout -b my-feature
+```
+
+## Commit every edit
+
+Each individual code change must be committed immediately after it is made. Do not batch unrelated edits into a single commit.
+
+- One logical change = one commit
+- Use a clear, imperative commit message describing why this change was made
+  - Typically, the "what" of a commit is far less important - when commits are small, it often adds nothing of value to a commit.
+  - The "what" of a commit usually will not fit in a concise, 50 char message - if it is truly required, include it in the commit message "details" (after two new lines)
+- Commit before moving on to the next change
+
+```bash
+git add <changed files>
+git commit -m "Add FOV reset on cutscene start"
+```
+
+## Why this matters
+
+A granular commit history acts as a living changelog. It lets reviewers follow the reasoning behind each decision, makes bisecting bugs straightforward, and ensures no work is lost if a session is interrupted.
