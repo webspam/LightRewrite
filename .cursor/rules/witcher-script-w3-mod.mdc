@@ -39,11 +39,11 @@ private var isEnabled : bool;  default isEnabled = true;
 
 ```xml
 <!-- BAD — spaces and hyphens are not valid in a display key -->
-<Group id="ModName_General" displayName="Mods.ModName.ModName - General" />
+<Group id="ModName_General" displayName="Mods.ModName.ModName - General">
 <Var id="CandleBrightness" displayName="Candle Brightness" />
 
 <!-- GOOD -->
-<Group id="ModName_General" displayName="Mods.ModName.ModName_General" />
+<Group id="ModName_General" displayName="Mods.ModName.ModName_General">
 <Var id="CandleBrightness" displayName="Mods.ModName.CandleBrightness" />
 ```
 
