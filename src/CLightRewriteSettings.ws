@@ -7,6 +7,9 @@
  */
 
 class CLightRewriteSettings {
+    // The current XML config version
+    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "2";
+    
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
     private const var CANDLE_GROUP : name;             default CANDLE_GROUP  = 'LightRewrite_Candle';
@@ -60,6 +63,8 @@ class CLightRewriteSettings {
     // Handles migration from older versions by writing any keys added since the stored version.
     public function EnsureGameConfigIsInitialised() {
         var initVersion : string = gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION);
+
+        if (initVersion == CONFIG_VERSION) return;
 
         // Never initialised - write all defaults.
         if (!initVersion) {
