@@ -2,10 +2,7 @@
  * Reads LightRewrite settings from the in-game mod menu and writes them
  * directly into theGame.params so all other mod code can read them without
  * knowing about this class.
- *
- * Stored as a singleton on CR4Game via GetLightRewriteSettings() (watchSettings.ws).
  */
-
 class CLightRewriteSettings {
     // The current XML config version
     private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "3";
@@ -39,7 +36,7 @@ class CLightRewriteSettings {
 
     private var gameConfig : CInGameConfigWrapper;
 
-    // Resolve group IDs from the config wrapper; called once at singleton creation.
+    // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var params : W3GameParams = theGame.params;
         
@@ -137,7 +134,7 @@ class CLightRewriteSettings {
     }
 
     // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
-    // its own fields directly. Called on player spawn and on option-change events.
+    // its own fields directly.
     public function ReadGameConfig() {
         var val : string;
         var params : W3GameParams = theGame.params;
@@ -196,8 +193,8 @@ class CLightRewriteSettings {
         if (val != "") params.LR_TORCH_COLOR_B = (int)StringToFloat(val);
     }
 
-    // Called by the CR4IngameMenu wrapper for every option-change event.
-    // Filters to this mod's groups before refreshing the params cache.
+    // To be called for every option-change event.
+    // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
         var isEnabled : bool = theGame.params.LR_ENABLED;
 

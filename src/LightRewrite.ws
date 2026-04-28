@@ -21,7 +21,6 @@ enum ELightRewriteType {
 }
 
 // Store global light rewrite parameters on the game params object.
-// These defaults are overwritten at runtime by CLightRewriteSettings.ReadGameConfig().
 @addField(W3GameParams) public var LR_ENABLED            : bool;
 @addField(W3GameParams) public var LR_CANDLE_BRIGHTNESS  : float;
 @addField(W3GameParams) public var LR_CANDLE_RADIUS      : float;
