@@ -20,33 +20,6 @@ enum ELightRewriteType {
     LRT_Torch,
 }
 
-// Store global light rewrite parameters on the game params object.
-// These defaults are overwritten at runtime by CLightRewriteSettings.ReadGameConfig().
-@addField(W3GameParams) public var LR_ENABLED            : bool;
-@addField(W3GameParams) public var LR_CANDLE_BRIGHTNESS  : float;
-@addField(W3GameParams) public var LR_CANDLE_RADIUS      : float;
-@addField(W3GameParams) public var LR_TORCH_BRIGHTNESS   : float;
-@addField(W3GameParams) public var LR_TORCH_RADIUS       : float;
-@addField(W3GameParams) public var LR_CANDLE_ATTENUATION : float;
-@addField(W3GameParams) public var LR_TORCH_ATTENUATION  : float;
-@addField(W3GameParams) public var LR_SHADOW_FADE_DISTANCE : float;
-@addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
-@addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
-
-@addField(W3GameParams) public var LR_OVERRIDE_CANDLE_COLOUR : bool;
-@addField(W3GameParams) public var LR_CANDLE_COLOR_R         : int;
-@addField(W3GameParams) public var LR_CANDLE_COLOR_G         : int;
-@addField(W3GameParams) public var LR_CANDLE_COLOR_B         : int;
-
-@addField(W3GameParams) public var LR_OVERRIDE_TORCH_COLOUR  : bool;
-@addField(W3GameParams) public var LR_TORCH_COLOR_R          : int;
-@addField(W3GameParams) public var LR_TORCH_COLOR_G          : int;
-@addField(W3GameParams) public var LR_TORCH_COLOR_B          : int;
-
-// Tag valid light rewrite entities as they spawn.
-@addField(W3GameParams) public var TAG_LR_CANDLE      : name;
-@addField(W3GameParams) public var TAG_LR_TORCH       : name;
-
 struct SLightRewriteOriginalValues {
     var hasBeenSaved : bool;
 
@@ -101,35 +74,22 @@ function CandleLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
-
-    var brightness, radius, attenuation : float;
-    var overrideColour : bool;
-    var colorR, colorG, colorB : int;
+    var sourceParams : CLightRewriteSourceParams;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
 
-    var shadowFadeDistance : float = theGame.params.LR_SHADOW_FADE_DISTANCE;
-    var shadowFadeRange : float = theGame.params.LR_SHADOW_FADE_RANGE;
-    var shadowBlendFactor : float = theGame.params.LR_SHADOW_BLEND_FACTOR;
+    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
 
     if (lightRewriteLightType == LRT_Candle) {
-        brightness     = theGame.params.LR_CANDLE_BRIGHTNESS;
-        radius         = theGame.params.LR_CANDLE_RADIUS;
-        attenuation    = theGame.params.LR_CANDLE_ATTENUATION;
-        overrideColour = theGame.params.LR_OVERRIDE_CANDLE_COLOUR;
-        colorR         = theGame.params.LR_CANDLE_COLOR_R;
-        colorG         = theGame.params.LR_CANDLE_COLOR_G;
-        colorB         = theGame.params.LR_CANDLE_COLOR_B;
+        sourceParams = settings.candleParams;
     }
     else if (lightRewriteLightType == LRT_Torch) {
-        brightness     = theGame.params.LR_TORCH_BRIGHTNESS;
-        radius         = theGame.params.LR_TORCH_RADIUS;
-        attenuation    = theGame.params.LR_TORCH_ATTENUATION;
-        overrideColour = theGame.params.LR_OVERRIDE_TORCH_COLOUR;
-        colorR         = theGame.params.LR_TORCH_COLOR_R;
-        colorG         = theGame.params.LR_TORCH_COLOR_G;
-        colorB         = theGame.params.LR_TORCH_COLOR_B;
+        sourceParams = settings.torchParams;
+    }
+    else {
+        LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
+        return;
     }
 
     // Clusters of candles emit most of their light via a single spotlight.
@@ -144,18 +104,16 @@ function CandleLightRewrite() {
 
             pointLight.SetEnabled(false);
 
-            pointLight.brightness = brightness;
-            pointLight.radius = radius;
-            pointLight.attenuation = attenuation;
-            // pointLight.allowDistantFade = false;
-            pointLight.shadowFadeDistance = shadowFadeDistance;
-            pointLight.shadowFadeRange = shadowFadeRange;
-            pointLight.shadowBlendFactor = shadowBlendFactor;
+            pointLight.brightness = sourceParams.brightness;
+            pointLight.radius = sourceParams.radius;
+            pointLight.attenuation = sourceParams.attenuation;
 
-            if (overrideColour) {
-                pointLight.color.Red = colorR;
-                pointLight.color.Green = colorG;
-                pointLight.color.Blue = colorB;
+            pointLight.shadowFadeDistance = settings.shadowFadeDistance;
+            pointLight.shadowFadeRange = settings.shadowFadeRange;
+            pointLight.shadowBlendFactor = settings.shadowBlendFactor;
+
+            if (sourceParams.shouldOverrideColour) {
+                pointLight.color = sourceParams.color;
             }
             else if (spotLight) {
                 pointLight.color = spotLight.color;
@@ -197,7 +155,7 @@ function DisableAllSpotlightComponents() {
 function OnSpawned(spawnData : SEntitySpawnData) {
     var editorName : string;
 
-    if (!spawnData.restored && theGame.params.LR_ENABLED) {
+    if (!spawnData.restored && theGame.GetLightRewriteSettings().isEnabled) {
         IdentifyLightRewriteType();
 
         if (IsLightRewritable()) CandleLightRewrite();
@@ -240,13 +198,13 @@ public function IdentifyLightRewriteType() {
         LogLightRewrite("Found candle: " + editorName);
 
         lightRewriteLightType = LRT_Candle;
-        AddTag(theGame.params.TAG_LR_CANDLE);
+        AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + editorName);
 
         lightRewriteLightType = LRT_Torch;
-        AddTag(theGame.params.TAG_LR_TORCH);
+        AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
     }
     else {
         lightRewriteLightType = LRT_Unknown;
