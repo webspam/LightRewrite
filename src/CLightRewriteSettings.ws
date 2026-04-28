@@ -67,8 +67,8 @@ class CLightRewriteSettings {
         params.LR_TORCH_COLOR_G          = 255;
         params.LR_TORCH_COLOR_B          = 255;
 
-        params.LR_CANDLE_TAG            = 'LR_Candle';
-        params.LR_TORCH_TAG             = 'LR_Torch';
+        params.TAG_LR_CANDLE            = 'LR_Candle';
+        params.TAG_LR_TORCH             = 'LR_Torch';
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
@@ -287,7 +287,7 @@ class CLightRewriteSettings {
         var i : int;
         var entity : CGameplayEntity;
 
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, theGame.params.LR_CANDLE_TAG);
+        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, theGame.params.TAG_LR_CANDLE);
         LogLightRewrite("Get nearby candles: Found " + interimEntities.Size() + " nearby entities");
 
         for (i = 0; i < interimEntities.Size(); i += 1) {
@@ -299,7 +299,7 @@ class CLightRewriteSettings {
             }
         }
 
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, theGame.params.LR_TORCH_TAG);
+        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, theGame.params.TAG_LR_TORCH);
         LogLightRewrite("Get nearby torches: Found " + interimEntities.Size() + " nearby entities");
 
         for (i = 0; i < interimEntities.Size(); i += 1) {
