@@ -35,6 +35,7 @@ jobs:
         run: |
           mkdir -p mods/modLightRewrite/content/scripts/local/modLightRewrite
           cp -r src/* mods/modLightRewrite/content/scripts/local/modLightRewrite/
+          cp l10n/*.w3strings mods/modLightRewrite/content/
 
       - name: Create zip file
         run: |
