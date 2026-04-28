@@ -8,7 +8,7 @@
 
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "2";
+    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "3";
     
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -103,6 +103,19 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(GENERAL_GROUP, TORCH_ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
             }
         }
+
+        // v2 → v3: add per-source colour override settings.
+        if (initVersion == "1" || initVersion == "2") {
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R,         theGame.params.LR_CANDLE_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G,         theGame.params.LR_CANDLE_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_B,         theGame.params.LR_CANDLE_COLOR_B);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR,  theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_R,          theGame.params.LR_TORCH_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_G,          theGame.params.LR_TORCH_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_B,          theGame.params.LR_TORCH_COLOR_B);
+        }
+
         // Never initialised - write all defaults.
         else if (!initVersion) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
@@ -115,6 +128,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS, theGame.params.LR_TORCH_BRIGHTNESS);
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_RADIUS, theGame.params.LR_TORCH_RADIUS);
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R,         theGame.params.LR_CANDLE_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G,         theGame.params.LR_CANDLE_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_B,         theGame.params.LR_CANDLE_COLOR_B);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR,  theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_R,          theGame.params.LR_TORCH_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_G,          theGame.params.LR_TORCH_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_B,          theGame.params.LR_TORCH_COLOR_B);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
