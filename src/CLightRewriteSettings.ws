@@ -347,13 +347,14 @@ class CLightRewriteSettings {
 
     private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
         var interimEntities : array<CGameplayEntity>;
-        var i : int;
+        var i, count : int;
         var entity : CGameplayEntity;
 
         FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, candleParams.tag);
-        LogLightRewrite("Get nearby candles: Found " + interimEntities.Size() + " nearby entities");
+        count = interimEntities.Size();
+        LogLightRewrite("Get nearby candles: Found " + count + " nearby entities");
 
-        for (i = 0; i < interimEntities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entity = interimEntities[i];
             entity.IdentifyLightRewriteType();
 
@@ -361,11 +362,13 @@ class CLightRewriteSettings {
                 entities.PushBack(entity);
             }
         }
+        interimEntities.Clear();
 
         FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, torchParams.tag);
-        LogLightRewrite("Get nearby torches: Found " + interimEntities.Size() + " nearby entities");
+        count = interimEntities.Size();
+        LogLightRewrite("Get nearby torches: Found " + count + " nearby entities");
 
-        for (i = 0; i < interimEntities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entity = interimEntities[i];
             entity.IdentifyLightRewriteType();
 
@@ -373,11 +376,13 @@ class CLightRewriteSettings {
                 entities.PushBack(entity);
             }
         }
+        interimEntities.Clear();
 
         FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, brazierParams.tag);
-        LogLightRewrite("Get nearby braziers: Found " + interimEntities.Size() + " nearby entities");
+        count = interimEntities.Size();
+        LogLightRewrite("Get nearby braziers: Found " + count + " nearby entities");
 
-        for (i = 0; i < interimEntities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entity = interimEntities[i];
             entity.IdentifyLightRewriteType();
 
