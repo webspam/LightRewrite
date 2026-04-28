@@ -18,7 +18,7 @@
             <Var id="CandleRadius" displayName="Mods.LightRewrite.Candle_Radius"
                 displayType="SLIDER;1;30;58" value="9" />
             <Var id="CandleAttenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
-                displayType="SLIDER;0;5;50" value="1" />
+                displayType="SLIDER;0;1;20" value="1" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
@@ -27,7 +27,7 @@
             <Var id="TorchRadius" displayName="Mods.LightRewrite.Torch_Radius"
                 displayType="SLIDER;1;50;98" value="20" />
             <Var id="TorchAttenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
-                displayType="SLIDER;0;5;50" value="1" />
+                displayType="SLIDER;0;1;20" value="1" />
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
