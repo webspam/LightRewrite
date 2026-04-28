@@ -33,6 +33,16 @@ enum ELightRewriteType {
 @addField(W3GameParams) public var LR_SHADOW_FADE_RANGE : float;
 @addField(W3GameParams) public var LR_SHADOW_BLEND_FACTOR : float;
 
+@addField(W3GameParams) public var LR_OVERRIDE_CANDLE_COLOUR : bool;
+@addField(W3GameParams) public var LR_CANDLE_COLOR_R         : int;
+@addField(W3GameParams) public var LR_CANDLE_COLOR_G         : int;
+@addField(W3GameParams) public var LR_CANDLE_COLOR_B         : int;
+
+@addField(W3GameParams) public var LR_OVERRIDE_TORCH_COLOUR  : bool;
+@addField(W3GameParams) public var LR_TORCH_COLOR_R          : int;
+@addField(W3GameParams) public var LR_TORCH_COLOR_G          : int;
+@addField(W3GameParams) public var LR_TORCH_COLOR_B          : int;
+
 // Tag valid light rewrite entities as they spawn.
 @addField(W3GameParams) public var LR_CANDLE_TAG      : name;
 @addField(W3GameParams) public var LR_TORCH_TAG       : name;
@@ -93,6 +103,8 @@ function CandleLightRewrite() {
     var i : int;
 
     var brightness, radius, attenuation : float;
+    var overrideColour : bool;
+    var colorR, colorG, colorB : int;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
@@ -102,14 +114,22 @@ function CandleLightRewrite() {
     var shadowBlendFactor : float = theGame.params.LR_SHADOW_BLEND_FACTOR;
 
     if (lightRewriteLightType == LRT_Candle) {
-        brightness  = theGame.params.LR_CANDLE_BRIGHTNESS;
-        radius      = theGame.params.LR_CANDLE_RADIUS;
-        attenuation = theGame.params.LR_CANDLE_ATTENUATION;
+        brightness     = theGame.params.LR_CANDLE_BRIGHTNESS;
+        radius         = theGame.params.LR_CANDLE_RADIUS;
+        attenuation    = theGame.params.LR_CANDLE_ATTENUATION;
+        overrideColour = theGame.params.LR_OVERRIDE_CANDLE_COLOUR;
+        colorR         = theGame.params.LR_CANDLE_COLOR_R;
+        colorG         = theGame.params.LR_CANDLE_COLOR_G;
+        colorB         = theGame.params.LR_CANDLE_COLOR_B;
     }
     else if (lightRewriteLightType == LRT_Torch) {
-        brightness  = theGame.params.LR_TORCH_BRIGHTNESS;
-        radius      = theGame.params.LR_TORCH_RADIUS;
-        attenuation = theGame.params.LR_TORCH_ATTENUATION;
+        brightness     = theGame.params.LR_TORCH_BRIGHTNESS;
+        radius         = theGame.params.LR_TORCH_RADIUS;
+        attenuation    = theGame.params.LR_TORCH_ATTENUATION;
+        overrideColour = theGame.params.LR_OVERRIDE_TORCH_COLOUR;
+        colorR         = theGame.params.LR_TORCH_COLOR_R;
+        colorG         = theGame.params.LR_TORCH_COLOR_G;
+        colorB         = theGame.params.LR_TORCH_COLOR_B;
     }
 
     // Clusters of candles emit most of their light via a single spotlight.
@@ -132,8 +152,12 @@ function CandleLightRewrite() {
             pointLight.shadowFadeRange = shadowFadeRange;
             pointLight.shadowBlendFactor = shadowBlendFactor;
 
-            // Take the color from the spotlight component.
-            if (spotLight) {
+            if (overrideColour) {
+                pointLight.color.Red = colorR;
+                pointLight.color.Green = colorG;
+                pointLight.color.Blue = colorB;
+            }
+            else if (spotLight) {
                 pointLight.color.Red = spotLight.color.Red;
                 pointLight.color.Green = spotLight.color.Green;
                 pointLight.color.Blue = spotLight.color.Blue;
