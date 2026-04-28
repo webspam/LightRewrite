@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Kolor pochodni: Zielony
 2122144021||LightRewrite_Torch_ColorB|Kolor pochodni: Niebieski
 2122144022||LightRewrite_InitVersion|Wersja inicjalizacji
+2122144023||LightRewrite_Brazier_Brightness|Jasność koksownika
+2122144024||LightRewrite_Brazier_Radius|Promień koksownika
+2122144025||LightRewrite_Brazier_Attenuation|Tłumienie koksownika
+2122144026||LightRewrite_Brazier_OverrideColour|Zastąp kolor koksownika
+2122144027||LightRewrite_Brazier_ColorR|Kolor koksownika: Czerwony
+2122144028||LightRewrite_Brazier_ColorG|Kolor koksownika: Zielony
+2122144029||LightRewrite_Brazier_ColorB|Kolor koksownika: Niebieski

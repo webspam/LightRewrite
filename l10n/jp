@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|松明の色: 緑
 2122144021||LightRewrite_Torch_ColorB|松明の色: 青
 2122144022||LightRewrite_InitVersion|初期化バージョン
+2122144023||LightRewrite_Brazier_Brightness|火鉢の明るさ
+2122144024||LightRewrite_Brazier_Radius|火鉢の半径
+2122144025||LightRewrite_Brazier_Attenuation|火鉢の減衰
+2122144026||LightRewrite_Brazier_OverrideColour|火鉢の色を上書き
+2122144027||LightRewrite_Brazier_ColorR|火鉢の色: 赤
+2122144028||LightRewrite_Brazier_ColorG|火鉢の色: 緑
+2122144029||LightRewrite_Brazier_ColorB|火鉢の色: 青

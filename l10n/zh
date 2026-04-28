@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|火把顏色：綠色
 2122144021||LightRewrite_Torch_ColorB|火把顏色：藍色
 2122144022||LightRewrite_InitVersion|初始化版本
+2122144023||LightRewrite_Brazier_Brightness|火盆亮度
+2122144024||LightRewrite_Brazier_Radius|火盆半徑
+2122144025||LightRewrite_Brazier_Attenuation|火盆衰減
+2122144026||LightRewrite_Brazier_OverrideColour|覆蓋火盆顏色
+2122144027||LightRewrite_Brazier_ColorR|火盆顏色：紅色
+2122144028||LightRewrite_Brazier_ColorG|火盆顏色：綠色
+2122144029||LightRewrite_Brazier_ColorB|火盆顏色：藍色

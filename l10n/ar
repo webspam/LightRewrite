@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|لون الشعلة: أخضر
 2122144021||LightRewrite_Torch_ColorB|لون الشعلة: أزرق
 2122144022||LightRewrite_InitVersion|إصدار التهيئة
+2122144023||LightRewrite_Brazier_Brightness|سطوع المنقل
+2122144024||LightRewrite_Brazier_Radius|نطاق المنقل
+2122144025||LightRewrite_Brazier_Attenuation|توهين المنقل
+2122144026||LightRewrite_Brazier_OverrideColour|تجاوز لون المنقل
+2122144027||LightRewrite_Brazier_ColorR|لون المنقل: أحمر
+2122144028||LightRewrite_Brazier_ColorG|لون المنقل: أخضر
+2122144029||LightRewrite_Brazier_ColorB|لون المنقل: أزرق

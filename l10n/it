@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Colore della torcia: Verde
 2122144021||LightRewrite_Torch_ColorB|Colore della torcia: Blu
 2122144022||LightRewrite_InitVersion|Versione di inizializzazione
+2122144023||LightRewrite_Brazier_Brightness|Luminosità del braciere
+2122144024||LightRewrite_Brazier_Radius|Raggio del braciere
+2122144025||LightRewrite_Brazier_Attenuation|Attenuazione del braciere
+2122144026||LightRewrite_Brazier_OverrideColour|Sostituisci colore del braciere
+2122144027||LightRewrite_Brazier_ColorR|Colore del braciere: Rosso
+2122144028||LightRewrite_Brazier_ColorG|Colore del braciere: Verde
+2122144029||LightRewrite_Brazier_ColorB|Colore del braciere: Blu

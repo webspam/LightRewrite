@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Barva pochodně: Zelená
 2122144021||LightRewrite_Torch_ColorB|Barva pochodně: Modrá
 2122144022||LightRewrite_InitVersion|Verze inicializace
+2122144023||LightRewrite_Brazier_Brightness|Jas ohniště
+2122144024||LightRewrite_Brazier_Radius|Poloměr ohniště
+2122144025||LightRewrite_Brazier_Attenuation|Útlum ohniště
+2122144026||LightRewrite_Brazier_OverrideColour|Přepsat barvu ohniště
+2122144027||LightRewrite_Brazier_ColorR|Barva ohniště: Červená
+2122144028||LightRewrite_Brazier_ColorG|Barva ohniště: Zelená
+2122144029||LightRewrite_Brazier_ColorB|Barva ohniště: Modrá
