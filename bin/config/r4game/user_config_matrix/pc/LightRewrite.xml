@@ -90,6 +90,24 @@
             <Var id="TorchColorB" displayName="LightRewrite_Torch_ColorB"
                 displayType="SLIDER;0;255;255" tags="indent" />
 
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="BrazierBrightness" displayName="LightRewrite_Brazier_Brightness"
+                displayType="SLIDER;0;100;200" />
+            <Var id="BrazierRadius" displayName="LightRewrite_Brazier_Radius"
+                displayType="SLIDER;1;50;98" />
+            <Var id="BrazierAttenuation" displayName="LightRewrite_Brazier_Attenuation"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="OverrideBrazierColour" displayName="LightRewrite_Brazier_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="BrazierColorR" displayName="LightRewrite_Brazier_ColorR"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="BrazierColorG" displayName="LightRewrite_Brazier_ColorG"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="BrazierColorB" displayName="LightRewrite_Brazier_ColorB"
+                displayType="SLIDER;0;255;255" tags="indent" />
+
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
                 displayType="SLIDER;0;3;3" visibilityCondition="hideAlways" />
