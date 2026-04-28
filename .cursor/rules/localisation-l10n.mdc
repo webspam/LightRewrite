@@ -40,3 +40,8 @@ Locales required:
 
 - Any new or updated user-facing string must be translated for **all 16 locales** above.
 - Do not ship changes where any locale is missing keys or left with placeholder/untranslated values.
+
+## Never translate the project name
+
+- The project name **must remain exactly** `Light Rewrite` in every locale.
+- Do not translate, transliterate, pluralise, or otherwise localise `Light Rewrite`.
