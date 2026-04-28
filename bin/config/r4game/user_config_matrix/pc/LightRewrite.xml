@@ -110,7 +110,7 @@
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;3;3" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;4;4" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>
