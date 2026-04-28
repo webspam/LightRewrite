@@ -3,31 +3,31 @@
     <Group id="LightRewrite_General" displayName="Mods.LightRewrite_General">
         <VisibleVars>
             <Var id="Enabled" displayName="Mods.LightRewrite.Enabled" displayType="TOGGLE"
-                value="true" />
+            />
             <Var id="ShadowFadeDistance" displayName="Mods.LightRewrite.ShadowFadeDistance"
-                displayType="SLIDER;0;50;100" value="10" />
+                displayType="SLIDER;0;50;100" />
             <Var id="ShadowFadeRange" displayName="Mods.LightRewrite.ShadowFadeRange"
-                displayType="SLIDER;0;20;40" value="3" />
+                displayType="SLIDER;0;20;40" />
             <Var id="ShadowBlendFactor" displayName="Mods.LightRewrite.ShadowBlendFactor"
-                displayType="SLIDER;0;1;20" value="1" />
+                displayType="SLIDER;0;1;20" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="CandleBrightness" displayName="Mods.LightRewrite.Candle_Brightness"
-                displayType="SLIDER;0;20;40" value="5.5" />
+                displayType="SLIDER;0;20;40" />
             <Var id="CandleRadius" displayName="Mods.LightRewrite.Candle_Radius"
-                displayType="SLIDER;1;30;58" value="9" />
+                displayType="SLIDER;1;30;58" />
             <Var id="CandleAttenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
-                displayType="SLIDER;0;1;20" value="1" />
+                displayType="SLIDER;0;1;20" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="TorchBrightness" displayName="Mods.LightRewrite.Torch_Brightness"
-                displayType="SLIDER;0;100;200" value="30" />
+                displayType="SLIDER;0;100;200" />
             <Var id="TorchRadius" displayName="Mods.LightRewrite.Torch_Radius"
-                displayType="SLIDER;1;50;98" value="20" />
+                displayType="SLIDER;1;50;98" />
             <Var id="TorchAttenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
-                displayType="SLIDER;0;1;20" value="1" />
+                displayType="SLIDER;0;1;20" />
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
