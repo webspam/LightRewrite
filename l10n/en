@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Torch colour: Green
 2122144021||LightRewrite_Torch_ColorB|Torch colour: Blue
 2122144022||LightRewrite_InitVersion|Initialisation version
+2122144023||LightRewrite_Brazier_Brightness|Brazier brightness
+2122144024||LightRewrite_Brazier_Radius|Brazier radius
+2122144025||LightRewrite_Brazier_Attenuation|Brazier attenuation
+2122144026||LightRewrite_Brazier_OverrideColour|Override brazier colour
+2122144027||LightRewrite_Brazier_ColorR|Brazier colour: Red
+2122144028||LightRewrite_Brazier_ColorG|Brazier colour: Green
+2122144029||LightRewrite_Brazier_ColorB|Brazier colour: Blue
