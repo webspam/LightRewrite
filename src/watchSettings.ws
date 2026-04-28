@@ -20,7 +20,7 @@ public function GetLightRewriteSettings() : CLightRewriteSettings {
 function OnGameStarting(restored : bool) {
     wrappedMethod(restored);
 
-    theGame.GetLightRewriteSettings().ReadGameConfig();
+    GetLightRewriteSettings().ReadGameConfig();
 }
 
 @addField(CR4IngameMenu)
