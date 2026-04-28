@@ -231,7 +231,7 @@ class CLightRewriteSettings {
         UpdateColourSliderDisabledState();
     }
 
-    private function UpdateColourSliderDisabledState() : void {
+    private function UpdateColourSliderDisabledState() {
         var flashValueStorage : CScriptedFlashValueStorage;
         var dataArray : CScriptedFlashArray;
 
