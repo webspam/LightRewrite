@@ -1,4 +1,25 @@
 ;meta[language=ar]
 ; id      |key(hex)|key(str)| text
 2122144000||LightRewrite|Light Rewrite
-2122144001||LightRewrite_General|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|قريب من الأصلي
+2122144002||LightRewrite_Preset_Author|المؤلف
+2122144003||LightRewrite_Preset_Bright|ساطع
+2122144004||LightRewrite_Enabled|مفعّل
+2122144005||LightRewrite_ShadowFadeDistance|مسافة تلاشي الظل
+2122144006||LightRewrite_ShadowFadeRange|نطاق تلاشي الظل
+2122144007||LightRewrite_ShadowBlendFactor|عامل مزج الظل
+2122144008||LightRewrite_Candle_Brightness|سطوع الشمعة
+2122144009||LightRewrite_Candle_Radius|نطاق الشمعة
+2122144010||LightRewrite_Candle_Attenuation|توهين الشمعة
+2122144011||LightRewrite_Candle_OverrideColour|تجاوز لون الشمعة
+2122144012||LightRewrite_Candle_ColorR|لون الشمعة: أحمر
+2122144013||LightRewrite_Candle_ColorG|لون الشمعة: أخضر
+2122144014||LightRewrite_Candle_ColorB|لون الشمعة: أزرق
+2122144015||LightRewrite_Torch_Brightness|سطوع الشعلة
+2122144016||LightRewrite_Torch_Radius|نطاق الشعلة
+2122144017||LightRewrite_Torch_Attenuation|توهين الشعلة
+2122144018||LightRewrite_Torch_OverrideColour|تجاوز لون الشعلة
+2122144019||LightRewrite_Torch_ColorR|لون الشعلة: أحمر
+2122144020||LightRewrite_Torch_ColorG|لون الشعلة: أخضر
+2122144021||LightRewrite_Torch_ColorB|لون الشعلة: أزرق
+2122144022||LightRewrite_InitVersion|إصدار التهيئة
