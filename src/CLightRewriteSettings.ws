@@ -39,10 +39,10 @@ class CLightRewriteSettings {
     private var gameConfig : CInGameConfigWrapper;
 
     // Light rewrite parameters
-    public var LR_ENABLED : bool;                      default LR_ENABLED                = true;
-    public var LR_SHADOW_FADE_DISTANCE : float;        default LR_SHADOW_FADE_DISTANCE   = 10.f;
-    public var LR_SHADOW_FADE_RANGE : float;           default LR_SHADOW_FADE_RANGE      = 3.f;
-    public var LR_SHADOW_BLEND_FACTOR : float;         default LR_SHADOW_BLEND_FACTOR    = 1.f;
+    public var isEnabled : bool;                      default isEnabled                = true;
+    public var shadowFadeDistance : float;             default shadowFadeDistance        = 10.f;
+    public var shadowFadeRange : float;                default shadowFadeRange           = 3.f;
+    public var shadowBlendFactor : float;              default shadowBlendFactor         = 1.f;
 
     public var candleParams : CLightRewriteSourceParams;
     public var torchParams : CLightRewriteSourceParams;
@@ -116,10 +116,10 @@ class CLightRewriteSettings {
 
         // Never initialised - write all defaults.
         else if (!initVersion) {
-            gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, LR_ENABLED);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, LR_SHADOW_FADE_DISTANCE);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, LR_SHADOW_FADE_RANGE);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, LR_SHADOW_BLEND_FACTOR);
+            gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, shadowFadeDistance);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, shadowFadeRange);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, shadowBlendFactor);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS, candleParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_RADIUS, candleParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION, candleParams.attenuation);
@@ -147,7 +147,7 @@ class CLightRewriteSettings {
 
         EnsureGameConfigIsInitialised();
 
-        LR_ENABLED = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
+        isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS);
         if (val != "") candleParams.brightness = StringToFloat(val);
@@ -168,13 +168,13 @@ class CLightRewriteSettings {
         if (val != "") torchParams.attenuation = StringToFloat(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE);
-        if (val != "") LR_SHADOW_FADE_DISTANCE = StringToFloat(val);
+        if (val != "") shadowFadeDistance = StringToFloat(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE);
-        if (val != "") LR_SHADOW_FADE_RANGE = StringToFloat(val);
+        if (val != "") shadowFadeRange = StringToFloat(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR);
-        if (val != "") LR_SHADOW_BLEND_FACTOR = StringToFloat(val);
+        if (val != "") shadowBlendFactor = StringToFloat(val);
 
         candleParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR);
 
@@ -202,7 +202,7 @@ class CLightRewriteSettings {
     // To be called for every option-change event.
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
-        var isEnabled : bool = LR_ENABLED;
+        var isEnabled : bool = isEnabled;
 
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
@@ -212,12 +212,12 @@ class CLightRewriteSettings {
             }
 
             // If we've just turned the mod off, disable all nearby entities.
-            if (isEnabled != LR_ENABLED && !LR_ENABLED) {
+            if (isEnabled != isEnabled && !isEnabled) {
                 DisableAllNearbyEntities();
             }
 
             // Otherwise, if we changed any setting AND the mod is enabled, run the light rewrite.
-            else if (LR_ENABLED) {
+            else if (isEnabled) {
                 EnableAllNearbyEntities();
             }
         }

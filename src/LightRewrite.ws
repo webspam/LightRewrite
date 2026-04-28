@@ -80,9 +80,6 @@ function CandleLightRewrite() {
     var count : int = components.Size();
 
     var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
-    var shadowFadeDistance : float = settings.LR_SHADOW_FADE_DISTANCE;
-    var shadowFadeRange : float = settings.LR_SHADOW_FADE_RANGE;
-    var shadowBlendFactor : float = settings.LR_SHADOW_BLEND_FACTOR;
 
     if (lightRewriteLightType == LRT_Candle) {
         sourceParams = settings.candleParams;
@@ -111,9 +108,9 @@ function CandleLightRewrite() {
             pointLight.radius = sourceParams.radius;
             pointLight.attenuation = sourceParams.attenuation;
 
-            pointLight.shadowFadeDistance = shadowFadeDistance;
-            pointLight.shadowFadeRange = shadowFadeRange;
-            pointLight.shadowBlendFactor = shadowBlendFactor;
+            pointLight.shadowFadeDistance = settings.shadowFadeDistance;
+            pointLight.shadowFadeRange = settings.shadowFadeRange;
+            pointLight.shadowBlendFactor = settings.shadowBlendFactor;
 
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;
@@ -158,7 +155,7 @@ function DisableAllSpotlightComponents() {
 function OnSpawned(spawnData : SEntitySpawnData) {
     var editorName : string;
 
-    if (!spawnData.restored && theGame.GetLightRewriteSettings().LR_ENABLED) {
+    if (!spawnData.restored && theGame.GetLightRewriteSettings().isEnabled) {
         IdentifyLightRewriteType();
 
         if (IsLightRewritable()) CandleLightRewrite();
