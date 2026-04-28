@@ -18,6 +18,7 @@ enum ELightRewriteType {
     LRT_Unknown,
     LRT_Candle,
     LRT_Torch,
+    LRT_Brazier,
 }
 
 struct SLightRewriteOriginalValues {
@@ -86,6 +87,9 @@ function CandleLightRewrite() {
     }
     else if (lightRewriteLightType == LRT_Torch) {
         sourceParams = settings.torchParams;
+    }
+    else if (lightRewriteLightType == LRT_Brazier) {
+        sourceParams = settings.brazierParams;
     }
     else {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
@@ -205,6 +209,12 @@ public function IdentifyLightRewriteType() {
 
         lightRewriteLightType = LRT_Torch;
         AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
+    }
+    else if (StrFindFirst(editorName, "brazier") != -1) {
+        LogLightRewrite("Found brazier: " + editorName);
+
+        lightRewriteLightType = LRT_Brazier;
+        AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
     }
     else {
         lightRewriteLightType = LRT_Unknown;
