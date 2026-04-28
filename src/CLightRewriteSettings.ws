@@ -259,7 +259,7 @@ class CLightRewriteSettings {
     // To be called for every option-change event.
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
-        var isEnabled : bool = isEnabled;
+        var wasEnabled : bool = isEnabled;
 
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
@@ -269,7 +269,7 @@ class CLightRewriteSettings {
             }
 
             // If we've just turned the mod off, disable all nearby entities.
-            if (isEnabled != isEnabled && !isEnabled) {
+            if (isEnabled != wasEnabled && !isEnabled) {
                 DisableAllNearbyEntities();
             }
 
