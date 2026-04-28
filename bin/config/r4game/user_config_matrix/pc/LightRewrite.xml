@@ -12,6 +12,9 @@
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="5" />
                 <Entry varId="TorchAttenuation" value="0.5" />
+                <Entry varId="BrazierBrightness" value="40" />
+                <Entry varId="BrazierRadius" value="10" />
+                <Entry varId="BrazierAttenuation" value="0.5" />
             </Preset>
             <Preset id="1" displayName="LightRewrite_Preset_Author">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -23,6 +26,9 @@
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="20" />
                 <Entry varId="TorchAttenuation" value="1" />
+                <Entry varId="BrazierBrightness" value="40" />
+                <Entry varId="BrazierRadius" value="25" />
+                <Entry varId="BrazierAttenuation" value="1" />
             </Preset>
             <Preset id="2" displayName="LightRewrite_Preset_Bright">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -34,6 +40,9 @@
                 <Entry varId="TorchBrightness" value="50" />
                 <Entry varId="TorchRadius" value="25" />
                 <Entry varId="TorchAttenuation" value="0.9" />
+                <Entry varId="BrazierBrightness" value="60" />
+                <Entry varId="BrazierRadius" value="35" />
+                <Entry varId="BrazierAttenuation" value="0.9" />
             </Preset>
         </PresetsArray>
         <VisibleVars>
