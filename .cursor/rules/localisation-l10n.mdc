@@ -40,6 +40,7 @@ Locales required:
 
 - Any new or updated user-facing string must be translated for **all 16 locales** above.
 - Do not ship changes where any locale is missing keys or left with placeholder/untranslated values.
+- NEVER add English to other locales; report the failure to translate instead.
 
 ## Never translate the project name
 
