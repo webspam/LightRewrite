@@ -187,6 +187,10 @@ function AddTag(tag : name) {
 
     if (tag == theGame.params.TAG_OPEN_FIRE) {
         IdentifyLightRewriteType();
+
+        if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
+            CandleLightRewrite();
+        }
     }
 }
 
