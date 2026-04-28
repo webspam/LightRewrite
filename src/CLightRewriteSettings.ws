@@ -211,6 +211,10 @@ class CLightRewriteSettings {
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
+            if (optionName == OVERRIDE_CANDLE_COLOUR || optionName == OVERRIDE_TORCH_COLOUR) {
+                UpdateColourSliderDisabledState();
+            }
+
             // If we've just turned the mod off, disable all nearby entities.
             if (isEnabled != theGame.params.LR_ENABLED && !theGame.params.LR_ENABLED) {
                 DisableAllNearbyEntities();
@@ -221,6 +225,42 @@ class CLightRewriteSettings {
                 EnableAllNearbyEntities();
             }
         }
+    }
+
+    // Configures the active game settings menu. Should be called after the menu is opened.
+    public function ConfigureModMenu() {
+        UpdateColourSliderDisabledState();
+    }
+
+    private function UpdateColourSliderDisabledState() : void {
+        var flashValueStorage : CScriptedFlashValueStorage;
+        var dataArray : CScriptedFlashArray;
+
+        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        dataArray = flashValueStorage.CreateTempFlashArray();
+
+        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorR', !theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorG', !theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorB', !theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorR',  !theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorG',  !theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorB',  !theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+
+        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
+        theGame.GetGuiManager().ForceProcessFlashStorage();
+    }
+
+    private function SetOptionDisabledState(
+        flashValueStorage : CScriptedFlashValueStorage,
+        out dataArray : CScriptedFlashArray,
+        optionName : name,
+        value : bool
+    ) {
+        var dataObject : CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
+
+        dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(optionName));
+        dataObject.SetMemberFlashBool("disabled", value);
+        dataArray.PushBackFlashObject(dataObject);
     }
 
     private function EnableAllNearbyEntities() {
