@@ -158,15 +158,11 @@ function CandleLightRewrite() {
                 pointLight.color.Blue = colorB;
             }
             else if (spotLight) {
-                pointLight.color.Red = spotLight.color.Red;
-                pointLight.color.Green = spotLight.color.Green;
-                pointLight.color.Blue = spotLight.color.Blue;
+                pointLight.color = spotLight.color;
             }
             else {
                 // No spotlight, and we're not overriding the colour, so use the original colour.
-                pointLight.color.Red = pointLight.lightRewriteOriginalValues.color.Red;
-                pointLight.color.Green = pointLight.lightRewriteOriginalValues.color.Green;
-                pointLight.color.Blue = pointLight.lightRewriteOriginalValues.color.Blue;
+                pointLight.color = pointLight.lightRewriteOriginalValues.color;
             }
 
             pointLight.SetEnabled(true);
