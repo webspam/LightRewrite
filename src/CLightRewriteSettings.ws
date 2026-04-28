@@ -8,7 +8,7 @@
 
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "2";
+    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "3";
     
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -16,17 +16,25 @@ class CLightRewriteSettings {
     private const var TORCH_GROUP : name;              default TORCH_GROUP   = 'LightRewrite_Torch';
 
     // Setting name constants (must match XML Var id values)
-    private const var ENABLED : name;                  default ENABLED              = 'Enabled';
-    private const var CANDLE_ATTENUATION : name;       default CANDLE_ATTENUATION   = 'CandleAttenuation';
-    private const var TORCH_ATTENUATION : name;        default TORCH_ATTENUATION    = 'TorchAttenuation';
-    private const var SHADOW_FADE_DISTANCE : name;     default SHADOW_FADE_DISTANCE = 'ShadowFadeDistance';
-    private const var SHADOW_FADE_RANGE : name;        default SHADOW_FADE_RANGE    = 'ShadowFadeRange';
-    private const var SHADOW_BLEND_FACTOR : name;      default SHADOW_BLEND_FACTOR  = 'ShadowBlendFactor';
-    private const var CANDLE_BRIGHTNESS : name;        default CANDLE_BRIGHTNESS    = 'CandleBrightness';
-    private const var TORCH_BRIGHTNESS : name;         default TORCH_BRIGHTNESS     = 'TorchBrightness';
-    private const var CANDLE_RADIUS : name;            default CANDLE_RADIUS        = 'CandleRadius';
-    private const var TORCH_RADIUS : name;             default TORCH_RADIUS         = 'TorchRadius';
-    private const var INIT_VERSION : name;             default INIT_VERSION         = 'InitVersion';
+    private const var ENABLED : name;                  default ENABLED                = 'Enabled';
+    private const var CANDLE_ATTENUATION : name;       default CANDLE_ATTENUATION     = 'CandleAttenuation';
+    private const var TORCH_ATTENUATION : name;        default TORCH_ATTENUATION      = 'TorchAttenuation';
+    private const var SHADOW_FADE_DISTANCE : name;     default SHADOW_FADE_DISTANCE   = 'ShadowFadeDistance';
+    private const var SHADOW_FADE_RANGE : name;        default SHADOW_FADE_RANGE      = 'ShadowFadeRange';
+    private const var SHADOW_BLEND_FACTOR : name;      default SHADOW_BLEND_FACTOR    = 'ShadowBlendFactor';
+    private const var CANDLE_BRIGHTNESS : name;        default CANDLE_BRIGHTNESS      = 'CandleBrightness';
+    private const var TORCH_BRIGHTNESS : name;         default TORCH_BRIGHTNESS       = 'TorchBrightness';
+    private const var CANDLE_RADIUS : name;            default CANDLE_RADIUS          = 'CandleRadius';
+    private const var TORCH_RADIUS : name;             default TORCH_RADIUS           = 'TorchRadius';
+    private const var OVERRIDE_CANDLE_COLOUR : name;   default OVERRIDE_CANDLE_COLOUR = 'OverrideCandleColour';
+    private const var CANDLE_COLOR_R : name;           default CANDLE_COLOR_R         = 'CandleColorR';
+    private const var CANDLE_COLOR_G : name;           default CANDLE_COLOR_G         = 'CandleColorG';
+    private const var CANDLE_COLOR_B : name;           default CANDLE_COLOR_B         = 'CandleColorB';
+    private const var OVERRIDE_TORCH_COLOUR : name;    default OVERRIDE_TORCH_COLOUR  = 'OverrideTorchColour';
+    private const var TORCH_COLOR_R : name;            default TORCH_COLOR_R          = 'TorchColorR';
+    private const var TORCH_COLOR_G : name;            default TORCH_COLOR_G          = 'TorchColorG';
+    private const var TORCH_COLOR_B : name;            default TORCH_COLOR_B          = 'TorchColorB';
+    private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
 
     // Internal group IDs resolved at init time
     private var generalGroupId  : int;
@@ -54,6 +62,16 @@ class CLightRewriteSettings {
         params.LR_SHADOW_FADE_DISTANCE  = 10.f;
         params.LR_SHADOW_FADE_RANGE     = 3.f;
         params.LR_SHADOW_BLEND_FACTOR   = 1.f;
+
+        params.LR_OVERRIDE_CANDLE_COLOUR = false;
+        params.LR_CANDLE_COLOR_R         = 240;
+        params.LR_CANDLE_COLOR_G         = 245;
+        params.LR_CANDLE_COLOR_B         = 255;
+
+        params.LR_OVERRIDE_TORCH_COLOUR  = false;
+        params.LR_TORCH_COLOR_R          = 255;
+        params.LR_TORCH_COLOR_G          = 255;
+        params.LR_TORCH_COLOR_B          = 255;
 
         params.LR_CANDLE_TAG            = 'LR_Candle';
         params.LR_TORCH_TAG             = 'LR_Torch';
@@ -85,6 +103,19 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(GENERAL_GROUP, TORCH_ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
             }
         }
+
+        // v2 → v3: add per-source colour override settings.
+        if (initVersion == "1" || initVersion == "2") {
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R,         theGame.params.LR_CANDLE_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G,         theGame.params.LR_CANDLE_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_B,         theGame.params.LR_CANDLE_COLOR_B);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR,  theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_R,          theGame.params.LR_TORCH_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_G,          theGame.params.LR_TORCH_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_B,          theGame.params.LR_TORCH_COLOR_B);
+        }
+
         // Never initialised - write all defaults.
         else if (!initVersion) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, theGame.params.LR_ENABLED);
@@ -97,6 +128,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS, theGame.params.LR_TORCH_BRIGHTNESS);
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_RADIUS, theGame.params.LR_TORCH_RADIUS);
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_ATTENUATION, theGame.params.LR_TORCH_ATTENUATION);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, theGame.params.LR_OVERRIDE_CANDLE_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R,         theGame.params.LR_CANDLE_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G,         theGame.params.LR_CANDLE_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_B,         theGame.params.LR_CANDLE_COLOR_B);
+            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR,  theGame.params.LR_OVERRIDE_TORCH_COLOUR);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_R,          theGame.params.LR_TORCH_COLOR_R);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_G,          theGame.params.LR_TORCH_COLOR_G);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_B,          theGame.params.LR_TORCH_COLOR_B);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -140,6 +179,28 @@ class CLightRewriteSettings {
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR);
         if (val != "") params.LR_SHADOW_BLEND_FACTOR = StringToFloat(val);
+
+        params.LR_OVERRIDE_CANDLE_COLOUR = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_R);
+        if (val != "") params.LR_CANDLE_COLOR_R = (int)StringToFloat(val);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_G);
+        if (val != "") params.LR_CANDLE_COLOR_G = (int)StringToFloat(val);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_B);
+        if (val != "") params.LR_CANDLE_COLOR_B = (int)StringToFloat(val);
+
+        params.LR_OVERRIDE_TORCH_COLOUR = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_R);
+        if (val != "") params.LR_TORCH_COLOR_R = (int)StringToFloat(val);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_G);
+        if (val != "") params.LR_TORCH_COLOR_G = (int)StringToFloat(val);
+
+        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_B);
+        if (val != "") params.LR_TORCH_COLOR_B = (int)StringToFloat(val);
     }
 
     // Called by the CR4IngameMenu wrapper for every option-change event.

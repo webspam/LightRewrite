@@ -54,6 +54,15 @@
             <Var id="CandleAttenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
                 displayType="SLIDER;0;1;20" />
 
+            <Var id="OverrideCandleColour" displayName="Mods.LightRewrite.Candle_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="CandleColorR" displayName="Mods.LightRewrite.Candle_ColorR"
+                displayType="SLIDER;0;255;255" />
+            <Var id="CandleColorG" displayName="Mods.LightRewrite.Candle_ColorG"
+                displayType="SLIDER;0;255;255" />
+            <Var id="CandleColorB" displayName="Mods.LightRewrite.Candle_ColorB"
+                displayType="SLIDER;0;255;255" />
+
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="TorchBrightness" displayName="Mods.LightRewrite.Torch_Brightness"
@@ -63,9 +72,18 @@
             <Var id="TorchAttenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
                 displayType="SLIDER;0;1;20" />
 
+            <Var id="OverrideTorchColour" displayName="Mods.LightRewrite.Torch_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="TorchColorR" displayName="Mods.LightRewrite.Torch_ColorR"
+                displayType="SLIDER;0;255;255" />
+            <Var id="TorchColorG" displayName="Mods.LightRewrite.Torch_ColorG"
+                displayType="SLIDER;0;255;255" />
+            <Var id="TorchColorB" displayName="Mods.LightRewrite.Torch_ColorB"
+                displayType="SLIDER;0;255;255" />
+
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
-                displayType="SLIDER;0;2;2" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;3;3" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>
