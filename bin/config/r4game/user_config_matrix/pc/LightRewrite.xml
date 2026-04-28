@@ -57,11 +57,11 @@
             <Var id="OverrideCandleColour" displayName="LightRewrite_Candle_OverrideColour"
                 displayType="TOGGLE" />
             <Var id="CandleColorR" displayName="LightRewrite_Candle_ColorR"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
             <Var id="CandleColorG" displayName="LightRewrite_Candle_ColorG"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
             <Var id="CandleColorB" displayName="LightRewrite_Candle_ColorB"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
@@ -75,11 +75,11 @@
             <Var id="OverrideTorchColour" displayName="LightRewrite_Torch_OverrideColour"
                 displayType="TOGGLE" />
             <Var id="TorchColorR" displayName="LightRewrite_Torch_ColorR"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
             <Var id="TorchColorG" displayName="LightRewrite_Torch_ColorG"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
             <Var id="TorchColorB" displayName="LightRewrite_Torch_ColorB"
-                displayType="SLIDER;0;255;255" />
+                displayType="SLIDER;0;255;255" tags="indent" />
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"

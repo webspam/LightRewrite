@@ -31,7 +31,17 @@ function OnConfigUI() {
     wrappedMethod();
 
     lightRewriteSettings = theGame.GetLightRewriteSettings();
-    lightRewriteSettings.ReadGameConfig();
+}
+
+// Configure the LightRewrite settings menu when it is opened.
+@wrapMethod(CR4IngameMenu)
+function OnShowOptionSubmenu(actionType : int, menuTag : int, id : string) {
+    wrappedMethod(actionType, menuTag, id);
+
+    if (id == "LightRewrite") {
+        lightRewriteSettings.ReadGameConfig();
+        lightRewriteSettings.ConfigureModMenu();
+    }
 }
 
 // Forward every option-change event to the settings object for filtering.
