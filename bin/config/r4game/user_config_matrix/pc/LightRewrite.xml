@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <UserConfig>
-    <Group id="LightRewrite_General" displayName="Mods.LightRewrite_General">
+    <Group id="LightRewrite_General" displayName="Mods.LightRewrite">
         <PresetsArray>
-            <Preset id="0" displayName="Mods.LightRewrite.Preset_VanillaIsh">
+            <Preset id="0" displayName="LightRewrite_Preset_VanillaIsh">
                 <Entry varId="ShadowFadeDistance" value="5" />
                 <Entry varId="ShadowFadeRange" value="5" />
                 <Entry varId="ShadowBlendFactor" value="1" />
@@ -13,7 +13,7 @@
                 <Entry varId="TorchRadius" value="5" />
                 <Entry varId="TorchAttenuation" value="0.5" />
             </Preset>
-            <Preset id="1" displayName="Mods.LightRewrite.Preset_Author">
+            <Preset id="1" displayName="LightRewrite_Preset_Author">
                 <Entry varId="ShadowFadeDistance" value="10" />
                 <Entry varId="ShadowFadeRange" value="3" />
                 <Entry varId="ShadowBlendFactor" value="1" />
@@ -24,7 +24,7 @@
                 <Entry varId="TorchRadius" value="20" />
                 <Entry varId="TorchAttenuation" value="1" />
             </Preset>
-            <Preset id="2" displayName="Mods.LightRewrite.Preset_Bright">
+            <Preset id="2" displayName="LightRewrite_Preset_Bright">
                 <Entry varId="ShadowFadeDistance" value="10" />
                 <Entry varId="ShadowFadeRange" value="3" />
                 <Entry varId="ShadowBlendFactor" value="1" />
@@ -37,52 +37,52 @@
             </Preset>
         </PresetsArray>
         <VisibleVars>
-            <Var id="Enabled" displayName="Mods.LightRewrite.Enabled" displayType="TOGGLE" />
-            <Var id="ShadowFadeDistance" displayName="Mods.LightRewrite.ShadowFadeDistance"
+            <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" />
+            <Var id="ShadowFadeDistance" displayName="LightRewrite_ShadowFadeDistance"
                 displayType="SLIDER;0;50;100" />
-            <Var id="ShadowFadeRange" displayName="Mods.LightRewrite.ShadowFadeRange"
+            <Var id="ShadowFadeRange" displayName="LightRewrite_ShadowFadeRange"
                 displayType="SLIDER;0;20;40" />
-            <Var id="ShadowBlendFactor" displayName="Mods.LightRewrite.ShadowBlendFactor"
+            <Var id="ShadowBlendFactor" displayName="LightRewrite_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
-            <Var id="CandleBrightness" displayName="Mods.LightRewrite.Candle_Brightness"
+            <Var id="CandleBrightness" displayName="LightRewrite_Candle_Brightness"
                 displayType="SLIDER;0;20;40" />
-            <Var id="CandleRadius" displayName="Mods.LightRewrite.Candle_Radius"
+            <Var id="CandleRadius" displayName="LightRewrite_Candle_Radius"
                 displayType="SLIDER;1;30;58" />
-            <Var id="CandleAttenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
+            <Var id="CandleAttenuation" displayName="LightRewrite_Candle_Attenuation"
                 displayType="SLIDER;0;1;20" />
 
-            <Var id="OverrideCandleColour" displayName="Mods.LightRewrite.Candle_OverrideColour"
+            <Var id="OverrideCandleColour" displayName="LightRewrite_Candle_OverrideColour"
                 displayType="TOGGLE" />
-            <Var id="CandleColorR" displayName="Mods.LightRewrite.Candle_ColorR"
+            <Var id="CandleColorR" displayName="LightRewrite_Candle_ColorR"
                 displayType="SLIDER;0;255;255" />
-            <Var id="CandleColorG" displayName="Mods.LightRewrite.Candle_ColorG"
+            <Var id="CandleColorG" displayName="LightRewrite_Candle_ColorG"
                 displayType="SLIDER;0;255;255" />
-            <Var id="CandleColorB" displayName="Mods.LightRewrite.Candle_ColorB"
+            <Var id="CandleColorB" displayName="LightRewrite_Candle_ColorB"
                 displayType="SLIDER;0;255;255" />
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
-            <Var id="TorchBrightness" displayName="Mods.LightRewrite.Torch_Brightness"
+            <Var id="TorchBrightness" displayName="LightRewrite_Torch_Brightness"
                 displayType="SLIDER;0;100;200" />
-            <Var id="TorchRadius" displayName="Mods.LightRewrite.Torch_Radius"
+            <Var id="TorchRadius" displayName="LightRewrite_Torch_Radius"
                 displayType="SLIDER;1;50;98" />
-            <Var id="TorchAttenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
+            <Var id="TorchAttenuation" displayName="LightRewrite_Torch_Attenuation"
                 displayType="SLIDER;0;1;20" />
 
-            <Var id="OverrideTorchColour" displayName="Mods.LightRewrite.Torch_OverrideColour"
+            <Var id="OverrideTorchColour" displayName="LightRewrite_Torch_OverrideColour"
                 displayType="TOGGLE" />
-            <Var id="TorchColorR" displayName="Mods.LightRewrite.Torch_ColorR"
+            <Var id="TorchColorR" displayName="LightRewrite_Torch_ColorR"
                 displayType="SLIDER;0;255;255" />
-            <Var id="TorchColorG" displayName="Mods.LightRewrite.Torch_ColorG"
+            <Var id="TorchColorG" displayName="LightRewrite_Torch_ColorG"
                 displayType="SLIDER;0;255;255" />
-            <Var id="TorchColorB" displayName="Mods.LightRewrite.Torch_ColorB"
+            <Var id="TorchColorB" displayName="LightRewrite_Torch_ColorB"
                 displayType="SLIDER;0;255;255" />
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
-            <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
+            <Var id="InitVersion" displayName="LightRewrite_InitVersion"
                 displayType="SLIDER;0;3;3" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
