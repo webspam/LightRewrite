@@ -3,37 +3,37 @@
     <Group id="LightRewrite_General" displayName="Mods.LightRewrite_General">
         <PresetsArray>
             <Preset id="0" displayName="Mods.LightRewrite.Preset_VanillaIsh">
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="5" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="5" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="5" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="3" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="0.7" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="30" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="5" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="0.5" />
+                <Entry varId="ShadowFadeDistance" value="5" />
+                <Entry varId="ShadowFadeRange" value="5" />
+                <Entry varId="ShadowBlendFactor" value="1" />
+                <Entry varId="CandleBrightness" value="5" />
+                <Entry varId="CandleRadius" value="3" />
+                <Entry varId="CandleAttenuation" value="0.7" />
+                <Entry varId="TorchBrightness" value="30" />
+                <Entry varId="TorchRadius" value="5" />
+                <Entry varId="TorchAttenuation" value="0.5" />
             </Preset>
             <Preset id="1" displayName="Mods.LightRewrite.Preset_Author">
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="10" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="3" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="6.5" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="9" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="1" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="30" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="20" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="1" />
+                <Entry varId="ShadowFadeDistance" value="10" />
+                <Entry varId="ShadowFadeRange" value="3" />
+                <Entry varId="ShadowBlendFactor" value="1" />
+                <Entry varId="CandleBrightness" value="6.5" />
+                <Entry varId="CandleRadius" value="9" />
+                <Entry varId="CandleAttenuation" value="1" />
+                <Entry varId="TorchBrightness" value="30" />
+                <Entry varId="TorchRadius" value="20" />
+                <Entry varId="TorchAttenuation" value="1" />
             </Preset>
             <Preset id="2" displayName="Mods.LightRewrite.Preset_Bright">
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="10" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="3" />
-                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="10" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="12" />
-                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="0.95" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="50" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="25" />
-                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="0.9" />
+                <Entry varId="ShadowFadeDistance" value="10" />
+                <Entry varId="ShadowFadeRange" value="3" />
+                <Entry varId="ShadowBlendFactor" value="1" />
+                <Entry varId="CandleBrightness" value="10" />
+                <Entry varId="CandleRadius" value="12" />
+                <Entry varId="CandleAttenuation" value="0.95" />
+                <Entry varId="TorchBrightness" value="50" />
+                <Entry varId="TorchRadius" value="25" />
+                <Entry varId="TorchAttenuation" value="0.9" />
             </Preset>
         </PresetsArray>
         <VisibleVars>
