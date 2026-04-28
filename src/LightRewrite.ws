@@ -155,16 +155,29 @@ function DisableAllSpotlightComponents() {
 }
 
 // Identify light sources, and rewrite matched entities to work properly with RT.
-@wrapMethod(CGameplayEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    var editorName : string;
-
-    if (!spawnData.restored && theGame.GetLightRewriteSettings().isEnabled) {
+@addMethod(CGameplayEntity)
+protected function InitialiseLightRewrite() {
+    if (theGame.GetLightRewriteSettings().isEnabled) {
         IdentifyLightRewriteType();
 
         if (IsLightRewritable()) CandleLightRewrite();
     }
+}
 
+// We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
+@wrapMethod(CGameplayEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(CInteractiveEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(W3FireSource)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
