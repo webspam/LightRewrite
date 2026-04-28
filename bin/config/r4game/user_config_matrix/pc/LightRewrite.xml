@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <UserConfig>
     <Group id="LightRewrite_General" displayName="Mods.LightRewrite_General">
+        <PresetsArray>
+            <Preset id="0" displayName="Mods.LightRewrite.Preset_Dim">
+                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="0"/>
+                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="0"/>
+                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="0"/>
+                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="0"/>
+            </Preset>
+            <Preset id="1" displayName="Mods.LightRewrite.Preset_Bright">
+                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="40"/>
+                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="1"/>
+                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="200"/>
+                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="1"/>
+            </Preset>
+        </PresetsArray>
         <VisibleVars>
             <Var id="Enabled" displayName="Mods.LightRewrite.Enabled" displayType="TOGGLE"
             />
