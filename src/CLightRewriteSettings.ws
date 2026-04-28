@@ -12,8 +12,6 @@ class CLightRewriteSettings {
     
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
-    private const var CANDLE_GROUP : name;             default CANDLE_GROUP  = 'LightRewrite_Candle';
-    private const var TORCH_GROUP : name;              default TORCH_GROUP   = 'LightRewrite_Torch';
 
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
@@ -38,8 +36,6 @@ class CLightRewriteSettings {
 
     // Internal group IDs resolved at init time
     private var generalGroupId  : int;
-    private var candleGroupId : int;
-    private var torchGroupId : int;
 
     private var gameConfig : CInGameConfigWrapper;
 
@@ -49,8 +45,6 @@ class CLightRewriteSettings {
         
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
-        candleGroupId = gameConfig.GetGroupIdx(CANDLE_GROUP);
-        torchGroupId = gameConfig.GetGroupIdx(TORCH_GROUP);
 
         params.LR_ENABLED               = true;
         params.LR_CANDLE_BRIGHTNESS     = 5.5f;
@@ -80,7 +74,7 @@ class CLightRewriteSettings {
     // Returns true if groupId belongs to one of this mod's settings groups.
     // Used to filter out option-change events fired by other mods.
     public function IsMyModSettingsGroup(groupId : int) : bool {
-        return groupId == generalGroupId || groupId == candleGroupId || groupId == torchGroupId;
+        return groupId == generalGroupId;
     }
 
     // If mod config has never been initialised, set the default values and save them.
