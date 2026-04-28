@@ -44,8 +44,8 @@ enum ELightRewriteType {
 @addField(W3GameParams) public var LR_TORCH_COLOR_B          : int;
 
 // Tag valid light rewrite entities as they spawn.
-@addField(W3GameParams) public var LR_CANDLE_TAG      : name;
-@addField(W3GameParams) public var LR_TORCH_TAG       : name;
+@addField(W3GameParams) public var TAG_LR_CANDLE      : name;
+@addField(W3GameParams) public var TAG_LR_TORCH       : name;
 
 struct SLightRewriteOriginalValues {
     var hasBeenSaved : bool;
@@ -158,15 +158,11 @@ function CandleLightRewrite() {
                 pointLight.color.Blue = colorB;
             }
             else if (spotLight) {
-                pointLight.color.Red = spotLight.color.Red;
-                pointLight.color.Green = spotLight.color.Green;
-                pointLight.color.Blue = spotLight.color.Blue;
+                pointLight.color = spotLight.color;
             }
             else {
                 // No spotlight, and we're not overriding the colour, so use the original colour.
-                pointLight.color.Red = pointLight.lightRewriteOriginalValues.color.Red;
-                pointLight.color.Green = pointLight.lightRewriteOriginalValues.color.Green;
-                pointLight.color.Blue = pointLight.lightRewriteOriginalValues.color.Blue;
+                pointLight.color = pointLight.lightRewriteOriginalValues.color;
             }
 
             pointLight.SetEnabled(true);
@@ -244,13 +240,13 @@ public function IdentifyLightRewriteType() {
         LogLightRewrite("Found candle: " + editorName);
 
         lightRewriteLightType = LRT_Candle;
-        AddTag(theGame.params.LR_CANDLE_TAG);
+        AddTag(theGame.params.TAG_LR_CANDLE);
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + editorName);
 
         lightRewriteLightType = LRT_Torch;
-        AddTag(theGame.params.LR_TORCH_TAG);
+        AddTag(theGame.params.TAG_LR_TORCH);
     }
     else {
         lightRewriteLightType = LRT_Unknown;

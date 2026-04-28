@@ -5,3 +5,5 @@ mods/
 build.ps1
 debug.ps1
 modLightRewrite.zip
+
+.cursor/rules/git-workflow.mdc
