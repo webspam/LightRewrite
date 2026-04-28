@@ -1,41 +1,71 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <UserConfig>
-    <Group id="LightRewrite_General" displayName="Mods.LightRewrite.LightRewrite_General">
+    <Group id="LightRewrite_General" displayName="Mods.LightRewrite_General">
+        <PresetsArray>
+            <Preset id="0" displayName="Mods.LightRewrite.Preset_VanillaIsh">
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="5" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="5" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="5" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="3" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="0.7" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="30" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="5" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="0.5" />
+            </Preset>
+            <Preset id="1" displayName="Mods.LightRewrite.Preset_Author">
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="10" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="3" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="6.5" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="9" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="1" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="30" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="20" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="1" />
+            </Preset>
+            <Preset id="2" displayName="Mods.LightRewrite.Preset_Bright">
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeDistance" value="10" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowFadeRange" value="3" />
+                <Entry overrideGroup="LightRewrite_General" varId="ShadowBlendFactor" value="1" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleBrightness" value="10" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleRadius" value="12" />
+                <Entry overrideGroup="LightRewrite_General" varId="CandleAttenuation" value="0.95" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchBrightness" value="50" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchRadius" value="25" />
+                <Entry overrideGroup="LightRewrite_General" varId="TorchAttenuation" value="0.9" />
+            </Preset>
+        </PresetsArray>
         <VisibleVars>
-            <Var id="Enabled" displayName="Mods.LightRewrite.Enabled" displayType="TOGGLE"
-                value="true" />
+            <Var id="Enabled" displayName="Mods.LightRewrite.Enabled" displayType="TOGGLE" />
             <Var id="ShadowFadeDistance" displayName="Mods.LightRewrite.ShadowFadeDistance"
-                displayType="SLIDER;0;50;100" value="10" />
+                displayType="SLIDER;0;50;100" />
             <Var id="ShadowFadeRange" displayName="Mods.LightRewrite.ShadowFadeRange"
-                displayType="SLIDER;0;20;40" value="3" />
+                displayType="SLIDER;0;20;40" />
             <Var id="ShadowBlendFactor" displayName="Mods.LightRewrite.ShadowBlendFactor"
-                displayType="SLIDER;0;1;20" value="1" />
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="CandleBrightness" displayName="Mods.LightRewrite.Candle_Brightness"
+                displayType="SLIDER;0;20;40" />
+            <Var id="CandleRadius" displayName="Mods.LightRewrite.Candle_Radius"
+                displayType="SLIDER;1;30;58" />
+            <Var id="CandleAttenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="TorchBrightness" displayName="Mods.LightRewrite.Torch_Brightness"
+                displayType="SLIDER;0;100;200" />
+            <Var id="TorchRadius" displayName="Mods.LightRewrite.Torch_Radius"
+                displayType="SLIDER;1;50;98" />
+            <Var id="TorchAttenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
+                displayType="SLIDER;0;1;20" />
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="Mods.LightRewrite.InitVersion"
                 displayType="SLIDER;0;2;2" visibilityCondition="hideAlways" />
-        </VisibleVars>
-    </Group>
-
-    <Group id="LightRewrite_Candle" displayName="Mods.LightRewrite.LightRewrite_Candle">
-        <VisibleVars>
-            <Var id="Brightness" displayName="Mods.LightRewrite.Candle_Brightness"
-                displayType="SLIDER;0;20;40" value="5.5" />
-            <Var id="Radius" displayName="Mods.LightRewrite.Candle_Radius"
-                displayType="SLIDER;1;30;58" value="9" />
-            <Var id="Attenuation" displayName="Mods.LightRewrite.Candle_Attenuation"
-                displayType="SLIDER;0;5;50" value="1" />
-        </VisibleVars>
-    </Group>
-
-    <Group id="LightRewrite_Torch" displayName="Mods.LightRewrite.LightRewrite_Torch">
-        <VisibleVars>
-            <Var id="Brightness" displayName="Mods.LightRewrite.Torch_Brightness"
-                displayType="SLIDER;0;100;200" value="30" />
-            <Var id="Radius" displayName="Mods.LightRewrite.Torch_Radius"
-                displayType="SLIDER;1;50;98" value="20" />
-            <Var id="Attenuation" displayName="Mods.LightRewrite.Torch_Attenuation"
-                displayType="SLIDER;0;5;50" value="1" />
         </VisibleVars>
     </Group>
 </UserConfig>
