@@ -151,7 +151,6 @@ class CLightRewriteSettings {
         EnsureGameConfigIsInitialised();
 
         params.LR_ENABLED = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
-        if (!params.LR_ENABLED) return;
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS);
         if (val != "") params.LR_CANDLE_BRIGHTNESS = StringToFloat(val);
