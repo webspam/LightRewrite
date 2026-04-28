@@ -119,7 +119,7 @@ function CandleLightRewrite() {
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;
             }
-            else if (spotLight) {
+            else if (spotLight && sourceParams.useSpotlightColor) {
                 pointLight.color = spotLight.color;
             }
             else {

@@ -69,6 +69,7 @@ class CLightRewriteSettings {
         torchParams.tag = TAG_LR_TORCH;
         brazierParams.tag = TAG_LR_BRAZIER;
 
+        candleParams.useSpotlightColor = true;
         candleParams.brightness = 5.5f;
         candleParams.radius = 9.f;
         candleParams.attenuation = 1.0f;
@@ -77,6 +78,7 @@ class CLightRewriteSettings {
         candleParams.color.Green = 245;
         candleParams.color.Blue = 255;
 
+        torchParams.useSpotlightColor = false;
         torchParams.brightness = 30.f;
         torchParams.radius = 20.f;
         torchParams.attenuation = 1.0f;
@@ -85,6 +87,7 @@ class CLightRewriteSettings {
         torchParams.color.Green = 255;
         torchParams.color.Blue = 255;
 
+        brazierParams.useSpotlightColor = false;
         brazierParams.brightness = 40.f;
         brazierParams.radius = 25.f;
         brazierParams.attenuation = 1.0f;
