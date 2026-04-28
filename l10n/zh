@@ -1,0 +1,25 @@
+;meta[language=zh]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|接近原版
+2122144002||LightRewrite_Preset_Author|作者
+2122144003||LightRewrite_Preset_Bright|明亮
+2122144004||LightRewrite_Enabled|啟用
+2122144005||LightRewrite_ShadowFadeDistance|陰影淡出距離
+2122144006||LightRewrite_ShadowFadeRange|陰影淡出範圍
+2122144007||LightRewrite_ShadowBlendFactor|陰影混合係數
+2122144008||LightRewrite_Candle_Brightness|蠟燭亮度
+2122144009||LightRewrite_Candle_Radius|蠟燭半徑
+2122144010||LightRewrite_Candle_Attenuation|蠟燭衰減
+2122144011||LightRewrite_Candle_OverrideColour|覆蓋蠟燭顏色
+2122144012||LightRewrite_Candle_ColorR|蠟燭顏色：紅色
+2122144013||LightRewrite_Candle_ColorG|蠟燭顏色：綠色
+2122144014||LightRewrite_Candle_ColorB|蠟燭顏色：藍色
+2122144015||LightRewrite_Torch_Brightness|火把亮度
+2122144016||LightRewrite_Torch_Radius|火把半徑
+2122144017||LightRewrite_Torch_Attenuation|火把衰減
+2122144018||LightRewrite_Torch_OverrideColour|覆蓋火把顏色
+2122144019||LightRewrite_Torch_ColorR|火把顏色：紅色
+2122144020||LightRewrite_Torch_ColorG|火把顏色：綠色
+2122144021||LightRewrite_Torch_ColorB|火把顏色：藍色
+2122144022||LightRewrite_InitVersion|初始化版本

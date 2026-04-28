@@ -1,0 +1,25 @@
+;meta[language=kr]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|원본에 가까움
+2122144002||LightRewrite_Preset_Author|작성자
+2122144003||LightRewrite_Preset_Bright|밝음
+2122144004||LightRewrite_Enabled|활성화
+2122144005||LightRewrite_ShadowFadeDistance|그림자 페이드 거리
+2122144006||LightRewrite_ShadowFadeRange|그림자 페이드 범위
+2122144007||LightRewrite_ShadowBlendFactor|그림자 혼합 계수
+2122144008||LightRewrite_Candle_Brightness|양초 밝기
+2122144009||LightRewrite_Candle_Radius|양초 반경
+2122144010||LightRewrite_Candle_Attenuation|양초 감쇠
+2122144011||LightRewrite_Candle_OverrideColour|양초 색상 덮어쓰기
+2122144012||LightRewrite_Candle_ColorR|양초 색상: 빨간색
+2122144013||LightRewrite_Candle_ColorG|양초 색상: 초록색
+2122144014||LightRewrite_Candle_ColorB|양초 색상: 파란색
+2122144015||LightRewrite_Torch_Brightness|횃불 밝기
+2122144016||LightRewrite_Torch_Radius|횃불 반경
+2122144017||LightRewrite_Torch_Attenuation|횃불 감쇠
+2122144018||LightRewrite_Torch_OverrideColour|횃불 색상 덮어쓰기
+2122144019||LightRewrite_Torch_ColorR|횃불 색상: 빨간색
+2122144020||LightRewrite_Torch_ColorG|횃불 색상: 초록색
+2122144021||LightRewrite_Torch_ColorB|횃불 색상: 파란색
+2122144022||LightRewrite_InitVersion|초기화 버전

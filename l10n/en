@@ -1,0 +1,25 @@
+;meta[language=en]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Vanilla-Ish
+2122144002||LightRewrite_Preset_Author|Author
+2122144003||LightRewrite_Preset_Bright|Bright
+2122144004||LightRewrite_Enabled|Enabled
+2122144005||LightRewrite_ShadowFadeDistance|Shadow fade distance
+2122144006||LightRewrite_ShadowFadeRange|Shadow fade range
+2122144007||LightRewrite_ShadowBlendFactor|Shadow blend factor
+2122144008||LightRewrite_Candle_Brightness|Candle brightness
+2122144009||LightRewrite_Candle_Radius|Candle radius
+2122144010||LightRewrite_Candle_Attenuation|Candle attenuation
+2122144011||LightRewrite_Candle_OverrideColour|Override candle colour
+2122144012||LightRewrite_Candle_ColorR|Candle colour: Red
+2122144013||LightRewrite_Candle_ColorG|Candle colour: Green
+2122144014||LightRewrite_Candle_ColorB|Candle colour: Blue
+2122144015||LightRewrite_Torch_Brightness|Torch brightness
+2122144016||LightRewrite_Torch_Radius|Torch radius
+2122144017||LightRewrite_Torch_Attenuation|Torch attenuation
+2122144018||LightRewrite_Torch_OverrideColour|Override torch colour
+2122144019||LightRewrite_Torch_ColorR|Torch colour: Red
+2122144020||LightRewrite_Torch_ColorG|Torch colour: Green
+2122144021||LightRewrite_Torch_ColorB|Torch colour: Blue
+2122144022||LightRewrite_InitVersion|Initialisation version

@@ -1,0 +1,25 @@
+;meta[language=jp]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|バニラに近い
+2122144002||LightRewrite_Preset_Author|作者
+2122144003||LightRewrite_Preset_Bright|明るい
+2122144004||LightRewrite_Enabled|有効
+2122144005||LightRewrite_ShadowFadeDistance|影のフェード距離
+2122144006||LightRewrite_ShadowFadeRange|影のフェード範囲
+2122144007||LightRewrite_ShadowBlendFactor|影のブレンド係数
+2122144008||LightRewrite_Candle_Brightness|ろうそくの明るさ
+2122144009||LightRewrite_Candle_Radius|ろうそくの半径
+2122144010||LightRewrite_Candle_Attenuation|ろうそくの減衰
+2122144011||LightRewrite_Candle_OverrideColour|ろうそくの色を上書き
+2122144012||LightRewrite_Candle_ColorR|ろうそくの色: 赤
+2122144013||LightRewrite_Candle_ColorG|ろうそくの色: 緑
+2122144014||LightRewrite_Candle_ColorB|ろうそくの色: 青
+2122144015||LightRewrite_Torch_Brightness|松明の明るさ
+2122144016||LightRewrite_Torch_Radius|松明の半径
+2122144017||LightRewrite_Torch_Attenuation|松明の減衰
+2122144018||LightRewrite_Torch_OverrideColour|松明の色を上書き
+2122144019||LightRewrite_Torch_ColorR|松明の色: 赤
+2122144020||LightRewrite_Torch_ColorG|松明の色: 緑
+2122144021||LightRewrite_Torch_ColorB|松明の色: 青
+2122144022||LightRewrite_InitVersion|初期化バージョン

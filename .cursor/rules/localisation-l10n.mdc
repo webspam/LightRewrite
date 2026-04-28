@@ -1,0 +1,47 @@
+---
+description: Localisation files in l10n — en is primary, all locales must match keys
+globs: "l10n/**"
+alwaysApply: false
+---
+
+# Localisation (`l10n/`)
+
+Files in `l10n/` are localisation files.
+
+## Primary locale
+
+- Treat `en` as the **source of truth** for localisation keys and English copy.
+- Make changes in `en` first, then propagate to the other locales.
+
+## Key parity is mandatory
+
+When adding, renaming, or removing a localisation key, ensure **every locale contains the same key set** — no missing keys in any locale.
+
+Locales required:
+
+- `ar`
+- `br`
+- `cn`
+- `cz`
+- `de`
+- `en`
+- `es`
+- `esmx`
+- `fr`
+- `hu`
+- `it`
+- `jp`
+- `kr`
+- `pl`
+- `ru`
+- `zh`
+
+## Translation completeness
+
+- Any new or updated user-facing string must be translated for **all 16 locales** above.
+- Do not ship changes where any locale is missing keys or left with placeholder/untranslated values.
+
+## Never translate the project name
+
+- The project name **must remain exactly** `Light Rewrite` in every locale.
+- Do not translate, transliterate, pluralise, or otherwise localise `Light Rewrite`.

@@ -1,0 +1,25 @@
+;meta[language=br]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Parecido com o original
+2122144002||LightRewrite_Preset_Author|Autor
+2122144003||LightRewrite_Preset_Bright|Claro
+2122144004||LightRewrite_Enabled|Ativado
+2122144005||LightRewrite_ShadowFadeDistance|Distância de desvanecimento da sombra
+2122144006||LightRewrite_ShadowFadeRange|Intervalo de desvanecimento da sombra
+2122144007||LightRewrite_ShadowBlendFactor|Fator de mesclagem da sombra
+2122144008||LightRewrite_Candle_Brightness|Brilho da vela
+2122144009||LightRewrite_Candle_Radius|Raio da vela
+2122144010||LightRewrite_Candle_Attenuation|Atenuação da vela
+2122144011||LightRewrite_Candle_OverrideColour|Substituir cor da vela
+2122144012||LightRewrite_Candle_ColorR|Cor da vela: Vermelho
+2122144013||LightRewrite_Candle_ColorG|Cor da vela: Verde
+2122144014||LightRewrite_Candle_ColorB|Cor da vela: Azul
+2122144015||LightRewrite_Torch_Brightness|Brilho da tocha
+2122144016||LightRewrite_Torch_Radius|Raio da tocha
+2122144017||LightRewrite_Torch_Attenuation|Atenuação da tocha
+2122144018||LightRewrite_Torch_OverrideColour|Substituir cor da tocha
+2122144019||LightRewrite_Torch_ColorR|Cor da tocha: Vermelho
+2122144020||LightRewrite_Torch_ColorG|Cor da tocha: Verde
+2122144021||LightRewrite_Torch_ColorB|Cor da tocha: Azul
+2122144022||LightRewrite_InitVersion|Versão de inicialização

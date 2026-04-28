@@ -1,0 +1,25 @@
+;meta[language=de]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Nahe am Original
+2122144002||LightRewrite_Preset_Author|Autor
+2122144003||LightRewrite_Preset_Bright|Hell
+2122144004||LightRewrite_Enabled|Aktiviert
+2122144005||LightRewrite_ShadowFadeDistance|Schatten-Ausblenddistanz
+2122144006||LightRewrite_ShadowFadeRange|Schatten-Ausblendbereich
+2122144007||LightRewrite_ShadowBlendFactor|Schatten-Überblendfaktor
+2122144008||LightRewrite_Candle_Brightness|Kerzenhelligkeit
+2122144009||LightRewrite_Candle_Radius|Kerzenradius
+2122144010||LightRewrite_Candle_Attenuation|Kerzendämpfung
+2122144011||LightRewrite_Candle_OverrideColour|Kerzenfarbe überschreiben
+2122144012||LightRewrite_Candle_ColorR|Kerzenfarbe: Rot
+2122144013||LightRewrite_Candle_ColorG|Kerzenfarbe: Grün
+2122144014||LightRewrite_Candle_ColorB|Kerzenfarbe: Blau
+2122144015||LightRewrite_Torch_Brightness|Fackelhelligkeit
+2122144016||LightRewrite_Torch_Radius|Fackelradius
+2122144017||LightRewrite_Torch_Attenuation|Fackeldämpfung
+2122144018||LightRewrite_Torch_OverrideColour|Fackelfarbe überschreiben
+2122144019||LightRewrite_Torch_ColorR|Fackelfarbe: Rot
+2122144020||LightRewrite_Torch_ColorG|Fackelfarbe: Grün
+2122144021||LightRewrite_Torch_ColorB|Fackelfarbe: Blau
+2122144022||LightRewrite_InitVersion|Initialisierungsversion

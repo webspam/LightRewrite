@@ -1,0 +1,25 @@
+;meta[language=esmx]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Similar al original
+2122144002||LightRewrite_Preset_Author|Autor
+2122144003||LightRewrite_Preset_Bright|Brillante
+2122144004||LightRewrite_Enabled|Activado
+2122144005||LightRewrite_ShadowFadeDistance|Distancia de desvanecimiento de la sombra
+2122144006||LightRewrite_ShadowFadeRange|Rango de desvanecimiento de la sombra
+2122144007||LightRewrite_ShadowBlendFactor|Factor de mezcla de la sombra
+2122144008||LightRewrite_Candle_Brightness|Brillo de la vela
+2122144009||LightRewrite_Candle_Radius|Radio de la vela
+2122144010||LightRewrite_Candle_Attenuation|Atenuación de la vela
+2122144011||LightRewrite_Candle_OverrideColour|Reemplazar color de la vela
+2122144012||LightRewrite_Candle_ColorR|Color de la vela: Rojo
+2122144013||LightRewrite_Candle_ColorG|Color de la vela: Verde
+2122144014||LightRewrite_Candle_ColorB|Color de la vela: Azul
+2122144015||LightRewrite_Torch_Brightness|Brillo de la antorcha
+2122144016||LightRewrite_Torch_Radius|Radio de la antorcha
+2122144017||LightRewrite_Torch_Attenuation|Atenuación de la antorcha
+2122144018||LightRewrite_Torch_OverrideColour|Reemplazar color de la antorcha
+2122144019||LightRewrite_Torch_ColorR|Color de la antorcha: Rojo
+2122144020||LightRewrite_Torch_ColorG|Color de la antorcha: Verde
+2122144021||LightRewrite_Torch_ColorB|Color de la antorcha: Azul
+2122144022||LightRewrite_InitVersion|Versión de inicialización

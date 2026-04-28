@@ -1,0 +1,25 @@
+;meta[language=fr]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Proche de l'original
+2122144002||LightRewrite_Preset_Author|Auteur
+2122144003||LightRewrite_Preset_Bright|Clair
+2122144004||LightRewrite_Enabled|Activé
+2122144005||LightRewrite_ShadowFadeDistance|Distance de fondu de l'ombre
+2122144006||LightRewrite_ShadowFadeRange|Plage de fondu de l'ombre
+2122144007||LightRewrite_ShadowBlendFactor|Facteur de fusion de l'ombre
+2122144008||LightRewrite_Candle_Brightness|Luminosité de la bougie
+2122144009||LightRewrite_Candle_Radius|Rayon de la bougie
+2122144010||LightRewrite_Candle_Attenuation|Atténuation de la bougie
+2122144011||LightRewrite_Candle_OverrideColour|Remplacer la couleur de la bougie
+2122144012||LightRewrite_Candle_ColorR|Couleur de la bougie : Rouge
+2122144013||LightRewrite_Candle_ColorG|Couleur de la bougie : Vert
+2122144014||LightRewrite_Candle_ColorB|Couleur de la bougie : Bleu
+2122144015||LightRewrite_Torch_Brightness|Luminosité de la torche
+2122144016||LightRewrite_Torch_Radius|Rayon de la torche
+2122144017||LightRewrite_Torch_Attenuation|Atténuation de la torche
+2122144018||LightRewrite_Torch_OverrideColour|Remplacer la couleur de la torche
+2122144019||LightRewrite_Torch_ColorR|Couleur de la torche : Rouge
+2122144020||LightRewrite_Torch_ColorG|Couleur de la torche : Vert
+2122144021||LightRewrite_Torch_ColorB|Couleur de la torche : Bleu
+2122144022||LightRewrite_InitVersion|Version d'initialisation
