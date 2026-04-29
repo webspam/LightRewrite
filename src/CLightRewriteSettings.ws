@@ -260,24 +260,24 @@ class CLightRewriteSettings {
         candleParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_R);
-        if (val != "") candleParams.color.Red = (int)StringToFloat(val);
+        if (val != "") candleParams.color.Red = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_G);
-        if (val != "") candleParams.color.Green = (int)StringToFloat(val);
+        if (val != "") candleParams.color.Green = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_B);
-        if (val != "") candleParams.color.Blue = (int)StringToFloat(val);
+        if (val != "") candleParams.color.Blue = StringToInt(val);
 
         torchParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_R);
-        if (val != "") torchParams.color.Red = (int)StringToFloat(val);
+        if (val != "") torchParams.color.Red = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_G);
-        if (val != "") torchParams.color.Green = (int)StringToFloat(val);
+        if (val != "") torchParams.color.Green = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_B);
-        if (val != "") torchParams.color.Blue = (int)StringToFloat(val);
+        if (val != "") torchParams.color.Blue = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_BRIGHTNESS);
         if (val != "") brazierParams.brightness = StringToFloat(val);
@@ -291,13 +291,13 @@ class CLightRewriteSettings {
         brazierParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_BRAZIER_COLOUR);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_R);
-        if (val != "") brazierParams.color.Red = (int)StringToFloat(val);
+        if (val != "") brazierParams.color.Red = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_G);
-        if (val != "") brazierParams.color.Green = (int)StringToFloat(val);
+        if (val != "") brazierParams.color.Green = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_B);
-        if (val != "") brazierParams.color.Blue = (int)StringToFloat(val);
+        if (val != "") brazierParams.color.Blue = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_BRIGHTNESS);
         if (val != "") candelabraParams.brightness = StringToFloat(val);
@@ -311,13 +311,13 @@ class CLightRewriteSettings {
         candelabraParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDELABRA_COLOUR);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_R);
-        if (val != "") candelabraParams.color.Red = (int)StringToFloat(val);
+        if (val != "") candelabraParams.color.Red = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_G);
-        if (val != "") candelabraParams.color.Green = (int)StringToFloat(val);
+        if (val != "") candelabraParams.color.Green = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_B);
-        if (val != "") candelabraParams.color.Blue = (int)StringToFloat(val);
+        if (val != "") candelabraParams.color.Blue = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_BRIGHTNESS);
         if (val != "") campfireParams.brightness = StringToFloat(val);
@@ -331,13 +331,13 @@ class CLightRewriteSettings {
         campfireParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CAMPFIRE_COLOUR);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_R);
-        if (val != "") campfireParams.color.Red = (int)StringToFloat(val);
+        if (val != "") campfireParams.color.Red = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_G);
-        if (val != "") campfireParams.color.Green = (int)StringToFloat(val);
+        if (val != "") campfireParams.color.Green = StringToInt(val);
 
         val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_B);
-        if (val != "") campfireParams.color.Blue = (int)StringToFloat(val);
+        if (val != "") campfireParams.color.Blue = StringToInt(val);
     }
 
     // To be called for every option-change event.
