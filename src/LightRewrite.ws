@@ -290,7 +290,7 @@ function DisableLightRewrite() {
 
             if (spotLight) {
                 spotLight.RestoreLightRewriteOriginalValues();
-                spotLight.SetEnabled(true);
+                if (HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
             }
         }
     }
