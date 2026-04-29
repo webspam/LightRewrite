@@ -68,13 +68,6 @@ class CLightRewriteSettings {
 
     private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
 
-    // Tags
-    private const var TAG_LR_CANDLE : name;             default TAG_LR_CANDLE             = 'LR_Candle';
-    private const var TAG_LR_TORCH : name;              default TAG_LR_TORCH              = 'LR_Torch';
-    private const var TAG_LR_BRAZIER : name;            default TAG_LR_BRAZIER            = 'LR_Brazier';
-    private const var TAG_LR_CANDELABRA : name;         default TAG_LR_CANDELABRA         = 'LR_Candelabra';
-    private const var TAG_LR_CAMPFIRE : name;           default TAG_LR_CAMPFIRE           = 'LR_Campfire';
-
     // Internal group IDs resolved at init time
     private var generalGroupId  : int;
 
@@ -94,77 +87,17 @@ class CLightRewriteSettings {
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
-        candleParams = new CLightRewriteSourceParams in this;
-        torchParams = new CLightRewriteSourceParams in this;
-        brazierParams = new CLightRewriteSourceParams in this;
-        candelabraParams = new CLightRewriteSourceParams in this;
-        campfireParams = new CLightRewriteSourceParams in this;
+        candleParams = new CLightRewriteParamsCandle in this;
+        torchParams = new CLightRewriteParamsTorch in this;
+        brazierParams = new CLightRewriteParamsBrazier in this;
+        candelabraParams = new CLightRewriteParamsCandelabra in this;
+        campfireParams = new CLightRewriteParamsCampfire in this;
 
-        candleParams.tag = TAG_LR_CANDLE;
-        torchParams.tag = TAG_LR_TORCH;
-        brazierParams.tag = TAG_LR_BRAZIER;
-        candelabraParams.tag = TAG_LR_CANDELABRA;
-        campfireParams.tag = TAG_LR_CAMPFIRE;
-
-        candleParams.useSpotlightColor = true;
-        candleParams.brightness = 5.5f;
-        candleParams.radius = 9.f;
-        candleParams.attenuation = 1.0f;
-        candleParams.shadowFadeDistance = 10.f;
-        candleParams.shadowFadeRange = 3.f;
-        candleParams.shadowBlendFactor = 1.f;
-        candleParams.shouldOverrideColour = false;
-        candleParams.color.Red = 240;
-        candleParams.color.Green = 245;
-        candleParams.color.Blue = 255;
-
-        torchParams.useSpotlightColor = false;
-        torchParams.brightness = 30.f;
-        torchParams.radius = 20.f;
-        torchParams.attenuation = 1.0f;
-        torchParams.shadowFadeDistance = 10.f;
-        torchParams.shadowFadeRange = 3.f;
-        torchParams.shadowBlendFactor = 1.f;
-        torchParams.shouldOverrideColour = false;
-        torchParams.color.Red = 255;
-        torchParams.color.Green = 255;
-        torchParams.color.Blue = 255;
-
-        brazierParams.useSpotlightColor = false;
-        brazierParams.brightness = 40.f;
-        brazierParams.radius = 25.f;
-        brazierParams.attenuation = 1.0f;
-        brazierParams.shadowFadeDistance = 35.f;
-        brazierParams.shadowFadeRange = 10.f;
-        brazierParams.shadowBlendFactor = 1.f;
-        brazierParams.shouldOverrideColour = false;
-        brazierParams.color.Red = 255;
-        brazierParams.color.Green = 255;
-        brazierParams.color.Blue = 255;
-
-        candelabraParams.useSpotlightColor = true;
-        candelabraParams.brightness = 8.0f;
-        candelabraParams.radius = 12.f;
-        candelabraParams.attenuation = 1.0f;
-        candelabraParams.shadowFadeDistance = 10.f;
-        candelabraParams.shadowFadeRange = 3.f;
-        candelabraParams.shadowBlendFactor = 1.f;
-        candelabraParams.shouldOverrideColour = false;
-        candelabraParams.color.Red = 255;
-        candelabraParams.color.Green = 255;
-        candelabraParams.color.Blue = 255;
-
-        campfireParams.useSpotlightColor = false;
-        campfireParams.brightness = 50.f;
-        campfireParams.radius = 30.f;
-        campfireParams.attenuation = 1.0f;
-        campfireParams.shadowFadeDistance = 10.f;
-        campfireParams.shadowFadeRange = 3.f;
-        campfireParams.shadowBlendFactor = 1.f;
-        campfireParams.shouldOverrideColour = false;
-        campfireParams.color.Red = 255;
-        campfireParams.color.Green = 255;
-        campfireParams.color.Blue = 255;
+        candleParams.Init();
+        torchParams.Init();
+        brazierParams.Init();
+        candelabraParams.Init();
+        campfireParams.Init();
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.

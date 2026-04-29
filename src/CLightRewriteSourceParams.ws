@@ -1,6 +1,6 @@
 class CLightRewriteSourceParams {
     // The tag that will identify this source in the game
-    public var tag : name;
+    public const var tag : name;
 
     public var brightness : float;
     public var radius : float;
