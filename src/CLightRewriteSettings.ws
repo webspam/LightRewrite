@@ -11,10 +11,6 @@ class CLightRewriteSettings {
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
 
-    private const var SHADOW_FADE_DISTANCE : name;     default SHADOW_FADE_DISTANCE   = 'ShadowFadeDistance';
-    private const var SHADOW_FADE_RANGE : name;        default SHADOW_FADE_RANGE      = 'ShadowFadeRange';
-    private const var SHADOW_BLEND_FACTOR : name;      default SHADOW_BLEND_FACTOR    = 'ShadowBlendFactor';
-
     private const var CANDLE_BRIGHTNESS : name;        default CANDLE_BRIGHTNESS      = 'CandleBrightness';
     private const var CANDLE_RADIUS : name;            default CANDLE_RADIUS          = 'CandleRadius';
     private const var CANDLE_ATTENUATION : name;       default CANDLE_ATTENUATION     = 'CandleAttenuation';
@@ -191,9 +187,6 @@ class CLightRewriteSettings {
         // Never initialised - write the v1 defaults, then apply the same migrations below.
         if (initVersion == 0) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, 10.f);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, 3.f);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, 1.f);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS, candleParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_RADIUS, candleParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS, torchParams.brightness);
@@ -256,9 +249,9 @@ class CLightRewriteSettings {
 
         // v5 → v6: promote global shadow settings to per-source keys.
         if (initVersion <= 5) {
-            oldShadowFadeDistance = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE);
-            oldShadowFadeRange = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE);
-            oldShadowBlendFactor = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR);
+            oldShadowFadeDistance = gameConfig.GetVarValue(GENERAL_GROUP, 'ShadowFadeDistance');
+            oldShadowFadeRange = gameConfig.GetVarValue(GENERAL_GROUP, 'ShadowFadeRange');
+            oldShadowBlendFactor = gameConfig.GetVarValue(GENERAL_GROUP, 'ShadowBlendFactor');
 
             if (StringToFloat(oldShadowFadeDistance, -1.f) != -1.f) {
                 gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_SHADOW_DISTANCE, oldShadowFadeDistance);
