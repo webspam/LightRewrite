@@ -5,6 +5,9 @@ class CLightRewriteSourceParams {
     public var brightness : float;
     public var radius : float;
     public var attenuation : float;
+    public var shadowFadeDistance : float;
+    public var shadowFadeRange : float;
+    public var shadowBlendFactor : float;
 
     public var shouldOverrideColour : bool;
     public var useSpotlightColor : bool;
