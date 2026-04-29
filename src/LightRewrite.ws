@@ -19,6 +19,8 @@ enum ELightRewriteType {
     LRT_Candle,
     LRT_Torch,
     LRT_Brazier,
+    LRT_Candelabra,
+    LRT_Campfire,
 }
 
 struct SLightRewriteOriginalValues {
@@ -94,6 +96,12 @@ function CandleLightRewrite() {
     }
     else if (lightRewriteLightType == LRT_Brazier) {
         sourceParams = settings.brazierParams;
+    }
+    else if (lightRewriteLightType == LRT_Candelabra) {
+        sourceParams = settings.candelabraParams;
+    }
+    else if (lightRewriteLightType == LRT_Campfire) {
+        sourceParams = settings.campfireParams;
     }
     else {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
@@ -220,7 +228,13 @@ public function IdentifyLightRewriteType() {
 
     editorName = StrAfterLast(ToString(), StrChar(92));
 
-    if (StrFindFirst(editorName, "candle") != -1) {
+    if (StrFindFirst(editorName, "candelabra") != -1) {
+        LogLightRewrite("Found candelabra: " + editorName);
+
+        lightRewriteLightType = LRT_Candelabra;
+        AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
+    }
+    else if (StrFindFirst(editorName, "candle") != -1) {
         LogLightRewrite("Found candle: " + editorName);
 
         lightRewriteLightType = LRT_Candle;
@@ -237,6 +251,12 @@ public function IdentifyLightRewriteType() {
 
         lightRewriteLightType = LRT_Brazier;
         AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
+    }
+    else if (StrFindFirst(editorName, "campfire") != -1) {
+        LogLightRewrite("Found campfire: " + editorName);
+
+        lightRewriteLightType = LRT_Campfire;
+        AddTag(theGame.GetLightRewriteSettings().campfireParams.tag);
     }
     else {
         lightRewriteLightType = LRT_Unknown;
