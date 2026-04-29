@@ -442,27 +442,29 @@ class CLightRewriteSettings {
     }
 
     private function EnableAllNearbyEntities() {
-        var i : int;
+        var i, count : int;
         var entities : array<CGameplayEntity>;
 
         GetAllLightSourceEntities(entities);
+        count = entities.Size();
 
-        LogLightRewrite("Enabling " + entities.Size() + " nearby entities");
+        LogLightRewrite("Enabling Light Rewrite for " + count + " entities");
 
-        for (i = 0; i < entities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entities[i].CandleLightRewrite();
         }
     }
 
     private function DisableAllNearbyEntities() {
-        var i : int;
+        var i, count : int;
         var entities : array<CGameplayEntity>;
 
         GetAllLightSourceEntities(entities);
+        count = entities.Size();
 
-        LogLightRewrite("Disabling " + entities.Size() + " nearby entities");
+        LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
 
-        for (i = 0; i < entities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entities[i].DisableLightRewrite();
         }
     }
