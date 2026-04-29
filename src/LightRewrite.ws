@@ -162,9 +162,9 @@ function DisableAllSpotlightComponents() {
 // Identify light sources, and rewrite matched entities to work properly with RT.
 @addMethod(CGameplayEntity)
 protected function InitialiseLightRewrite() {
-    if (theGame.GetLightRewriteSettings().isEnabled) {
-        IdentifyLightRewriteType();
+    IdentifyLightRewriteType();
 
+    if (theGame.GetLightRewriteSettings().isEnabled) {
         if (IsLightRewritable()) CandleLightRewrite();
     }
 }
