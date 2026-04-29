@@ -19,7 +19,7 @@
                 <Entry varId="BrazierRadius" value="10" />
                 <Entry varId="BrazierAttenuation" value="0.5" />
                 <Entry varId="BrazierShadowFadeDistance" value="20" />
-                <Entry varId="BrazierShadowFadeRange" value="5" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
                 <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="8" />
                 <Entry varId="CandelabraRadius" value="12" />
@@ -50,8 +50,8 @@
                 <Entry varId="BrazierBrightness" value="40" />
                 <Entry varId="BrazierRadius" value="25" />
                 <Entry varId="BrazierAttenuation" value="1" />
-                <Entry varId="BrazierShadowFadeDistance" value="20" />
-                <Entry varId="BrazierShadowFadeRange" value="3" />
+                <Entry varId="BrazierShadowFadeDistance" value="35" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
                 <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="8" />
                 <Entry varId="CandelabraRadius" value="12" />
@@ -82,8 +82,8 @@
                 <Entry varId="BrazierBrightness" value="60" />
                 <Entry varId="BrazierRadius" value="35" />
                 <Entry varId="BrazierAttenuation" value="0.9" />
-                <Entry varId="BrazierShadowFadeDistance" value="20" />
-                <Entry varId="BrazierShadowFadeRange" value="3" />
+                <Entry varId="BrazierShadowFadeDistance" value="35" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
                 <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="12" />
                 <Entry varId="CandelabraRadius" value="16" />
@@ -157,7 +157,8 @@
                 displayType="SLIDER;1;50;98" />
             <Var id="BrazierAttenuation" displayName="LightRewrite_Brazier_Attenuation"
                 displayType="SLIDER;0;1;20" />
-            <Var id="BrazierShadowFadeDistance" displayName="LightRewrite_Brazier_ShadowFadeDistance"
+            <Var id="BrazierShadowFadeDistance"
+                displayName="LightRewrite_Brazier_ShadowFadeDistance"
                 displayType="SLIDER;0;50;100" />
             <Var id="BrazierShadowFadeRange" displayName="LightRewrite_Brazier_ShadowFadeRange"
                 displayType="SLIDER;0;20;40" />
@@ -181,11 +182,14 @@
                 displayType="SLIDER;1;30;58" />
             <Var id="CandelabraAttenuation" displayName="LightRewrite_Candelabra_Attenuation"
                 displayType="SLIDER;0;1;20" />
-            <Var id="CandelabraShadowFadeDistance" displayName="LightRewrite_Candelabra_ShadowFadeDistance"
+            <Var id="CandelabraShadowFadeDistance"
+                displayName="LightRewrite_Candelabra_ShadowFadeDistance"
                 displayType="SLIDER;0;50;100" />
-            <Var id="CandelabraShadowFadeRange" displayName="LightRewrite_Candelabra_ShadowFadeRange"
+            <Var id="CandelabraShadowFadeRange"
+                displayName="LightRewrite_Candelabra_ShadowFadeRange"
                 displayType="SLIDER;0;20;40" />
-            <Var id="CandelabraShadowBlendFactor" displayName="LightRewrite_Candelabra_ShadowBlendFactor"
+            <Var id="CandelabraShadowBlendFactor"
+                displayName="LightRewrite_Candelabra_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideCandelabraColour" displayName="LightRewrite_Candelabra_OverrideColour"
@@ -205,11 +209,13 @@
                 displayType="SLIDER;1;50;98" />
             <Var id="CampfireAttenuation" displayName="LightRewrite_Campfire_Attenuation"
                 displayType="SLIDER;0;1;20" />
-            <Var id="CampfireShadowFadeDistance" displayName="LightRewrite_Campfire_ShadowFadeDistance"
+            <Var id="CampfireShadowFadeDistance"
+                displayName="LightRewrite_Campfire_ShadowFadeDistance"
                 displayType="SLIDER;0;50;100" />
             <Var id="CampfireShadowFadeRange" displayName="LightRewrite_Campfire_ShadowFadeRange"
                 displayType="SLIDER;0;20;40" />
-            <Var id="CampfireShadowBlendFactor" displayName="LightRewrite_Campfire_ShadowBlendFactor"
+            <Var id="CampfireShadowBlendFactor"
+                displayName="LightRewrite_Campfire_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideCampfireColour" displayName="LightRewrite_Campfire_OverrideColour"
