@@ -37,6 +37,9 @@ class CLightRewriteSourceParams {
     // By default, many candles use low-radius, very red point lights as a "lens flare" effect, and a spotlight for actual light
     public var useSpotlightColor : bool;
 
+    // Virtual constructor
+    public function Init() {}
+
     // Reads the game config for this light source.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name) {
         brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), brightness);
