@@ -200,7 +200,7 @@ class CLightRewriteSettings {
 
             if (optionName == candleParams.TAG_OVERRIDE_COLOUR || optionName == torchParams.TAG_OVERRIDE_COLOUR || brazierParams.TAG_OVERRIDE_COLOUR
                 || candelabraParams.TAG_OVERRIDE_COLOUR || campfireParams.TAG_OVERRIDE_COLOUR) {
-                UpdateColourSliderDisabledState();
+                UpdateAllColourSlidersDisabledState();
             }
 
             // If we've just turned the mod off, disable all nearby entities.
@@ -217,10 +217,10 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
-        UpdateColourSliderDisabledState();
+        UpdateAllColourSlidersDisabledState();
     }
 
-    private function UpdateColourSliderDisabledState() {
+    private function UpdateAllColourSlidersDisabledState() {
         var flashValueStorage : CScriptedFlashValueStorage;
         var dataArray : CScriptedFlashArray;
 
