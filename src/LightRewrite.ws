@@ -157,6 +157,7 @@ function OnSpawned(spawnData : SEntitySpawnData) {
     wrappedMethod(spawnData);
 }
 
+// Ensure lights that are ignited (e.g. by the player) are rewritten.
 @wrapMethod(CGameplayEntity)
 function AddTag(tag : name) {
     wrappedMethod(tag);
