@@ -14,7 +14,7 @@ struct SLightRewriteOriginalValues {
 // The original values of the light component.
 @addField(CLightComponent) public var lightRewriteOriginalValues : SLightRewriteOriginalValues;
 
-// Saves the original values of the light component.
+// Saves the current state of the light component as its original values, unless it has already been saved.
 @addMethod(CLightComponent)
 public function SaveLightRewriteOriginalValues() {
     if (lightRewriteOriginalValues.hasBeenSaved) return;

@@ -39,7 +39,7 @@ function OnGameStarting(restored : bool) {
 
 // Disable all of this entity's spotlight components.
 @addMethod(CGameplayEntity)
-function DisableAllSpotlightComponents() {
+public function DisableAllSpotlightComponents() {
     var lightComponent : CSpotLightComponent;
     var i : int;
 
@@ -155,7 +155,7 @@ public function IdentifyLightRewriteType() {
 
 // Rewrite a single candle / torch entity
 @addMethod(CGameplayEntity)
-function CandleLightRewrite() {
+public function CandleLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
@@ -227,8 +227,9 @@ function CandleLightRewrite() {
     if (count > 0) DisableAllSpotlightComponents();
 }
 
+// Disables Light Rewrite on an entity, restoring it to its original state.
 @addMethod(CGameplayEntity)
-function DisableLightRewrite() {
+public function DisableLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
@@ -244,7 +245,7 @@ function DisableLightRewrite() {
         }
     }
 
-    // Remove spotlights from candles that have point lights (should be all candles).
+    // Restore the original state of any spotlights.
     if (count > 0) {
         components = GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
