@@ -230,114 +230,51 @@ class CLightRewriteSettings {
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS);
-        if (val != "") candleParams.brightness = StringToFloat(val);
+        candleParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS), candleParams.brightness);
+        candleParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_RADIUS), candleParams.radius);
+        candleParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION), candleParams.attenuation);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_RADIUS);
-        if (val != "") candleParams.radius = StringToFloat(val);
+        torchParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS), torchParams.brightness);
+        torchParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_RADIUS), torchParams.radius);
+        torchParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_ATTENUATION), torchParams.attenuation);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION);
-        if (val != "") candleParams.attenuation = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS);
-        if (val != "") torchParams.brightness = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_RADIUS);
-        if (val != "") torchParams.radius = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_ATTENUATION);
-        if (val != "") torchParams.attenuation = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE);
-        if (val != "") shadowFadeDistance = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE);
-        if (val != "") shadowFadeRange = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR);
-        if (val != "") shadowBlendFactor = StringToFloat(val);
+        shadowFadeDistance = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE), shadowFadeDistance);
+        shadowFadeRange = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE), shadowFadeRange);
+        shadowBlendFactor = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR), shadowBlendFactor);
 
         candleParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_R);
-        if (val != "") candleParams.color.Red = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_G);
-        if (val != "") candleParams.color.Green = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_B);
-        if (val != "") candleParams.color.Blue = StringToInt(val);
+        candleParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_R), candleParams.color.Red);
+        candleParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_G), candleParams.color.Green);
+        candleParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_B), candleParams.color.Blue);
 
         torchParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR);
+        torchParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_R), torchParams.color.Red);
+        torchParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_G), torchParams.color.Green);
+        torchParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_B), torchParams.color.Blue);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_R);
-        if (val != "") torchParams.color.Red = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_G);
-        if (val != "") torchParams.color.Green = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_B);
-        if (val != "") torchParams.color.Blue = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_BRIGHTNESS);
-        if (val != "") brazierParams.brightness = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_RADIUS);
-        if (val != "") brazierParams.radius = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_ATTENUATION);
-        if (val != "") brazierParams.attenuation = StringToFloat(val);
-
+        brazierParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_BRIGHTNESS), brazierParams.brightness);
+        brazierParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_RADIUS), brazierParams.radius);
+        brazierParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_ATTENUATION), brazierParams.attenuation);
         brazierParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_BRAZIER_COLOUR);
+        brazierParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_R), brazierParams.color.Red);
+        brazierParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_G), brazierParams.color.Green);
+        brazierParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_B), brazierParams.color.Blue);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_R);
-        if (val != "") brazierParams.color.Red = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_G);
-        if (val != "") brazierParams.color.Green = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, BRAZIER_COLOR_B);
-        if (val != "") brazierParams.color.Blue = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_BRIGHTNESS);
-        if (val != "") candelabraParams.brightness = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_RADIUS);
-        if (val != "") candelabraParams.radius = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_ATTENUATION);
-        if (val != "") candelabraParams.attenuation = StringToFloat(val);
-
+        candelabraParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_BRIGHTNESS), candelabraParams.brightness);
+        candelabraParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_RADIUS), candelabraParams.radius);
+        candelabraParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_ATTENUATION), candelabraParams.attenuation);
         candelabraParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDELABRA_COLOUR);
+        candelabraParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_R), candelabraParams.color.Red);
+        candelabraParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_G), candelabraParams.color.Green);
+        candelabraParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_B), candelabraParams.color.Blue);
 
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_R);
-        if (val != "") candelabraParams.color.Red = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_G);
-        if (val != "") candelabraParams.color.Green = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_B);
-        if (val != "") candelabraParams.color.Blue = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_BRIGHTNESS);
-        if (val != "") campfireParams.brightness = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_RADIUS);
-        if (val != "") campfireParams.radius = StringToFloat(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_ATTENUATION);
-        if (val != "") campfireParams.attenuation = StringToFloat(val);
-
+        campfireParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_BRIGHTNESS), campfireParams.brightness);
+        campfireParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_RADIUS), campfireParams.radius);
+        campfireParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_ATTENUATION), campfireParams.attenuation);
         campfireParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CAMPFIRE_COLOUR);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_R);
-        if (val != "") campfireParams.color.Red = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_G);
-        if (val != "") campfireParams.color.Green = StringToInt(val);
-
-        val = gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_B);
-        if (val != "") campfireParams.color.Blue = StringToInt(val);
+        campfireParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_R), campfireParams.color.Red);
+        campfireParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_G), campfireParams.color.Green);
+        campfireParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_B), campfireParams.color.Blue);
     }
 
     // To be called for every option-change event.
