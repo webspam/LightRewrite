@@ -33,4 +33,17 @@ class CLightRewriteSourceParams {
     // Whether to copy the spotlight colour to point lights
     // By default, many candles use low-radius, very red point lights as a "lens flare" effect, and a spotlight for actual light
     public var useSpotlightColor : bool;
+
+    public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name) {
+        brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), brightness);
+        radius = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), radius);
+        attenuation = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), attenuation);
+        shadowFadeDistance = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE), shadowFadeDistance);
+        shadowFadeRange = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE), shadowFadeRange);
+        shadowBlendFactor = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), shadowBlendFactor);
+        shouldOverrideColour = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
+        color.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), color.Red);
+        color.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), color.Green);
+        color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), color.Blue);
+    }
 }
