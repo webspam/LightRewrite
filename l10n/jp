@@ -30,3 +30,17 @@
 2122144027||LightRewrite_Brazier_ColorR|火鉢の色: 赤
 2122144028||LightRewrite_Brazier_ColorG|火鉢の色: 緑
 2122144029||LightRewrite_Brazier_ColorB|火鉢の色: 青
+2122144030||LightRewrite_Candelabra_Brightness|燭台の明るさ
+2122144031||LightRewrite_Candelabra_Radius|燭台の半径
+2122144032||LightRewrite_Candelabra_Attenuation|燭台の減衰
+2122144033||LightRewrite_Candelabra_OverrideColour|燭台の色を上書き
+2122144034||LightRewrite_Candelabra_ColorR|燭台の色: 赤
+2122144035||LightRewrite_Candelabra_ColorG|燭台の色: 緑
+2122144036||LightRewrite_Candelabra_ColorB|燭台の色: 青
+2122144037||LightRewrite_Campfire_Brightness|焚き火の明るさ
+2122144038||LightRewrite_Campfire_Radius|焚き火の半径
+2122144039||LightRewrite_Campfire_Attenuation|焚き火の減衰
+2122144040||LightRewrite_Campfire_OverrideColour|焚き火の色を上書き
+2122144041||LightRewrite_Campfire_ColorR|焚き火の色: 赤
+2122144042||LightRewrite_Campfire_ColorG|焚き火の色: 緑
+2122144043||LightRewrite_Campfire_ColorB|焚き火の色: 青

@@ -30,3 +30,17 @@
 2122144027||LightRewrite_Brazier_ColorR|Cor do braseiro: Vermelho
 2122144028||LightRewrite_Brazier_ColorG|Cor do braseiro: Verde
 2122144029||LightRewrite_Brazier_ColorB|Cor do braseiro: Azul
+2122144030||LightRewrite_Candelabra_Brightness|Brilho do candelabro
+2122144031||LightRewrite_Candelabra_Radius|Raio do candelabro
+2122144032||LightRewrite_Candelabra_Attenuation|Atenuação do candelabro
+2122144033||LightRewrite_Candelabra_OverrideColour|Substituir cor do candelabro
+2122144034||LightRewrite_Candelabra_ColorR|Cor do candelabro: Vermelho
+2122144035||LightRewrite_Candelabra_ColorG|Cor do candelabro: Verde
+2122144036||LightRewrite_Candelabra_ColorB|Cor do candelabro: Azul
+2122144037||LightRewrite_Campfire_Brightness|Brilho da fogueira
+2122144038||LightRewrite_Campfire_Radius|Raio da fogueira
+2122144039||LightRewrite_Campfire_Attenuation|Atenuação da fogueira
+2122144040||LightRewrite_Campfire_OverrideColour|Substituir cor da fogueira
+2122144041||LightRewrite_Campfire_ColorR|Cor da fogueira: Vermelho
+2122144042||LightRewrite_Campfire_ColorG|Cor da fogueira: Verde
+2122144043||LightRewrite_Campfire_ColorB|Cor da fogueira: Azul

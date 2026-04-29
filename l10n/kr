@@ -30,3 +30,17 @@
 2122144027||LightRewrite_Brazier_ColorR|화로 색상: 빨간색
 2122144028||LightRewrite_Brazier_ColorG|화로 색상: 초록색
 2122144029||LightRewrite_Brazier_ColorB|화로 색상: 파란색
+2122144030||LightRewrite_Candelabra_Brightness|촛대 밝기
+2122144031||LightRewrite_Candelabra_Radius|촛대 반경
+2122144032||LightRewrite_Candelabra_Attenuation|촛대 감쇠
+2122144033||LightRewrite_Candelabra_OverrideColour|촛대 색상 덮어쓰기
+2122144034||LightRewrite_Candelabra_ColorR|촛대 색상: 빨간색
+2122144035||LightRewrite_Candelabra_ColorG|촛대 색상: 초록색
+2122144036||LightRewrite_Candelabra_ColorB|촛대 색상: 파란색
+2122144037||LightRewrite_Campfire_Brightness|모닥불 밝기
+2122144038||LightRewrite_Campfire_Radius|모닥불 반경
+2122144039||LightRewrite_Campfire_Attenuation|모닥불 감쇠
+2122144040||LightRewrite_Campfire_OverrideColour|모닥불 색상 덮어쓰기
+2122144041||LightRewrite_Campfire_ColorR|모닥불 색상: 빨간색
+2122144042||LightRewrite_Campfire_ColorG|모닥불 색상: 초록색
+2122144043||LightRewrite_Campfire_ColorB|모닥불 색상: 파란색
