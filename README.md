@@ -27,3 +27,18 @@ This isn't perfect. The matching is naïve; a light source named `glowing_altar_
 I _guarantee_ this will not work with **every** combination of mods.
 
 That said, I'm extremely keen (at time of writing) to hear about any misidentified light sources or terrible results. ... assuming you can give me a screen shot and a mod list.
+
+---
+
+### Installation instructions
+
+- Install with W3MM / Vortex
+
+-OR-
+
+- &lt;insert link to generic manual mod installation guide here&gt;
+
+### Requirements
+
+- Witcher 3 - Next-Gen 4.04 (probably)
+- [Community Patch - Shared Imports](https://www.nexusmods.com/witcher3/mods/2110)
