@@ -2,11 +2,13 @@
 
 ## Translations
 
-All translations are generated. Translations from native speakers are most welcome!
+Translations (from English) have been AI-generated. Actual translations from native speakers are most welcome!
+
+The translated files are plain text and have no file extension, but can be read with any text editor.
 
 ## Generating w3strings localisation files
 
-The `l10n/*.w3strings` files are **generated** and must be **rebuilt manually** when the plain-text translation files are updated.
+The `l10n/*.w3strings` files are **generated binary files** and must be **rebuilt manually** when the plain-text translation files are updated.
 
 Game-ready files were generated with `w3strings encoder` by rmemr: https://www.nexusmods.com/witcher3/mods/1055
 

@@ -30,3 +30,17 @@
 2122144027||LightRewrite_Brazier_ColorR|火盆顏色：紅色
 2122144028||LightRewrite_Brazier_ColorG|火盆顏色：綠色
 2122144029||LightRewrite_Brazier_ColorB|火盆顏色：藍色
+2122144030||LightRewrite_Candelabra_Brightness|燭台亮度
+2122144031||LightRewrite_Candelabra_Radius|燭台半徑
+2122144032||LightRewrite_Candelabra_Attenuation|燭台衰減
+2122144033||LightRewrite_Candelabra_OverrideColour|覆蓋燭台顏色
+2122144034||LightRewrite_Candelabra_ColorR|燭台顏色：紅色
+2122144035||LightRewrite_Candelabra_ColorG|燭台顏色：綠色
+2122144036||LightRewrite_Candelabra_ColorB|燭台顏色：藍色
+2122144037||LightRewrite_Campfire_Brightness|篝火亮度
+2122144038||LightRewrite_Campfire_Radius|篝火半徑
+2122144039||LightRewrite_Campfire_Attenuation|篝火衰減
+2122144040||LightRewrite_Campfire_OverrideColour|覆蓋篝火顏色
+2122144041||LightRewrite_Campfire_ColorR|篝火顏色：紅色
+2122144042||LightRewrite_Campfire_ColorG|篝火顏色：綠色
+2122144043||LightRewrite_Campfire_ColorB|篝火顏色：藍色
