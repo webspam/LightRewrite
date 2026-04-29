@@ -230,23 +230,21 @@ class CLightRewriteSettings {
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        candleParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS), candleParams.brightness);
-        candleParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_RADIUS), candleParams.radius);
-        candleParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION), candleParams.attenuation);
-
-        torchParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS), torchParams.brightness);
-        torchParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_RADIUS), torchParams.radius);
-        torchParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_ATTENUATION), torchParams.attenuation);
-
         shadowFadeDistance = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE), shadowFadeDistance);
         shadowFadeRange = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE), shadowFadeRange);
         shadowBlendFactor = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR), shadowBlendFactor);
 
+        candleParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS), candleParams.brightness);
+        candleParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_RADIUS), candleParams.radius);
+        candleParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION), candleParams.attenuation);
         candleParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR);
         candleParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_R), candleParams.color.Red);
         candleParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_G), candleParams.color.Green);
         candleParams.color.Blue = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CANDLE_COLOR_B), candleParams.color.Blue);
 
+        torchParams.brightness = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS), torchParams.brightness);
+        torchParams.radius = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_RADIUS), torchParams.radius);
+        torchParams.attenuation = StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_ATTENUATION), torchParams.attenuation);
         torchParams.shouldOverrideColour = gameConfig.GetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR);
         torchParams.color.Red = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_R), torchParams.color.Red);
         torchParams.color.Green = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, TORCH_COLOR_G), torchParams.color.Green);
