@@ -52,9 +52,12 @@ public function SaveLightRewriteOriginalValues() {
 
 @addMethod(CLightComponent)
 public function RestoreLightRewriteOriginalValues() {
+    var wasEnabled : bool;
+
     if (!lightRewriteOriginalValues.hasBeenSaved) return;
 
-    SetEnabled(false);
+    wasEnabled = IsEnabled();
+    if (wasEnabled) SetEnabled(false);
     
     brightness = lightRewriteOriginalValues.brightness;
     radius = lightRewriteOriginalValues.radius;
@@ -64,7 +67,7 @@ public function RestoreLightRewriteOriginalValues() {
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     color = lightRewriteOriginalValues.color;
 
-    SetEnabled(true);
+    if (wasEnabled) SetEnabled(true);
 }
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
@@ -76,6 +79,7 @@ function CandleLightRewrite() {
     var pointLight : CPointLightComponent;
     var i : int;
     var sourceParams : CLightRewriteSourceParams;
+    var wasEnabled : bool;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
@@ -106,7 +110,8 @@ function CandleLightRewrite() {
         if (pointLight) {
             pointLight.SaveLightRewriteOriginalValues();
 
-            pointLight.SetEnabled(false);
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
 
             pointLight.brightness = sourceParams.brightness;
             pointLight.radius = sourceParams.radius;
@@ -127,7 +132,7 @@ function CandleLightRewrite() {
                 pointLight.color = pointLight.lightRewriteOriginalValues.color;
             }
 
-            pointLight.SetEnabled(true);
+            if (wasEnabled) pointLight.SetEnabled(true);
         }
     }
 
