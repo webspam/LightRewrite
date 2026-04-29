@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Couleur de la torche : Vert
 2122144021||LightRewrite_Torch_ColorB|Couleur de la torche : Bleu
 2122144022||LightRewrite_InitVersion|Version d'initialisation
+2122144023||LightRewrite_Brazier_Brightness|Luminosité du brasero
+2122144024||LightRewrite_Brazier_Radius|Rayon du brasero
+2122144025||LightRewrite_Brazier_Attenuation|Atténuation du brasero
+2122144026||LightRewrite_Brazier_OverrideColour|Remplacer la couleur du brasero
+2122144027||LightRewrite_Brazier_ColorR|Couleur du brasero : Rouge
+2122144028||LightRewrite_Brazier_ColorG|Couleur du brasero : Vert
+2122144029||LightRewrite_Brazier_ColorB|Couleur du brasero : Bleu

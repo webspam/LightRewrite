@@ -12,6 +12,9 @@
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="5" />
                 <Entry varId="TorchAttenuation" value="0.5" />
+                <Entry varId="BrazierBrightness" value="40" />
+                <Entry varId="BrazierRadius" value="10" />
+                <Entry varId="BrazierAttenuation" value="0.5" />
             </Preset>
             <Preset id="1" displayName="LightRewrite_Preset_Author">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -23,6 +26,9 @@
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="20" />
                 <Entry varId="TorchAttenuation" value="1" />
+                <Entry varId="BrazierBrightness" value="40" />
+                <Entry varId="BrazierRadius" value="25" />
+                <Entry varId="BrazierAttenuation" value="1" />
             </Preset>
             <Preset id="2" displayName="LightRewrite_Preset_Bright">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -34,6 +40,9 @@
                 <Entry varId="TorchBrightness" value="50" />
                 <Entry varId="TorchRadius" value="25" />
                 <Entry varId="TorchAttenuation" value="0.9" />
+                <Entry varId="BrazierBrightness" value="60" />
+                <Entry varId="BrazierRadius" value="35" />
+                <Entry varId="BrazierAttenuation" value="0.9" />
             </Preset>
         </PresetsArray>
         <VisibleVars>
@@ -81,9 +90,27 @@
             <Var id="TorchColorB" displayName="LightRewrite_Torch_ColorB"
                 displayType="SLIDER;0;255;255" tags="indent" />
 
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="BrazierBrightness" displayName="LightRewrite_Brazier_Brightness"
+                displayType="SLIDER;0;100;200" />
+            <Var id="BrazierRadius" displayName="LightRewrite_Brazier_Radius"
+                displayType="SLIDER;1;50;98" />
+            <Var id="BrazierAttenuation" displayName="LightRewrite_Brazier_Attenuation"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="OverrideBrazierColour" displayName="LightRewrite_Brazier_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="BrazierColorR" displayName="LightRewrite_Brazier_ColorR"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="BrazierColorG" displayName="LightRewrite_Brazier_ColorG"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="BrazierColorB" displayName="LightRewrite_Brazier_ColorB"
+                displayType="SLIDER;0;255;255" tags="indent" />
+
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;3;3" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;4;4" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>

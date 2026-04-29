@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Цвет факела: Зелёный
 2122144021||LightRewrite_Torch_ColorB|Цвет факела: Синий
 2122144022||LightRewrite_InitVersion|Версия инициализации
+2122144023||LightRewrite_Brazier_Brightness|Яркость жаровни
+2122144024||LightRewrite_Brazier_Radius|Радиус жаровни
+2122144025||LightRewrite_Brazier_Attenuation|Затухание жаровни
+2122144026||LightRewrite_Brazier_OverrideColour|Переопределить цвет жаровни
+2122144027||LightRewrite_Brazier_ColorR|Цвет жаровни: Красный
+2122144028||LightRewrite_Brazier_ColorG|Цвет жаровни: Зелёный
+2122144029||LightRewrite_Brazier_ColorB|Цвет жаровни: Синий

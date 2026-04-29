@@ -18,6 +18,7 @@ enum ELightRewriteType {
     LRT_Unknown,
     LRT_Candle,
     LRT_Torch,
+    LRT_Brazier,
 }
 
 struct SLightRewriteOriginalValues {
@@ -51,9 +52,12 @@ public function SaveLightRewriteOriginalValues() {
 
 @addMethod(CLightComponent)
 public function RestoreLightRewriteOriginalValues() {
+    var wasEnabled : bool;
+
     if (!lightRewriteOriginalValues.hasBeenSaved) return;
 
-    SetEnabled(false);
+    wasEnabled = IsEnabled();
+    if (wasEnabled) SetEnabled(false);
     
     brightness = lightRewriteOriginalValues.brightness;
     radius = lightRewriteOriginalValues.radius;
@@ -63,7 +67,7 @@ public function RestoreLightRewriteOriginalValues() {
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     color = lightRewriteOriginalValues.color;
 
-    SetEnabled(true);
+    if (wasEnabled) SetEnabled(true);
 }
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
@@ -75,6 +79,7 @@ function CandleLightRewrite() {
     var pointLight : CPointLightComponent;
     var i : int;
     var sourceParams : CLightRewriteSourceParams;
+    var wasEnabled : bool;
 
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
@@ -86,6 +91,9 @@ function CandleLightRewrite() {
     }
     else if (lightRewriteLightType == LRT_Torch) {
         sourceParams = settings.torchParams;
+    }
+    else if (lightRewriteLightType == LRT_Brazier) {
+        sourceParams = settings.brazierParams;
     }
     else {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
@@ -102,7 +110,8 @@ function CandleLightRewrite() {
         if (pointLight) {
             pointLight.SaveLightRewriteOriginalValues();
 
-            pointLight.SetEnabled(false);
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
 
             pointLight.brightness = sourceParams.brightness;
             pointLight.radius = sourceParams.radius;
@@ -115,7 +124,7 @@ function CandleLightRewrite() {
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;
             }
-            else if (spotLight) {
+            else if (spotLight && sourceParams.useSpotlightColor) {
                 pointLight.color = spotLight.color;
             }
             else {
@@ -123,7 +132,7 @@ function CandleLightRewrite() {
                 pointLight.color = pointLight.lightRewriteOriginalValues.color;
             }
 
-            pointLight.SetEnabled(true);
+            if (wasEnabled) pointLight.SetEnabled(true);
         }
     }
 
@@ -151,16 +160,29 @@ function DisableAllSpotlightComponents() {
 }
 
 // Identify light sources, and rewrite matched entities to work properly with RT.
-@wrapMethod(CGameplayEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    var editorName : string;
+@addMethod(CGameplayEntity)
+protected function InitialiseLightRewrite() {
+    IdentifyLightRewriteType();
 
-    if (!spawnData.restored && theGame.GetLightRewriteSettings().isEnabled) {
-        IdentifyLightRewriteType();
-
+    if (theGame.GetLightRewriteSettings().isEnabled) {
         if (IsLightRewritable()) CandleLightRewrite();
     }
+}
 
+// We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
+@wrapMethod(CGameplayEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(CInteractiveEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(W3FireSource)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
@@ -170,6 +192,10 @@ function AddTag(tag : name) {
 
     if (tag == theGame.params.TAG_OPEN_FIRE) {
         IdentifyLightRewriteType();
+
+        if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
+            CandleLightRewrite();
+        }
     }
 }
 
@@ -205,6 +231,12 @@ public function IdentifyLightRewriteType() {
 
         lightRewriteLightType = LRT_Torch;
         AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
+    }
+    else if (StrFindFirst(editorName, "brazier") != -1) {
+        LogLightRewrite("Found brazier: " + editorName);
+
+        lightRewriteLightType = LRT_Brazier;
+        AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
     }
     else {
         lightRewriteLightType = LRT_Unknown;

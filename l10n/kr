@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|횃불 색상: 초록색
 2122144021||LightRewrite_Torch_ColorB|횃불 색상: 파란색
 2122144022||LightRewrite_InitVersion|초기화 버전
+2122144023||LightRewrite_Brazier_Brightness|화로 밝기
+2122144024||LightRewrite_Brazier_Radius|화로 반경
+2122144025||LightRewrite_Brazier_Attenuation|화로 감쇠
+2122144026||LightRewrite_Brazier_OverrideColour|화로 색상 덮어쓰기
+2122144027||LightRewrite_Brazier_ColorR|화로 색상: 빨간색
+2122144028||LightRewrite_Brazier_ColorG|화로 색상: 초록색
+2122144029||LightRewrite_Brazier_ColorB|화로 색상: 파란색

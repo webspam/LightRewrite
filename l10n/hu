@@ -23,3 +23,10 @@
 2122144020||LightRewrite_Torch_ColorG|Fáklya színe: Zöld
 2122144021||LightRewrite_Torch_ColorB|Fáklya színe: Kék
 2122144022||LightRewrite_InitVersion|Inicializálási verzió
+2122144023||LightRewrite_Brazier_Brightness|Parázstartó fényereje
+2122144024||LightRewrite_Brazier_Radius|Parázstartó sugara
+2122144025||LightRewrite_Brazier_Attenuation|Parázstartó csillapítása
+2122144026||LightRewrite_Brazier_OverrideColour|Parázstartó színének felülírása
+2122144027||LightRewrite_Brazier_ColorR|Parázstartó színe: Piros
+2122144028||LightRewrite_Brazier_ColorG|Parázstartó színe: Zöld
+2122144029||LightRewrite_Brazier_ColorB|Parázstartó színe: Kék
