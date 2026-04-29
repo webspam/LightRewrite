@@ -299,3 +299,16 @@ function DisableLightRewrite() {
 function LogLightRewrite(msg : string) {
     LogChannel('LightRewrite', msg);
 }
+
+function LR_SetMenuOptionDisabled(
+    flashValueStorage : CScriptedFlashValueStorage,
+    out dataArray : CScriptedFlashArray,
+    xmlVarId : name,
+    disabled : bool
+) {
+    var dataObject : CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
+
+    dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(xmlVarId));
+    dataObject.SetMemberFlashBool("disabled", disabled);
+    dataArray.PushBackFlashObject(dataObject);
+}
