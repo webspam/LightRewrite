@@ -266,18 +266,13 @@ class CLightRewriteSettings {
     }
 
     private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
-        var tags : array<name>;
         var nodes : array<CNode>;
         var entity : CGameplayEntity;
         var i : int;
         var count : int;
 
-        tags.PushBack(candleParams.tag);
-        tags.PushBack(torchParams.tag);
-        tags.PushBack(brazierParams.tag);
-        tags.PushBack(candelabraParams.tag);
-        tags.PushBack(campfireParams.tag);
-   
+        var tags : array<name> = GetAllLightSourceTags();
+
         theGame.GetNodesByTags(tags, nodes);
         count = nodes.Size();
 
@@ -285,5 +280,17 @@ class CLightRewriteSettings {
             entity = (CGameplayEntity)nodes[i];
             if (entity) entities.PushBack(entity);
         }
+    }
+
+    public function GetAllLightSourceTags() : array<name> {
+        var tags : array<name>;
+
+        tags.PushBack(candleParams.tag);
+        tags.PushBack(torchParams.tag);
+        tags.PushBack(brazierParams.tag);
+        tags.PushBack(candelabraParams.tag);
+        tags.PushBack(campfireParams.tag);
+
+        return tags;
     }
 }
