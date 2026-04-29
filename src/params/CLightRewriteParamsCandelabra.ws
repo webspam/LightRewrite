@@ -2,6 +2,17 @@ class CLightRewriteParamsCandelabra extends CLightRewriteSourceParams {
     // The tag that will identify this source in the game
     default tag = 'LR_Candelabra';
 
+    default TAG_BRIGHTNESS = 'CandelabraBrightness';
+    default TAG_RADIUS = 'CandelabraRadius';
+    default TAG_ATTENUATION = 'CandelabraAttenuation';
+    default TAG_SHADOW_DISTANCE = 'CandelabraShadowFadeDistance';
+    default TAG_SHADOW_RANGE = 'CandelabraShadowFadeRange';
+    default TAG_SHADOW_BLEND = 'CandelabraShadowBlendFactor';
+    default TAG_OVERRIDE_COLOUR = 'OverrideCandelabraColour';
+    default TAG_RED = 'CandelabraColorR';
+    default TAG_GREEN = 'CandelabraColorG';
+    default TAG_BLUE = 'CandelabraColorB';
+
     default useSpotlightColor = true;
     default brightness = 8.0f;
     default radius = 12.f;
