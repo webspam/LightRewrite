@@ -468,77 +468,30 @@ class CLightRewriteSettings {
     }
 
     private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
+        PushRewritableEntitiesByTag(candleParams.tag, "candles", entities);
+        PushRewritableEntitiesByTag(torchParams.tag, "torches", entities);
+        PushRewritableEntitiesByTag(brazierParams.tag, "braziers", entities);
+        PushRewritableEntitiesByTag(candelabraParams.tag, "candelabras", entities);
+        PushRewritableEntitiesByTag(campfireParams.tag, "campfires", entities);
+    }
+
+    private function PushRewritableEntitiesByTag(tag : name, logKind : string, out result : array<CGameplayEntity>) {
         var interimEntities : array<CEntity>;
         var i, count : int;
         var entity : CGameplayEntity;
 
-        theGame.GetEntitiesByTag(candleParams.tag, interimEntities);
+        theGame.GetEntitiesByTag(tag, interimEntities);
         count = interimEntities.Size();
-        LogLightRewrite("Get nearby candles: Found " + count + " nearby entities");
+        LogLightRewrite("Get nearby " + logKind + ": Found " + count + " nearby entities");
 
         for (i = 0; i < count; i += 1) {
             entity = (CGameplayEntity)interimEntities[i];
             entity.IdentifyLightRewriteType();
 
             if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        theGame.GetEntitiesByTag(torchParams.tag, interimEntities);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby torches: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        theGame.GetEntitiesByTag(brazierParams.tag, interimEntities);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby braziers: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        theGame.GetEntitiesByTag(candelabraParams.tag, interimEntities);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby candelabras: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        theGame.GetEntitiesByTag(campfireParams.tag, interimEntities);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby campfires: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
+                result.PushBack(entity);
             }
         }
     }
+
 }
