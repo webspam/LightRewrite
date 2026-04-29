@@ -37,80 +37,6 @@ function OnGameStarting(restored : bool) {
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 
-// Rewrite a single candle / torch entity
-@addMethod(CGameplayEntity)
-function CandleLightRewrite() {
-    var spotLight : CSpotLightComponent;
-    var pointLight : CPointLightComponent;
-    var i : int;
-    var sourceParams : CLightRewriteSourceParams;
-    var wasEnabled : bool;
-
-    var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
-    var count : int = components.Size();
-
-    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
-
-    if (lightRewriteLightType == LRT_Candle) {
-        sourceParams = settings.candleParams;
-    }
-    else if (lightRewriteLightType == LRT_Torch) {
-        sourceParams = settings.torchParams;
-    }
-    else if (lightRewriteLightType == LRT_Brazier) {
-        sourceParams = settings.brazierParams;
-    }
-    else if (lightRewriteLightType == LRT_Candelabra) {
-        sourceParams = settings.candelabraParams;
-    }
-    else if (lightRewriteLightType == LRT_Campfire) {
-        sourceParams = settings.campfireParams;
-    }
-    else {
-        LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
-        return;
-    }
-
-    // Clusters of candles emit most of their light via a single spotlight.
-    // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-    spotLight = (CSpotLightComponent)GetComponent('CSpotLightComponent0');
-
-    for (i = 0; i < count; i += 1) {
-        pointLight = (CPointLightComponent)components[i];
-
-        if (pointLight) {
-            pointLight.SaveLightRewriteOriginalValues();
-
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
-            pointLight.brightness = sourceParams.brightness;
-            pointLight.radius = sourceParams.radius;
-            pointLight.attenuation = sourceParams.attenuation;
-
-            pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
-            pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
-            pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
-
-            if (sourceParams.shouldOverrideColour) {
-                pointLight.color = sourceParams.color;
-            }
-            else if (spotLight && sourceParams.useSpotlightColor) {
-                pointLight.color = spotLight.color;
-            }
-            else {
-                // No spotlight, and we're not overriding the colour, so use the original colour.
-                pointLight.color = pointLight.lightRewriteOriginalValues.color;
-            }
-
-            if (wasEnabled) pointLight.SetEnabled(true);
-        }
-    }
-
-    // Remove spotlights from candles that have point lights (should be all candles).
-    if (count > 0) DisableAllSpotlightComponents();
-}
-
 // Disable all of this entity's spotlight components.
 @addMethod(CGameplayEntity)
 function DisableAllSpotlightComponents() {
@@ -225,6 +151,80 @@ public function IdentifyLightRewriteType() {
     else {
         lightRewriteLightType = LRT_Unknown;
     }
+}
+
+// Rewrite a single candle / torch entity
+@addMethod(CGameplayEntity)
+function CandleLightRewrite() {
+    var spotLight : CSpotLightComponent;
+    var pointLight : CPointLightComponent;
+    var i : int;
+    var sourceParams : CLightRewriteSourceParams;
+    var wasEnabled : bool;
+
+    var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
+    var count : int = components.Size();
+
+    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
+
+    if (lightRewriteLightType == LRT_Candle) {
+        sourceParams = settings.candleParams;
+    }
+    else if (lightRewriteLightType == LRT_Torch) {
+        sourceParams = settings.torchParams;
+    }
+    else if (lightRewriteLightType == LRT_Brazier) {
+        sourceParams = settings.brazierParams;
+    }
+    else if (lightRewriteLightType == LRT_Candelabra) {
+        sourceParams = settings.candelabraParams;
+    }
+    else if (lightRewriteLightType == LRT_Campfire) {
+        sourceParams = settings.campfireParams;
+    }
+    else {
+        LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
+        return;
+    }
+
+    // Clusters of candles emit most of their light via a single spotlight.
+    // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
+    spotLight = (CSpotLightComponent)GetComponent('CSpotLightComponent0');
+
+    for (i = 0; i < count; i += 1) {
+        pointLight = (CPointLightComponent)components[i];
+
+        if (pointLight) {
+            pointLight.SaveLightRewriteOriginalValues();
+
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
+
+            pointLight.brightness = sourceParams.brightness;
+            pointLight.radius = sourceParams.radius;
+            pointLight.attenuation = sourceParams.attenuation;
+
+            pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
+            pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
+            pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
+
+            if (sourceParams.shouldOverrideColour) {
+                pointLight.color = sourceParams.color;
+            }
+            else if (spotLight && sourceParams.useSpotlightColor) {
+                pointLight.color = spotLight.color;
+            }
+            else {
+                // No spotlight, and we're not overriding the colour, so use the original colour.
+                pointLight.color = pointLight.lightRewriteOriginalValues.color;
+            }
+
+            if (wasEnabled) pointLight.SetEnabled(true);
+        }
+    }
+
+    // Remove spotlights from candles that have point lights (should be all candles).
+    if (count > 0) DisableAllSpotlightComponents();
 }
 
 @addMethod(CGameplayEntity)
