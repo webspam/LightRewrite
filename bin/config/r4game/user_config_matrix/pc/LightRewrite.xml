@@ -15,6 +15,12 @@
                 <Entry varId="BrazierBrightness" value="40" />
                 <Entry varId="BrazierRadius" value="10" />
                 <Entry varId="BrazierAttenuation" value="0.5" />
+                <Entry varId="CandelabraBrightness" value="8" />
+                <Entry varId="CandelabraRadius" value="12" />
+                <Entry varId="CandelabraAttenuation" value="0.7" />
+                <Entry varId="CampfireBrightness" value="50" />
+                <Entry varId="CampfireRadius" value="15" />
+                <Entry varId="CampfireAttenuation" value="0.5" />
             </Preset>
             <Preset id="1" displayName="LightRewrite_Preset_Author">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -29,6 +35,12 @@
                 <Entry varId="BrazierBrightness" value="40" />
                 <Entry varId="BrazierRadius" value="25" />
                 <Entry varId="BrazierAttenuation" value="1" />
+                <Entry varId="CandelabraBrightness" value="8" />
+                <Entry varId="CandelabraRadius" value="12" />
+                <Entry varId="CandelabraAttenuation" value="1" />
+                <Entry varId="CampfireBrightness" value="50" />
+                <Entry varId="CampfireRadius" value="30" />
+                <Entry varId="CampfireAttenuation" value="1" />
             </Preset>
             <Preset id="2" displayName="LightRewrite_Preset_Bright">
                 <Entry varId="ShadowFadeDistance" value="10" />
@@ -43,6 +55,12 @@
                 <Entry varId="BrazierBrightness" value="60" />
                 <Entry varId="BrazierRadius" value="35" />
                 <Entry varId="BrazierAttenuation" value="0.9" />
+                <Entry varId="CandelabraBrightness" value="12" />
+                <Entry varId="CandelabraRadius" value="16" />
+                <Entry varId="CandelabraAttenuation" value="0.95" />
+                <Entry varId="CampfireBrightness" value="75" />
+                <Entry varId="CampfireRadius" value="40" />
+                <Entry varId="CampfireAttenuation" value="0.9" />
             </Preset>
         </PresetsArray>
         <VisibleVars>
@@ -108,9 +126,45 @@
             <Var id="BrazierColorB" displayName="LightRewrite_Brazier_ColorB"
                 displayType="SLIDER;0;255;255" tags="indent" />
 
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="CandelabraBrightness" displayName="LightRewrite_Candelabra_Brightness"
+                displayType="SLIDER;0;20;40" />
+            <Var id="CandelabraRadius" displayName="LightRewrite_Candelabra_Radius"
+                displayType="SLIDER;1;30;58" />
+            <Var id="CandelabraAttenuation" displayName="LightRewrite_Candelabra_Attenuation"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="OverrideCandelabraColour" displayName="LightRewrite_Candelabra_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="CandelabraColorR" displayName="LightRewrite_Candelabra_ColorR"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="CandelabraColorG" displayName="LightRewrite_Candelabra_ColorG"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="CandelabraColorB" displayName="LightRewrite_Candelabra_ColorB"
+                displayType="SLIDER;0;255;255" tags="indent" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="CampfireBrightness" displayName="LightRewrite_Campfire_Brightness"
+                displayType="SLIDER;0;100;200" />
+            <Var id="CampfireRadius" displayName="LightRewrite_Campfire_Radius"
+                displayType="SLIDER;1;50;98" />
+            <Var id="CampfireAttenuation" displayName="LightRewrite_Campfire_Attenuation"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="OverrideCampfireColour" displayName="LightRewrite_Campfire_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="CampfireColorR" displayName="LightRewrite_Campfire_ColorR"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="CampfireColorG" displayName="LightRewrite_Campfire_ColorG"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="CampfireColorB" displayName="LightRewrite_Campfire_ColorB"
+                displayType="SLIDER;0;255;255" tags="indent" />
+
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;4;4" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;5;5" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>
