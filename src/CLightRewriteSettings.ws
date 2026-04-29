@@ -442,103 +442,52 @@ class CLightRewriteSettings {
     }
 
     private function EnableAllNearbyEntities() {
-        var i : int;
+        var i, count : int;
         var entities : array<CGameplayEntity>;
 
-        GetAllNearbyEntities(entities);
+        GetAllLightSourceEntities(entities);
+        count = entities.Size();
 
-        LogLightRewrite("Enabling " + entities.Size() + " nearby entities");
+        LogLightRewrite("Enabling Light Rewrite for " + count + " entities");
 
-        for (i = 0; i < entities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entities[i].CandleLightRewrite();
         }
     }
 
     private function DisableAllNearbyEntities() {
-        var i : int;
+        var i, count : int;
         var entities : array<CGameplayEntity>;
 
-        GetAllNearbyEntities(entities);
+        GetAllLightSourceEntities(entities);
+        count = entities.Size();
 
-        LogLightRewrite("Disabling " + entities.Size() + " nearby entities");
+        LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
 
-        for (i = 0; i < entities.Size(); i += 1) {
+        for (i = 0; i < count; i += 1) {
             entities[i].DisableLightRewrite();
         }
     }
 
-    private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
-        var interimEntities : array<CGameplayEntity>;
-        var i, count : int;
+    private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
+        var tags : array<name>;
+        var nodes : array<CNode>;
         var entity : CGameplayEntity;
+        var i : int;
+        var count : int;
 
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, candleParams.tag);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby candles: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, torchParams.tag);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby torches: Found " + count + " nearby entities");
+        tags.PushBack(candleParams.tag);
+        tags.PushBack(torchParams.tag);
+        tags.PushBack(brazierParams.tag);
+        tags.PushBack(candelabraParams.tag);
+        tags.PushBack(campfireParams.tag);
+   
+        theGame.GetNodesByTags(tags, nodes);
+        count = nodes.Size();
 
         for (i = 0; i < count; i += 1) {
-            entity = interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, brazierParams.tag);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby braziers: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, candelabraParams.tag);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby candelabras: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
-        }
-        interimEntities.Clear();
-
-        FindGameplayEntitiesInRange(interimEntities, thePlayer, 1000.f, 1024, campfireParams.tag);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby campfires: Found " + count + " nearby entities");
-
-        for (i = 0; i < count; i += 1) {
-            entity = interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                entities.PushBack(entity);
-            }
+            entity = (CGameplayEntity)nodes[i];
+            if (entity) entities.PushBack(entity);
         }
     }
 }
