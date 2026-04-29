@@ -26,8 +26,12 @@ class CLightRewriteSettings {
     public var candelabraParams : CLightRewriteSourceParams;
     public var campfireParams : CLightRewriteSourceParams;
 
+    private var lightSourceParams : array<CLightRewriteSourceParams>;
+
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
+        var i, count : int;
+        
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
@@ -37,11 +41,16 @@ class CLightRewriteSettings {
         candelabraParams = new CLightRewriteParamsCandelabra in this;
         campfireParams = new CLightRewriteParamsCampfire in this;
 
-        candleParams.Init();
-        torchParams.Init();
-        brazierParams.Init();
-        candelabraParams.Init();
-        campfireParams.Init();
+        lightSourceParams.PushBack(candleParams);
+        lightSourceParams.PushBack(torchParams);
+        lightSourceParams.PushBack(brazierParams);
+        lightSourceParams.PushBack(candelabraParams);
+        lightSourceParams.PushBack(campfireParams);
+
+        count = lightSourceParams.Size();
+        for (i = 0; i < count; i += 1) {
+            lightSourceParams[i].Init();
+        }
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
