@@ -445,7 +445,7 @@ class CLightRewriteSettings {
         var i : int;
         var entities : array<CGameplayEntity>;
 
-        GetAllNearbyEntities(entities);
+        GetAllLightSourceEntities(entities);
 
         LogLightRewrite("Enabling " + entities.Size() + " nearby entities");
 
@@ -458,7 +458,7 @@ class CLightRewriteSettings {
         var i : int;
         var entities : array<CGameplayEntity>;
 
-        GetAllNearbyEntities(entities);
+        GetAllLightSourceEntities(entities);
 
         LogLightRewrite("Disabling " + entities.Size() + " nearby entities");
 
@@ -467,7 +467,7 @@ class CLightRewriteSettings {
         }
     }
 
-    private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
+    private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
         var tags : array<name>;
         var nodes : array<CNode>;
         var entity : CGameplayEntity;
