@@ -10,23 +10,27 @@ class CLightRewriteSettings {
 
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
-    private const var CANDLE_ATTENUATION : name;       default CANDLE_ATTENUATION     = 'CandleAttenuation';
-    private const var TORCH_ATTENUATION : name;        default TORCH_ATTENUATION      = 'TorchAttenuation';
+
     private const var SHADOW_FADE_DISTANCE : name;     default SHADOW_FADE_DISTANCE   = 'ShadowFadeDistance';
     private const var SHADOW_FADE_RANGE : name;        default SHADOW_FADE_RANGE      = 'ShadowFadeRange';
     private const var SHADOW_BLEND_FACTOR : name;      default SHADOW_BLEND_FACTOR    = 'ShadowBlendFactor';
+
     private const var CANDLE_BRIGHTNESS : name;        default CANDLE_BRIGHTNESS      = 'CandleBrightness';
-    private const var TORCH_BRIGHTNESS : name;         default TORCH_BRIGHTNESS       = 'TorchBrightness';
     private const var CANDLE_RADIUS : name;            default CANDLE_RADIUS          = 'CandleRadius';
-    private const var TORCH_RADIUS : name;             default TORCH_RADIUS           = 'TorchRadius';
+    private const var CANDLE_ATTENUATION : name;       default CANDLE_ATTENUATION     = 'CandleAttenuation';
     private const var OVERRIDE_CANDLE_COLOUR : name;   default OVERRIDE_CANDLE_COLOUR = 'OverrideCandleColour';
     private const var CANDLE_COLOR_R : name;           default CANDLE_COLOR_R         = 'CandleColorR';
     private const var CANDLE_COLOR_G : name;           default CANDLE_COLOR_G         = 'CandleColorG';
     private const var CANDLE_COLOR_B : name;           default CANDLE_COLOR_B         = 'CandleColorB';
+
+    private const var TORCH_BRIGHTNESS : name;         default TORCH_BRIGHTNESS       = 'TorchBrightness';
+    private const var TORCH_RADIUS : name;             default TORCH_RADIUS           = 'TorchRadius';
+    private const var TORCH_ATTENUATION : name;        default TORCH_ATTENUATION      = 'TorchAttenuation';
     private const var OVERRIDE_TORCH_COLOUR : name;    default OVERRIDE_TORCH_COLOUR  = 'OverrideTorchColour';
     private const var TORCH_COLOR_R : name;            default TORCH_COLOR_R          = 'TorchColorR';
     private const var TORCH_COLOR_G : name;            default TORCH_COLOR_G          = 'TorchColorG';
     private const var TORCH_COLOR_B : name;            default TORCH_COLOR_B          = 'TorchColorB';
+
     private const var BRAZIER_BRIGHTNESS : name;       default BRAZIER_BRIGHTNESS     = 'BrazierBrightness';
     private const var BRAZIER_RADIUS : name;           default BRAZIER_RADIUS         = 'BrazierRadius';
     private const var BRAZIER_ATTENUATION : name;      default BRAZIER_ATTENUATION    = 'BrazierAttenuation';
@@ -34,6 +38,7 @@ class CLightRewriteSettings {
     private const var BRAZIER_COLOR_R : name;          default BRAZIER_COLOR_R        = 'BrazierColorR';
     private const var BRAZIER_COLOR_G : name;          default BRAZIER_COLOR_G        = 'BrazierColorG';
     private const var BRAZIER_COLOR_B : name;          default BRAZIER_COLOR_B        = 'BrazierColorB';
+
     private const var CANDELABRA_BRIGHTNESS : name;    default CANDELABRA_BRIGHTNESS  = 'CandelabraBrightness';
     private const var CANDELABRA_RADIUS : name;        default CANDELABRA_RADIUS      = 'CandelabraRadius';
     private const var CANDELABRA_ATTENUATION : name;   default CANDELABRA_ATTENUATION = 'CandelabraAttenuation';
@@ -41,6 +46,7 @@ class CLightRewriteSettings {
     private const var CANDELABRA_COLOR_R : name;       default CANDELABRA_COLOR_R     = 'CandelabraColorR';
     private const var CANDELABRA_COLOR_G : name;       default CANDELABRA_COLOR_G     = 'CandelabraColorG';
     private const var CANDELABRA_COLOR_B : name;       default CANDELABRA_COLOR_B     = 'CandelabraColorB';
+
     private const var CAMPFIRE_BRIGHTNESS : name;      default CAMPFIRE_BRIGHTNESS    = 'CampfireBrightness';
     private const var CAMPFIRE_RADIUS : name;          default CAMPFIRE_RADIUS        = 'CampfireRadius';
     private const var CAMPFIRE_ATTENUATION : name;     default CAMPFIRE_ATTENUATION   = 'CampfireAttenuation';
@@ -48,6 +54,7 @@ class CLightRewriteSettings {
     private const var CAMPFIRE_COLOR_R : name;         default CAMPFIRE_COLOR_R       = 'CampfireColorR';
     private const var CAMPFIRE_COLOR_G : name;         default CAMPFIRE_COLOR_G       = 'CampfireColorG';
     private const var CAMPFIRE_COLOR_B : name;         default CAMPFIRE_COLOR_B       = 'CampfireColorB';
+
     private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
 
     // Tags
@@ -63,7 +70,7 @@ class CLightRewriteSettings {
     private var gameConfig : CInGameConfigWrapper;
 
     // Light rewrite parameters
-    public var isEnabled : bool;                      default isEnabled                = true;
+    public var isEnabled : bool;                       default isEnabled                = true;
     public var shadowFadeDistance : float;             default shadowFadeDistance        = 10.f;
     public var shadowFadeRange : float;                default shadowFadeRange           = 3.f;
     public var shadowBlendFactor : float;              default shadowBlendFactor         = 1.f;
