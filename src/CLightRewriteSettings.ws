@@ -4,7 +4,7 @@
 class CLightRewriteSettings {
     // The current XML config version
     private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 6;
-    
+
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
 
@@ -31,7 +31,7 @@ class CLightRewriteSettings {
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var i, count : int;
-        
+
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
@@ -189,7 +189,7 @@ class CLightRewriteSettings {
     // its own fields directly.
     public function ReadGameConfig() {
         var i, count : int;
-        
+
         EnsureGameConfigIsInitialised();
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
