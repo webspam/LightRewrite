@@ -399,21 +399,21 @@ class CLightRewriteSettings {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorR', !candleParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorG', !candleParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandleColorB', !candleParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorR',   !torchParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorG',   !torchParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'TorchColorB',   !torchParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'BrazierColorR', !brazierParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'BrazierColorG', !brazierParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'BrazierColorB', !brazierParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandelabraColorR', !candelabraParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandelabraColorG', !candelabraParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CandelabraColorB', !candelabraParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CampfireColorR', !campfireParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CampfireColorG', !campfireParams.shouldOverrideColour);
-        SetOptionDisabledState(flashValueStorage, dataArray, 'CampfireColorB', !campfireParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDLE_COLOR_R, !candleParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDLE_COLOR_G, !candleParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDLE_COLOR_B, !candleParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, TORCH_COLOR_R, !torchParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, TORCH_COLOR_G, !torchParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, TORCH_COLOR_B, !torchParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, BRAZIER_COLOR_R, !brazierParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, BRAZIER_COLOR_G, !brazierParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, BRAZIER_COLOR_B, !brazierParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDELABRA_COLOR_R, !candelabraParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDELABRA_COLOR_G, !candelabraParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CANDELABRA_COLOR_B, !candelabraParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CAMPFIRE_COLOR_R, !campfireParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CAMPFIRE_COLOR_G, !campfireParams.shouldOverrideColour);
+        SetOptionDisabledState(flashValueStorage, dataArray, CAMPFIRE_COLOR_B, !campfireParams.shouldOverrideColour);
 
         flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
         theGame.GetGuiManager().ForceProcessFlashStorage();
