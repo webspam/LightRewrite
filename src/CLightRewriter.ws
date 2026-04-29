@@ -10,7 +10,7 @@ class CLightRewriter {
     }
 
     // Enables Light Rewrite on all light sources.
-    public function EnableLightRewrite() {
+    public function RewriteAllLightSources() {
         var i, count : int;
         var entities : array<CGameplayEntity>;
 

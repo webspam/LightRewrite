@@ -214,14 +214,14 @@ class CLightRewriteSettings {
                 lightSourceParams[i].OptionValueChanged(optionName);
             }
 
-            // If we've just turned the mod off, disable all nearby entities.
+            // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
                 theGame.lightRewriter.DisableLightRewrite();
             }
 
-            // Otherwise, if we changed any setting AND the mod is enabled, run the light rewrite.
+            // Some change was made, and the mod is enabled
             else if (isEnabled) {
-                theGame.lightRewriter.EnableLightRewrite();
+                theGame.lightRewriter.RewriteAllLightSources();
             }
         }
     }
