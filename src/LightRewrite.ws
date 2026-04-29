@@ -23,55 +23,6 @@ enum ELightRewriteType {
     LRT_Campfire,
 }
 
-struct SLightRewriteOriginalValues {
-    var hasBeenSaved : bool;
-
-    var brightness : float;
-    var radius : float;
-    var attenuation : float;
-    var shadowFadeDistance : float;
-    var shadowFadeRange : float;
-    var shadowBlendFactor : float;
-    var color : Color;
-}
-
-@addField(CLightComponent) public var lightRewriteOriginalValues : SLightRewriteOriginalValues;
-
-@addMethod(CLightComponent)
-public function SaveLightRewriteOriginalValues() {
-    if (lightRewriteOriginalValues.hasBeenSaved) return;
-
-    lightRewriteOriginalValues.hasBeenSaved = true;
-
-    lightRewriteOriginalValues.brightness = brightness;
-    lightRewriteOriginalValues.radius = radius;
-    lightRewriteOriginalValues.attenuation = attenuation;
-    lightRewriteOriginalValues.shadowFadeDistance = shadowFadeDistance;
-    lightRewriteOriginalValues.shadowFadeRange = shadowFadeRange;
-    lightRewriteOriginalValues.shadowBlendFactor = shadowBlendFactor;
-    lightRewriteOriginalValues.color = color;
-}
-
-@addMethod(CLightComponent)
-public function RestoreLightRewriteOriginalValues() {
-    var wasEnabled : bool;
-
-    if (!lightRewriteOriginalValues.hasBeenSaved) return;
-
-    wasEnabled = IsEnabled();
-    if (wasEnabled) SetEnabled(false);
-    
-    brightness = lightRewriteOriginalValues.brightness;
-    radius = lightRewriteOriginalValues.radius;
-    attenuation = lightRewriteOriginalValues.attenuation;
-    shadowFadeDistance = lightRewriteOriginalValues.shadowFadeDistance;
-    shadowFadeRange = lightRewriteOriginalValues.shadowFadeRange;
-    shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
-    color = lightRewriteOriginalValues.color;
-
-    if (wasEnabled) SetEnabled(true);
-}
-
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 
 // Rewrite a single candle / torch entity
@@ -294,21 +245,4 @@ function DisableLightRewrite() {
             }
         }
     }
-}
-
-function LogLightRewrite(msg : string) {
-    LogChannel('LightRewrite', msg);
-}
-
-function LR_SetMenuOptionDisabled(
-    flashValueStorage : CScriptedFlashValueStorage,
-    out dataArray : CScriptedFlashArray,
-    xmlVarId : name,
-    disabled : bool
-) {
-    var dataObject : CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
-
-    dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(xmlVarId));
-    dataObject.SetMemberFlashBool("disabled", disabled);
-    dataArray.PushBackFlashObject(dataObject);
 }
