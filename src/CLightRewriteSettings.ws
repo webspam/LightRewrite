@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : string;         default CONFIG_VERSION = "5";
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 5;
     
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -146,13 +146,25 @@ class CLightRewriteSettings {
     // If mod config has never been initialised, set the default values and save them.
     // Handles migration from older versions by writing any keys added since the stored version.
     public function EnsureGameConfigIsInitialised() {
-        var initVersion : string = gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION);
         var oldAttenuation : string;
+        var initVersion : int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
 
         if (initVersion == CONFIG_VERSION) return;
 
+        // Never initialised - write the v1 defaults, then apply the same migrations below.
+        if (initVersion == 0) {
+            gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, shadowFadeDistance);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, shadowFadeRange);
+            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, shadowBlendFactor);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS, candleParams.brightness);
+            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_RADIUS, candleParams.radius);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS, torchParams.brightness);
+            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_RADIUS, torchParams.radius);
+        }
+
         // v1 → v2: promote the old global attenuation value to both per-source keys.
-        if (initVersion == "1") {
+        if (initVersion <= 1) {
             oldAttenuation = gameConfig.GetVarValue(GENERAL_GROUP, 'Attenuation');
 
             if (StringToFloat(oldAttenuation, -1.f) != -1.f) {
@@ -165,7 +177,7 @@ class CLightRewriteSettings {
         }
 
         // v2 → v3: add per-source colour override settings.
-        if (initVersion == "1" || initVersion == "2") {
+        if (initVersion <= 2) {
             gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, candleParams.shouldOverrideColour);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R, candleParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G, candleParams.color.Green);
@@ -177,7 +189,7 @@ class CLightRewriteSettings {
         }
 
         // v3 → v4: add brazier light source settings.
-        if (initVersion == "1" || initVersion == "2" || initVersion == "3") {
+        if (initVersion <= 3) {
             gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_BRIGHTNESS, brazierParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_RADIUS, brazierParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_ATTENUATION, brazierParams.attenuation);
@@ -188,50 +200,7 @@ class CLightRewriteSettings {
         }
 
         // v4 → v5: add candelabra and campfire light source settings.
-        if (initVersion == "1" || initVersion == "2" || initVersion == "3" || initVersion == "4") {
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_BRIGHTNESS, candelabraParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_RADIUS, candelabraParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_ATTENUATION, candelabraParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDELABRA_COLOUR, candelabraParams.shouldOverrideColour);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_R, candelabraParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_G, candelabraParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_COLOR_B, candelabraParams.color.Blue);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_BRIGHTNESS, campfireParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_RADIUS, campfireParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_ATTENUATION, campfireParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CAMPFIRE_COLOUR, campfireParams.shouldOverrideColour);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_R, campfireParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_G, campfireParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, CAMPFIRE_COLOR_B, campfireParams.color.Blue);
-        }
-
-        // Never initialised - write all defaults.
-        else if (!initVersion) {
-            gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_DISTANCE, shadowFadeDistance);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_FADE_RANGE, shadowFadeRange);
-            gameConfig.SetVarValue(GENERAL_GROUP, SHADOW_BLEND_FACTOR, shadowBlendFactor);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_BRIGHTNESS, candleParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_RADIUS, candleParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_ATTENUATION, candleParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_BRIGHTNESS, torchParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_RADIUS, torchParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_ATTENUATION, torchParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_CANDLE_COLOUR, candleParams.shouldOverrideColour);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_R, candleParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_G, candleParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, CANDLE_COLOR_B, candleParams.color.Blue);
-            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_TORCH_COLOUR, torchParams.shouldOverrideColour);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_R, torchParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_G, torchParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, TORCH_COLOR_B, torchParams.color.Blue);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_BRIGHTNESS, brazierParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_RADIUS, brazierParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_ATTENUATION, brazierParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, OVERRIDE_BRAZIER_COLOUR, brazierParams.shouldOverrideColour);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_COLOR_R, brazierParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_COLOR_G, brazierParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, BRAZIER_COLOR_B, brazierParams.color.Blue);
+        if (initVersion <= 4) {
             gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_BRIGHTNESS, candelabraParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_RADIUS, candelabraParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, CANDELABRA_ATTENUATION, candelabraParams.attenuation);
