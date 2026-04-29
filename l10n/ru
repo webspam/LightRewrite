@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Цвет костра: Красный
 2122144042||LightRewrite_Campfire_ColorG|Цвет костра: Зелёный
 2122144043||LightRewrite_Campfire_ColorB|Цвет костра: Синий
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Дистанция затухания тени свечи
+2122144045||LightRewrite_Candle_ShadowFadeRange|Диапазон затухания тени свечи
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Коэффициент смешивания тени свечи
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Дистанция затухания тени факела
+2122144048||LightRewrite_Torch_ShadowFadeRange|Диапазон затухания тени факела
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Коэффициент смешивания тени факела
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Дистанция затухания тени жаровни
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Диапазон затухания тени жаровни
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Коэффициент смешивания тени жаровни
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Дистанция затухания тени канделябра
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Диапазон затухания тени канделябра
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Коэффициент смешивания тени канделябра
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Дистанция затухания тени костра
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Диапазон затухания тени костра
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Коэффициент смешивания тени костра

@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|لون نار المخيم: أحمر
 2122144042||LightRewrite_Campfire_ColorG|لون نار المخيم: أخضر
 2122144043||LightRewrite_Campfire_ColorB|لون نار المخيم: أزرق
+2122144044||LightRewrite_Candle_ShadowFadeDistance|مسافة تلاشي ظل الشمعة
+2122144045||LightRewrite_Candle_ShadowFadeRange|نطاق تلاشي ظل الشمعة
+2122144046||LightRewrite_Candle_ShadowBlendFactor|عامل مزج ظل الشمعة
+2122144047||LightRewrite_Torch_ShadowFadeDistance|مسافة تلاشي ظل الشعلة
+2122144048||LightRewrite_Torch_ShadowFadeRange|نطاق تلاشي ظل الشعلة
+2122144049||LightRewrite_Torch_ShadowBlendFactor|عامل مزج ظل الشعلة
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|مسافة تلاشي ظل المنقل
+2122144051||LightRewrite_Brazier_ShadowFadeRange|نطاق تلاشي ظل المنقل
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|عامل مزج ظل المنقل
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|مسافة تلاشي ظل الشمعدان
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|نطاق تلاشي ظل الشمعدان
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|عامل مزج ظل الشمعدان
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|مسافة تلاشي ظل نار المخيم
+2122144057||LightRewrite_Campfire_ShadowFadeRange|نطاق تلاشي ظل نار المخيم
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|عامل مزج ظل نار المخيم

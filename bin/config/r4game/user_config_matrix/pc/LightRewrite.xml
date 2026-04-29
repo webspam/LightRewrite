@@ -3,75 +3,104 @@
     <Group id="LightRewrite_General" displayName="Mods.LightRewrite">
         <PresetsArray>
             <Preset id="0" displayName="LightRewrite_Preset_VanillaIsh">
-                <Entry varId="ShadowFadeDistance" value="5" />
-                <Entry varId="ShadowFadeRange" value="5" />
-                <Entry varId="ShadowBlendFactor" value="1" />
                 <Entry varId="CandleBrightness" value="5" />
                 <Entry varId="CandleRadius" value="3" />
                 <Entry varId="CandleAttenuation" value="0.7" />
+                <Entry varId="CandleShadowFadeDistance" value="5" />
+                <Entry varId="CandleShadowFadeRange" value="5" />
+                <Entry varId="CandleShadowBlendFactor" value="1" />
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="5" />
                 <Entry varId="TorchAttenuation" value="0.5" />
+                <Entry varId="TorchShadowFadeDistance" value="5" />
+                <Entry varId="TorchShadowFadeRange" value="5" />
+                <Entry varId="TorchShadowBlendFactor" value="1" />
                 <Entry varId="BrazierBrightness" value="40" />
                 <Entry varId="BrazierRadius" value="10" />
                 <Entry varId="BrazierAttenuation" value="0.5" />
+                <Entry varId="BrazierShadowFadeDistance" value="20" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
+                <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="8" />
                 <Entry varId="CandelabraRadius" value="12" />
                 <Entry varId="CandelabraAttenuation" value="0.7" />
+                <Entry varId="CandelabraShadowFadeDistance" value="5" />
+                <Entry varId="CandelabraShadowFadeRange" value="5" />
+                <Entry varId="CandelabraShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="50" />
                 <Entry varId="CampfireRadius" value="15" />
                 <Entry varId="CampfireAttenuation" value="0.5" />
+                <Entry varId="CampfireShadowFadeDistance" value="5" />
+                <Entry varId="CampfireShadowFadeRange" value="5" />
+                <Entry varId="CampfireShadowBlendFactor" value="1" />
             </Preset>
             <Preset id="1" displayName="LightRewrite_Preset_Author">
-                <Entry varId="ShadowFadeDistance" value="10" />
-                <Entry varId="ShadowFadeRange" value="3" />
-                <Entry varId="ShadowBlendFactor" value="1" />
                 <Entry varId="CandleBrightness" value="6.5" />
                 <Entry varId="CandleRadius" value="9" />
                 <Entry varId="CandleAttenuation" value="1" />
+                <Entry varId="CandleShadowFadeDistance" value="10" />
+                <Entry varId="CandleShadowFadeRange" value="3" />
+                <Entry varId="CandleShadowBlendFactor" value="1" />
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="20" />
                 <Entry varId="TorchAttenuation" value="1" />
+                <Entry varId="TorchShadowFadeDistance" value="10" />
+                <Entry varId="TorchShadowFadeRange" value="3" />
+                <Entry varId="TorchShadowBlendFactor" value="1" />
                 <Entry varId="BrazierBrightness" value="40" />
                 <Entry varId="BrazierRadius" value="25" />
                 <Entry varId="BrazierAttenuation" value="1" />
+                <Entry varId="BrazierShadowFadeDistance" value="35" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
+                <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="8" />
                 <Entry varId="CandelabraRadius" value="12" />
                 <Entry varId="CandelabraAttenuation" value="1" />
+                <Entry varId="CandelabraShadowFadeDistance" value="10" />
+                <Entry varId="CandelabraShadowFadeRange" value="3" />
+                <Entry varId="CandelabraShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="50" />
                 <Entry varId="CampfireRadius" value="30" />
                 <Entry varId="CampfireAttenuation" value="1" />
+                <Entry varId="CampfireShadowFadeDistance" value="10" />
+                <Entry varId="CampfireShadowFadeRange" value="3" />
+                <Entry varId="CampfireShadowBlendFactor" value="1" />
             </Preset>
             <Preset id="2" displayName="LightRewrite_Preset_Bright">
-                <Entry varId="ShadowFadeDistance" value="10" />
-                <Entry varId="ShadowFadeRange" value="3" />
-                <Entry varId="ShadowBlendFactor" value="1" />
                 <Entry varId="CandleBrightness" value="10" />
                 <Entry varId="CandleRadius" value="12" />
                 <Entry varId="CandleAttenuation" value="0.95" />
+                <Entry varId="CandleShadowFadeDistance" value="10" />
+                <Entry varId="CandleShadowFadeRange" value="3" />
+                <Entry varId="CandleShadowBlendFactor" value="1" />
                 <Entry varId="TorchBrightness" value="50" />
                 <Entry varId="TorchRadius" value="25" />
                 <Entry varId="TorchAttenuation" value="0.9" />
+                <Entry varId="TorchShadowFadeDistance" value="10" />
+                <Entry varId="TorchShadowFadeRange" value="3" />
+                <Entry varId="TorchShadowBlendFactor" value="1" />
                 <Entry varId="BrazierBrightness" value="60" />
                 <Entry varId="BrazierRadius" value="35" />
                 <Entry varId="BrazierAttenuation" value="0.9" />
+                <Entry varId="BrazierShadowFadeDistance" value="35" />
+                <Entry varId="BrazierShadowFadeRange" value="10" />
+                <Entry varId="BrazierShadowBlendFactor" value="1" />
                 <Entry varId="CandelabraBrightness" value="12" />
                 <Entry varId="CandelabraRadius" value="16" />
                 <Entry varId="CandelabraAttenuation" value="0.95" />
+                <Entry varId="CandelabraShadowFadeDistance" value="10" />
+                <Entry varId="CandelabraShadowFadeRange" value="3" />
+                <Entry varId="CandelabraShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="75" />
                 <Entry varId="CampfireRadius" value="40" />
                 <Entry varId="CampfireAttenuation" value="0.9" />
+                <Entry varId="CampfireShadowFadeDistance" value="10" />
+                <Entry varId="CampfireShadowFadeRange" value="3" />
+                <Entry varId="CampfireShadowBlendFactor" value="1" />
             </Preset>
         </PresetsArray>
         <VisibleVars>
             <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" />
-            <Var id="ShadowFadeDistance" displayName="LightRewrite_ShadowFadeDistance"
-                displayType="SLIDER;0;50;100" />
-            <Var id="ShadowFadeRange" displayName="LightRewrite_ShadowFadeRange"
-                displayType="SLIDER;0;20;40" />
-            <Var id="ShadowBlendFactor" displayName="LightRewrite_ShadowBlendFactor"
-                displayType="SLIDER;0;1;20" />
-
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="CandleBrightness" displayName="LightRewrite_Candle_Brightness"
@@ -79,6 +108,12 @@
             <Var id="CandleRadius" displayName="LightRewrite_Candle_Radius"
                 displayType="SLIDER;1;30;58" />
             <Var id="CandleAttenuation" displayName="LightRewrite_Candle_Attenuation"
+                displayType="SLIDER;0;1;20" />
+            <Var id="CandleShadowFadeDistance" displayName="LightRewrite_Candle_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="CandleShadowFadeRange" displayName="LightRewrite_Candle_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="CandleShadowBlendFactor" displayName="LightRewrite_Candle_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideCandleColour" displayName="LightRewrite_Candle_OverrideColour"
@@ -98,6 +133,12 @@
                 displayType="SLIDER;1;50;98" />
             <Var id="TorchAttenuation" displayName="LightRewrite_Torch_Attenuation"
                 displayType="SLIDER;0;1;20" />
+            <Var id="TorchShadowFadeDistance" displayName="LightRewrite_Torch_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="TorchShadowFadeRange" displayName="LightRewrite_Torch_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="TorchShadowBlendFactor" displayName="LightRewrite_Torch_ShadowBlendFactor"
+                displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideTorchColour" displayName="LightRewrite_Torch_OverrideColour"
                 displayType="TOGGLE" />
@@ -115,6 +156,13 @@
             <Var id="BrazierRadius" displayName="LightRewrite_Brazier_Radius"
                 displayType="SLIDER;1;50;98" />
             <Var id="BrazierAttenuation" displayName="LightRewrite_Brazier_Attenuation"
+                displayType="SLIDER;0;1;20" />
+            <Var id="BrazierShadowFadeDistance"
+                displayName="LightRewrite_Brazier_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="BrazierShadowFadeRange" displayName="LightRewrite_Brazier_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="BrazierShadowBlendFactor" displayName="LightRewrite_Brazier_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideBrazierColour" displayName="LightRewrite_Brazier_OverrideColour"
@@ -134,6 +182,15 @@
                 displayType="SLIDER;1;30;58" />
             <Var id="CandelabraAttenuation" displayName="LightRewrite_Candelabra_Attenuation"
                 displayType="SLIDER;0;1;20" />
+            <Var id="CandelabraShadowFadeDistance"
+                displayName="LightRewrite_Candelabra_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="CandelabraShadowFadeRange"
+                displayName="LightRewrite_Candelabra_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="CandelabraShadowBlendFactor"
+                displayName="LightRewrite_Candelabra_ShadowBlendFactor"
+                displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideCandelabraColour" displayName="LightRewrite_Candelabra_OverrideColour"
                 displayType="TOGGLE" />
@@ -152,6 +209,14 @@
                 displayType="SLIDER;1;50;98" />
             <Var id="CampfireAttenuation" displayName="LightRewrite_Campfire_Attenuation"
                 displayType="SLIDER;0;1;20" />
+            <Var id="CampfireShadowFadeDistance"
+                displayName="LightRewrite_Campfire_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="CampfireShadowFadeRange" displayName="LightRewrite_Campfire_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="CampfireShadowBlendFactor"
+                displayName="LightRewrite_Campfire_ShadowBlendFactor"
+                displayType="SLIDER;0;1;20" />
 
             <Var id="OverrideCampfireColour" displayName="LightRewrite_Campfire_OverrideColour"
                 displayType="TOGGLE" />
@@ -164,7 +229,7 @@
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;5;5" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;6;6" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>

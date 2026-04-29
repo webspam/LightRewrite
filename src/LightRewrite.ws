@@ -125,9 +125,9 @@ function CandleLightRewrite() {
             pointLight.radius = sourceParams.radius;
             pointLight.attenuation = sourceParams.attenuation;
 
-            pointLight.shadowFadeDistance = settings.shadowFadeDistance;
-            pointLight.shadowFadeRange = settings.shadowFadeRange;
-            pointLight.shadowBlendFactor = settings.shadowBlendFactor;
+            pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
+            pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
+            pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
 
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;

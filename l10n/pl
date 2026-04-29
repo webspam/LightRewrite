@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Kolor ogniska: Czerwony
 2122144042||LightRewrite_Campfire_ColorG|Kolor ogniska: Zielony
 2122144043||LightRewrite_Campfire_ColorB|Kolor ogniska: Niebieski
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Odległość zanikania cienia świecy
+2122144045||LightRewrite_Candle_ShadowFadeRange|Zakres zanikania cienia świecy
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Współczynnik mieszania cienia świecy
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Odległość zanikania cienia pochodni
+2122144048||LightRewrite_Torch_ShadowFadeRange|Zakres zanikania cienia pochodni
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Współczynnik mieszania cienia pochodni
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Odległość zanikania cienia koksownika
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Zakres zanikania cienia koksownika
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Współczynnik mieszania cienia koksownika
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Odległość zanikania cienia kandelabru
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Zakres zanikania cienia kandelabru
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Współczynnik mieszania cienia kandelabru
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Odległość zanikania cienia ogniska
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Zakres zanikania cienia ogniska
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Współczynnik mieszania cienia ogniska

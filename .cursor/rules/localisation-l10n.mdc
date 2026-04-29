@@ -1,6 +1,5 @@
 ---
-description: Localisation files in l10n — en is primary, all locales must match keys
-globs: "l10n/**"
+description: Creating translation entries - localisation / internationalisation / i18n
 alwaysApply: false
 ---
 

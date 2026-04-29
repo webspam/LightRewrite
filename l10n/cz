@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Barva táboráku: Červená
 2122144042||LightRewrite_Campfire_ColorG|Barva táboráku: Zelená
 2122144043||LightRewrite_Campfire_ColorB|Barva táboráku: Modrá
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Vzdálenost slábnutí stínu svíčky
+2122144045||LightRewrite_Candle_ShadowFadeRange|Rozsah slábnutí stínu svíčky
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Faktor prolnutí stínu svíčky
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Vzdálenost slábnutí stínu pochodně
+2122144048||LightRewrite_Torch_ShadowFadeRange|Rozsah slábnutí stínu pochodně
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Faktor prolnutí stínu pochodně
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Vzdálenost slábnutí stínu ohniště
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Rozsah slábnutí stínu ohniště
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Faktor prolnutí stínu ohniště
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Vzdálenost slábnutí stínu kandelábru
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Rozsah slábnutí stínu kandelábru
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Faktor prolnutí stínu kandelábru
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Vzdálenost slábnutí stínu táboráku
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Rozsah slábnutí stínu táboráku
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Faktor prolnutí stínu táboráku
