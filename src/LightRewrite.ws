@@ -23,60 +23,139 @@ enum ELightRewriteType {
     LRT_Campfire,
 }
 
-struct SLightRewriteOriginalValues {
-    var hasBeenSaved : bool;
+// The light rewriter singleton.
+@addField(CR4Game)
+public var lightRewriter : CLightRewriter;
 
-    var brightness : float;
-    var radius : float;
-    var attenuation : float;
-    var shadowFadeDistance : float;
-    var shadowFadeRange : float;
-    var shadowBlendFactor : float;
-    var color : Color;
-}
+@wrapMethod(CR4Game)
+function OnGameStarting(restored : bool) {
+    wrappedMethod(restored);
 
-@addField(CLightComponent) public var lightRewriteOriginalValues : SLightRewriteOriginalValues;
-
-@addMethod(CLightComponent)
-public function SaveLightRewriteOriginalValues() {
-    if (lightRewriteOriginalValues.hasBeenSaved) return;
-
-    lightRewriteOriginalValues.hasBeenSaved = true;
-
-    lightRewriteOriginalValues.brightness = brightness;
-    lightRewriteOriginalValues.radius = radius;
-    lightRewriteOriginalValues.attenuation = attenuation;
-    lightRewriteOriginalValues.shadowFadeDistance = shadowFadeDistance;
-    lightRewriteOriginalValues.shadowFadeRange = shadowFadeRange;
-    lightRewriteOriginalValues.shadowBlendFactor = shadowBlendFactor;
-    lightRewriteOriginalValues.color = color;
-}
-
-@addMethod(CLightComponent)
-public function RestoreLightRewriteOriginalValues() {
-    var wasEnabled : bool;
-
-    if (!lightRewriteOriginalValues.hasBeenSaved) return;
-
-    wasEnabled = IsEnabled();
-    if (wasEnabled) SetEnabled(false);
-    
-    brightness = lightRewriteOriginalValues.brightness;
-    radius = lightRewriteOriginalValues.radius;
-    attenuation = lightRewriteOriginalValues.attenuation;
-    shadowFadeDistance = lightRewriteOriginalValues.shadowFadeDistance;
-    shadowFadeRange = lightRewriteOriginalValues.shadowFadeRange;
-    shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
-    color = lightRewriteOriginalValues.color;
-
-    if (wasEnabled) SetEnabled(true);
+    lightRewriter = new CLightRewriter in this;
+    lightRewriter.Init(GetLightRewriteSettings());
 }
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 
+// Disable all of this entity's spotlight components.
+@addMethod(CGameplayEntity)
+public function DisableAllSpotlightComponents() {
+    var lightComponent : CSpotLightComponent;
+    var i : int;
+
+    var components : array<CComponent> = GetComponentsByClassName('CSpotLightComponent');
+    var count : int = components.Size();
+
+    for (i = 0; i < count; i += 1) {
+        lightComponent = (CSpotLightComponent)components[i];
+
+        if (lightComponent) {
+            lightComponent.SaveLightRewriteOriginalValues();
+            lightComponent.SetEnabled(false);
+        }
+    }
+}
+
+// Identify light sources, and rewrite matched entities to work properly with RT.
+@addMethod(CGameplayEntity)
+protected function InitialiseLightRewrite() {
+    IdentifyLightRewriteType();
+
+    if (theGame.GetLightRewriteSettings().isEnabled) {
+        if (IsLightRewritable()) CandleLightRewrite();
+    }
+}
+
+// We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
+@wrapMethod(CGameplayEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(CInteractiveEntity)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+@wrapMethod(W3FireSource)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    if (!spawnData.restored) InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+
+// Ensure lights that are ignited (e.g. by the player) are rewritten.
+@wrapMethod(CGameplayEntity)
+function AddTag(tag : name) {
+    wrappedMethod(tag);
+
+    if (tag == theGame.params.TAG_OPEN_FIRE) {
+        IdentifyLightRewriteType();
+
+        if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
+            CandleLightRewrite();
+        }
+    }
+}
+
+// This entity has already confirmed its light rewrite type.
+@addMethod(CGameplayEntity)
+public function HasCheckedLightRewriteType() : bool {
+    return lightRewriteLightType != LRT_None;
+}
+
+// This entity is a valid light rewrite target.
+@addMethod(CGameplayEntity)
+public function IsLightRewritable() : bool {
+    return lightRewriteLightType != LRT_Unknown && lightRewriteLightType != LRT_None;
+}
+
+// If this is an open fire, identify the light rewrite type of this entity.
+@addMethod(CGameplayEntity)
+public function IdentifyLightRewriteType() {
+    var editorName : string;
+
+    if (HasCheckedLightRewriteType()) return;
+
+    editorName = StrAfterLast(ToString(), StrChar(92));
+
+    if (StrFindFirst(editorName, "candelabra") != -1) {
+        LogLightRewrite("Found candelabra: " + editorName);
+
+        lightRewriteLightType = LRT_Candelabra;
+        AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
+    }
+    else if (StrFindFirst(editorName, "candle") != -1) {
+        LogLightRewrite("Found candle: " + editorName);
+
+        lightRewriteLightType = LRT_Candle;
+        AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
+    }
+    else if (StrFindFirst(editorName, "torch") != -1) {
+        LogLightRewrite("Found torch: " + editorName);
+
+        lightRewriteLightType = LRT_Torch;
+        AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
+    }
+    else if (StrFindFirst(editorName, "brazier") != -1) {
+        LogLightRewrite("Found brazier: " + editorName);
+
+        lightRewriteLightType = LRT_Brazier;
+        AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
+    }
+    else if (StrFindFirst(editorName, "campfire") != -1) {
+        LogLightRewrite("Found campfire: " + editorName);
+
+        lightRewriteLightType = LRT_Campfire;
+        AddTag(theGame.GetLightRewriteSettings().campfireParams.tag);
+    }
+    else {
+        lightRewriteLightType = LRT_Unknown;
+    }
+}
+
 // Rewrite a single candle / torch entity
 @addMethod(CGameplayEntity)
-function CandleLightRewrite() {
+public function CandleLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
@@ -148,123 +227,9 @@ function CandleLightRewrite() {
     if (count > 0) DisableAllSpotlightComponents();
 }
 
-// Disable all of this entity's spotlight components.
+// Disables Light Rewrite on an entity, restoring it to its original state.
 @addMethod(CGameplayEntity)
-function DisableAllSpotlightComponents() {
-    var lightComponent : CSpotLightComponent;
-    var i : int;
-
-    var components : array<CComponent> = GetComponentsByClassName('CSpotLightComponent');
-    var count : int = components.Size();
-
-    for (i = 0; i < count; i += 1) {
-        lightComponent = (CSpotLightComponent)components[i];
-
-        if (lightComponent) {
-            lightComponent.SaveLightRewriteOriginalValues();
-            lightComponent.SetEnabled(false);
-        }
-    }
-}
-
-// Identify light sources, and rewrite matched entities to work properly with RT.
-@addMethod(CGameplayEntity)
-protected function InitialiseLightRewrite() {
-    IdentifyLightRewriteType();
-
-    if (theGame.GetLightRewriteSettings().isEnabled) {
-        if (IsLightRewritable()) CandleLightRewrite();
-    }
-}
-
-// We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
-@wrapMethod(CGameplayEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
-    wrappedMethod(spawnData);
-}
-@wrapMethod(CInteractiveEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
-    wrappedMethod(spawnData);
-}
-@wrapMethod(W3FireSource)
-function OnSpawned(spawnData : SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
-    wrappedMethod(spawnData);
-}
-
-@wrapMethod(CGameplayEntity)
-function AddTag(tag : name) {
-    wrappedMethod(tag);
-
-    if (tag == theGame.params.TAG_OPEN_FIRE) {
-        IdentifyLightRewriteType();
-
-        if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
-            CandleLightRewrite();
-        }
-    }
-}
-
-// This entity has already confirmed its light rewrite type.
-@addMethod(CGameplayEntity)
-public function HasCheckedLightRewriteType() : bool {
-    return lightRewriteLightType != LRT_None;
-}
-
-// This entity is a valid light rewrite target.
-@addMethod(CGameplayEntity)
-public function IsLightRewritable() : bool {
-    return lightRewriteLightType != LRT_Unknown && lightRewriteLightType != LRT_None;
-}
-
-// If this is an open fire, identify the light rewrite type of this entity.
-@addMethod(CGameplayEntity)
-public function IdentifyLightRewriteType() {
-    var editorName : string;
-
-    if (HasCheckedLightRewriteType()) return;
-
-    editorName = StrAfterLast(ToString(), StrChar(92));
-
-    if (StrFindFirst(editorName, "candelabra") != -1) {
-        LogLightRewrite("Found candelabra: " + editorName);
-
-        lightRewriteLightType = LRT_Candelabra;
-        AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
-    }
-    else if (StrFindFirst(editorName, "candle") != -1) {
-        LogLightRewrite("Found candle: " + editorName);
-
-        lightRewriteLightType = LRT_Candle;
-        AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
-    }
-    else if (StrFindFirst(editorName, "torch") != -1) {
-        LogLightRewrite("Found torch: " + editorName);
-
-        lightRewriteLightType = LRT_Torch;
-        AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
-    }
-    else if (StrFindFirst(editorName, "brazier") != -1) {
-        LogLightRewrite("Found brazier: " + editorName);
-
-        lightRewriteLightType = LRT_Brazier;
-        AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
-    }
-    else if (StrFindFirst(editorName, "campfire") != -1) {
-        LogLightRewrite("Found campfire: " + editorName);
-
-        lightRewriteLightType = LRT_Campfire;
-        AddTag(theGame.GetLightRewriteSettings().campfireParams.tag);
-    }
-    else {
-        lightRewriteLightType = LRT_Unknown;
-    }
-}
-
-@addMethod(CGameplayEntity)
-function DisableLightRewrite() {
+public function DisableLightRewrite() {
     var spotLight : CSpotLightComponent;
     var pointLight : CPointLightComponent;
     var i : int;
@@ -280,7 +245,7 @@ function DisableLightRewrite() {
         }
     }
 
-    // Remove spotlights from candles that have point lights (should be all candles).
+    // Restore the original state of any spotlights.
     if (count > 0) {
         components = GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -294,21 +259,4 @@ function DisableLightRewrite() {
             }
         }
     }
-}
-
-function LogLightRewrite(msg : string) {
-    LogChannel('LightRewrite', msg);
-}
-
-function LR_SetMenuOptionDisabled(
-    flashValueStorage : CScriptedFlashValueStorage,
-    out dataArray : CScriptedFlashArray,
-    xmlVarId : name,
-    disabled : bool
-) {
-    var dataObject : CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
-
-    dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(xmlVarId));
-    dataObject.SetMemberFlashBool("disabled", disabled);
-    dataArray.PushBackFlashObject(dataObject);
 }

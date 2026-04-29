@@ -4,7 +4,7 @@
 class CLightRewriteSettings {
     // The current XML config version
     private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 6;
-    
+
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
 
@@ -31,7 +31,7 @@ class CLightRewriteSettings {
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var i, count : int;
-        
+
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
@@ -189,7 +189,7 @@ class CLightRewriteSettings {
     // its own fields directly.
     public function ReadGameConfig() {
         var i, count : int;
-        
+
         EnsureGameConfigIsInitialised();
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
@@ -214,14 +214,14 @@ class CLightRewriteSettings {
                 lightSourceParams[i].OptionValueChanged(optionName);
             }
 
-            // If we've just turned the mod off, disable all nearby entities.
+            // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
-                DisableAllNearbyEntities();
+                theGame.lightRewriter.DisableLightRewrite();
             }
 
-            // Otherwise, if we changed any setting AND the mod is enabled, run the light rewrite.
+            // Some change was made, and the mod is enabled
             else if (isEnabled) {
-                EnableAllNearbyEntities();
+                theGame.lightRewriter.RewriteAllLightSources();
             }
         }
     }
@@ -240,51 +240,7 @@ class CLightRewriteSettings {
         }
     }
 
-    private function EnableAllNearbyEntities() {
-        var i, count : int;
-        var entities : array<CGameplayEntity>;
-
-        GetAllLightSourceEntities(entities);
-        count = entities.Size();
-
-        LogLightRewrite("Enabling Light Rewrite for " + count + " entities");
-
-        for (i = 0; i < count; i += 1) {
-            entities[i].CandleLightRewrite();
-        }
-    }
-
-    private function DisableAllNearbyEntities() {
-        var i, count : int;
-        var entities : array<CGameplayEntity>;
-
-        GetAllLightSourceEntities(entities);
-        count = entities.Size();
-
-        LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
-
-        for (i = 0; i < count; i += 1) {
-            entities[i].DisableLightRewrite();
-        }
-    }
-
-    private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
-        var nodes : array<CNode>;
-        var entity : CGameplayEntity;
-        var i : int;
-        var count : int;
-
-        var tags : array<name> = GetAllLightSourceTags();
-
-        theGame.GetNodesByTags(tags, nodes);
-        count = nodes.Size();
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)nodes[i];
-            if (entity) entities.PushBack(entity);
-        }
-    }
-
+    // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
     public function GetAllLightSourceTags() : array<name> {
         var tags : array<name>;
         var i, count : int;

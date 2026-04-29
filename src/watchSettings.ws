@@ -51,7 +51,7 @@ function OnOptionValueChanged(groupId : int, optionName : name, optionValue : st
 
     wrappedReturnValue = wrappedMethod(groupId, optionName, optionValue);
 
-    if (lightRewriteSettings) lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
+    lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
 
     return wrappedReturnValue;
 }
