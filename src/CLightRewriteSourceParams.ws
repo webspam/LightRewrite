@@ -47,12 +47,25 @@ class CLightRewriteSourceParams {
         color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), color.Blue);
     }
 
-    public function SetMenuOptionDisabledState(
-        flashValueStorage : CScriptedFlashValueStorage,
-        out dataArray : CScriptedFlashArray
-    ) {
+    // Reacts to menu option changes if the changed option is relevant to this source.
+    // Designed to be called for every option-change event.
+    public function OptionValueChanged(optionName : name) {
+        if (optionName == TAG_OVERRIDE_COLOUR) UpdateColourSliderDisabledState();
+    }
+
+    // Updates the disabled state of the colour sliders in the game settings menu.
+    public function UpdateColourSliderDisabledState() {
+        var flashValueStorage : CScriptedFlashValueStorage;
+        var dataArray : CScriptedFlashArray;
+
+        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        dataArray = flashValueStorage.CreateTempFlashArray();
+
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !shouldOverrideColour);
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !shouldOverrideColour);
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !shouldOverrideColour);
+
+        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
+        theGame.GetGuiManager().ForceProcessFlashStorage();
     }
 }

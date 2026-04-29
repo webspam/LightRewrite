@@ -204,13 +204,14 @@ class CLightRewriteSettings {
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
         var wasEnabled : bool = isEnabled;
+        var i, count : int;
 
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
-            if (optionName == candleParams.TAG_OVERRIDE_COLOUR || optionName == torchParams.TAG_OVERRIDE_COLOUR || brazierParams.TAG_OVERRIDE_COLOUR
-                || candelabraParams.TAG_OVERRIDE_COLOUR || campfireParams.TAG_OVERRIDE_COLOUR) {
-                UpdateAllColourSlidersDisabledState();
+            count = lightSourceParams.Size();
+            for (i = 0; i < count; i += 1) {
+                lightSourceParams[i].OptionValueChanged(optionName);
             }
 
             // If we've just turned the mod off, disable all nearby entities.
@@ -231,20 +232,12 @@ class CLightRewriteSettings {
     }
 
     private function UpdateAllColourSlidersDisabledState() {
-        var flashValueStorage : CScriptedFlashValueStorage;
-        var dataArray : CScriptedFlashArray;
         var i, count : int;
-
-        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
-        dataArray = flashValueStorage.CreateTempFlashArray();
 
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
             lightSourceParams[i].UpdateColourSliderDisabledState();
         }
-
-        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
-        theGame.GetGuiManager().ForceProcessFlashStorage();
     }
 
     private function EnableAllNearbyEntities() {
