@@ -46,4 +46,13 @@ class CLightRewriteSourceParams {
         color.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), color.Green);
         color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), color.Blue);
     }
+
+    public function SetMenuOptionDisabledState(
+        flashValueStorage : CScriptedFlashValueStorage,
+        out dataArray : CScriptedFlashArray
+    ) {
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !shouldOverrideColour);
+    }
 }

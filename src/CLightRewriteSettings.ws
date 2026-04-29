@@ -227,21 +227,11 @@ class CLightRewriteSettings {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candleParams.TAG_RED, !candleParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candleParams.TAG_GREEN, !candleParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candleParams.TAG_BLUE, !candleParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, torchParams.TAG_RED, !torchParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, torchParams.TAG_GREEN, !torchParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, torchParams.TAG_BLUE, !torchParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, brazierParams.TAG_RED, !brazierParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, brazierParams.TAG_GREEN, !brazierParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, brazierParams.TAG_BLUE, !brazierParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candelabraParams.TAG_RED, !candelabraParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candelabraParams.TAG_GREEN, !candelabraParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, candelabraParams.TAG_BLUE, !candelabraParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, campfireParams.TAG_RED, !campfireParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, campfireParams.TAG_GREEN, !campfireParams.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, campfireParams.TAG_BLUE, !campfireParams.shouldOverrideColour);
+        candleParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
+        torchParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
+        brazierParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
+        candelabraParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
+        campfireParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
 
         flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
         theGame.GetGuiManager().ForceProcessFlashStorage();
