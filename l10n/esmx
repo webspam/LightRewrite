@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Color de la hoguera: Rojo
 2122144042||LightRewrite_Campfire_ColorG|Color de la hoguera: Verde
 2122144043||LightRewrite_Campfire_ColorB|Color de la hoguera: Azul
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la vela
+2122144045||LightRewrite_Candle_ShadowFadeRange|Rango de desvanecimiento de la sombra de la vela
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Factor de mezcla de la sombra de la vela
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la antorcha
+2122144048||LightRewrite_Torch_ShadowFadeRange|Rango de desvanecimiento de la sombra de la antorcha
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Factor de mezcla de la sombra de la antorcha
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Distancia de desvanecimiento de la sombra del brasero
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Rango de desvanecimiento de la sombra del brasero
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Factor de mezcla de la sombra del brasero
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Distancia de desvanecimiento de la sombra del candelabro
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Rango de desvanecimiento de la sombra del candelabro
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Factor de mezcla de la sombra del candelabro
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la hoguera
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Rango de desvanecimiento de la sombra de la hoguera
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Factor de mezcla de la sombra de la hoguera

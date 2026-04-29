@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Cor da fogueira: Vermelho
 2122144042||LightRewrite_Campfire_ColorG|Cor da fogueira: Verde
 2122144043||LightRewrite_Campfire_ColorB|Cor da fogueira: Azul
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Distância de desvanecimento da sombra da vela
+2122144045||LightRewrite_Candle_ShadowFadeRange|Intervalo de desvanecimento da sombra da vela
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Fator de mesclagem da sombra da vela
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Distância de desvanecimento da sombra da tocha
+2122144048||LightRewrite_Torch_ShadowFadeRange|Intervalo de desvanecimento da sombra da tocha
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Fator de mesclagem da sombra da tocha
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Distância de desvanecimento da sombra do braseiro
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Intervalo de desvanecimento da sombra do braseiro
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Fator de mesclagem da sombra do braseiro
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Distância de desvanecimento da sombra do candelabro
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Intervalo de desvanecimento da sombra do candelabro
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Fator de mesclagem da sombra do candelabro
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distância de desvanecimento da sombra da fogueira
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Intervalo de desvanecimento da sombra da fogueira
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Fator de mesclagem da sombra da fogueira

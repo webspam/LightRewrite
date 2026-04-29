@@ -44,3 +44,18 @@
 2122144041||LightRewrite_Campfire_ColorR|Colore del fuoco da campo: Rosso
 2122144042||LightRewrite_Campfire_ColorG|Colore del fuoco da campo: Verde
 2122144043||LightRewrite_Campfire_ColorB|Colore del fuoco da campo: Blu
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Distanza di dissolvenza dell'ombra della candela
+2122144045||LightRewrite_Candle_ShadowFadeRange|Intervallo di dissolvenza dell'ombra della candela
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Fattore di fusione dell'ombra della candela
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Distanza di dissolvenza dell'ombra della torcia
+2122144048||LightRewrite_Torch_ShadowFadeRange|Intervallo di dissolvenza dell'ombra della torcia
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Fattore di fusione dell'ombra della torcia
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del braciere
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del braciere
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Fattore di fusione dell'ombra del braciere
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del candelabro
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del candelabro
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Fattore di fusione dell'ombra del candelabro
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del fuoco da campo
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del fuoco da campo
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Fattore di fusione dell'ombra del fuoco da campo
