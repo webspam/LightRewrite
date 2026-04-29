@@ -188,15 +188,16 @@ class CLightRewriteSettings {
     // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
     // its own fields directly.
     public function ReadGameConfig() {
+        var i, count : int;
+        
         EnsureGameConfigIsInitialised();
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        candleParams.ReadGameConfig(gameConfig, GENERAL_GROUP);
-        torchParams.ReadGameConfig(gameConfig, GENERAL_GROUP);
-        brazierParams.ReadGameConfig(gameConfig, GENERAL_GROUP);
-        candelabraParams.ReadGameConfig(gameConfig, GENERAL_GROUP);
-        campfireParams.ReadGameConfig(gameConfig, GENERAL_GROUP);
+        count = lightSourceParams.Size();
+        for (i = 0; i < count; i += 1) {
+            lightSourceParams[i].ReadGameConfig(gameConfig, GENERAL_GROUP);
+        }
     }
 
     // To be called for every option-change event.
@@ -232,15 +233,15 @@ class CLightRewriteSettings {
     private function UpdateAllColourSlidersDisabledState() {
         var flashValueStorage : CScriptedFlashValueStorage;
         var dataArray : CScriptedFlashArray;
+        var i, count : int;
 
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        candleParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
-        torchParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
-        brazierParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
-        candelabraParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
-        campfireParams.SetMenuOptionDisabledState(flashValueStorage, dataArray);
+        count = lightSourceParams.Size();
+        for (i = 0; i < count; i += 1) {
+            lightSourceParams[i].UpdateColourSliderDisabledState();
+        }
 
         flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
         theGame.GetGuiManager().ForceProcessFlashStorage();
@@ -293,12 +294,12 @@ class CLightRewriteSettings {
 
     public function GetAllLightSourceTags() : array<name> {
         var tags : array<name>;
+        var i, count : int;
 
-        tags.PushBack(candleParams.tag);
-        tags.PushBack(torchParams.tag);
-        tags.PushBack(brazierParams.tag);
-        tags.PushBack(candelabraParams.tag);
-        tags.PushBack(campfireParams.tag);
+        count = lightSourceParams.Size();
+        for (i = 0; i < count; i += 1) {
+            tags.PushBack(lightSourceParams[i].tag);
+        }
 
         return tags;
     }
