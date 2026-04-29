@@ -216,12 +216,12 @@ class CLightRewriteSettings {
 
             // If we've just turned the mod off, disable all nearby entities.
             if (isEnabled != wasEnabled && !isEnabled) {
-                DisableAllNearbyEntities();
+                theGame.lightRewriter.DisableLightRewrite();
             }
 
             // Otherwise, if we changed any setting AND the mod is enabled, run the light rewrite.
             else if (isEnabled) {
-                EnableAllNearbyEntities();
+                theGame.lightRewriter.EnableLightRewrite();
             }
         }
     }
@@ -237,51 +237,6 @@ class CLightRewriteSettings {
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
             lightSourceParams[i].UpdateColourSliderDisabledState();
-        }
-    }
-
-    private function EnableAllNearbyEntities() {
-        var i, count : int;
-        var entities : array<CGameplayEntity>;
-
-        GetAllLightSourceEntities(entities);
-        count = entities.Size();
-
-        LogLightRewrite("Enabling Light Rewrite for " + count + " entities");
-
-        for (i = 0; i < count; i += 1) {
-            entities[i].CandleLightRewrite();
-        }
-    }
-
-    private function DisableAllNearbyEntities() {
-        var i, count : int;
-        var entities : array<CGameplayEntity>;
-
-        GetAllLightSourceEntities(entities);
-        count = entities.Size();
-
-        LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
-
-        for (i = 0; i < count; i += 1) {
-            entities[i].DisableLightRewrite();
-        }
-    }
-
-    private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
-        var nodes : array<CNode>;
-        var entity : CGameplayEntity;
-        var i : int;
-        var count : int;
-
-        var tags : array<name> = GetAllLightSourceTags();
-
-        theGame.GetNodesByTags(tags, nodes);
-        count = nodes.Size();
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)nodes[i];
-            if (entity) entities.PushBack(entity);
         }
     }
 

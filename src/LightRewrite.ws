@@ -23,6 +23,18 @@ enum ELightRewriteType {
     LRT_Campfire,
 }
 
+// The light rewriter singleton.
+@addField(CR4Game)
+public var lightRewriter : CLightRewriter;
+
+@wrapMethod(CR4Game)
+function OnGameStarting(restored : bool) {
+    wrappedMethod(restored);
+
+    lightRewriter = new CLightRewriter in this;
+    lightRewriter.Init(GetLightRewriteSettings());
+}
+
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 
 // Rewrite a single candle / torch entity
