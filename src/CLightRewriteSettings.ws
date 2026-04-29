@@ -468,30 +468,24 @@ class CLightRewriteSettings {
     }
 
     private function GetAllNearbyEntities(out entities : array<CGameplayEntity>) {
-        PushRewritableEntitiesByTag(candleParams.tag, "candles", entities);
-        PushRewritableEntitiesByTag(torchParams.tag, "torches", entities);
-        PushRewritableEntitiesByTag(brazierParams.tag, "braziers", entities);
-        PushRewritableEntitiesByTag(candelabraParams.tag, "candelabras", entities);
-        PushRewritableEntitiesByTag(campfireParams.tag, "campfires", entities);
-    }
-
-    private function PushRewritableEntitiesByTag(tag : name, logKind : string, out result : array<CGameplayEntity>) {
-        var interimEntities : array<CEntity>;
-        var i, count : int;
+        var tags : array<name>;
+        var nodes : array<CNode>;
         var entity : CGameplayEntity;
+        var i : int;
+        var count : int;
 
-        theGame.GetEntitiesByTag(tag, interimEntities);
-        count = interimEntities.Size();
-        LogLightRewrite("Get nearby " + logKind + ": Found " + count + " nearby entities");
+        tags.PushBack(candleParams.tag);
+        tags.PushBack(torchParams.tag);
+        tags.PushBack(brazierParams.tag);
+        tags.PushBack(candelabraParams.tag);
+        tags.PushBack(campfireParams.tag);
+   
+        theGame.GetNodesByTags(tags, nodes);
+        count = nodes.Size();
 
         for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)interimEntities[i];
-            entity.IdentifyLightRewriteType();
-
-            if (entity.IsLightRewritable()) {
-                result.PushBack(entity);
-            }
+            entity = (CGameplayEntity)nodes[i];
+            if (entity) entities.PushBack(entity);
         }
     }
-
 }
