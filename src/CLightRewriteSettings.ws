@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 8;
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 9;
 
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -20,7 +20,7 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled : bool;                       default isEnabled                = true;
 
-    public var candleParams : CLightRewriteSourceParams;
+    public var candleParams : CLightRewriteParamsCandle;
     public var torchParams : CLightRewriteSourceParams;
     public var brazierParams : CLightRewriteSourceParams;
     public var candelabraParams : CLightRewriteSourceParams;
@@ -205,6 +205,11 @@ class CLightRewriteSettings {
             for (i = 0; i < count; i += 1) {
                 gameConfig.SetVarValue(GENERAL_GROUP, lightSourceParams[i].TAG_ENABLED, lightSourceParams[i].enabled);
             }
+        }
+
+        // v8 → v9: add candle point-light alignment setting.
+        if (initVersion <= 8) {
+            gameConfig.SetVarValue(GENERAL_GROUP, candleParams.TAG_ALIGN_POINT_LIGHTS, candleParams.alignPointLights);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
