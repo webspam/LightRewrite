@@ -254,15 +254,15 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
-        UpdateAllColourSlidersDisabledState();
+        UpdateAllGroupsDisabledState();
     }
 
-    private function UpdateAllColourSlidersDisabledState() {
+    private function UpdateAllGroupsDisabledState() {
         var i, count : int;
 
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
-            lightSourceParams[i].UpdateColourSliderDisabledState();
+            lightSourceParams[i].UpdateMenuDisabledState();
         }
     }
 

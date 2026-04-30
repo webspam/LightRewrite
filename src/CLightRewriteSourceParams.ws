@@ -62,20 +62,27 @@ class CLightRewriteSourceParams {
     // Reacts to menu option changes if the changed option is relevant to this source.
     // Designed to be called for every option-change event.
     public function OptionValueChanged(optionName : name) {
-        if (optionName == TAG_OVERRIDE_COLOUR) UpdateColourSliderDisabledState();
+        if (optionName == TAG_ENABLED || optionName == TAG_OVERRIDE_COLOUR) UpdateMenuDisabledState();
     }
 
-    // Updates the disabled state of the colour sliders in the game settings menu.
-    public function UpdateColourSliderDisabledState() {
+    // Updates the disabled state of all options in this source's settings group.
+    public function UpdateMenuDisabledState() {
         var flashValueStorage : CScriptedFlashValueStorage;
         var dataArray : CScriptedFlashArray;
 
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_DISTANCE, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_OVERRIDE_COLOUR, !enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !enabled || !shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !enabled || !shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !enabled || !shouldOverrideColour);
 
         flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
         theGame.GetGuiManager().ForceProcessFlashStorage();
