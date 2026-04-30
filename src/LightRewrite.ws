@@ -21,6 +21,7 @@ enum ELightRewriteType {
     LRT_Brazier,
     LRT_Candelabra,
     LRT_Campfire,
+    LRT_Chandelier,
 }
 
 // The light rewriter singleton.
@@ -124,6 +125,12 @@ public function IdentifyLightRewriteType() {
         lightRewriteLightType = LRT_Candelabra;
         AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
     }
+    else if (StrFindFirst(editorName, "chandelier") != -1) {
+        LogLightRewrite("Found chandelier: " + editorName);
+
+        lightRewriteLightType = LRT_Chandelier;
+        AddTag(theGame.GetLightRewriteSettings().chandelierParams.tag);
+    }
     else if (StrFindFirst(editorName, "candle") != -1) {
         LogLightRewrite("Found candle: " + editorName);
 
@@ -181,6 +188,9 @@ public function CandleLightRewrite() {
     }
     else if (lightRewriteLightType == LRT_Campfire) {
         sourceParams = settings.campfireParams;
+    }
+    else if (lightRewriteLightType == LRT_Chandelier) {
+        sourceParams = settings.chandelierParams;
     }
     else {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);

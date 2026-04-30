@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Odległość zanikania cienia ogniska
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Zakres zanikania cienia ogniska
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Współczynnik mieszania cienia ogniska
+2122144059||LightRewrite_Chandelier_Brightness|Jasność żyrandola
+2122144060||LightRewrite_Chandelier_Radius|Promień żyrandola
+2122144061||LightRewrite_Chandelier_Attenuation|Tłumienie żyrandola
+2122144062||LightRewrite_Chandelier_OverrideColour|Zastąp kolor żyrandola
+2122144063||LightRewrite_Chandelier_ColorR|Kolor żyrandola: Czerwony
+2122144064||LightRewrite_Chandelier_ColorG|Kolor żyrandola: Zielony
+2122144065||LightRewrite_Chandelier_ColorB|Kolor żyrandola: Niebieski
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Odległość zanikania cienia żyrandola
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Zakres zanikania cienia żyrandola
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Współczynnik mieszania cienia żyrandola

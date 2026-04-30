@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Campfire shadow fade distance
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Campfire shadow fade range
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Campfire shadow blend factor
+2122144059||LightRewrite_Chandelier_Brightness|Chandelier brightness
+2122144060||LightRewrite_Chandelier_Radius|Chandelier radius
+2122144061||LightRewrite_Chandelier_Attenuation|Chandelier attenuation
+2122144062||LightRewrite_Chandelier_OverrideColour|Override chandelier colour
+2122144063||LightRewrite_Chandelier_ColorR|Chandelier colour: Red
+2122144064||LightRewrite_Chandelier_ColorG|Chandelier colour: Green
+2122144065||LightRewrite_Chandelier_ColorB|Chandelier colour: Blue
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Chandelier shadow fade distance
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Chandelier shadow fade range
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Chandelier shadow blend factor

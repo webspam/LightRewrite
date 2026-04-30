@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distância de desvanecimento da sombra da fogueira
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Intervalo de desvanecimento da sombra da fogueira
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Fator de mesclagem da sombra da fogueira
+2122144059||LightRewrite_Chandelier_Brightness|Brilho do lustre
+2122144060||LightRewrite_Chandelier_Radius|Raio do lustre
+2122144061||LightRewrite_Chandelier_Attenuation|Atenuação do lustre
+2122144062||LightRewrite_Chandelier_OverrideColour|Substituir cor do lustre
+2122144063||LightRewrite_Chandelier_ColorR|Cor do lustre: Vermelho
+2122144064||LightRewrite_Chandelier_ColorG|Cor do lustre: Verde
+2122144065||LightRewrite_Chandelier_ColorB|Cor do lustre: Azul
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distância de desvanecimento da sombra do lustre
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Intervalo de desvanecimento da sombra do lustre
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Fator de mesclagem da sombra do lustre

@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|篝火陰影淡出距離
 2122144057||LightRewrite_Campfire_ShadowFadeRange|篝火陰影淡出範圍
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|篝火陰影混合係數
+2122144059||LightRewrite_Chandelier_Brightness|吊燈亮度
+2122144060||LightRewrite_Chandelier_Radius|吊燈半徑
+2122144061||LightRewrite_Chandelier_Attenuation|吊燈衰減
+2122144062||LightRewrite_Chandelier_OverrideColour|覆蓋吊燈顏色
+2122144063||LightRewrite_Chandelier_ColorR|吊燈顏色：紅色
+2122144064||LightRewrite_Chandelier_ColorG|吊燈顏色：綠色
+2122144065||LightRewrite_Chandelier_ColorB|吊燈顏色：藍色
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|吊燈陰影淡出距離
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|吊燈陰影淡出範圍
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|吊燈陰影混合係數

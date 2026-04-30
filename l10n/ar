@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|مسافة تلاشي ظل نار المخيم
 2122144057||LightRewrite_Campfire_ShadowFadeRange|نطاق تلاشي ظل نار المخيم
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|عامل مزج ظل نار المخيم
+2122144059||LightRewrite_Chandelier_Brightness|سطوع الثريا
+2122144060||LightRewrite_Chandelier_Radius|نطاق الثريا
+2122144061||LightRewrite_Chandelier_Attenuation|توهين الثريا
+2122144062||LightRewrite_Chandelier_OverrideColour|تجاوز لون الثريا
+2122144063||LightRewrite_Chandelier_ColorR|لون الثريا: أحمر
+2122144064||LightRewrite_Chandelier_ColorG|لون الثريا: أخضر
+2122144065||LightRewrite_Chandelier_ColorB|لون الثريا: أزرق
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|مسافة تلاشي ظل الثريا
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|نطاق تلاشي ظل الثريا
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|عامل مزج ظل الثريا
