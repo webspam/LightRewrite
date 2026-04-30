@@ -25,6 +25,7 @@ class CLightRewriteSettings {
     public var brazierParams : CLightRewriteSourceParams;
     public var candelabraParams : CLightRewriteSourceParams;
     public var campfireParams : CLightRewriteSourceParams;
+    public var chandelierParams : CLightRewriteSourceParams;
 
     private var lightSourceParams : array<CLightRewriteSourceParams>;
 
@@ -40,12 +41,14 @@ class CLightRewriteSettings {
         brazierParams = new CLightRewriteParamsBrazier in this;
         candelabraParams = new CLightRewriteParamsCandelabra in this;
         campfireParams = new CLightRewriteParamsCampfire in this;
+        chandelierParams = new CLightRewriteParamsChandelier in this;
 
         lightSourceParams.PushBack(candleParams);
         lightSourceParams.PushBack(torchParams);
         lightSourceParams.PushBack(brazierParams);
         lightSourceParams.PushBack(candelabraParams);
         lightSourceParams.PushBack(campfireParams);
+        lightSourceParams.PushBack(chandelierParams);
 
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
