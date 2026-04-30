@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 6;
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 7;
 
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -182,6 +182,20 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(GENERAL_GROUP, candelabraParams.TAG_SHADOW_BLEND, candelabraParams.shadowBlendFactor);
                 gameConfig.SetVarValue(GENERAL_GROUP, campfireParams.TAG_SHADOW_BLEND, campfireParams.shadowBlendFactor);
             }
+        }
+
+        // v6 → v7: add chandelier light source settings.
+        if (initVersion <= 6) {
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_BRIGHTNESS, chandelierParams.brightness);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_RADIUS, chandelierParams.radius);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_ATTENUATION, chandelierParams.attenuation);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_SHADOW_DISTANCE, chandelierParams.shadowFadeDistance);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_SHADOW_RANGE, chandelierParams.shadowFadeRange);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_SHADOW_BLEND, chandelierParams.shadowBlendFactor);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_OVERRIDE_COLOUR, chandelierParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_RED, chandelierParams.color.Red);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_GREEN, chandelierParams.color.Green);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_BLUE, chandelierParams.color.Blue);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);

@@ -27,6 +27,12 @@
                 <Entry varId="CandelabraShadowFadeDistance" value="5" />
                 <Entry varId="CandelabraShadowFadeRange" value="5" />
                 <Entry varId="CandelabraShadowBlendFactor" value="1" />
+                <Entry varId="ChandelierBrightness" value="8" />
+                <Entry varId="ChandelierRadius" value="12" />
+                <Entry varId="ChandelierAttenuation" value="0.7" />
+                <Entry varId="ChandelierShadowFadeDistance" value="5" />
+                <Entry varId="ChandelierShadowFadeRange" value="5" />
+                <Entry varId="ChandelierShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="50" />
                 <Entry varId="CampfireRadius" value="15" />
                 <Entry varId="CampfireAttenuation" value="0.5" />
@@ -59,6 +65,12 @@
                 <Entry varId="CandelabraShadowFadeDistance" value="10" />
                 <Entry varId="CandelabraShadowFadeRange" value="5" />
                 <Entry varId="CandelabraShadowBlendFactor" value="1" />
+                <Entry varId="ChandelierBrightness" value="8" />
+                <Entry varId="ChandelierRadius" value="9" />
+                <Entry varId="ChandelierAttenuation" value="0.95" />
+                <Entry varId="ChandelierShadowFadeDistance" value="10" />
+                <Entry varId="ChandelierShadowFadeRange" value="5" />
+                <Entry varId="ChandelierShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="50" />
                 <Entry varId="CampfireRadius" value="25" />
                 <Entry varId="CampfireAttenuation" value="0.95" />
@@ -91,6 +103,12 @@
                 <Entry varId="CandelabraShadowFadeDistance" value="10" />
                 <Entry varId="CandelabraShadowFadeRange" value="5" />
                 <Entry varId="CandelabraShadowBlendFactor" value="1" />
+                <Entry varId="ChandelierBrightness" value="12" />
+                <Entry varId="ChandelierRadius" value="10" />
+                <Entry varId="ChandelierAttenuation" value="0.95" />
+                <Entry varId="ChandelierShadowFadeDistance" value="10" />
+                <Entry varId="ChandelierShadowFadeRange" value="5" />
+                <Entry varId="ChandelierShadowBlendFactor" value="1" />
                 <Entry varId="CampfireBrightness" value="75" />
                 <Entry varId="CampfireRadius" value="40" />
                 <Entry varId="CampfireAttenuation" value="0.9" />
@@ -203,6 +221,33 @@
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
+            <Var id="ChandelierBrightness" displayName="LightRewrite_Chandelier_Brightness"
+                displayType="SLIDER;0;20;40" />
+            <Var id="ChandelierRadius" displayName="LightRewrite_Chandelier_Radius"
+                displayType="SLIDER;1;30;58" />
+            <Var id="ChandelierAttenuation" displayName="LightRewrite_Chandelier_Attenuation"
+                displayType="SLIDER;0;1;20" />
+            <Var id="ChandelierShadowFadeDistance"
+                displayName="LightRewrite_Chandelier_ShadowFadeDistance"
+                displayType="SLIDER;0;50;100" />
+            <Var id="ChandelierShadowFadeRange"
+                displayName="LightRewrite_Chandelier_ShadowFadeRange"
+                displayType="SLIDER;0;20;40" />
+            <Var id="ChandelierShadowBlendFactor"
+                displayName="LightRewrite_Chandelier_ShadowBlendFactor"
+                displayType="SLIDER;0;1;20" />
+
+            <Var id="OverrideChandelierColour" displayName="LightRewrite_Chandelier_OverrideColour"
+                displayType="TOGGLE" />
+            <Var id="ChandelierColorR" displayName="LightRewrite_Chandelier_ColorR"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="ChandelierColorG" displayName="LightRewrite_Chandelier_ColorG"
+                displayType="SLIDER;0;255;255" tags="indent" />
+            <Var id="ChandelierColorB" displayName="LightRewrite_Chandelier_ColorB"
+                displayType="SLIDER;0;255;255" tags="indent" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
             <Var id="CampfireBrightness" displayName="LightRewrite_Campfire_Brightness"
                 displayType="SLIDER;0;100;200" />
             <Var id="CampfireRadius" displayName="LightRewrite_Campfire_Radius"
@@ -229,7 +274,7 @@
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;6;6" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;7;7" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>
