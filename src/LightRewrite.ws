@@ -138,6 +138,8 @@ public function IdentifyLightRewriteType() {
 
         lightRewriteLightType = LRT_Candle;
         AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
+
+        FindLightRewriteFireFxSlotNames();
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + editorName);
@@ -207,6 +209,9 @@ public function CandleLightRewrite() {
             pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
             pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
             pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
+
+            // Candles: Align the point light to the fire FX slot.
+            AlignLightRewriteCandleLight(i, pointLight);
 
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;
