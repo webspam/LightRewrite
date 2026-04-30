@@ -269,4 +269,16 @@ class CLightRewriteSettings {
 
         return tags;
     }
+
+    public function GetParamsForType(lightType : ELightRewriteType) : CLightRewriteSourceParams {
+        switch (lightType) {
+            case LRT_Candle:      return candleParams;
+            case LRT_Torch:       return torchParams;
+            case LRT_Brazier:     return brazierParams;
+            case LRT_Candelabra:  return candelabraParams;
+            case LRT_Campfire:    return campfireParams;
+            case LRT_Chandelier:  return chandelierParams;
+            default:              return NULL;
+        }
+    }
 }
