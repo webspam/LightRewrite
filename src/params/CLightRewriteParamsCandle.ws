@@ -2,6 +2,7 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     // The tag that will identify this source in the game
     default tag = 'LR_Candle';
 
+    default TAG_ENABLED = 'CandleEnabled';
     default TAG_BRIGHTNESS = 'CandleBrightness';
     default TAG_RADIUS = 'CandleRadius';
     default TAG_ATTENUATION = 'CandleAttenuation';
@@ -13,6 +14,7 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default TAG_GREEN = 'CandleColorG';
     default TAG_BLUE = 'CandleColorB';
 
+    default enabled = true;
     default useSpotlightColor = true;
     default brightness = 5.5f;
     default radius = 9.f;

@@ -6,6 +6,7 @@ class CLightRewriteSourceParams {
     public const var tag : name;
 
     // Mod settings IDs (must match XML Var id values)
+    public const var TAG_ENABLED : name;
     public const var TAG_BRIGHTNESS : name;
     public const var TAG_RADIUS : name;
     public const var TAG_ATTENUATION : name;
@@ -16,6 +17,9 @@ class CLightRewriteSourceParams {
     public const var TAG_RED : name;
     public const var TAG_GREEN : name;
     public const var TAG_BLUE : name;
+
+    // Whether this light source type should be rewritten
+    public var enabled : bool;
 
     // Light source brightness
     public var brightness : float;
@@ -42,6 +46,7 @@ class CLightRewriteSourceParams {
 
     // Reads the game config for this light source.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name) {
+        enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
         brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), brightness);
         radius = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), radius);
         attenuation = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), attenuation);
