@@ -107,7 +107,35 @@ public function HasCheckedLightRewriteType() : bool {
 // This entity is a valid light rewrite target.
 @addMethod(CGameplayEntity)
 public function IsLightRewritable() : bool {
-    return lightRewriteLightType != LRT_Unknown && lightRewriteLightType != LRT_None;
+    var sourceParams : CLightRewriteSourceParams = GetLightRewriteSourceParams();
+    return sourceParams && sourceParams.enabled;
+}
+
+@addMethod(CGameplayEntity)
+public function GetLightRewriteSourceParams() : CLightRewriteSourceParams {
+    var sourceParams : CLightRewriteSourceParams;
+    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
+
+    if (lightRewriteLightType == LRT_Candle) {
+        sourceParams = settings.candleParams;
+    }
+    else if (lightRewriteLightType == LRT_Torch) {
+        sourceParams = settings.torchParams;
+    }
+    else if (lightRewriteLightType == LRT_Brazier) {
+        sourceParams = settings.brazierParams;
+    }
+    else if (lightRewriteLightType == LRT_Candelabra) {
+        sourceParams = settings.candelabraParams;
+    }
+    else if (lightRewriteLightType == LRT_Campfire) {
+        sourceParams = settings.campfireParams;
+    }
+    else if (lightRewriteLightType == LRT_Chandelier) {
+        sourceParams = settings.chandelierParams;
+    }
+
+    return sourceParams;
 }
 
 // If this is an open fire, identify the light rewrite type of this entity.
@@ -172,28 +200,15 @@ public function CandleLightRewrite() {
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
 
-    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
+    sourceParams = GetLightRewriteSourceParams();
 
-    if (lightRewriteLightType == LRT_Candle) {
-        sourceParams = settings.candleParams;
-    }
-    else if (lightRewriteLightType == LRT_Torch) {
-        sourceParams = settings.torchParams;
-    }
-    else if (lightRewriteLightType == LRT_Brazier) {
-        sourceParams = settings.brazierParams;
-    }
-    else if (lightRewriteLightType == LRT_Candelabra) {
-        sourceParams = settings.candelabraParams;
-    }
-    else if (lightRewriteLightType == LRT_Campfire) {
-        sourceParams = settings.campfireParams;
-    }
-    else if (lightRewriteLightType == LRT_Chandelier) {
-        sourceParams = settings.chandelierParams;
-    }
-    else {
+    if (!sourceParams) {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
+        return;
+    }
+
+    if (!sourceParams.enabled) {
+        DisableLightRewrite();
         return;
     }
 
