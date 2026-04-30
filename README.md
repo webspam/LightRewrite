@@ -44,3 +44,7 @@ That said, I'm extremely keen (at time of writing) to hear about any misidentifi
 
 - Witcher 3 - Next-Gen 4.04 (probably)
 - [Community Patch - Shared Imports](https://www.nexusmods.com/witcher3/mods/2110)
+
+### Recommended
+
+- [Cozy RTX Fires](https://www.nexusmods.com/witcher3/mods/8772) - Slightly increase direct light ray distance (causes colour bleeding at high settings)
