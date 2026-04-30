@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 7;
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 8;
 
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -69,6 +69,7 @@ class CLightRewriteSettings {
         var oldShadowFadeDistance : string;
         var oldShadowFadeRange : string;
         var oldShadowBlendFactor : string;
+        var i, count : int;
         var initVersion : int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
 
         if (initVersion == CONFIG_VERSION) return;
@@ -196,6 +197,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_RED, chandelierParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_GREEN, chandelierParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_BLUE, chandelierParams.color.Blue);
+        }
+
+        // v7 → v8: add per-source enable settings.
+        if (initVersion <= 7) {
+            count = lightSourceParams.Size();
+            for (i = 0; i < count; i += 1) {
+                gameConfig.SetVarValue(GENERAL_GROUP, lightSourceParams[i].TAG_ENABLED, lightSourceParams[i].enabled);
+            }
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
