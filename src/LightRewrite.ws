@@ -174,7 +174,8 @@ public function CandleLightRewrite() {
     var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
     var count : int = components.Size();
 
-    sourceParams = theGame.GetLightRewriteSettings().GetParamsForType(lightRewriteLightType);
+    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
+    sourceParams = settings.GetParamsForType(lightRewriteLightType);
 
     if (!sourceParams) {
         LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
