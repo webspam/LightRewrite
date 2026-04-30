@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distance de fondu de l'ombre du feu de camp
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Plage de fondu de l'ombre du feu de camp
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Facteur de fusion de l'ombre du feu de camp
+2122144059||LightRewrite_Chandelier_Brightness|Luminosité du lustre
+2122144060||LightRewrite_Chandelier_Radius|Rayon du lustre
+2122144061||LightRewrite_Chandelier_Attenuation|Atténuation du lustre
+2122144062||LightRewrite_Chandelier_OverrideColour|Remplacer la couleur du lustre
+2122144063||LightRewrite_Chandelier_ColorR|Couleur du lustre : Rouge
+2122144064||LightRewrite_Chandelier_ColorG|Couleur du lustre : Vert
+2122144065||LightRewrite_Chandelier_ColorB|Couleur du lustre : Bleu
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distance de fondu de l'ombre du lustre
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Plage de fondu de l'ombre du lustre
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Facteur de fusion de l'ombre du lustre

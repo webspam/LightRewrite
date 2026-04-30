@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Дистанция затухания тени костра
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Диапазон затухания тени костра
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Коэффициент смешивания тени костра
+2122144059||LightRewrite_Chandelier_Brightness|Яркость люстры
+2122144060||LightRewrite_Chandelier_Radius|Радиус люстры
+2122144061||LightRewrite_Chandelier_Attenuation|Затухание люстры
+2122144062||LightRewrite_Chandelier_OverrideColour|Переопределить цвет люстры
+2122144063||LightRewrite_Chandelier_ColorR|Цвет люстры: Красный
+2122144064||LightRewrite_Chandelier_ColorG|Цвет люстры: Зелёный
+2122144065||LightRewrite_Chandelier_ColorB|Цвет люстры: Синий
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Дистанция затухания тени люстры
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Диапазон затухания тени люстры
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Коэффициент смешивания тени люстры

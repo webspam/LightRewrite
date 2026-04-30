@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Tábortűz árnyékának halványulási távolsága
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Tábortűz árnyékának halványulási tartománya
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Tábortűz árnyékának keverési tényezője
+2122144059||LightRewrite_Chandelier_Brightness|Csillár fényereje
+2122144060||LightRewrite_Chandelier_Radius|Csillár sugara
+2122144061||LightRewrite_Chandelier_Attenuation|Csillár csillapítása
+2122144062||LightRewrite_Chandelier_OverrideColour|Csillár színének felülírása
+2122144063||LightRewrite_Chandelier_ColorR|Csillár színe: Piros
+2122144064||LightRewrite_Chandelier_ColorG|Csillár színe: Zöld
+2122144065||LightRewrite_Chandelier_ColorB|Csillár színe: Kék
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Csillár árnyékának halványulási távolsága
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Csillár árnyékának halványulási tartománya
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Csillár árnyékának keverési tényezője

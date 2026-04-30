@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|모닥불 그림자 페이드 거리
 2122144057||LightRewrite_Campfire_ShadowFadeRange|모닥불 그림자 페이드 범위
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|모닥불 그림자 혼합 계수
+2122144059||LightRewrite_Chandelier_Brightness|샹들리에 밝기
+2122144060||LightRewrite_Chandelier_Radius|샹들리에 반경
+2122144061||LightRewrite_Chandelier_Attenuation|샹들리에 감쇠
+2122144062||LightRewrite_Chandelier_OverrideColour|샹들리에 색상 덮어쓰기
+2122144063||LightRewrite_Chandelier_ColorR|샹들리에 색상: 빨간색
+2122144064||LightRewrite_Chandelier_ColorG|샹들리에 색상: 초록색
+2122144065||LightRewrite_Chandelier_ColorB|샹들리에 색상: 파란색
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|샹들리에 그림자 페이드 거리
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|샹들리에 그림자 페이드 범위
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|샹들리에 그림자 혼합 계수

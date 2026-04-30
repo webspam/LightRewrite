@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la hoguera
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Rango de desvanecimiento de la sombra de la hoguera
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Factor de mezcla de la sombra de la hoguera
+2122144059||LightRewrite_Chandelier_Brightness|Brillo de la lámpara de araña
+2122144060||LightRewrite_Chandelier_Radius|Radio de la lámpara de araña
+2122144061||LightRewrite_Chandelier_Attenuation|Atenuación de la lámpara de araña
+2122144062||LightRewrite_Chandelier_OverrideColour|Reemplazar color de la lámpara de araña
+2122144063||LightRewrite_Chandelier_ColorR|Color de la lámpara de araña: Rojo
+2122144064||LightRewrite_Chandelier_ColorG|Color de la lámpara de araña: Verde
+2122144065||LightRewrite_Chandelier_ColorB|Color de la lámpara de araña: Azul
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la lámpara de araña
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Rango de desvanecimiento de la sombra de la lámpara de araña
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Factor de mezcla de la sombra de la lámpara de araña

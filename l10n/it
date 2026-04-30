@@ -59,3 +59,13 @@
 2122144056||LightRewrite_Campfire_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del fuoco da campo
 2122144057||LightRewrite_Campfire_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del fuoco da campo
 2122144058||LightRewrite_Campfire_ShadowBlendFactor|Fattore di fusione dell'ombra del fuoco da campo
+2122144059||LightRewrite_Chandelier_Brightness|Luminosità del lampadario
+2122144060||LightRewrite_Chandelier_Radius|Raggio del lampadario
+2122144061||LightRewrite_Chandelier_Attenuation|Attenuazione del lampadario
+2122144062||LightRewrite_Chandelier_OverrideColour|Sostituisci colore del lampadario
+2122144063||LightRewrite_Chandelier_ColorR|Colore del lampadario: Rosso
+2122144064||LightRewrite_Chandelier_ColorG|Colore del lampadario: Verde
+2122144065||LightRewrite_Chandelier_ColorB|Colore del lampadario: Blu
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del lampadario
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del lampadario
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Fattore di fusione dell'ombra del lampadario
