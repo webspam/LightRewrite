@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|مسافة تلاشي ظل الثريا
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|نطاق تلاشي ظل الثريا
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|عامل مزج ظل الثريا
+2122144069||LightRewrite_Candle_Enabled|الشمعة مفعّلة
+2122144070||LightRewrite_Torch_Enabled|الشعلة مفعّلة
+2122144071||LightRewrite_Brazier_Enabled|المنقل مفعّل
+2122144072||LightRewrite_Candelabra_Enabled|الشمعدان مفعّل
+2122144073||LightRewrite_Chandelier_Enabled|الثريا مفعّلة
+2122144074||LightRewrite_Campfire_Enabled|نار المخيم مفعّلة

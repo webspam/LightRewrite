@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|샹들리에 그림자 페이드 거리
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|샹들리에 그림자 페이드 범위
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|샹들리에 그림자 혼합 계수
+2122144069||LightRewrite_Candle_Enabled|양초 활성화
+2122144070||LightRewrite_Torch_Enabled|횃불 활성화
+2122144071||LightRewrite_Brazier_Enabled|화로 활성화
+2122144072||LightRewrite_Candelabra_Enabled|촛대 활성화
+2122144073||LightRewrite_Chandelier_Enabled|샹들리에 활성화
+2122144074||LightRewrite_Campfire_Enabled|모닥불 활성화

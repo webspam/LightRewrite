@@ -9,7 +9,7 @@ class CLightRewriter {
         this.settings = settings;
     }
 
-    // Enables Light Rewrite on all light sources.
+    // Refreshes Light Rewrite on all light sources.
     public function RewriteAllLightSources() {
         var i, count : int;
         var entities : array<CGameplayEntity>;
@@ -17,10 +17,15 @@ class CLightRewriter {
         GetAllLightSourceEntities(entities);
         count = entities.Size();
 
-        LogLightRewrite("Enabling Light Rewrite for " + count + " entities");
+        LogLightRewrite("Refreshing Light Rewrite for " + count + " entities");
 
         for (i = 0; i < count; i += 1) {
-            entities[i].CandleLightRewrite();
+            if (entities[i].IsLightRewritable()) {
+                entities[i].CandleLightRewrite();
+            }
+            else {
+                entities[i].DisableLightRewrite();
+            }
         }
     }
 

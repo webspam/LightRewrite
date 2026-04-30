@@ -2,6 +2,7 @@ class CLightRewriteParamsTorch extends CLightRewriteSourceParams {
     // The tag that will identify this source in the game
     default tag = 'LR_Torch';
 
+    default TAG_ENABLED = 'TorchEnabled';
     default TAG_BRIGHTNESS = 'TorchBrightness';
     default TAG_RADIUS = 'TorchRadius';
     default TAG_ATTENUATION = 'TorchAttenuation';
@@ -13,6 +14,7 @@ class CLightRewriteParamsTorch extends CLightRewriteSourceParams {
     default TAG_GREEN = 'TorchColorG';
     default TAG_BLUE = 'TorchColorB';
 
+    default enabled = true;
     default useSpotlightColor = false;
     default brightness = 30.f;
     default radius = 20.f;

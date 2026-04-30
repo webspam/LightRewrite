@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Csillár árnyékának halványulási távolsága
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Csillár árnyékának halványulási tartománya
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Csillár árnyékának keverési tényezője
+2122144069||LightRewrite_Candle_Enabled|Gyertya engedélyezve
+2122144070||LightRewrite_Torch_Enabled|Fáklya engedélyezve
+2122144071||LightRewrite_Brazier_Enabled|Parázstartó engedélyezve
+2122144072||LightRewrite_Candelabra_Enabled|Kandeláber engedélyezve
+2122144073||LightRewrite_Chandelier_Enabled|Csillár engedélyezve
+2122144074||LightRewrite_Campfire_Enabled|Tábortűz engedélyezve

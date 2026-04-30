@@ -2,6 +2,7 @@ class CLightRewriteParamsBrazier extends CLightRewriteSourceParams {
     // The tag that will identify this source in the game
     default tag = 'LR_Brazier';
 
+    default TAG_ENABLED = 'BrazierEnabled';
     default TAG_BRIGHTNESS = 'BrazierBrightness';
     default TAG_RADIUS = 'BrazierRadius';
     default TAG_ATTENUATION = 'BrazierAttenuation';
@@ -13,6 +14,7 @@ class CLightRewriteParamsBrazier extends CLightRewriteSourceParams {
     default TAG_GREEN = 'BrazierColorG';
     default TAG_BLUE = 'BrazierColorB';
 
+    default enabled = true;
     default useSpotlightColor = false;
     default brightness = 40.f;
     default radius = 25.f;

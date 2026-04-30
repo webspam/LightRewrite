@@ -2,6 +2,7 @@ class CLightRewriteParamsCampfire extends CLightRewriteSourceParams {
     // The tag that will identify this source in the game
     default tag = 'LR_Campfire';
 
+    default TAG_ENABLED = 'CampfireEnabled';
     default TAG_BRIGHTNESS = 'CampfireBrightness';
     default TAG_RADIUS = 'CampfireRadius';
     default TAG_ATTENUATION = 'CampfireAttenuation';
@@ -13,6 +14,7 @@ class CLightRewriteParamsCampfire extends CLightRewriteSourceParams {
     default TAG_GREEN = 'CampfireColorG';
     default TAG_BLUE = 'CampfireColorB';
 
+    default enabled = true;
     default useSpotlightColor = false;
     default brightness = 50.f;
     default radius = 30.f;

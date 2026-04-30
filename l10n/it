@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distanza di dissolvenza dell'ombra del lampadario
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Intervallo di dissolvenza dell'ombra del lampadario
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Fattore di fusione dell'ombra del lampadario
+2122144069||LightRewrite_Candle_Enabled|Candela attivata
+2122144070||LightRewrite_Torch_Enabled|Torcia attivata
+2122144071||LightRewrite_Brazier_Enabled|Braciere attivato
+2122144072||LightRewrite_Candelabra_Enabled|Candelabro attivato
+2122144073||LightRewrite_Chandelier_Enabled|Lampadario attivato
+2122144074||LightRewrite_Campfire_Enabled|Fuoco da campo attivato

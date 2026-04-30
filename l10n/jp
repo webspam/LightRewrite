@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|シャンデリアの影のフェード距離
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|シャンデリアの影のフェード範囲
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|シャンデリアの影のブレンド係数
+2122144069||LightRewrite_Candle_Enabled|ろうそくを有効化
+2122144070||LightRewrite_Torch_Enabled|松明を有効化
+2122144071||LightRewrite_Brazier_Enabled|火鉢を有効化
+2122144072||LightRewrite_Candelabra_Enabled|燭台を有効化
+2122144073||LightRewrite_Chandelier_Enabled|シャンデリアを有効化
+2122144074||LightRewrite_Campfire_Enabled|焚き火を有効化

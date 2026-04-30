@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 7;
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 8;
 
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -69,6 +69,7 @@ class CLightRewriteSettings {
         var oldShadowFadeDistance : string;
         var oldShadowFadeRange : string;
         var oldShadowBlendFactor : string;
+        var i, count : int;
         var initVersion : int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
 
         if (initVersion == CONFIG_VERSION) return;
@@ -198,6 +199,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierParams.TAG_BLUE, chandelierParams.color.Blue);
         }
 
+        // v7 → v8: add per-source enable settings.
+        if (initVersion <= 7) {
+            count = lightSourceParams.Size();
+            for (i = 0; i < count; i += 1) {
+                gameConfig.SetVarValue(GENERAL_GROUP, lightSourceParams[i].TAG_ENABLED, lightSourceParams[i].enabled);
+            }
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -245,15 +254,15 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
-        UpdateAllColourSlidersDisabledState();
+        UpdateAllGroupsDisabledState();
     }
 
-    private function UpdateAllColourSlidersDisabledState() {
+    private function UpdateAllGroupsDisabledState() {
         var i, count : int;
 
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
-            lightSourceParams[i].UpdateColourSliderDisabledState();
+            lightSourceParams[i].UpdateMenuDisabledState();
         }
     }
 
@@ -268,5 +277,17 @@ class CLightRewriteSettings {
         }
 
         return tags;
+    }
+
+    public function GetParamsForType(lightType : ELightRewriteType) : CLightRewriteSourceParams {
+        switch (lightType) {
+            case LRT_Candle:      return candleParams;
+            case LRT_Torch:       return torchParams;
+            case LRT_Brazier:     return brazierParams;
+            case LRT_Candelabra:  return candelabraParams;
+            case LRT_Campfire:    return campfireParams;
+            case LRT_Chandelier:  return chandelierParams;
+            default:              return NULL;
+        }
     }
 }

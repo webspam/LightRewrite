@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Kronleuchter-Schatten-Ausblenddistanz
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Kronleuchter-Schatten-Ausblendbereich
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Kronleuchter-Schatten-Überblendfaktor
+2122144069||LightRewrite_Candle_Enabled|Kerze aktiviert
+2122144070||LightRewrite_Torch_Enabled|Fackel aktiviert
+2122144071||LightRewrite_Brazier_Enabled|Kohlenbecken aktiviert
+2122144072||LightRewrite_Candelabra_Enabled|Kandelaber aktiviert
+2122144073||LightRewrite_Chandelier_Enabled|Kronleuchter aktiviert
+2122144074||LightRewrite_Campfire_Enabled|Lagerfeuer aktiviert

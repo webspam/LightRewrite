@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Chandelier shadow fade distance
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Chandelier shadow fade range
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Chandelier shadow blend factor
+2122144069||LightRewrite_Candle_Enabled|Candle enabled
+2122144070||LightRewrite_Torch_Enabled|Torch enabled
+2122144071||LightRewrite_Brazier_Enabled|Brazier enabled
+2122144072||LightRewrite_Candelabra_Enabled|Candelabra enabled
+2122144073||LightRewrite_Chandelier_Enabled|Chandelier enabled
+2122144074||LightRewrite_Campfire_Enabled|Campfire enabled
