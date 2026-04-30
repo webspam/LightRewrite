@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distancia de desvanecimiento de la sombra de la lámpara de araña
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Rango de desvanecimiento de la sombra de la lámpara de araña
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Factor de mezcla de la sombra de la lámpara de araña
+2122144069||LightRewrite_Candle_Enabled|Vela activada
+2122144070||LightRewrite_Torch_Enabled|Antorcha activada
+2122144071||LightRewrite_Brazier_Enabled|Brasero activado
+2122144072||LightRewrite_Candelabra_Enabled|Candelabro activado
+2122144073||LightRewrite_Chandelier_Enabled|Lámpara de araña activada
+2122144074||LightRewrite_Campfire_Enabled|Hoguera activada

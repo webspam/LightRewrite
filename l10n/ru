@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Дистанция затухания тени люстры
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Диапазон затухания тени люстры
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Коэффициент смешивания тени люстры
+2122144069||LightRewrite_Candle_Enabled|Свеча включена
+2122144070||LightRewrite_Torch_Enabled|Факел включён
+2122144071||LightRewrite_Brazier_Enabled|Жаровня включена
+2122144072||LightRewrite_Candelabra_Enabled|Канделябр включён
+2122144073||LightRewrite_Chandelier_Enabled|Люстра включена
+2122144074||LightRewrite_Campfire_Enabled|Костёр включён

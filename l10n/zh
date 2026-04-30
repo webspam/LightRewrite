@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|吊燈陰影淡出距離
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|吊燈陰影淡出範圍
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|吊燈陰影混合係數
+2122144069||LightRewrite_Candle_Enabled|啟用蠟燭
+2122144070||LightRewrite_Torch_Enabled|啟用火把
+2122144071||LightRewrite_Brazier_Enabled|啟用火盆
+2122144072||LightRewrite_Candelabra_Enabled|啟用燭台
+2122144073||LightRewrite_Chandelier_Enabled|啟用吊燈
+2122144074||LightRewrite_Campfire_Enabled|啟用篝火

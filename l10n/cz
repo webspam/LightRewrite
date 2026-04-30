@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Vzdálenost slábnutí stínu lustru
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Rozsah slábnutí stínu lustru
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Faktor prolnutí stínu lustru
+2122144069||LightRewrite_Candle_Enabled|Svíčka povolena
+2122144070||LightRewrite_Torch_Enabled|Pochodeň povolena
+2122144071||LightRewrite_Brazier_Enabled|Ohniště povoleno
+2122144072||LightRewrite_Candelabra_Enabled|Kandelábr povolen
+2122144073||LightRewrite_Chandelier_Enabled|Lustr povolen
+2122144074||LightRewrite_Campfire_Enabled|Táborák povolen

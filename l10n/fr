@@ -69,3 +69,9 @@
 2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Distance de fondu de l'ombre du lustre
 2122144067||LightRewrite_Chandelier_ShadowFadeRange|Plage de fondu de l'ombre du lustre
 2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Facteur de fusion de l'ombre du lustre
+2122144069||LightRewrite_Candle_Enabled|Bougie activée
+2122144070||LightRewrite_Torch_Enabled|Torche activée
+2122144071||LightRewrite_Brazier_Enabled|Brasero activé
+2122144072||LightRewrite_Candelabra_Enabled|Candélabre activé
+2122144073||LightRewrite_Chandelier_Enabled|Lustre activé
+2122144074||LightRewrite_Campfire_Enabled|Feu de camp activé
