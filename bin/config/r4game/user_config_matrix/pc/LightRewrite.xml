@@ -10,6 +10,7 @@
                 <Entry varId="CandleShadowFadeDistance" value="5" />
                 <Entry varId="CandleShadowFadeRange" value="5" />
                 <Entry varId="CandleShadowBlendFactor" value="1" />
+                <Entry varId="CandleAlignPointLights" value="true" />
                 <Entry varId="TorchEnabled" value="true" />
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="5" />
@@ -54,6 +55,7 @@
                 <Entry varId="CandleShadowFadeDistance" value="10" />
                 <Entry varId="CandleShadowFadeRange" value="7.5" />
                 <Entry varId="CandleShadowBlendFactor" value="1" />
+                <Entry varId="CandleAlignPointLights" value="true" />
                 <Entry varId="TorchEnabled" value="true" />
                 <Entry varId="TorchBrightness" value="30" />
                 <Entry varId="TorchRadius" value="20" />
@@ -98,6 +100,7 @@
                 <Entry varId="CandleShadowFadeDistance" value="10" />
                 <Entry varId="CandleShadowFadeRange" value="5" />
                 <Entry varId="CandleShadowBlendFactor" value="1" />
+                <Entry varId="CandleAlignPointLights" value="true" />
                 <Entry varId="TorchEnabled" value="true" />
                 <Entry varId="TorchBrightness" value="50" />
                 <Entry varId="TorchRadius" value="25" />
@@ -153,6 +156,8 @@
                 displayType="SLIDER;0;20;40" />
             <Var id="CandleShadowBlendFactor" displayName="LightRewrite_Candle_ShadowBlendFactor"
                 displayType="SLIDER;0;1;20" />
+            <Var id="CandleAlignPointLights" displayName="LightRewrite_Candle_AlignPointLights"
+                displayType="TOGGLE" />
 
             <Var id="OverrideCandleColour" displayName="LightRewrite_Candle_OverrideColour"
                 displayType="TOGGLE" />
@@ -304,7 +309,7 @@
 
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;8;8" visibilityCondition="hideAlways" />
+                displayType="SLIDER;0;9;9" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>

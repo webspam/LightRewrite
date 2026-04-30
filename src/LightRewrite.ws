@@ -210,8 +210,12 @@ public function CandleLightRewrite() {
             pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
             pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
 
-            // Candles: Align the point light to the fire FX slot.
-            AlignLightRewriteCandleLight(i, pointLight);
+            if (
+                lightRewriteLightType == LRT_Candle &&
+                settings.candleParams.alignPointLights
+            ) {
+                AlignLightRewriteCandleLight(i, pointLight);
+            }
 
             if (sourceParams.shouldOverrideColour) {
                 pointLight.color = sourceParams.color;

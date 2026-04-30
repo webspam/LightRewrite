@@ -84,7 +84,15 @@ class CLightRewriteSourceParams {
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !enabled || !shouldOverrideColour);
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !enabled || !shouldOverrideColour);
 
+        UpdateSpecialMenuDisabledState(flashValueStorage, dataArray);
+
         flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
         theGame.GetGuiManager().ForceProcessFlashStorage();
     }
+
+    // Virtual - override to add any additional options to the disabled state update.
+    protected function UpdateSpecialMenuDisabledState(
+        flashValueStorage : CScriptedFlashValueStorage,
+        dataArray : CScriptedFlashArray
+    ) {}
 }
