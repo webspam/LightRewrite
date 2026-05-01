@@ -127,6 +127,4 @@ abstract class ILightSourceRewriter {
             pointLight.color = pointLight.lightRewriteOriginalValues.color;
         }
     }
-
-    public function AlignPointLight(i : int, pointLight : CPointLightComponent) {}
 }
