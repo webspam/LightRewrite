@@ -20,7 +20,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * Aligns a point light to the fire FX slots on this entity.
      * At time of writing, only testing / working on complex candles.
      */
-    public function AlignPointLight(i : int, pointLight : CPointLightComponent) {
+    private function AlignPointLight(i : int, pointLight : CPointLightComponent) {
         var slotPos : Vector;
         var slotMatrix : Matrix;
 
@@ -89,7 +89,6 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         }
     }
 
-    // TODO: Code that supports refactor.  Not for production.
     public function RewriteLight() {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;

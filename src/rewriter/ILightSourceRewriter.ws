@@ -1,5 +1,5 @@
 /*
- * Interface for light rewriters.
+ * Abstract base class for all light rewriters.
  */
 abstract class ILightSourceRewriter {
     // The type of light source this rewriter is for. Implementors must set.
@@ -24,7 +24,7 @@ abstract class ILightSourceRewriter {
         return params.enabled;
     }
 
-    // Virtual; adds the tag for this light source type to the parent entity.
+    // Adds the tag for this light source type to the parent entity.
     public function AddEntityTag() {
         parentEntity.AddTag(params.tag);
     }
@@ -103,6 +103,7 @@ abstract class ILightSourceRewriter {
         if (wasEnabled) pointLight.SetEnabled(true);
     }
 
+    // Sets basic point light settings
     protected function SetPointLightSettings(pointLight : CPointLightComponent) {
         pointLight.brightness = params.brightness;
         pointLight.radius = params.radius;
@@ -112,6 +113,7 @@ abstract class ILightSourceRewriter {
         pointLight.shadowBlendFactor = params.shadowBlendFactor;
     }
 
+    // Sets point light colour to the specified override, spotlight, or original colour
     protected function SetPointLightColour(
         pointLight : CPointLightComponent,
         optional spotLight : CSpotLightComponent
