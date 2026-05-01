@@ -1,7 +1,8 @@
 /*
  * Handles enabling and disabling Light Rewrite on entities, and other related tasks.
  */
-class CLightRewriter {
+class CLightRewriteManager {
+    // Mod settings, which may be initialised prior to game load.
     public var settings : CLightRewriteSettings;
 
     // Lazy constructor

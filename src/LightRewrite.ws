@@ -24,16 +24,16 @@ enum ELightRewriteType {
     LRT_Chandelier,
 }
 
-// The light rewriter singleton.
+// The Light Rewrite module singleton.
 @addField(CR4Game)
-public var lightRewriter : CLightRewriter;
+public var lightRewrite : CLightRewriteManager;
 
 @wrapMethod(CR4Game)
 function OnGameStarting(restored : bool) {
     wrappedMethod(restored);
 
-    lightRewriter = new CLightRewriter in this;
-    lightRewriter.Init(GetLightRewriteSettings());
+    lightRewrite = new CLightRewriteManager in this;
+    lightRewrite.Init(GetLightRewriteSettings());
 }
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;

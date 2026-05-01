@@ -247,12 +247,12 @@ class CLightRewriteSettings {
 
             // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
-                theGame.lightRewriter.DisableLightRewrite();
+                theGame.lightRewrite.DisableLightRewrite();
             }
 
             // Some change was made, and the mod is enabled
             else if (isEnabled) {
-                theGame.lightRewriter.RewriteAllLightSources();
+                theGame.lightRewrite.RewriteAllLightSources();
             }
         }
     }
