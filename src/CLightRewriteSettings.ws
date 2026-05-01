@@ -20,7 +20,7 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled : bool;                       default isEnabled                = true;
 
-    public var candleParams : CLightRewriteParamsCandle;
+    public var candleParams : CLightRewriteSourceParams;
     public var torchParams : CLightRewriteSourceParams;
     public var brazierParams : CLightRewriteSourceParams;
     public var candelabraParams : CLightRewriteSourceParams;
@@ -247,12 +247,12 @@ class CLightRewriteSettings {
 
             // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
-                theGame.lightRewriter.DisableLightRewrite();
+                theGame.lightRewrite.DisableLightRewrite();
             }
 
             // Some change was made, and the mod is enabled
             else if (isEnabled) {
-                theGame.lightRewriter.RewriteAllLightSources();
+                theGame.lightRewrite.RewriteAllLightSources();
             }
         }
     }
@@ -294,5 +294,34 @@ class CLightRewriteSettings {
             case LRT_Chandelier:  return chandelierParams;
             default:              return NULL;
         }
+    }
+
+    // Finds the params for a given entity.
+    public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
+        var params : CLightRewriteSourceParams = NULL;
+
+        var editorPath : string = entity.ToString();
+        var fileName : string = StrAfterLast(editorPath, StrChar(92));
+
+        if (StrFindFirst(fileName, "candelabra") != -1) {
+            params = candelabraParams;
+        }
+        else if (StrFindFirst(fileName, "chandelier") != -1) {
+            params = chandelierParams;
+        }
+        else if (StrFindFirst(fileName, "candle") != -1) {
+            params = candleParams;
+        }
+        else if (StrFindFirst(fileName, "torch") != -1) {
+            params = torchParams;
+        }
+        else if (StrFindFirst(fileName, "brazier") != -1) {
+            params = brazierParams;
+        }
+        else if (StrFindFirst(fileName, "campfire") != -1) {
+            params = campfireParams;
+        }
+
+        return params;
     }
 }

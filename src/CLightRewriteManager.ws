@@ -1,12 +1,29 @@
 /*
  * Handles enabling and disabling Light Rewrite on entities, and other related tasks.
  */
-class CLightRewriter {
+class CLightRewriteManager {
+    // Mod settings, which may be initialised prior to game load.
     public var settings : CLightRewriteSettings;
 
     // Lazy constructor
     public function Init(settings : CLightRewriteSettings) {
         this.settings = settings;
+    }
+
+    // Creates a new rewriter for a given light source type.
+    public function CreateRewriterFromParams(
+        params : CLightRewriteSourceParams,
+        entity : CGameplayEntity
+    ) : ILightSourceRewriter {
+        var rewriter : ILightSourceRewriter;
+
+        switch (params.rewriterType) {
+            case LRT_Candle:         rewriter = new CCandleLightRewriter in entity;     break;
+            default:                 rewriter = new CGenericLightRewriter in entity;    break;
+        }
+
+        rewriter.Init(entity, params);
+        return rewriter;
     }
 
     // Refreshes Light Rewrite on all light sources.
@@ -21,10 +38,10 @@ class CLightRewriter {
 
         for (i = 0; i < count; i += 1) {
             if (entities[i].IsLightRewritable()) {
-                entities[i].CandleLightRewrite();
+                entities[i].lightSourceRewriter.RewriteLight();
             }
             else {
-                entities[i].DisableLightRewrite();
+                entities[i].lightSourceRewriter.RestoreOriginalState();
             }
         }
     }
@@ -40,7 +57,7 @@ class CLightRewriter {
         LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
 
         for (i = 0; i < count; i += 1) {
-            entities[i].DisableLightRewrite();
+            entities[i].lightSourceRewriter.RestoreOriginalState();
         }
     }
 

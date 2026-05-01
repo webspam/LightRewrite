@@ -13,6 +13,7 @@ class CLightRewriteParamsBrazier extends CLightRewriteSourceParams {
     default TAG_RED = 'BrazierColorR';
     default TAG_GREEN = 'BrazierColorG';
     default TAG_BLUE = 'BrazierColorB';
+    default TAG_ALIGN_POINT_LIGHTS = 'BrazierAlignPointLights';
 
     default enabled = true;
     default useSpotlightColor = false;
@@ -23,6 +24,10 @@ class CLightRewriteParamsBrazier extends CLightRewriteSourceParams {
     default shadowFadeRange = 10.f;
     default shadowBlendFactor = 1.f;
     default shouldOverrideColour = false;
+
+    default alignPointLights = true;
+
+    default displayName = "brazier";
 
     public function Init() {
         color = Color(255, 255, 255);

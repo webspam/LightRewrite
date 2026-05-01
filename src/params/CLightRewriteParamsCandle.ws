@@ -13,10 +13,9 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default TAG_RED = 'CandleColorR';
     default TAG_GREEN = 'CandleColorG';
     default TAG_BLUE = 'CandleColorB';
-    public const var TAG_ALIGN_POINT_LIGHTS : name; default TAG_ALIGN_POINT_LIGHTS = 'CandleAlignPointLights';
+    default TAG_ALIGN_POINT_LIGHTS = 'CandleAlignPointLights';
 
     default enabled = true;
-    public var alignPointLights : bool;             default alignPointLights = true;
     default useSpotlightColor = true;
     default brightness = 5.5f;
     default radius = 9.f;
@@ -26,8 +25,15 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default shadowBlendFactor = 1.f;
     default shouldOverrideColour = false;
 
+    default alignPointLights = true;
+
+    default displayName = "candle";
+    default rewriterType = LRT_Candle;
+
     public function Init() {
         color = Color(240, 245, 255);
+        // Offset should put the point light roughly in the centre of the candle flame FX
+        pointLightOffset = Vector(0.0f, 0.0f, 0.075f);
     }
 
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name) {

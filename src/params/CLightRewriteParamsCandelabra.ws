@@ -24,6 +24,10 @@ class CLightRewriteParamsCandelabra extends CLightRewriteSourceParams {
     default shadowBlendFactor = 1.f;
     default shouldOverrideColour = false;
 
+    default alignPointLights = false;
+
+    default displayName = "candelabra";
+
     public function Init() {
         color = Color(255, 255, 255);
     }
