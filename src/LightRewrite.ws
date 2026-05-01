@@ -94,5 +94,5 @@ function AddTag(tag : name) {
 // This entity is a valid light rewrite target.
 @addMethod(CGameplayEntity)
 public function IsLightRewritable() : bool {
-    return !bypassLightRewrite && lightSourceRewriter.GetParams().enabled;
+    return !bypassLightRewrite && lightSourceRewriter.IsEnabled();
 }

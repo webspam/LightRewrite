@@ -17,14 +17,14 @@ abstract class ILightSourceRewriter {
         AddEntityTag();
     }
 
-    // Returns a valid params object for this light source
-    public function GetParams() : CLightRewriteSourceParams {
-        return params;
+    // If this rewriter is enabled (params group is enabled)
+    public function IsEnabled() : bool {
+        return params.enabled;
     }
 
     // Virtual; adds the tag for this light source type to the parent entity.
     public function AddEntityTag() {
-        parentEntity.AddTag(GetParams().tag);
+        parentEntity.AddTag(params.tag);
     }
 
     // TODO: Code that supports refactor.  Not for production.
