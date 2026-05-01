@@ -37,7 +37,9 @@ function OnGameStarting(restored : bool) {
 }
 
 // Enable to bypass the mod.  When true, all Light Rewrite logic will quickly return without acting.
+// If this is false, lightSourceRewriter will likely be NULL.
 @addField(CGameplayEntity) public var bypassLightRewrite : bool;
+// Before accessing, confirm that bypassLightRewrite is false.
 @addField(CGameplayEntity) public var lightSourceRewriter : ILightSourceRewriter;
 
 // Identify light sources, and rewrite matched entities to work properly with RT.
