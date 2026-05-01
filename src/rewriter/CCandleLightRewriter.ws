@@ -107,22 +107,21 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
+            if (!pointLight) continue;
 
-            if (pointLight) {
-                pointLight.SaveLightRewriteOriginalValues();
+            pointLight.SaveLightRewriteOriginalValues();
 
-                wasEnabled = pointLight.IsEnabled();
-                if (wasEnabled) pointLight.SetEnabled(false);
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
 
-                SetPointLightSettings(pointLight);
-                SetPointLightColour(pointLight, spotLight);
+            SetPointLightSettings(pointLight);
+            SetPointLightColour(pointLight, spotLight);
 
-                if (params.alignPointLights) {
-                    AlignPointLight(i, pointLight);
-                }
-
-                if (wasEnabled) pointLight.SetEnabled(true);
+            if (params.alignPointLights) {
+                AlignPointLight(i, pointLight);
             }
+
+            if (wasEnabled) pointLight.SetEnabled(true);
         }
 
         // Remove spotlights from candles that have point lights (should be all candles).
