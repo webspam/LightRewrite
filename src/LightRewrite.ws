@@ -39,32 +39,14 @@ function OnGameStarting(restored : bool) {
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
 @addField(CGameplayEntity) public var lightSourceRewriter : ILightSourceRewriter;
 
-// Disable all of this entity's spotlight components.
-@addMethod(CGameplayEntity)
-public function DisableAllSpotlightComponents() {
-    var lightComponent : CSpotLightComponent;
-    var i : int;
-
-    var components : array<CComponent> = GetComponentsByClassName('CSpotLightComponent');
-    var count : int = components.Size();
-
-    for (i = 0; i < count; i += 1) {
-        lightComponent = (CSpotLightComponent)components[i];
-
-        if (lightComponent) {
-            lightComponent.SaveLightRewriteOriginalValues();
-            lightComponent.SetEnabled(false);
-        }
-    }
-}
-
 // Identify light sources, and rewrite matched entities to work properly with RT.
 @addMethod(CGameplayEntity)
 protected function InitialiseLightRewrite() {
     IdentifyLightRewriteType();
+    if (lightSourceRewriter) lightSourceRewriter.Init(this);
 
     if (theGame.GetLightRewriteSettings().isEnabled) {
-        if (IsLightRewritable()) CandleLightRewrite();
+        if (IsLightRewritable()) lightSourceRewriter.CandleLightRewrite();
     }
 }
 
@@ -94,7 +76,7 @@ function AddTag(tag : name) {
         IdentifyLightRewriteType();
 
         if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
-            CandleLightRewrite();
+            lightSourceRewriter.CandleLightRewrite();
         }
     }
 }
@@ -110,13 +92,14 @@ public function HasCheckedLightRewriteType() : bool {
 public function IsLightRewritable() : bool {
     var sourceParams : CLightRewriteSourceParams = theGame.GetLightRewriteSettings().GetParamsForType(lightRewriteLightType);
 
-    return sourceParams && sourceParams.enabled;
+    return lightSourceRewriter && sourceParams && sourceParams.enabled;
 }
 
 // If this is an open fire, identify the light rewrite type of this entity.
 @addMethod(CGameplayEntity)
 public function IdentifyLightRewriteType() {
     var editorName : string;
+    var genericRewriter : CGenericLightRewriter;
 
     if (HasCheckedLightRewriteType()) return;
 
@@ -126,13 +109,19 @@ public function IdentifyLightRewriteType() {
         LogLightRewrite("Found candelabra: " + ToString());
 
         lightRewriteLightType = LRT_Candelabra;
-        AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
+
+        genericRewriter = new CGenericLightRewriter in this;
+        genericRewriter.SetParams(theGame.GetLightRewriteSettings().candelabraParams);
+        lightSourceRewriter = genericRewriter;
     }
     else if (StrFindFirst(editorName, "chandelier") != -1) {
         LogLightRewrite("Found chandelier: " + ToString());
 
         lightRewriteLightType = LRT_Chandelier;
-        AddTag(theGame.GetLightRewriteSettings().chandelierParams.tag);
+
+        genericRewriter = new CGenericLightRewriter in this;
+        genericRewriter.SetParams(theGame.GetLightRewriteSettings().chandelierParams);
+        lightSourceRewriter = genericRewriter;
     }
     else if (StrFindFirst(editorName, "candle") != -1) {
         LogLightRewrite("Found candle: " + ToString());
@@ -140,133 +129,35 @@ public function IdentifyLightRewriteType() {
         lightRewriteLightType = LRT_Candle;
 
         lightSourceRewriter = new CCandleLightRewriter in this;
-        lightSourceRewriter.Init(this);
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + ToString());
 
         lightRewriteLightType = LRT_Torch;
-        AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
+
+        genericRewriter = new CGenericLightRewriter in this;
+        genericRewriter.SetParams(theGame.GetLightRewriteSettings().torchParams);
+        lightSourceRewriter = genericRewriter;
     }
     else if (StrFindFirst(editorName, "brazier") != -1) {
         LogLightRewrite("Found brazier: " + ToString());
 
         lightRewriteLightType = LRT_Brazier;
-        AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
+
+        genericRewriter = new CGenericLightRewriter in this;
+        genericRewriter.SetParams(theGame.GetLightRewriteSettings().brazierParams);
+        lightSourceRewriter = genericRewriter;
     }
     else if (StrFindFirst(editorName, "campfire") != -1) {
         LogLightRewrite("Found campfire: " + ToString());
 
         lightRewriteLightType = LRT_Campfire;
-        AddTag(theGame.GetLightRewriteSettings().campfireParams.tag);
+
+        genericRewriter = new CGenericLightRewriter in this;
+        genericRewriter.SetParams(theGame.GetLightRewriteSettings().campfireParams);
+        lightSourceRewriter = genericRewriter;
     }
     else {
         lightRewriteLightType = LRT_Unknown;
-    }
-}
-
-// Rewrite a single candle / torch entity
-@addMethod(CGameplayEntity)
-public function CandleLightRewrite() {
-    var spotLight : CSpotLightComponent;
-    var pointLight : CPointLightComponent;
-    var i : int;
-    var sourceParams : CLightRewriteSourceParams;
-    var wasEnabled : bool;
-
-    var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
-    var count : int = components.Size();
-
-    var settings : CLightRewriteSettings = theGame.GetLightRewriteSettings();
-    sourceParams = settings.GetParamsForType(lightRewriteLightType);
-
-    if (!sourceParams) {
-        LogLightRewrite("Invalid light rewrite type: " + lightRewriteLightType);
-        return;
-    }
-
-    if (!sourceParams.enabled) {
-        DisableLightRewrite();
-        return;
-    }
-
-    // Clusters of candles emit most of their light via a single spotlight.
-    // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-    spotLight = (CSpotLightComponent)GetComponent('CSpotLightComponent0');
-
-    for (i = 0; i < count; i += 1) {
-        pointLight = (CPointLightComponent)components[i];
-
-        if (pointLight) {
-            pointLight.SaveLightRewriteOriginalValues();
-
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
-            pointLight.brightness = sourceParams.brightness;
-            pointLight.radius = sourceParams.radius;
-            pointLight.attenuation = sourceParams.attenuation;
-
-            pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
-            pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
-            pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
-
-            if (
-                lightRewriteLightType == LRT_Candle &&
-                sourceParams.alignPointLights
-            ) {
-                lightSourceRewriter.AlignPointLight(i, pointLight);
-            }
-
-            if (sourceParams.shouldOverrideColour) {
-                pointLight.color = sourceParams.color;
-            }
-            else if (spotLight && sourceParams.useSpotlightColor) {
-                pointLight.color = spotLight.color;
-            }
-            else {
-                // No spotlight, and we're not overriding the colour, so use the original colour.
-                pointLight.color = pointLight.lightRewriteOriginalValues.color;
-            }
-
-            if (wasEnabled) pointLight.SetEnabled(true);
-        }
-    }
-
-    // Remove spotlights from candles that have point lights (should be all candles).
-    if (count > 0) DisableAllSpotlightComponents();
-}
-
-// Disables Light Rewrite on an entity, restoring it to its original state.
-@addMethod(CGameplayEntity)
-public function DisableLightRewrite() {
-    var spotLight : CSpotLightComponent;
-    var pointLight : CPointLightComponent;
-    var i : int;
-
-    var components : array<CComponent> = GetComponentsByClassName('CPointLightComponent');
-    var count : int = components.Size();
-
-    for (i = 0; i < count; i += 1) {
-        pointLight = (CPointLightComponent)components[i];
-
-        if (pointLight) {
-            pointLight.RestoreLightRewriteOriginalValues();
-        }
-    }
-
-    // Restore the original state of any spotlights.
-    if (count > 0) {
-        components = GetComponentsByClassName('CSpotLightComponent');
-        count = components.Size();
-
-        for (i = 0; i < count; i += 1) {
-            spotLight = (CSpotLightComponent)components[i];
-
-            if (spotLight) {
-                spotLight.RestoreLightRewriteOriginalValues();
-                if (HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
-            }
-        }
     }
 }

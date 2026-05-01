@@ -21,10 +21,10 @@ class CLightRewriter {
 
         for (i = 0; i < count; i += 1) {
             if (entities[i].IsLightRewritable()) {
-                entities[i].CandleLightRewrite();
+                entities[i].lightSourceRewriter.CandleLightRewrite();
             }
             else {
-                entities[i].DisableLightRewrite();
+                entities[i].lightSourceRewriter.DisableLightRewrite();
             }
         }
     }
@@ -40,7 +40,7 @@ class CLightRewriter {
         LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
 
         for (i = 0; i < count; i += 1) {
-            entities[i].DisableLightRewrite();
+            entities[i].lightSourceRewriter.DisableLightRewrite();
         }
     }
 

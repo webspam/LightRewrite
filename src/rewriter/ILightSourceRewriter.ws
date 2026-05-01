@@ -23,5 +23,56 @@ abstract class ILightSourceRewriter {
     }
 
     // TODO: Code that supports refactor.  Not for production.
+    public function CandleLightRewrite();
+
+    public function DisableLightRewrite() {
+        var spotLight : CSpotLightComponent;
+        var pointLight : CPointLightComponent;
+        var i : int;
+
+        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var count : int = components.Size();
+
+        for (i = 0; i < count; i += 1) {
+            pointLight = (CPointLightComponent)components[i];
+
+            if (pointLight) {
+                pointLight.RestoreLightRewriteOriginalValues();
+            }
+        }
+
+        // Restore the original state of any spotlights.
+        if (count > 0) {
+            components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+            count = components.Size();
+
+            for (i = 0; i < count; i += 1) {
+                spotLight = (CSpotLightComponent)components[i];
+
+                if (spotLight) {
+                    spotLight.RestoreLightRewriteOriginalValues();
+                    if (parentEntity.HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
+                }
+            }
+        }
+    }
+
+    protected function DisableAllSpotlightComponents() {
+        var lightComponent : CSpotLightComponent;
+        var i : int;
+
+        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        var count : int = components.Size();
+
+        for (i = 0; i < count; i += 1) {
+            lightComponent = (CSpotLightComponent)components[i];
+
+            if (lightComponent) {
+                lightComponent.SaveLightRewriteOriginalValues();
+                lightComponent.SetEnabled(false);
+            }
+        }
+    }
+
     public function AlignPointLight(i : int, pointLight : CPointLightComponent) {}
 }
