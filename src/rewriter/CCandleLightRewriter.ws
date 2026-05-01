@@ -16,6 +16,44 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         FindLightRewriteFireFxSlotNames();
     }
 
+    public function RewriteLight() {
+        var spotLight : CSpotLightComponent;
+        var pointLight : CPointLightComponent;
+        var i : int;
+        var wasEnabled : bool;
+
+        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var count : int = components.Size();
+
+        // Clusters of candles emit most of their light via a single spotlight.
+        // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
+        if (params.useSpotlightColor) {
+            spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
+        }
+
+        for (i = 0; i < count; i += 1) {
+            pointLight = (CPointLightComponent)components[i];
+            if (!pointLight) continue;
+
+            pointLight.SaveLightRewriteOriginalValues();
+
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
+
+            SetPointLightSettings(pointLight);
+            SetPointLightColour(pointLight, spotLight);
+
+            if (params.alignPointLights) {
+                AlignPointLight(i, pointLight);
+            }
+
+            if (wasEnabled) pointLight.SetEnabled(true);
+        }
+
+        // Remove spotlights from candles that have point lights (should be all candles).
+        if (count > 0) DisableAllSpotlightComponents();
+    }
+
     /*
      * Aligns a point light to the fire FX slots on this entity.
      * At time of writing, only testing / working on complex candles.
@@ -87,43 +125,5 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         else if (hasFx) {
             fireFxSlotNames.PushBack('fx');
         }
-    }
-
-    public function RewriteLight() {
-        var spotLight : CSpotLightComponent;
-        var pointLight : CPointLightComponent;
-        var i : int;
-        var wasEnabled : bool;
-
-        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count : int = components.Size();
-
-        // Clusters of candles emit most of their light via a single spotlight.
-        // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-        if (params.useSpotlightColor) {
-            spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
-        }
-
-        for (i = 0; i < count; i += 1) {
-            pointLight = (CPointLightComponent)components[i];
-            if (!pointLight) continue;
-
-            pointLight.SaveLightRewriteOriginalValues();
-
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
-            SetPointLightSettings(pointLight);
-            SetPointLightColour(pointLight, spotLight);
-
-            if (params.alignPointLights) {
-                AlignPointLight(i, pointLight);
-            }
-
-            if (wasEnabled) pointLight.SetEnabled(true);
-        }
-
-        // Remove spotlights from candles that have point lights (should be all candles).
-        if (count > 0) DisableAllSpotlightComponents();
     }
 }
