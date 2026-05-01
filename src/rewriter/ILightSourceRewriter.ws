@@ -85,5 +85,48 @@ abstract class ILightSourceRewriter {
         }
     }
 
+    // Rewrites the specified point light with the rewriter's params.
+    protected function RewritePointLight(
+        pointLight : CPointLightComponent,
+        optional spotLight : CSpotLightComponent
+    ) {
+        var wasEnabled : bool;
+
+        pointLight.SaveLightRewriteOriginalValues();
+
+        wasEnabled = pointLight.IsEnabled();
+        if (wasEnabled) pointLight.SetEnabled(false);
+
+        SetPointLightSettings(pointLight);
+        SetPointLightColour(pointLight, spotLight);
+
+        if (wasEnabled) pointLight.SetEnabled(true);
+    }
+
+    protected function SetPointLightSettings(pointLight : CPointLightComponent) {
+        pointLight.brightness = params.brightness;
+        pointLight.radius = params.radius;
+        pointLight.attenuation = params.attenuation;
+        pointLight.shadowFadeDistance = params.shadowFadeDistance;
+        pointLight.shadowFadeRange = params.shadowFadeRange;
+        pointLight.shadowBlendFactor = params.shadowBlendFactor;
+    }
+
+    protected function SetPointLightColour(
+        pointLight : CPointLightComponent,
+        optional spotLight : CSpotLightComponent
+    ) {
+        if (params.shouldOverrideColour) {
+            pointLight.color = params.color;
+        }
+        else if (spotLight) {
+            pointLight.color = spotLight.color;
+        }
+        else {
+            // No spotlight, and we're not overriding the colour, so use the original colour.
+            pointLight.color = pointLight.lightRewriteOriginalValues.color;
+        }
+    }
+
     public function AlignPointLight(i : int, pointLight : CPointLightComponent) {}
 }
