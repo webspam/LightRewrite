@@ -122,19 +122,19 @@ public function IdentifyLightRewriteType() {
     editorName = StrAfterLast(ToString(), StrChar(92));
 
     if (StrFindFirst(editorName, "candelabra") != -1) {
-        LogLightRewrite("Found candelabra: " + editorName);
+        LogLightRewrite("Found candelabra: " + ToString());
 
         lightRewriteLightType = LRT_Candelabra;
         AddTag(theGame.GetLightRewriteSettings().candelabraParams.tag);
     }
     else if (StrFindFirst(editorName, "chandelier") != -1) {
-        LogLightRewrite("Found chandelier: " + editorName);
+        LogLightRewrite("Found chandelier: " + ToString());
 
         lightRewriteLightType = LRT_Chandelier;
         AddTag(theGame.GetLightRewriteSettings().chandelierParams.tag);
     }
     else if (StrFindFirst(editorName, "candle") != -1) {
-        LogLightRewrite("Found candle: " + editorName);
+        LogLightRewrite("Found candle: " + ToString());
 
         lightRewriteLightType = LRT_Candle;
         AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
@@ -142,19 +142,19 @@ public function IdentifyLightRewriteType() {
         FindLightRewriteFireFxSlotNames();
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
-        LogLightRewrite("Found torch: " + editorName);
+        LogLightRewrite("Found torch: " + ToString());
 
         lightRewriteLightType = LRT_Torch;
         AddTag(theGame.GetLightRewriteSettings().torchParams.tag);
     }
     else if (StrFindFirst(editorName, "brazier") != -1) {
-        LogLightRewrite("Found brazier: " + editorName);
+        LogLightRewrite("Found brazier: " + ToString());
 
         lightRewriteLightType = LRT_Brazier;
         AddTag(theGame.GetLightRewriteSettings().brazierParams.tag);
     }
     else if (StrFindFirst(editorName, "campfire") != -1) {
-        LogLightRewrite("Found campfire: " + editorName);
+        LogLightRewrite("Found campfire: " + ToString());
 
         lightRewriteLightType = LRT_Campfire;
         AddTag(theGame.GetLightRewriteSettings().campfireParams.tag);
