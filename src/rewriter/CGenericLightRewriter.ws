@@ -17,7 +17,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var count : int = components.Size();
 
         if (!params.enabled) {
-            DisableLightRewrite();
+            RestoreOriginalState();
             return;
         }
 

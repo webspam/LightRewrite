@@ -41,7 +41,7 @@ class CLightRewriteManager {
                 entities[i].lightSourceRewriter.RewriteLight();
             }
             else {
-                entities[i].lightSourceRewriter.DisableLightRewrite();
+                entities[i].lightSourceRewriter.RestoreOriginalState();
             }
         }
     }
@@ -57,7 +57,7 @@ class CLightRewriteManager {
         LogLightRewrite("Disabling Light Rewrite for " + count + " entities");
 
         for (i = 0; i < count; i += 1) {
-            entities[i].lightSourceRewriter.DisableLightRewrite();
+            entities[i].lightSourceRewriter.RestoreOriginalState();
         }
     }
 
