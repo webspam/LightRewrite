@@ -81,14 +81,3 @@ function FindLightRewriteFireFxSlotNames() {
         lr_fireFxSlotNames.PushBack('fx');
     }
 }
-
-// Checks if the entity has all the specified slots.
-@addMethod(CGameplayEntity)
-function LR_HasSlots(slot1 : name, optional slot2 : name, optional slot3 : name, optional slot4 : name) : bool {
-    if (!HasSlot(slot1)) return false;
-    if (IsNameValid(slot2) && !HasSlot(slot2)) return false;
-    if (IsNameValid(slot3) && !HasSlot(slot3)) return false;
-    if (IsNameValid(slot4) && !HasSlot(slot4)) return false;
-
-    return true;
-}
