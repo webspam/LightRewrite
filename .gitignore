@@ -1,9 +1,13 @@
 # Build output
-mods/
+/mods/
+/modLightRewrite.zip
 
 # Scripts
-build.ps1
-debug.ps1
-modLightRewrite.zip
+/build.ps1
+/debug.ps1
 
-.cursor/rules/git-workflow.mdc
+# Local project rules
+/.cursor/rules/git-workflow.mdc
+
+# Local working directory
+/tmp/
