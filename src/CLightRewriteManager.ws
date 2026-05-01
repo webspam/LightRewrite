@@ -38,7 +38,7 @@ class CLightRewriteManager {
 
         for (i = 0; i < count; i += 1) {
             if (entities[i].IsLightRewritable()) {
-                entities[i].lightSourceRewriter.CandleLightRewrite();
+                entities[i].lightSourceRewriter.RewriteLight();
             }
             else {
                 entities[i].lightSourceRewriter.DisableLightRewrite();

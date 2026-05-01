@@ -90,7 +90,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     }
 
     // TODO: Code that supports refactor.  Not for production.
-    public function CandleLightRewrite() {
+    public function RewriteLight() {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;

@@ -28,7 +28,7 @@ abstract class ILightSourceRewriter {
     }
 
     // TODO: Code that supports refactor.  Not for production.
-    public function CandleLightRewrite();
+    public function RewriteLight();
 
     public function DisableLightRewrite() {
         var spotLight : CSpotLightComponent;

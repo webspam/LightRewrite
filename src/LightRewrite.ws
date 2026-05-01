@@ -56,7 +56,7 @@ protected function InitialiseLightRewrite() {
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
 
     if (theGame.GetLightRewriteSettings().isEnabled) {
-        if (IsLightRewritable()) lightSourceRewriter.CandleLightRewrite();
+        if (IsLightRewritable()) lightSourceRewriter.RewriteLight();
     }
 }
 
@@ -89,7 +89,7 @@ function AddTag(tag : name) {
         theGame.GetLightRewriteSettings().isEnabled &&
         IsLightRewritable()
     ) {
-        lightSourceRewriter.CandleLightRewrite();
+        lightSourceRewriter.RewriteLight();
     }
 }
 

@@ -7,7 +7,7 @@
  * Unless very specific changes are made, it will simply stop working, rather than cause issues.
  */
 class CGenericLightRewriter extends ILightSourceRewriter {
-    public function CandleLightRewrite() {
+    public function RewriteLight() {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;
