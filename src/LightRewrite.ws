@@ -37,6 +37,7 @@ function OnGameStarting(restored : bool) {
 }
 
 @addField(CGameplayEntity) public var lightRewriteLightType : ELightRewriteType;
+@addField(CGameplayEntity) public var lightSourceRewriter : ILightSourceRewriter;
 
 // Disable all of this entity's spotlight components.
 @addMethod(CGameplayEntity)
@@ -137,9 +138,9 @@ public function IdentifyLightRewriteType() {
         LogLightRewrite("Found candle: " + ToString());
 
         lightRewriteLightType = LRT_Candle;
-        AddTag(theGame.GetLightRewriteSettings().candleParams.tag);
 
-        FindLightRewriteFireFxSlotNames();
+        lightSourceRewriter = new CCandleLightRewriter in this;
+        lightSourceRewriter.Init(this);
     }
     else if (StrFindFirst(editorName, "torch") != -1) {
         LogLightRewrite("Found torch: " + ToString());
@@ -214,7 +215,7 @@ public function CandleLightRewrite() {
                 lightRewriteLightType == LRT_Candle &&
                 sourceParams.alignPointLights
             ) {
-                AlignLightRewriteCandleLight(i, pointLight);
+                lightSourceRewriter.AlignPointLight(i, pointLight);
             }
 
             if (sourceParams.shouldOverrideColour) {
