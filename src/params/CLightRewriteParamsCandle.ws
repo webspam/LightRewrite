@@ -13,10 +13,9 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default TAG_RED = 'CandleColorR';
     default TAG_GREEN = 'CandleColorG';
     default TAG_BLUE = 'CandleColorB';
-    public const var TAG_ALIGN_POINT_LIGHTS : name; default TAG_ALIGN_POINT_LIGHTS = 'CandleAlignPointLights';
+    default TAG_ALIGN_POINT_LIGHTS = 'CandleAlignPointLights';
 
     default enabled = true;
-    public var alignPointLights : bool;             default alignPointLights = true;
     default useSpotlightColor = true;
     default brightness = 5.5f;
     default radius = 9.f;
@@ -25,6 +24,8 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default shadowFadeRange = 3.f;
     default shadowBlendFactor = 1.f;
     default shouldOverrideColour = false;
+
+    default alignPointLights = true;
 
     public function Init() {
         color = Color(240, 245, 255);

@@ -17,6 +17,7 @@ class CLightRewriteSourceParams {
     public const var TAG_RED : name;
     public const var TAG_GREEN : name;
     public const var TAG_BLUE : name;
+    public const var TAG_ALIGN_POINT_LIGHTS : name; 
 
     // Whether this light source type should be rewritten
     public var enabled : bool;
@@ -36,6 +37,9 @@ class CLightRewriteSourceParams {
     // If we should override the light source colour
     public var shouldOverrideColour : bool;
     public var color : Color;
+
+    // Whether to align point lights to the light source
+    public var alignPointLights : bool;
 
     // Whether to copy the spotlight colour to point lights
     // By default, many candles use low-radius, very red point lights as a "lens flare" effect, and a spotlight for actual light

@@ -212,7 +212,7 @@ public function CandleLightRewrite() {
 
             if (
                 lightRewriteLightType == LRT_Candle &&
-                settings.candleParams.alignPointLights
+                sourceParams.alignPointLights
             ) {
                 AlignLightRewriteCandleLight(i, pointLight);
             }

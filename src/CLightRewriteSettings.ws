@@ -20,7 +20,7 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled : bool;                       default isEnabled                = true;
 
-    public var candleParams : CLightRewriteParamsCandle;
+    public var candleParams : CLightRewriteSourceParams;
     public var torchParams : CLightRewriteSourceParams;
     public var brazierParams : CLightRewriteSourceParams;
     public var candelabraParams : CLightRewriteSourceParams;
