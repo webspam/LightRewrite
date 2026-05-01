@@ -27,6 +27,8 @@ class CLightRewriteParamsBrazier extends CLightRewriteSourceParams {
 
     default alignPointLights = true;
 
+    default displayName = "brazier";
+
     public function Init() {
         color = Color(255, 255, 255);
     }

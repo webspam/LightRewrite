@@ -27,6 +27,8 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
 
     default alignPointLights = true;
 
+    default displayName = "candle";
+
     public function Init() {
         color = Color(240, 245, 255);
         // Offset should put the point light roughly in the centre of the candle flame FX

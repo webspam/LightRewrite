@@ -26,6 +26,8 @@ class CLightRewriteParamsCandelabra extends CLightRewriteSourceParams {
 
     default alignPointLights = false;
 
+    default displayName = "candelabra";
+
     public function Init() {
         color = Color(255, 255, 255);
     }

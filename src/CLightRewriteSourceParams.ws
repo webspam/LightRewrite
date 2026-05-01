@@ -48,6 +48,10 @@ class CLightRewriteSourceParams {
     // the bluish scene lighting, and a spotlight for normal mid-range lighting.
     public var useSpotlightColor : bool;
 
+    // The name of this light source type, for logging purposes
+    public var displayName : string;
+    default displayName = "generic";
+
     // Virtual constructor
     public function Init() {}
 

@@ -26,6 +26,8 @@ class CLightRewriteParamsTorch extends CLightRewriteSourceParams {
 
     default alignPointLights = false;
 
+    default displayName = "torch";
+
     public function Init() {
         color = Color(255, 255, 255);
     }

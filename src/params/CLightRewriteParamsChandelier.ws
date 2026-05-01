@@ -26,6 +26,8 @@ class CLightRewriteParamsChandelier extends CLightRewriteSourceParams {
 
     default alignPointLights = false;
 
+    default displayName = "chandelier";
+
     public function Init() {
         color = Color(255, 255, 255);
     }

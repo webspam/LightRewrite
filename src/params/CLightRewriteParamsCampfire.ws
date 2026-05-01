@@ -26,6 +26,8 @@ class CLightRewriteParamsCampfire extends CLightRewriteSourceParams {
 
     default alignPointLights = false;
 
+    default displayName = "campfire";
+
     public function Init() {
         color = Color(255, 255, 255);
     }
