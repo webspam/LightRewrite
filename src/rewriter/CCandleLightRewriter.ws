@@ -16,11 +16,49 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         FindLightRewriteFireFxSlotNames();
     }
 
+    public function RewriteLight() {
+        var spotLight : CSpotLightComponent;
+        var pointLight : CPointLightComponent;
+        var i : int;
+        var wasEnabled : bool;
+
+        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var count : int = components.Size();
+
+        // Clusters of candles emit most of their light via a single spotlight.
+        // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
+        if (params.useSpotlightColor) {
+            spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
+        }
+
+        for (i = 0; i < count; i += 1) {
+            pointLight = (CPointLightComponent)components[i];
+            if (!pointLight) continue;
+
+            pointLight.SaveLightRewriteOriginalValues();
+
+            wasEnabled = pointLight.IsEnabled();
+            if (wasEnabled) pointLight.SetEnabled(false);
+
+            SetPointLightSettings(pointLight);
+            SetPointLightColour(pointLight, spotLight);
+
+            if (params.alignPointLights) {
+                AlignPointLight(i, pointLight);
+            }
+
+            if (wasEnabled) pointLight.SetEnabled(true);
+        }
+
+        // Remove spotlights from candles that have point lights (should be all candles).
+        if (count > 0) DisableAllSpotlightComponents();
+    }
+
     /*
      * Aligns a point light to the fire FX slots on this entity.
      * At time of writing, only testing / working on complex candles.
      */
-    public function AlignPointLight(i : int, pointLight : CPointLightComponent) {
+    private function AlignPointLight(i : int, pointLight : CPointLightComponent) {
         var slotPos : Vector;
         var slotMatrix : Matrix;
 
@@ -87,59 +125,5 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         else if (hasFx) {
             fireFxSlotNames.PushBack('fx');
         }
-    }
-
-    // TODO: Code that supports refactor.  Not for production.
-    public function RewriteLight() {
-        var spotLight : CSpotLightComponent;
-        var pointLight : CPointLightComponent;
-        var i : int;
-        var wasEnabled : bool;
-
-        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count : int = components.Size();
-
-        // Clusters of candles emit most of their light via a single spotlight.
-        // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-        spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
-
-        for (i = 0; i < count; i += 1) {
-            pointLight = (CPointLightComponent)components[i];
-
-            if (pointLight) {
-                pointLight.SaveLightRewriteOriginalValues();
-
-                wasEnabled = pointLight.IsEnabled();
-                if (wasEnabled) pointLight.SetEnabled(false);
-
-                pointLight.brightness = params.brightness;
-                pointLight.radius = params.radius;
-                pointLight.attenuation = params.attenuation;
-
-                pointLight.shadowFadeDistance = params.shadowFadeDistance;
-                pointLight.shadowFadeRange = params.shadowFadeRange;
-                pointLight.shadowBlendFactor = params.shadowBlendFactor;
-
-                if (params.alignPointLights) {
-                    AlignPointLight(i, pointLight);
-                }
-
-                if (params.shouldOverrideColour) {
-                    pointLight.color = params.color;
-                }
-                else if (spotLight && params.useSpotlightColor) {
-                    pointLight.color = spotLight.color;
-                }
-                else {
-                    // No spotlight, and we're not overriding the colour, so use the original colour.
-                    pointLight.color = pointLight.lightRewriteOriginalValues.color;
-                }
-
-                if (wasEnabled) pointLight.SetEnabled(true);
-            }
-        }
-
-        // Remove spotlights from candles that have point lights (should be all candles).
-        if (count > 0) DisableAllSpotlightComponents();
     }
 }
