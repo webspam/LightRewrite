@@ -16,11 +16,6 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count : int = components.Size();
 
-        if (!params.enabled) {
-            RestoreOriginalState();
-            return;
-        }
-
         // Clusters of candles emit most of their light via a single spotlight.
         // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
         spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
