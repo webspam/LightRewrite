@@ -55,8 +55,8 @@ protected function InitialiseLightRewrite() {
 
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
 
-    if (theGame.GetLightRewriteSettings().isEnabled) {
-        if (IsLightRewritable()) lightSourceRewriter.RewriteLight();
+    if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
+        lightSourceRewriter.RewriteLight();
     }
 }
 
