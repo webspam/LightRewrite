@@ -5,8 +5,10 @@ abstract class ILightSourceRewriter {
     // The type of light source this rewriter is for. Implementors must set.
     public var type : ELightRewriteType;
 
+    // The entity that this rewriter is owned by
     public var parentEntity : CGameplayEntity;
 
+    // The parameters for this light source
     protected var params : CLightRewriteSourceParams;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
@@ -27,9 +29,10 @@ abstract class ILightSourceRewriter {
         parentEntity.AddTag(params.tag);
     }
 
-    // TODO: Code that supports refactor.  Not for production.
+    // Rewrites the light source with the configured parameters.
     public function RewriteLight();
 
+    // Restores the entity's lights to their original state.
     public function RestoreOriginalState() {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
@@ -56,12 +59,15 @@ abstract class ILightSourceRewriter {
 
                 if (spotLight) {
                     spotLight.RestoreLightRewriteOriginalValues();
+                    // This is a cheap hack and is likely imperfect; we're not tracking enabled state after the initial rewrite.
+                    // Will only affect users playing in settings.
                     if (parentEntity.HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
                 }
             }
         }
     }
 
+    // Disables all spotlight components on the entity.
     protected function DisableAllSpotlightComponents() {
         var lightComponent : CSpotLightComponent;
         var i : int;
