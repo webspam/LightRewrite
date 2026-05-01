@@ -11,15 +11,12 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;
-        var sourceParams : CLightRewriteSourceParams;
         var wasEnabled : bool;
 
         var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count : int = components.Size();
 
-        sourceParams = GetParams();
-
-        if (!sourceParams.enabled) {
+        if (!params.enabled) {
             DisableLightRewrite();
             return;
         }
@@ -37,18 +34,18 @@ class CGenericLightRewriter extends ILightSourceRewriter {
                 wasEnabled = pointLight.IsEnabled();
                 if (wasEnabled) pointLight.SetEnabled(false);
 
-                pointLight.brightness = sourceParams.brightness;
-                pointLight.radius = sourceParams.radius;
-                pointLight.attenuation = sourceParams.attenuation;
+                pointLight.brightness = params.brightness;
+                pointLight.radius = params.radius;
+                pointLight.attenuation = params.attenuation;
 
-                pointLight.shadowFadeDistance = sourceParams.shadowFadeDistance;
-                pointLight.shadowFadeRange = sourceParams.shadowFadeRange;
-                pointLight.shadowBlendFactor = sourceParams.shadowBlendFactor;
+                pointLight.shadowFadeDistance = params.shadowFadeDistance;
+                pointLight.shadowFadeRange = params.shadowFadeRange;
+                pointLight.shadowBlendFactor = params.shadowBlendFactor;
 
-                if (sourceParams.shouldOverrideColour) {
-                    pointLight.color = sourceParams.color;
+                if (params.shouldOverrideColour) {
+                    pointLight.color = params.color;
                 }
-                else if (spotLight && sourceParams.useSpotlightColor) {
+                else if (spotLight && params.useSpotlightColor) {
                     pointLight.color = spotLight.color;
                 }
                 else {
