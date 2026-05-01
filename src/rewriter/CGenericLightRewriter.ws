@@ -51,8 +51,5 @@ class CGenericLightRewriter extends ILightSourceRewriter {
                 if (wasEnabled) pointLight.SetEnabled(true);
             }
         }
-
-        // Remove spotlights from candles that have point lights (should be all candles).
-        if (count > 0) DisableAllSpotlightComponents();
     }
 }
