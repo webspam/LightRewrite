@@ -7,16 +7,6 @@
  * Unless very specific changes are made, it will simply stop working, rather than cause issues.
  */
 class CGenericLightRewriter extends ILightSourceRewriter {
-    private var params : CLightRewriteSourceParams;
-    
-    public function GetParams() : CLightRewriteSourceParams {
-        return params;
-    }
-
-    public function SetParams(params : CLightRewriteSourceParams) {
-        this.params = params;
-    }
-
     public function CandleLightRewrite() {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;

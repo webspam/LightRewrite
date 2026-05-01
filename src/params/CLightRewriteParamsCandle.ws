@@ -28,6 +28,7 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
     default alignPointLights = true;
 
     default displayName = "candle";
+    default rewriterType = LRT_Candle;
 
     public function Init() {
         color = Color(240, 245, 255);

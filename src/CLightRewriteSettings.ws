@@ -295,4 +295,33 @@ class CLightRewriteSettings {
             default:              return NULL;
         }
     }
+
+    // Finds the params for a given entity.
+    public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
+        var params : CLightRewriteSourceParams = NULL;
+
+        var editorPath : string = entity.ToString();
+        var fileName : string = StrAfterLast(editorPath, StrChar(92));
+
+        if (StrFindFirst(fileName, "candelabra") != -1) {
+            params = candelabraParams;
+        }
+        else if (StrFindFirst(fileName, "chandelier") != -1) {
+            params = chandelierParams;
+        }
+        else if (StrFindFirst(fileName, "candle") != -1) {
+            params = candleParams;
+        }
+        else if (StrFindFirst(fileName, "torch") != -1) {
+            params = torchParams;
+        }
+        else if (StrFindFirst(fileName, "brazier") != -1) {
+            params = brazierParams;
+        }
+        else if (StrFindFirst(fileName, "campfire") != -1) {
+            params = campfireParams;
+        }
+
+        return params;
+    }
 }

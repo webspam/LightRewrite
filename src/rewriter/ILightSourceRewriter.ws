@@ -7,15 +7,20 @@ abstract class ILightSourceRewriter {
 
     public var parentEntity : CGameplayEntity;
 
+    private var params : CLightRewriteSourceParams;
+
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
-    public function Init(parentEntity : CGameplayEntity) {
+    public function Init(parentEntity : CGameplayEntity, params : CLightRewriteSourceParams) {
         this.parentEntity = parentEntity;
+        this.params = params;
 
         AddEntityTag();
     }
 
     // Returns a valid params object for this light source
-    public function GetParams() : CLightRewriteSourceParams;
+    public function GetParams() : CLightRewriteSourceParams {
+        return params;
+    }
 
     // Virtual; adds the tag for this light source type to the parent entity.
     public function AddEntityTag() {

@@ -22,6 +22,9 @@ class CLightRewriteSourceParams {
     // Whether this light source type should be rewritten
     public var enabled : bool;
 
+    // The type of rewriter that will be used to rewrite this light source
+    public var rewriterType : ELightRewriteType;
+
     // Light source brightness
     public var brightness : float;
     // The cutoff radius (sphere)

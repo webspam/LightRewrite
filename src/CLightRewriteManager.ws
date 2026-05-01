@@ -10,6 +10,22 @@ class CLightRewriteManager {
         this.settings = settings;
     }
 
+    // Creates a new rewriter for a given light source type.
+    public function CreateRewriterFromParams(
+        params : CLightRewriteSourceParams,
+        entity : CGameplayEntity
+    ) : ILightSourceRewriter {
+        var rewriter : ILightSourceRewriter;
+
+        switch (params.rewriterType) {
+            case LRT_Candle:         rewriter = new CCandleLightRewriter in entity;     break;
+            default:                 rewriter = new CGenericLightRewriter in entity;    break;
+        }
+
+        rewriter.Init(entity, params);
+        return rewriter;
+    }
+
     // Refreshes Light Rewrite on all light sources.
     public function RewriteAllLightSources() {
         var i, count : int;
