@@ -31,7 +31,7 @@ public function AlignLightRewriteCandleLight(i : int, pointLight : CPointLightCo
         slotPos = VecTransform(worldToLocal, slotWorldPos) / scale / scale;
 
         // Arbitrary fire FX offset: centre of candle flame (ish)
-        slotPos.Z += 0.075 * scale.Z;
+        slotPos += theGame.GetLightRewriteSettings().candleParams.pointLightOffset * scale;
 
         pointLight.SetPosition(slotPos);
     }

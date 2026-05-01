@@ -38,11 +38,14 @@ class CLightRewriteSourceParams {
     public var shouldOverrideColour : bool;
     public var color : Color;
 
-    // Whether to align point lights to the light source
+    // Whether to align point lights to the light source - *many* point lights have been moved manually
     public var alignPointLights : bool;
+    // Offset to add when aligning point lights
+    public var pointLightOffset : Vector;
 
     // Whether to copy the spotlight colour to point lights
-    // By default, many candles use low-radius, very red point lights as a "lens flare" effect, and a spotlight for actual light
+    // By default, many candles use low-radius, very red point lights for a close-up glow offset from
+    // the bluish scene lighting, and a spotlight for normal mid-range lighting.
     public var useSpotlightColor : bool;
 
     // Virtual constructor

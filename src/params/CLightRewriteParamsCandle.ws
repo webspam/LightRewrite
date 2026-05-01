@@ -29,6 +29,8 @@ class CLightRewriteParamsCandle extends CLightRewriteSourceParams {
 
     public function Init() {
         color = Color(240, 245, 255);
+        // Offset should put the point light roughly in the centre of the candle flame FX
+        pointLightOffset = Vector(0.0f, 0.0f, 0.075f);
     }
 
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name) {
