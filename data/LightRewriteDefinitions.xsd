@@ -41,6 +41,9 @@
   </xs:complexType>
 
   <xs:complexType name="defaultEntryType">
+    <xs:annotation>
+      <xs:documentation>Required attributes: tag, logging_name. All other attributes are optional.</xs:documentation>
+    </xs:annotation>
     <xs:sequence>
       <xs:element name="shadows"
                   type="shadowsType">
@@ -80,42 +83,43 @@
     </xs:attribute>
     <xs:attribute name="enabled"
                   type="xs:boolean"
-                  use="required">
+                  use="optional">
       <xs:annotation>
-        <xs:documentation>Whether this light source type should be rewritten.</xs:documentation>
+        <xs:documentation>Whether this light source type should be rewritten. Default: true.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="rewriter_type"
                   type="rewriterTypeEnum"
-                  use="required">
+                  use="optional">
       <xs:annotation>
-        <xs:documentation>The type of rewriter that will be used to rewrite this light source.</xs:documentation>
+        <xs:documentation>The type of rewriter that will be used to rewrite this light source.
+          Optional: omit to use engine/class defaults (e.g. generic rewriter when unset).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>Light source brightness.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="radius"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>The cutoff radius (sphere).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="attenuation"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>Light attenuation - how quickly the light fades out with distance.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="use_spotlight_color"
                   type="xs:boolean"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>Whether to copy the spotlight colour to point lights. By default, many
           candles use low-radius, very red point lights for a close-up glow offset from the bluish
