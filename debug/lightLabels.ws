@@ -13,7 +13,7 @@
  *
  * Example input.settings:
  *
- * IK_NumPad7=(Action=LRDebug_TogglePlayerLabels)
+ * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
  */
 
@@ -24,6 +24,10 @@ function LRDebug_EscapeHtmlMinimal(str : string) : string {
     r = StrReplaceAll(r, "<", "&lt;");
     r = StrReplaceAll(r, ">", "&gt;");
     return r;
+}
+
+function LRDebug_ToHtmlBlock(size : int, text : string) : string {
+    return "<br/><font size='" + size + "'>" + text + "</font>";
 }
 
 function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : int {
@@ -43,6 +47,7 @@ function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
 statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     public var entity : CGameplayEntity;
     public var pointLights, spotLights : int;
+    public var active : bool;
 
     public function Init(tracked_entity : CGameplayEntity, pointLights_ : int, spotLights_ : int) {
         this.entity = tracked_entity;
@@ -58,9 +63,19 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     public function LRDebug_Start() {
-        if (this.IsInState('FollowEntity')) return;
+        if (this.active) return;
 
+        this.active = true;
         this.GotoState('FollowEntity');
+    }
+
+    private function CountToHtml(prefix : string, count : int) : string {
+        var html : string = "<font color='";
+
+        if (count > 0) html += "#00ff00";
+        else html += "#aaaaaa";
+
+        return html + "'>" + prefix + " " + count + "</font>";
     }
 
     /**
@@ -70,38 +85,52 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function LRDebug_GenerateText() : string {
-        var layerPart, entityPath, levelPath : string;
+        var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour : string;
 
-        var fontSize : int = 12;
-        var itemName : string = "P " + IntToString(pointLights) + " / S " + IntToString(spotLights);
-        var body : string = "<font size='" + fontSize + "'>" + itemName + "</font>";
+        var fontSize : int = 13;
+        var countString : string = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
+        var body : string = "<font size='" + fontSize + "'>" + countString + "</font>";
         var descriptor : string = entity.ToString();
+
+        if (pointLights > 0) pointsColour = "#";
+        else pointsColour = "black";
+        if (spotLights > 0) spotsColour = "red";
+        else spotsColour = "black";
 
         if (thePlayer.lrDebugShowPathLabels) {
             if (StrFindFirst(descriptor, "::") != -1) {
                 layerPart = StrBeforeFirst(descriptor, "::");
                 entityPath = StrAfterFirst(descriptor, "::");
-                body = body + "<br/><font size='" + fontSize + "'>"
-                    + LRDebug_EscapeHtmlMinimal(entityPath) + "</font>";
+                levelPath = layerPart;
+
                 if (StrFindFirst(layerPart, "\"") != -1) {
                     levelPath = StrBeforeFirst(StrAfterFirst(layerPart, "\""), "\"");
-                    body = body + "<br/><font size='" + fontSize + "'>"
-                        + LRDebug_EscapeHtmlMinimal(levelPath) + "</font>";
                 }
+
+                fileName = StrAfterLast(entityPath, StrChar(92));
+                filePath = StrBeforeLast(entityPath, StrChar(92));
+            }
+            else {
+                // Fallback to just displaying the descriptor as the file path
+                filePath = descriptor;
+            }
+
+            if (fileName != "") {
+                body += LRDebug_ToHtmlBlock(fontSize + 3, LRDebug_EscapeHtmlMinimal(fileName));
+            }
+            if (filePath != "") {
+                body += LRDebug_ToHtmlBlock(fontSize - 1, LRDebug_EscapeHtmlMinimal(filePath));
+            }
+            if (levelPath != "") {
+                body += LRDebug_ToHtmlBlock(fontSize + 2, LRDebug_EscapeHtmlMinimal(levelPath));
             }
         }
 
-        return "<p align=\"center\">" + body + "</p>";
+        return body;
     }
 }
 
-state Idle in LRDebug_LightOneLiner {
-    event OnEnterState(previous_state_name : name) {
-        super.OnEnterState(previous_state_name);
-
-        parent.unregister();
-    }
-}
+state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
     private const var NORMAL_RANGE : float; default NORMAL_RANGE = 10.0;
@@ -112,6 +141,12 @@ state FollowEntity in LRDebug_LightOneLiner {
 
         parent.register();
         FollowEntity();
+    }
+
+    event OnLeaveState(next_state_name : name) {
+        parent.unregister();
+
+        super.OnLeaveState(next_state_name);
     }
 
     entry function FollowEntity() : void {
@@ -128,6 +163,7 @@ state FollowEntity in LRDebug_LightOneLiner {
             else maxRange = NORMAL_RANGE;
         }
 
+        parent.active = false;
         parent.GotoState('Idle');
     }
 }
@@ -142,14 +178,14 @@ state FollowEntity in LRDebug_LightOneLiner {
 function OnSpawned(spawnData : SEntitySpawnData) {
     wrappedMethod(spawnData);
 
-    AddTimer('LRDebug_DeferredPlayerLabelInstall', 1.f, false);
+    AddTimer('LRDebug_DeferredLabelInstall', 1.f, false);
 }
 
 @addMethod(CR4Player)
-timer function LRDebug_DeferredPlayerLabelInstall(dt : float, id : int) {
+timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     if (!theGame || !thePlayer) return;
 
-    theInput.RegisterListener(this, 'LRDebug_OnInputTogglePlayerLabels', 'LRDebug_TogglePlayerLabels');
+    theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
 }
 
@@ -192,17 +228,24 @@ private function LRDebug_CreateOnelinerForEntity(
     label.Init(entity, pointLights, spotLights);
 
     this.lrdebugTagSeq += 1;
-    label.setTag("lrdebug-" + IntToString(this.lrdebugTagSeq));
+    label.setTag("lrdebug-" + this.lrdebugTagSeq);
 
     entity.lrdebugOneliner = label;
     label.LRDebug_Start();
 }
 
 @addMethod(CR4Player)
-public function LRDebug_OnInputTogglePlayerLabels(action : SInputAction) : bool {
+public function LRDebug_OnInputToggleLabels(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
-    LRDebug_Toggle();
+    this.lrDebugLabels = !this.lrDebugLabels;
+    LogChannel('LRDebug', "LRDebug_Toggle: " + this.lrDebugLabels);
+
+    RemoveTimer('LRDebug_RefreshOnelinersTimer');
+    if (this.lrDebugLabels) {
+        AddTimer('LRDebug_RefreshOnelinersTimer', 0.25f, true);
+    }
+
     return true;
 }
 
@@ -225,15 +268,4 @@ public function LRDebug_OnInputToggleLabelPaths(action : SInputAction) : bool {
     }
 
     return true;
-}
-
-@addMethod(CR4Player)
-private function LRDebug_Toggle() {
-    this.lrDebugLabels = !this.lrDebugLabels;
-    LogChannel('LRDebug', "LRDebug_Toggle: " + this.lrDebugLabels);
-
-    RemoveTimer('LRDebug_RefreshOnelinersTimer');
-    if (this.lrDebugLabels) {
-        AddTimer('LRDebug_RefreshOnelinersTimer', 0.25f, true);
-    }
 }
