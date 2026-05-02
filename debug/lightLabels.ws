@@ -43,6 +43,7 @@ function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
 statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     public var entity : CGameplayEntity;
     public var pointLights, spotLights : int;
+    public var active : bool;
 
     public function Init(tracked_entity : CGameplayEntity, pointLights_ : int, spotLights_ : int) {
         this.entity = tracked_entity;
@@ -58,8 +59,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     public function LRDebug_Start() {
-        if (this.IsInState('FollowEntity')) return;
+        if (this.active) return;
 
+        this.active = true;
         this.GotoState('FollowEntity');
     }
 
@@ -95,13 +97,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 }
 
-state Idle in LRDebug_LightOneLiner {
-    event OnEnterState(previous_state_name : name) {
-        super.OnEnterState(previous_state_name);
-
-        parent.unregister();
-    }
-}
+state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
     private const var NORMAL_RANGE : float; default NORMAL_RANGE = 10.0;
@@ -112,6 +108,12 @@ state FollowEntity in LRDebug_LightOneLiner {
 
         parent.register();
         FollowEntity();
+    }
+
+    event OnLeaveState(next_state_name : name) {
+        parent.unregister();
+
+        super.OnLeaveState(next_state_name);
     }
 
     entry function FollowEntity() : void {
@@ -128,6 +130,7 @@ state FollowEntity in LRDebug_LightOneLiner {
             else maxRange = NORMAL_RANGE;
         }
 
+        parent.active = false;
         parent.GotoState('Idle');
     }
 }
