@@ -13,7 +13,7 @@
  *
  * Example input.settings:
  *
- * IK_NumPad7=(Action=LRDebug_TogglePlayerLabels)
+ * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
  */
 
@@ -142,14 +142,14 @@ state FollowEntity in LRDebug_LightOneLiner {
 function OnSpawned(spawnData : SEntitySpawnData) {
     wrappedMethod(spawnData);
 
-    AddTimer('LRDebug_DeferredPlayerLabelInstall', 1.f, false);
+    AddTimer('LRDebug_DeferredLabelInstall', 1.f, false);
 }
 
 @addMethod(CR4Player)
-timer function LRDebug_DeferredPlayerLabelInstall(dt : float, id : int) {
+timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     if (!theGame || !thePlayer) return;
 
-    theInput.RegisterListener(this, 'LRDebug_OnInputTogglePlayerLabels', 'LRDebug_TogglePlayerLabels');
+    theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
 }
 
@@ -199,7 +199,7 @@ private function LRDebug_CreateOnelinerForEntity(
 }
 
 @addMethod(CR4Player)
-public function LRDebug_OnInputTogglePlayerLabels(action : SInputAction) : bool {
+public function LRDebug_OnInputToggleLabels(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
     this.lrDebugLabels = !this.lrDebugLabels;
