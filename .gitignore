@@ -11,3 +11,6 @@
 
 # Local working directory
 /tmp/
+
+# Environment variables
+.env
