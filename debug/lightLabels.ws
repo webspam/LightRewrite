@@ -26,6 +26,10 @@ function LRDebug_EscapeHtmlMinimal(str : string) : string {
     return r;
 }
 
+function LRDebug_ToHtmlBlock(size : int, text : string) : string {
+    return "<br/><font size='" + size + "'>" + text + "</font>";
+}
+
 function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : int {
     var components : array<CComponent> = entity.GetComponentsByClassName(className);
     return components.Size();
@@ -65,6 +69,15 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         this.GotoState('FollowEntity');
     }
 
+    private function CountToHtml(prefix : string, count : int) : string {
+        var html : string = "<font color='";
+
+        if (count > 0) html += "#00ff00";
+        else html += "#aaaaaa";
+
+        return html + "'>" + prefix + " " + count + "</font>";
+    }
+
     /**
      * Example entity.ToString():
      * ```
@@ -72,28 +85,48 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function LRDebug_GenerateText() : string {
-        var layerPart, entityPath, levelPath : string;
+        var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour : string;
 
-        var fontSize : int = 12;
-        var itemName : string = "P " + IntToString(pointLights) + " / S " + IntToString(spotLights);
-        var body : string = "<font size='" + fontSize + "'>" + itemName + "</font>";
+        var fontSize : int = 13;
+        var countString : string = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
+        var body : string = "<font size='" + fontSize + "'>" + countString + "</font>";
         var descriptor : string = entity.ToString();
+
+        if (pointLights > 0) pointsColour = "#";
+        else pointsColour = "black";
+        if (spotLights > 0) spotsColour = "red";
+        else spotsColour = "black";
 
         if (thePlayer.lrDebugShowPathLabels) {
             if (StrFindFirst(descriptor, "::") != -1) {
                 layerPart = StrBeforeFirst(descriptor, "::");
                 entityPath = StrAfterFirst(descriptor, "::");
-                body = body + "<br/><font size='" + fontSize + "'>"
-                    + LRDebug_EscapeHtmlMinimal(entityPath) + "</font>";
+                levelPath = layerPart;
+
                 if (StrFindFirst(layerPart, "\"") != -1) {
                     levelPath = StrBeforeFirst(StrAfterFirst(layerPart, "\""), "\"");
-                    body = body + "<br/><font size='" + fontSize + "'>"
-                        + LRDebug_EscapeHtmlMinimal(levelPath) + "</font>";
                 }
+
+                fileName = StrAfterLast(entityPath, StrChar(92));
+                filePath = StrBeforeLast(entityPath, StrChar(92));
+            }
+            else {
+                // Fallback to just displaying the descriptor as the file path
+                filePath = descriptor;
+            }
+
+            if (fileName != "") {
+                body += LRDebug_ToHtmlBlock(fontSize + 3, LRDebug_EscapeHtmlMinimal(fileName));
+            }
+            if (filePath != "") {
+                body += LRDebug_ToHtmlBlock(fontSize - 1, LRDebug_EscapeHtmlMinimal(filePath));
+            }
+            if (levelPath != "") {
+                body += LRDebug_ToHtmlBlock(fontSize + 2, LRDebug_EscapeHtmlMinimal(levelPath));
             }
         }
 
-        return "<p align=\"center\">" + body + "</p>";
+        return body;
     }
 }
 
