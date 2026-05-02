@@ -192,7 +192,7 @@ private function LRDebug_CreateOnelinerForEntity(
     label.Init(entity, pointLights, spotLights);
 
     this.lrdebugTagSeq += 1;
-    label.setTag("lrdebug-" + IntToString(this.lrdebugTagSeq));
+    label.setTag("lrdebug-" + this.lrdebugTagSeq);
 
     entity.lrdebugOneliner = label;
     label.LRDebug_Start();
