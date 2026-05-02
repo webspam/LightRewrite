@@ -3,7 +3,7 @@
 function ReadLightRewriteXmlConfig() {
     var dm       : CDefinitionsManagerAccessor;
     var lrNode   : SCustomNode;
-    var defaults : SCustomNode;
+    var defaultsNode : SCustomNode;
     var entry    : SCustomNode;
     var shadows  : SCustomNode;
     var colour   : SCustomNode;
@@ -12,13 +12,13 @@ function ReadLightRewriteXmlConfig() {
 
     dm       = theGame.GetDefinitionsManager();
     lrNode   = dm.GetCustomDefinition('light_rewrite');
-    defaults = dm.GetCustomDefinitionSubNode(lrNode, 'defaults');
+    defaultsNode = dm.GetCustomDefinitionSubNode(lrNode, 'defaults');
 
-    count = defaults.subNodes.Size();
+    count = defaultsNode.subNodes.Size();
     LogLightRewrite("[XmlConfig] defaults.xml entries: " + count);
 
     for (i = 0; i < count; i += 1) {
-        entry = defaults.subNodes[i];
+        entry = defaultsNode.subNodes[i];
 
         dm.GetCustomNodeAttributeValueString(entry, 'logging_name', strVal);
         LogLightRewrite("[XmlConfig] --- " + strVal + " ---");
