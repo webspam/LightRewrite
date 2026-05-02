@@ -202,7 +202,14 @@ private function LRDebug_CreateOnelinerForEntity(
 public function LRDebug_OnInputTogglePlayerLabels(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
-    LRDebug_Toggle();
+    this.lrDebugLabels = !this.lrDebugLabels;
+    LogChannel('LRDebug', "LRDebug_Toggle: " + this.lrDebugLabels);
+
+    RemoveTimer('LRDebug_RefreshOnelinersTimer');
+    if (this.lrDebugLabels) {
+        AddTimer('LRDebug_RefreshOnelinersTimer', 0.25f, true);
+    }
+
     return true;
 }
 
@@ -225,15 +232,4 @@ public function LRDebug_OnInputToggleLabelPaths(action : SInputAction) : bool {
     }
 
     return true;
-}
-
-@addMethod(CR4Player)
-private function LRDebug_Toggle() {
-    this.lrDebugLabels = !this.lrDebugLabels;
-    LogChannel('LRDebug', "LRDebug_Toggle: " + this.lrDebugLabels);
-
-    RemoveTimer('LRDebug_RefreshOnelinersTimer');
-    if (this.lrDebugLabels) {
-        AddTimer('LRDebug_RefreshOnelinersTimer', 0.25f, true);
-    }
 }
