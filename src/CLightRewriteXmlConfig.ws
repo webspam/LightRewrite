@@ -22,7 +22,7 @@ function ReadLightRewriteXmlConfig() {
         entryNode = defaultsNode.subNodes[i];
 
         dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
-        dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal);
+        dm.GetCustomNodeAttributeValueString(entryNode, 'log_label', strVal);
         LogLightRewrite("[XmlConfig] --- " + strVal + " (tag=" + NameToString(nameVal) + ") ---");
 
         dm.GetCustomNodeAttributeValueString(entryNode, 'brightness',          strVal); LogLightRewrite("[XmlConfig]   brightness=" + strVal);
