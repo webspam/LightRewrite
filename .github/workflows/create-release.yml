@@ -68,21 +68,24 @@ jobs:
       - name: Diagnose wcc_lite
         shell: pwsh
         run: |
-          Write-Host "=== Extracted file tree ==="
-          Get-ChildItem -Recurse "${{ env.WCC_LITE_DIR }}" | Select-Object -ExpandProperty FullName
-
-          Write-Host "`n=== wcc_lite.exe dependencies (dumpbin) ==="
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           $dumpbin = & $vswhere -latest -find "VC\Tools\MSVC\*\bin\Hostx64\x64\dumpbin.exe" 2>$null | Select-Object -Last 1
-          if ($dumpbin) {
-            & $dumpbin /dependents "${{ env.WCC_LITE_PATH }}"
-          } else {
-            Write-Host "dumpbin not found"
-          }
 
-          Write-Host "`n=== Direct run of wcc_lite.exe (expect failure, want error detail) ==="
-          $p = Start-Process -FilePath "${{ env.WCC_LITE_PATH }}" -Wait -PassThru -NoNewWindow 2>&1
-          Write-Host "Exit code: $($p.ExitCode)"
+          $raw = & $dumpbin /dependents "${{ env.WCC_LITE_PATH }}" 2>&1
+          $deps = $raw | Where-Object { $_ -match '^\s+\S+\.dll\s*$' } | ForEach-Object { $_.Trim() }
+
+          $searchPaths = @(
+            (Split-Path -Parent "${{ env.WCC_LITE_PATH }}"),
+            "$env:SystemRoot\System32",
+            "$env:SystemRoot\SysWOW64",
+            "$env:SystemRoot"
+          ) + ($env:PATH -split ';')
+
+          foreach ($dll in $deps) {
+            $found = $searchPaths | Where-Object { $_ } | ForEach-Object { Join-Path $_ $dll } | Where-Object { Test-Path $_ } | Select-Object -First 1
+            if ($found) { Write-Host "FOUND:   $found" }
+            else         { Write-Host "MISSING: $dll" }
+          }
 
       - name: Build
         shell: pwsh
