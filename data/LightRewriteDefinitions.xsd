@@ -166,9 +166,6 @@
     <xs:attribute name="blend_factor"
                   type="xs:decimal"
                   use="optional">
-      <xs:annotation>
-        <xs:documentation>shadowBlendFactor (no additional comment in CLightRewriteSourceParams).</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 
@@ -176,23 +173,14 @@
     <xs:attribute name="r"
                   type="xs:unsignedByte"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>Red component (color.Red).</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="g"
                   type="xs:unsignedByte"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>Green component (color.Green).</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="b"
                   type="xs:unsignedByte"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>Blue component (color.Blue).</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 
@@ -200,23 +188,14 @@
     <xs:attribute name="x"
                   type="xs:decimal"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>pointLightOffset X.</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="y"
                   type="xs:decimal"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>pointLightOffset Y.</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
     <xs:attribute name="z"
                   type="xs:decimal"
                   use="required">
-      <xs:annotation>
-        <xs:documentation>pointLightOffset Z.</xs:documentation>
-      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 
