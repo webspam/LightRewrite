@@ -48,9 +48,9 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="defaultEntryType">
+  <xs:complexType name="lightEntryBaseType">
     <xs:annotation>
-      <xs:documentation>Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Shared base type for default and override light entries. Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="shadows"
@@ -135,6 +135,12 @@
           scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="defaultEntryType">
+    <xs:complexContent>
+      <xs:extension base="lightEntryBaseType" />
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:simpleType name="lightTagType">
