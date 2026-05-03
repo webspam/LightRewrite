@@ -75,9 +75,18 @@
 
   <xs:complexType name="lightEntryBaseType">
     <xs:annotation>
-      <xs:documentation>Shared base type for default and override light entries. Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Shared base type for default and override light entries. Required
+        attributes: tag_name, label. All other attributes are optional.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="match"
+                  type="matchType"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Filter that controls which light sources this entry applies to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="shadows"
                   type="shadowsType"
                   minOccurs="0">
@@ -167,6 +176,49 @@
       <xs:extension base="lightEntryBaseType" />
     </xs:complexContent>
   </xs:complexType>
+
+  <xs:complexType name="matchType">
+    <xs:annotation>
+      <xs:documentation>A filter string matched against light source entity names or layer paths.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type"
+                      type="matchTypeEnum"
+                      use="optional"
+                      default="entity">
+          <xs:annotation>
+            <xs:documentation>What to match against: entity name (default) or layer path.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="mode"
+                      type="matchModeEnum"
+                      use="optional"
+                      default="startsWith">
+          <xs:annotation>
+            <xs:documentation>How to compare the value: startsWith (default), endsWith, contains, or
+              exact.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="matchTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="entity" />
+      <xs:enumeration value="layer" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="matchModeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="startsWith" />
+      <xs:enumeration value="endsWith" />
+      <xs:enumeration value="contains" />
+      <xs:enumeration value="exact" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="lightTagType">
     <xs:restriction base="xs:string">
