@@ -53,7 +53,8 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="override_colour"
-                  type="overrideColourType">
+                  type="overrideColourType"
+                  minOccurs="0">
         <xs:annotation>
           <xs:documentation>If we should override the light source colour: RGB components (color).</xs:documentation>
         </xs:annotation>
