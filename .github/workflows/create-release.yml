@@ -30,8 +30,9 @@ jobs:
       WSM_VERSION: 0.6.5
       WSM_URL: https://github.com/IDCs/WitcherScriptMerger/releases/download/v0.6.5/WitcherScriptMerger-0.6.5.7z
       WSM_SHA256: 5195E0819DD2DE32426A88E4CFA1D0A311C61BFBBCF03E6D57BDD4427950FE3F
+      TOOLS_DIR: tools
       WCC_LITE_DIR: tools/wcc_lite
-      WCC_LITE_PATH: tools/wcc_lite/wcc_lite.exe
+      WCC_LITE_PATH: tools/wcc_lite/bin/x64/wcc_lite.exe
 
     steps:
       - name: Checkout repository
@@ -61,7 +62,8 @@ jobs:
             throw "SHA256 mismatch for $archivePath. Expected=$expectedSha256 Actual=$actualSha256"
           }
 
-          7z e $archivePath "Tools\wcc_lite\bin\x64\*" "-o$($env:WCC_LITE_DIR)" -y | Out-Null
+          7z x $archivePath "Tools\wcc_lite" "-otmp/wcc_lite" -y | Out-Null
+          Move-Item "tmp/wcc_lite/Tools/wcc_lite" "${{ env.TOOLS_DIR }}/"
 
       - name: Build
         shell: pwsh
