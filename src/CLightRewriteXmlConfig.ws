@@ -56,12 +56,14 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
         params.shadowBlendFactor = StringToFloat(strVal, params.shadowBlendFactor);
 
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'override_colour');
-        dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal);
-        params.color.Red = StringToInt(strVal, params.color.Red);
-        dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-        params.color.Green = StringToInt(strVal, params.color.Green);
-        dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-        params.color.Blue = StringToInt(strVal, params.color.Blue);
+        if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
+            params.shouldOverrideColour = true;
+            params.color.Red = StringToInt(strVal, params.color.Red);
+            dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
+            params.color.Green = StringToInt(strVal, params.color.Green);
+            dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
+            params.color.Blue = StringToInt(strVal, params.color.Blue);
+        }
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
