@@ -54,7 +54,8 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="shadows"
-                  type="shadowsType">
+                  type="shadowsType"
+                  minOccurs="0">
         <xs:annotation>
           <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
