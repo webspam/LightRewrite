@@ -63,7 +63,6 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
         dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
         params.color.Blue = StringToInt(strVal, params.color.Blue);
 
-        // Optional element: presence detected by a successful attribute read
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
             params.alignPointLights = true;
