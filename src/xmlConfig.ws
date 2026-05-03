@@ -63,7 +63,7 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
             params.shadowBlendFactor = StringToFloat(strVal, 0.f);
         }
 
-        colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'override_colour');
+        colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
             params.shouldOverrideColour = true;
             params.color.Red = StringToInt(strVal, params.color.Red);

@@ -94,7 +94,7 @@
           <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="override_colour"
+      <xs:element name="colour"
                   type="overrideColourType"
                   minOccurs="0">
         <xs:annotation>
