@@ -77,6 +77,14 @@ jobs:
           Start-Process -Wait -FilePath "directx_redist.exe" -ArgumentList "/Q /T:$PWD\dxtmp"
           Start-Process -Wait -FilePath "$PWD\dxtmp\DXSETUP.exe" -ArgumentList "/silent"
 
+      - name: Skip Mod Tools EULA (DoNotShowEula for wcc_lite)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $key = "HKCU:\Software\CD Projekt Red\Mod Tools\1.0"
+          New-Item -Path $key -Force | Out-Null
+          Set-ItemProperty -LiteralPath $key -Name DoNotShowEula -Value 1 -Type DWord
+
       - name: Build
         shell: pwsh
         run: ./build.ps1
