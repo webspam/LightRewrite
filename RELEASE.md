@@ -22,26 +22,35 @@ The steps required to build a release package.
 The mod release is a zip file containing the source files in a specific folder structure:
 
 ```
-modLightRewrite.zip
+modLightRewrite-<tag>.zip
+├── bin/
+│   └── config/
+│       └── r4game/
+│           └── user_config_matrix/
+│               └── pc/
+│                   └── LightRewrite.xml
 └── mods/
     └── modLightRewrite/
         └── content/
+            ├── *.w3strings
+            ├── blob0.bundle
+            ├── metadata.store
             └── scripts/
                 └── local/
-                    └── [contents of src/ directory]
+                    └── modLightRewrite/
+                        └── [Witcher scripts from src/]
 ```
 
 ### Steps to Create a Release
 
-1. **Create the folder structure:**
-   - Create nested directories: `mods/modLightRewrite/content/scripts/local`
+High level overview of the build process. For actual steps, see build scripts.
 
-2. **Copy source files:**
-   - Copy all files from the `src/` directory into `mods/modLightRewrite/content/scripts/local/`
-
-3. **Create the zip archive:**
-   - Zip the `mods/` directory (including the full folder hierarchy)
-   - Name the zip file: `modLightRewrite.zip`
+1. **Localisation (when needed)** — If you changed plain-text translations, regenerate the matching `w3strings` binaries before building; see `l10n/README.md`.
+2. **Stage scripts** — Copy the Witcher sources from `src/` into the mod script tree under `mods/`.
+3. **Stage localisation** — Copy the `w3strings` files from `l10n/` into the mod's `mods/modLightRewrite/content/` folder.
+4. **Bundle** — Run `wcc_lite pack` so the staged gameplay XML under `build/bundle/` is written as bundle files in the mod `mods/modLightRewrite/content/` folder.
+5. **Metadata store** — Run `wcc_lite metadatastore` on `mods/modLightRewrite/content/` to generate `metadata.store`.
+6. **Package** — Produce one zip whose root contains both `mods` and `bin`, matching the layout above.
 
 ### Build requirements
 
