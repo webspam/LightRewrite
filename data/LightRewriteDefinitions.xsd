@@ -48,6 +48,27 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="overridesType">
+    <xs:annotation>
+      <xs:documentation>Per-area overrides for light source defaults.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="override"
+                  type="overrideEntryType"
+                  maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Override for a single light source group in this area.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="overrideEntryType">
+    <xs:complexContent>
+      <xs:extension base="lightEntryBaseType" />
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="lightEntryBaseType">
     <xs:annotation>
       <xs:documentation>Shared base type for default and override light entries. Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
