@@ -65,6 +65,10 @@ jobs:
           7z x $archivePath "Tools\wcc_lite" "-otmp/wcc_lite" -y | Out-Null
           Move-Item "tmp/wcc_lite/Tools/wcc_lite" "${{ env.TOOLS_DIR }}/"
 
+      - name: Install VC++ 2012 Redistributable (vcomp110.dll for wcc_lite)
+        shell: pwsh
+        run: choco install vcredist2012 -y
+
       - name: Diagnose wcc_lite
         shell: pwsh
         run: |
