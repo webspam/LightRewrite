@@ -69,27 +69,13 @@ jobs:
         shell: pwsh
         run: choco install vcredist2012 -y
 
-      - name: Diagnose wcc_lite
+      - name: Install legacy DirectX runtime (xinput1_3.dll x64 for wcc_lite)
         shell: pwsh
         run: |
-          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          $dumpbin = & $vswhere -latest -find "VC\Tools\MSVC\*\bin\Hostx64\x64\dumpbin.exe" 2>$null | Select-Object -Last 1
-
-          $raw = & $dumpbin /dependents "${{ env.WCC_LITE_PATH }}" 2>&1
-          $deps = $raw | Where-Object { $_ -match '^\s+\S+\.dll\s*$' } | ForEach-Object { $_.Trim() }
-
-          $searchPaths = @(
-            (Split-Path -Parent "${{ env.WCC_LITE_PATH }}"),
-            "$env:SystemRoot\System32",
-            "$env:SystemRoot\SysWOW64",
-            "$env:SystemRoot"
-          ) + ($env:PATH -split ';')
-
-          foreach ($dll in $deps) {
-            $found = $searchPaths | Where-Object { $_ } | ForEach-Object { Join-Path $_ $dll } | Where-Object { Test-Path $_ } | Select-Object -First 1
-            if ($found) { Write-Host "FOUND:   $found" }
-            else         { Write-Host "MISSING: $dll" }
-          }
+          $ErrorActionPreference = "Stop"
+          Invoke-WebRequest -Uri "https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe" -OutFile "directx_redist.exe"
+          Start-Process -Wait -FilePath "directx_redist.exe" -ArgumentList "/Q /T:$PWD\dxtmp"
+          Start-Process -Wait -FilePath "$PWD\dxtmp\DXSETUP.exe" -ArgumentList "/silent"
 
       - name: Build
         shell: pwsh
