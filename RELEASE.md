@@ -13,6 +13,10 @@ Run the "Create Mod Release" workflow from the Actions tab:
 
 The steps required to build a release package.
 
+### Initial configuration
+
+- Copy `.env.example` to `.env`, and edit the values
+
 ### Release Package Structure
 
 The mod release is a zip file containing the source files in a specific folder structure:
