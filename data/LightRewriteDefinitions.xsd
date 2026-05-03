@@ -42,7 +42,7 @@
 
   <xs:complexType name="defaultEntryType">
     <xs:annotation>
-      <xs:documentation>Required attributes: tag, label. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="shadows"
@@ -67,7 +67,7 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
-    <xs:attribute name="tag"
+    <xs:attribute name="tag_name"
                   type="lightTagType"
                   use="required">
       <xs:annotation>
