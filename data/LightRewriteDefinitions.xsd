@@ -29,7 +29,11 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="defaults"
-                  type="defaultsType" />
+                  type="defaultsType"
+                  minOccurs="0" />
+      <xs:element name="overrides"
+                  type="overridesType"
+                  minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
