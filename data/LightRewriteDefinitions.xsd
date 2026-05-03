@@ -26,15 +26,14 @@
 
   <xs:complexType name="defaultsType">
     <xs:annotation>
-      <xs:documentation>Default parameters for each light source type (maps to
-        CLightRewriteSourceParams subclasses).</xs:documentation>
+      <xs:documentation>Default parameters for each light source type.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="default"
                   type="defaultEntryType"
                   maxOccurs="unbounded">
         <xs:annotation>
-          <xs:documentation>One light source type: runtime data matching CLightRewriteSourceParams.</xs:documentation>
+          <xs:documentation>Configuration for a single group of light sources.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -48,15 +47,14 @@
       <xs:element name="shadows"
                   type="shadowsType">
         <xs:annotation>
-          <xs:documentation>Shadow fade parameters (shadowFadeDistance, shadowFadeRange,
-            shadowBlendFactor).</xs:documentation>
+          <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="override_colour"
                   type="overrideColourType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>If we should override the light source colour: RGB components (color).</xs:documentation>
+          <xs:documentation>If present, overrides the light source colour.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="align_point_lights"
@@ -64,7 +62,7 @@
                   minOccurs="0">
         <xs:annotation>
           <xs:documentation>Whether to align point lights to the light source - *many* point lights
-            have been moved manually. Offset to add when aligning point lights (pointLightOffset).</xs:documentation>
+            have been moved manually. Offset to add when aligning point lights.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -79,7 +77,7 @@
                   type="xs:string"
                   use="required">
       <xs:annotation>
-        <xs:documentation>The name of this light source type, for logging purposes (displayName).</xs:documentation>
+        <xs:documentation>The name of this light source type, for logging purposes.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="enabled"
@@ -93,22 +91,22 @@
                   type="rewriterTypeEnum"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The type of rewriter that will be used to rewrite this light source.
-          Optional: omit to use engine/class defaults (e.g. generic rewriter when unset).</xs:documentation>
+        <xs:documentation>The type of light rewriter for this group. Default: generic light
+          rewriter.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Light source brightness.</xs:documentation>
+        <xs:documentation>Override the light source brightness.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="radius"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The cutoff radius (sphere).</xs:documentation>
+        <xs:documentation>Set the cutoff radius (sphere).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="attenuation"
@@ -159,8 +157,7 @@
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The range of the shadow fade - how quickly the shadow fades out from
-          shadowFadeDistance.</xs:documentation>
+        <xs:documentation>The distance from when a shadow starts fading until it is completely gone.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="blend_factor"
