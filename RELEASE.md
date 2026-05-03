@@ -38,3 +38,7 @@ modLightRewrite.zip
 3. **Create the zip archive:**
    - Zip the `mods/` directory (including the full folder hierarchy)
    - Name the zip file: `modLightRewrite.zip`
+
+### Build requirements
+
+- PowerShell 7: `winget install -e --id Microsoft.PowerShell`
