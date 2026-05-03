@@ -9,7 +9,6 @@ function ReadLightRewriteXmlConfig() {
     var colour   : SCustomNode;
     var i, count : int;
     var strVal   : string;
-    var nameVal  : name;
 
     dm       = theGame.GetDefinitionsManager();
     lrNode   = dm.GetCustomDefinition('light_rewrite');
@@ -21,8 +20,8 @@ function ReadLightRewriteXmlConfig() {
     for (i = 0; i < count; i += 1) {
         entryNode = defaultsNode.subNodes[i];
 
-        dm.GetCustomNodeAttributeValueName(entryNode, 'logging_name', nameVal);
-        LogLightRewrite("[XmlConfig] --- " + NameToString(nameVal) + " ---");
+        dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal);
+        LogLightRewrite("[XmlConfig] --- " + strVal + " ---");
 
         dm.GetCustomNodeAttributeValueString(entryNode, 'brightness',          strVal); LogLightRewrite("[XmlConfig]   brightness=" + strVal);
         dm.GetCustomNodeAttributeValueString(entryNode, 'radius',              strVal); LogLightRewrite("[XmlConfig]   radius=" + strVal);

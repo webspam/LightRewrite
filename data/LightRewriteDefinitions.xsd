@@ -42,7 +42,7 @@
 
   <xs:complexType name="defaultEntryType">
     <xs:annotation>
-      <xs:documentation>Required attributes: tag, logging_name. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Required attributes: tag, label. All other attributes are optional.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="shadows"
@@ -74,7 +74,7 @@
         <xs:documentation>The tag that will identify this source in the game.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="logging_name"
+    <xs:attribute name="label"
                   type="xs:string"
                   use="required">
       <xs:annotation>
