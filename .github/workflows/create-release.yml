@@ -65,6 +65,25 @@ jobs:
           7z x $archivePath "Tools\wcc_lite" "-otmp/wcc_lite" -y | Out-Null
           Move-Item "tmp/wcc_lite/Tools/wcc_lite" "${{ env.TOOLS_DIR }}/"
 
+      - name: Diagnose wcc_lite
+        shell: pwsh
+        run: |
+          Write-Host "=== Extracted file tree ==="
+          Get-ChildItem -Recurse "${{ env.WCC_LITE_DIR }}" | Select-Object -ExpandProperty FullName
+
+          Write-Host "`n=== wcc_lite.exe dependencies (dumpbin) ==="
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $dumpbin = & $vswhere -latest -find "VC\Tools\MSVC\*\bin\Hostx64\x64\dumpbin.exe" 2>$null | Select-Object -Last 1
+          if ($dumpbin) {
+            & $dumpbin /dependents "${{ env.WCC_LITE_PATH }}"
+          } else {
+            Write-Host "dumpbin not found"
+          }
+
+          Write-Host "`n=== Direct run of wcc_lite.exe (expect failure, want error detail) ==="
+          $p = Start-Process -FilePath "${{ env.WCC_LITE_PATH }}" -Wait -PassThru -NoNewWindow 2>&1
+          Write-Host "Exit code: $($p.ExitCode)"
+
       - name: Build
         shell: pwsh
         run: ./build.ps1
