@@ -23,46 +23,98 @@ on:
 
 jobs:
   create-release:
-    runs-on: ubuntu-latest
+    runs-on: windows-2022
     permissions:
       contents: write
+    env:
+      WSM_VERSION: 0.6.5
+      WSM_URL: https://github.com/IDCs/WitcherScriptMerger/releases/download/v0.6.5/WitcherScriptMerger-0.6.5.7z
+      WSM_SHA256: 5195E0819DD2DE32426A88E4CFA1D0A311C61BFBBCF03E6D57BDD4427950FE3F
+      TOOLS_DIR: tools
+      WCC_LITE_DIR: tools/wcc_lite
+      WCC_LITE_PATH: tools/wcc_lite/bin/x64/wcc_lite.exe
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Create folder structure and copy files
+      - name: Restore cached wcc_lite
+        uses: actions/cache@v5
+        id: wcc_cache
+        with:
+          path: ${{ env.WCC_LITE_DIR }}
+          key: wcc_lite-${{ runner.os }}-${{ env.WSM_VERSION }}-${{ env.WSM_SHA256 }}
+
+      - name: Download + verify + extract wcc_lite (WitcherScriptMerger)
+        if: ${{ steps.wcc_cache.outputs.cache-hit != 'true' }}
+        shell: pwsh
         run: |
-          mkdir -p mods/modLightRewrite/content/scripts/local/modLightRewrite
-          cp -r src/* mods/modLightRewrite/content/scripts/local/modLightRewrite/
-          cp l10n/*.w3strings mods/modLightRewrite/content/
+          $ErrorActionPreference = "Stop"
+
+          New-Item -ItemType Directory -Force -Path "tools/.downloads" | Out-Null
+
+          $archivePath = Join-Path "tools/.downloads" ("WitcherScriptMerger-$($env:WSM_VERSION).7z")
+          Invoke-WebRequest -Uri $env:WSM_URL -OutFile $archivePath
+
+          $expectedSha256 = $env:WSM_SHA256.ToUpperInvariant()
+          $actualSha256 = (Get-FileHash -Algorithm SHA256 $archivePath).Hash.ToUpperInvariant()
+          if ($actualSha256 -ne $expectedSha256) {
+            throw "SHA256 mismatch for $archivePath. Expected=$expectedSha256 Actual=$actualSha256"
+          }
+
+          7z x $archivePath "Tools\wcc_lite" "-otmp/wcc_lite" -y | Out-Null
+          Move-Item "tmp/wcc_lite/Tools/wcc_lite" "${{ env.TOOLS_DIR }}/"
+
+      - name: Install VC++ 2012 Redistributable (vcomp110.dll for wcc_lite)
+        shell: pwsh
+        run: choco install vcredist2012 -y
+
+      - name: Install legacy DirectX runtime (xinput1_3.dll x64 for wcc_lite)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Invoke-WebRequest -Uri "https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe" -OutFile "directx_redist.exe"
+          Start-Process -Wait -FilePath "directx_redist.exe" -ArgumentList "/Q /T:$PWD\dxtmp"
+          Start-Process -Wait -FilePath "$PWD\dxtmp\DXSETUP.exe" -ArgumentList "/silent"
+
+      - name: Skip Mod Tools EULA (DoNotShowEula for wcc_lite)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $key = "HKCU:\Software\CD Projekt Red\Mod Tools\1.0"
+          New-Item -Path $key -Force | Out-Null
+          Set-ItemProperty -LiteralPath $key -Name DoNotShowEula -Value 1 -Type DWord
+
+      - name: Build
+        shell: pwsh
+        run: ./build.ps1
 
       - name: Create zip file
+        shell: pwsh
         run: |
-          zip -r modLightRewrite-${{ inputs.tag }}.zip mods/ bin/
+          $zipPath = "modLightRewrite-${{ inputs.tag }}.zip"
+          if (Test-Path -Path $zipPath) { Remove-Item -Force $zipPath }
+          Compress-Archive -Path "mods","bin" -DestinationPath $zipPath
 
       - name: Create Draft Release
+        shell: pwsh
         run: |
-          PRERELEASE_FLAG=""
-          if [ "${{ inputs.prerelease }}" = "true" ]; then
-            PRERELEASE_FLAG="--prerelease"
-          fi
-          RELEASE_TITLE="${{ inputs.title }}"
-          if [ -z "$RELEASE_TITLE" ]; then
-            RELEASE_TITLE="${{ inputs.tag }}"
-          fi
+          $releaseTitle = "${{ inputs.title }}"
+          if ([string]::IsNullOrWhiteSpace($releaseTitle)) { $releaseTitle = "${{ inputs.tag }}" }
 
-          NOTES_FLAG="--generate-notes"
-          if [ -n "${{ inputs.summary }}" ]; then
-            echo "${{ inputs.summary }}" > summary.md
-            NOTES_FLAG="--notes-file summary.md --generate-notes"
-          fi
+          $releaseArgs = @()
+          if ("${{ inputs.prerelease }}" -eq "true") { $releaseArgs += "--prerelease" }
 
-          gh release create "${{ inputs.tag }}" \
-            --title "$RELEASE_TITLE" \
-            --draft \
-            $NOTES_FLAG \
-            $PRERELEASE_FLAG \
-            modLightRewrite-${{ inputs.tag }}.zip
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.summary }}")) {
+            "${{ inputs.summary }}" | Out-File -FilePath "summary.md" -Encoding utf8
+            $releaseArgs += "--notes-file", "summary.md"
+          }
+
+          gh release create "${{ inputs.tag }}" `
+            --title $releaseTitle `
+            --draft `
+            @releaseArgs `
+            --generate-notes `
+            "modLightRewrite-${{ inputs.tag }}.zip"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

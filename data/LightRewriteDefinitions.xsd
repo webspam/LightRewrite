@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+  <xs:element name="redxml">
+    <xs:annotation>
+      <xs:documentation>Root element for REDengine XML resources (Witcher 3 mod XML).</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="custom">
+          <xs:annotation>
+            <xs:documentation>Custom mod XML section; contains LightRewrite configuration.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="light_rewrite"
+                          type="lightRewriteType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="lightRewriteType">
+    <xs:annotation>
+      <xs:documentation>LightRewrite configuration section.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="defaults"
+                  type="defaultsType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="defaultsType">
+    <xs:annotation>
+      <xs:documentation>Default parameters for each light source type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="default"
+                  type="defaultEntryType"
+                  maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Configuration for a single group of light sources.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="defaultEntryType">
+    <xs:annotation>
+      <xs:documentation>Required attributes: tag_name, label. All other attributes are optional.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="shadows"
+                  type="shadowsType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="override_colour"
+                  type="overrideColourType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If present, overrides the light source colour.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="align_point_lights"
+                  type="alignPointLightsType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Whether to align point lights to the light source - *many* point lights
+            have been moved manually. Offset to add when aligning point lights.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="tag_name"
+                  type="lightTagType"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>The tag that will identify this source in the game.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="label"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>The name of this light source type, for logging purposes.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="enabled"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Whether this light source type should be rewritten. Default: true.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rewriter_type"
+                  type="rewriterTypeEnum"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>The type of light rewriter for this group. Default: generic light
+          rewriter.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="brightness"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Override the light source brightness.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="radius"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Set the cutoff radius (sphere).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="attenuation"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Light attenuation - how quickly the light fades out with distance.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="use_spotlight_color"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Whether to copy the spotlight colour to point lights. By default, many
+          candles use low-radius, very red point lights for a close-up glow offset from the bluish
+          scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="lightTagType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="LR_.*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="rewriterTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LRT_Candle" />
+      <xs:enumeration value="LRT_Torch" />
+      <xs:enumeration value="LRT_Candelabra" />
+      <xs:enumeration value="LRT_Brazier" />
+      <xs:enumeration value="LRT_Campfire" />
+      <xs:enumeration value="LRT_Chandelier" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="shadowsType">
+    <xs:attribute name="fade_distance"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>The distance the player is from a light source before the shadow starts to
+          fade.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="fade_range"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>The distance from when a shadow starts fading until it is completely gone.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="blend_factor"
+                  type="xs:decimal"
+                  use="optional">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="overrideColourType">
+    <xs:attribute name="r"
+                  type="xs:unsignedByte"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="g"
+                  type="xs:unsignedByte"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="b"
+                  type="xs:unsignedByte"
+                  use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="alignPointLightsType">
+    <xs:attribute name="x"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="y"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="z"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+</xs:schema>

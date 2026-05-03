@@ -3,7 +3,7 @@
  */
 class CLightRewriteSourceParams {
     // The tag that will identify this source in the game
-    public const var tag : name;
+    public var tag : name;
 
     // Whether this light source type should be rewritten
     public var enabled : bool;

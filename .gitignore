@@ -1,9 +1,9 @@
 # Build output
+/build/
 /mods/
 /modLightRewrite.zip
 
 # Scripts
-/build.ps1
 /debug.ps1
 
 # Local project rules
@@ -11,3 +11,6 @@
 
 # Local working directory
 /tmp/
+
+# Environment variables
+.env

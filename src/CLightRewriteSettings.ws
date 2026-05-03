@@ -41,23 +41,31 @@ class CLightRewriteSettings {
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
-        var i, count : int;
+        var loadedParams : array<CLightRewriteSourceParams>;
+        var i, count     : int;
 
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
-        candleParams = new CLightRewriteParamsCandle in this;
-        torchParams = new CLightRewriteParamsTorch in this;
-        brazierParams = new CLightRewriteParamsBrazier in this;
-        candelabraParams = new CLightRewriteParamsCandelabra in this;
-        campfireParams = new CLightRewriteParamsCampfire in this;
-        chandelierParams = new CLightRewriteParamsChandelier in this;
+        loadedParams = LoadLightRewriteParams(this);
 
-        candleMenu = new CLightRewriteMenuCandle in this;
-        torchMenu = new CLightRewriteMenuTorch in this;
-        brazierMenu = new CLightRewriteMenuBrazier in this;
+        count = loadedParams.Size();
+        for (i = 0; i < count; i += 1) {
+            switch (loadedParams[i].tag) {
+                case 'LR_Candle':     candleParams     = loadedParams[i]; break;
+                case 'LR_Torch':      torchParams      = loadedParams[i]; break;
+                case 'LR_Brazier':    brazierParams    = loadedParams[i]; break;
+                case 'LR_Candelabra': candelabraParams = loadedParams[i]; break;
+                case 'LR_Campfire':   campfireParams   = loadedParams[i]; break;
+                case 'LR_Chandelier': chandelierParams = loadedParams[i]; break;
+            }
+        }
+
+        candleMenu     = new CLightRewriteMenuCandle     in this;
+        torchMenu      = new CLightRewriteMenuTorch      in this;
+        brazierMenu    = new CLightRewriteMenuBrazier    in this;
         candelabraMenu = new CLightRewriteMenuCandelabra in this;
-        campfireMenu = new CLightRewriteMenuCampfire in this;
+        campfireMenu   = new CLightRewriteMenuCampfire   in this;
         chandelierMenu = new CLightRewriteMenuChandelier in this;
 
         lightSourceParams.PushBack(candleParams);
@@ -73,11 +81,6 @@ class CLightRewriteSettings {
         lightSourceMenu.PushBack(candelabraMenu);
         lightSourceMenu.PushBack(campfireMenu);
         lightSourceMenu.PushBack(chandelierMenu);
-
-        count = lightSourceParams.Size();
-        for (i = 0; i < count; i += 1) {
-            lightSourceParams[i].Init();
-        }
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
