@@ -149,7 +149,7 @@
   <xs:complexType name="shadowsType">
     <xs:attribute name="fade_distance"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>The distance the player is from a light source before the shadow starts to
           fade.</xs:documentation>
@@ -157,7 +157,7 @@
     </xs:attribute>
     <xs:attribute name="fade_range"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>The range of the shadow fade - how quickly the shadow fades out from
           shadowFadeDistance.</xs:documentation>
@@ -165,7 +165,7 @@
     </xs:attribute>
     <xs:attribute name="blend_factor"
                   type="xs:decimal"
-                  use="required">
+                  use="optional">
       <xs:annotation>
         <xs:documentation>shadowBlendFactor (no additional comment in CLightRewriteSourceParams).</xs:documentation>
       </xs:annotation>
