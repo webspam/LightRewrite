@@ -2,14 +2,23 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="qualified">
 
-  <xs:element name="custom">
+  <xs:element name="redxml">
     <xs:annotation>
-      <xs:documentation>Root element for Witcher 3 custom mod XML data.</xs:documentation>
+      <xs:documentation>Root element for REDengine XML resources (Witcher 3 mod XML).</xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="light_rewrite"
-                    type="lightRewriteType" />
+        <xs:element name="custom">
+          <xs:annotation>
+            <xs:documentation>Custom mod XML section; contains LightRewrite configuration.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="light_rewrite"
+                          type="lightRewriteType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
