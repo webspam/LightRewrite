@@ -292,6 +292,10 @@ class CLightRewriteSettings {
                 lightSourceMenu[i].OptionValueChanged(optionName, lightSourceParams[i]);
             }
 
+            // ForceProcessFlashStorage() inside UpdateMenuDisabledState resets dynamic
+            // option lists back to XML defaults, so we must restore them afterwards.
+            ReplacePresetMenuOptions();
+
             // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
                 theGame.lightRewrite.DisableLightRewrite();
@@ -306,12 +310,16 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
+        UpdateAllGroupsDisabledState();
+        ReplacePresetMenuOptions();
+    }
+
+    private function ReplacePresetMenuOptions() {
         var optionKeys : array<name>;
 
         optionKeys.PushBack('LightRewrite_None');
         FindLightRewriteProfileNames(optionKeys);
 
-        UpdateAllGroupsDisabledState();
         LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
     }
 
