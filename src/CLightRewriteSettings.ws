@@ -386,7 +386,7 @@ class CLightRewriteSettings {
             }
 
             if (matched) {
-                params = params.Clone(entity);
+                params = (CLightRewriteSourceParams)params.Clone(entity);
                 matched.ApplyTo(params);
                 LogLightRewrite("[XmlConfig] Applied override '" + matched.displayName + "' to " + editorPath);
             }
