@@ -65,6 +65,26 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
+    <xs:attribute name="profile_name"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>The profile that these overrides are part of. Users can change the active
+          profile from the in-game mod menu. A profile can be split across multiple files.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="weight"
+                  type="xs:unsignedByte"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>Weight is effectively the order in which overrides are applied; 0 will be
+          applied first, so any values from groups with higher weight will overwrite them.</xs:documentation>
+        <xs:documentation>Groups with the same weight are applied in the order they are defined;
+          however, between files this may be non-deterministic.</xs:documentation>
+        <xs:documentation>Effectively, 0 is typically for global defaults, and 100 would be for a
+          very specific small area.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="overrideEntryType">
@@ -75,8 +95,7 @@
 
   <xs:complexType name="lightEntryBaseType">
     <xs:annotation>
-      <xs:documentation>Shared base type for default and override light entries. Required
-        attributes: tag_name, label. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Shared base type for default and override light entries.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="match"

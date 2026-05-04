@@ -8,9 +8,14 @@ class CLightRewriteSettings {
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
 
+    // Label key constants (must match XML Var id values)
+    private const var CURRENT_PRESET_LABEL : string;    default CURRENT_PRESET_LABEL    = 'LightRewrite_CurrentProfile';
+    private const var NONE_PRESET_LABEL : string;        default NONE_PRESET_LABEL        = 'LightRewrite_None';
+
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
     private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
+    private const var CURRENT_PRESET : name;            default CURRENT_PRESET          = 'CurrentProfile';
 
     // Internal group IDs resolved at init time
     private var generalGroupId  : int;
@@ -39,36 +44,36 @@ class CLightRewriteSettings {
     private var lightSourceParams : array<CLightRewriteSourceParams>;
     private var lightSourceMenu : array<CLightRewriteSourceMenu>;
 
-    private var loadedOverrides : array<CLightRewriteOverrideParams>;
+    private var loadedOverrides : array<CLightRewriteSourceParams>;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams : array<CLightRewriteSourceParams>;
-        var i, count     : int;
+        var i, count : int;
 
-        gameConfig      = theGame.GetInGameConfigWrapper();
-        generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
+        gameConfig = theGame.GetInGameConfigWrapper();
+        generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
-        loadedParams    = LoadLightRewriteParams(this);
+        loadedParams = LoadLightRewriteParams(this);
         loadedOverrides = LoadLightRewriteOverrides(this);
 
         count = loadedParams.Size();
         for (i = 0; i < count; i += 1) {
             switch (loadedParams[i].tag) {
-                case 'LR_Candle':     candleParams     = loadedParams[i]; break;
-                case 'LR_Torch':      torchParams      = loadedParams[i]; break;
-                case 'LR_Brazier':    brazierParams    = loadedParams[i]; break;
+                case 'LR_Candle':     candleParams = loadedParams[i];     break;
+                case 'LR_Torch':      torchParams = loadedParams[i];      break;
+                case 'LR_Brazier':    brazierParams = loadedParams[i];    break;
                 case 'LR_Candelabra': candelabraParams = loadedParams[i]; break;
-                case 'LR_Campfire':   campfireParams   = loadedParams[i]; break;
+                case 'LR_Campfire':   campfireParams = loadedParams[i];   break;
                 case 'LR_Chandelier': chandelierParams = loadedParams[i]; break;
             }
         }
 
-        candleMenu     = new CLightRewriteMenuCandle     in this;
-        torchMenu      = new CLightRewriteMenuTorch      in this;
-        brazierMenu    = new CLightRewriteMenuBrazier    in this;
+        candleMenu = new CLightRewriteMenuCandle in this;
+        torchMenu = new CLightRewriteMenuTorch in this;
+        brazierMenu = new CLightRewriteMenuBrazier in this;
         candelabraMenu = new CLightRewriteMenuCandelabra in this;
-        campfireMenu   = new CLightRewriteMenuCampfire   in this;
+        campfireMenu = new CLightRewriteMenuCampfire in this;
         chandelierMenu = new CLightRewriteMenuChandelier in this;
 
         lightSourceParams.PushBack(candleParams);
@@ -85,6 +90,8 @@ class CLightRewriteSettings {
         lightSourceMenu.PushBack(campfireMenu);
         lightSourceMenu.PushBack(chandelierMenu);
     }
+
+    public function GetEnabledOptionId() : name { return ENABLED; }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
     // Used to filter out option-change events fired by other mods.
@@ -130,11 +137,11 @@ class CLightRewriteSettings {
 
         // v2 → v3: add per-source colour override settings.
         if (initVersion <= 2) {
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_OVERRIDE_COLOUR, candleParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_OVERRIDE_COLOUR, candleParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RED, candleParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_GREEN, candleParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_BLUE, candleParams.color.Blue);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_OVERRIDE_COLOUR, torchParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_OVERRIDE_COLOUR, torchParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RED, torchParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_GREEN, torchParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_BLUE, torchParams.color.Blue);
@@ -145,7 +152,7 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BRIGHTNESS, brazierParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RADIUS, brazierParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_ATTENUATION, brazierParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_OVERRIDE_COLOUR, brazierParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_OVERRIDE_COLOUR, brazierParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RED, brazierParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_GREEN, brazierParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BLUE, brazierParams.color.Blue);
@@ -156,14 +163,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_BRIGHTNESS, candelabraParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_RADIUS, candelabraParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_ATTENUATION, candelabraParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_OVERRIDE_COLOUR, candelabraParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_OVERRIDE_COLOUR, candelabraParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_RED, candelabraParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_GREEN, candelabraParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_BLUE, candelabraParams.color.Blue);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BRIGHTNESS, campfireParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RADIUS, campfireParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_ATTENUATION, campfireParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_OVERRIDE_COLOUR, campfireParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_OVERRIDE_COLOUR, campfireParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RED, campfireParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_GREEN, campfireParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BLUE, campfireParams.color.Blue);
@@ -225,7 +232,7 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_DISTANCE, chandelierParams.shadowFadeDistance);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_RANGE, chandelierParams.shadowFadeRange);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_BLEND, chandelierParams.shadowBlendFactor);
-            gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_OVERRIDE_COLOUR, chandelierParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_OVERRIDE_COLOUR, chandelierParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_RED, chandelierParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_GREEN, chandelierParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_BLUE, chandelierParams.color.Blue);
@@ -246,7 +253,6 @@ class CLightRewriteSettings {
 
         // v9 → v10: Disable menu overrides by default.
         if (initVersion <= 9) {
-            LogLightRewrite("Writing settings v10");
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_ENABLED, false);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_ENABLED, false);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_ENABLED, false);
@@ -300,7 +306,13 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
+        var optionKeys : array<name>;
+
+        optionKeys.PushBack('LightRewrite_None');
+        FindLightRewriteProfileNames(optionKeys);
+
         UpdateAllGroupsDisabledState();
+        LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
     }
 
     private function UpdateAllGroupsDisabledState() {
@@ -340,7 +352,7 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
         var params : CLightRewriteSourceParams = NULL;
-        var matched : CLightRewriteOverrideParams = NULL;
+        var matched : CLightRewriteSourceParams = NULL;
         var i, count : int;
 
         var editorPath : string = entity.ToString();
@@ -374,7 +386,7 @@ class CLightRewriteSettings {
             }
 
             if (matched) {
-                params = (CLightRewriteSourceParams)params.Clone(this);
+                params = (CLightRewriteSourceParams)params.Clone(entity);
                 matched.ApplyTo(params);
                 LogLightRewrite("[XmlConfig] Applied override '" + matched.displayName + "' to " + editorPath);
             }

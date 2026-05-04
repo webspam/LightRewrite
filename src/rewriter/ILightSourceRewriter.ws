@@ -21,7 +21,7 @@ abstract class ILightSourceRewriter {
 
     // If this rewriter is enabled (params group is enabled)
     public function IsEnabled() : bool {
-        return params.enabled;
+        return !params.hasEnabled || params.enabled;
     }
 
     // Adds the tag for this light source type to the parent entity.
@@ -105,12 +105,12 @@ abstract class ILightSourceRewriter {
 
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight : CPointLightComponent) {
-        pointLight.brightness = params.brightness;
-        pointLight.radius = params.radius;
-        pointLight.attenuation = params.attenuation;
-        pointLight.shadowFadeDistance = params.shadowFadeDistance;
-        pointLight.shadowFadeRange = params.shadowFadeRange;
-        pointLight.shadowBlendFactor = params.shadowBlendFactor;
+        if (params.hasBrightness) pointLight.brightness = params.brightness;
+        if (params.hasRadius) pointLight.radius = params.radius;
+        if (params.hasAttenuation) pointLight.attenuation = params.attenuation;
+        if (params.hasShadowFadeDistance) pointLight.shadowFadeDistance = params.shadowFadeDistance;
+        if (params.hasShadowFadeRange) pointLight.shadowFadeRange = params.shadowFadeRange;
+        if (params.hasShadowBlendFactor) pointLight.shadowBlendFactor = params.shadowBlendFactor;
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour
@@ -118,7 +118,7 @@ abstract class ILightSourceRewriter {
         pointLight : CPointLightComponent,
         optional spotLight : CSpotLightComponent
     ) {
-        if (params.shouldOverrideColour) {
+        if (params.hasColour) {
             pointLight.color = params.color;
         }
         else if (spotLight) {

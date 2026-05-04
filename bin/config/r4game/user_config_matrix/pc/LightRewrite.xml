@@ -140,6 +140,23 @@
         </PresetsArray>
         <VisibleVars>
             <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" />
+            <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS">
+              <OptionsArray>
+                <Option id="0" displayName="LightRewrite_Preset_Author">
+                  <Entry varId="CurrentProfile" value="0" />
+                </Option>
+                <!-- Placeholders; required for variable slider list. -->
+                <Option id="1"><Entry varId="CurrentProfile" value="1" /></Option>
+                <Option id="2"><Entry varId="CurrentProfile" value="2" /></Option>
+                <Option id="3"><Entry varId="CurrentProfile" value="3" /></Option>
+                <Option id="4"><Entry varId="CurrentProfile" value="4" /></Option>
+                <Option id="5"><Entry varId="CurrentProfile" value="5" /></Option>
+                <Option id="6"><Entry varId="CurrentProfile" value="6" /></Option>
+                <Option id="7"><Entry varId="CurrentProfile" value="7" /></Option>
+                <Option id="8"><Entry varId="CurrentProfile" value="8" /></Option>
+                <Option id="9"><Entry varId="CurrentProfile" value="9" /></Option>
+              </OptionsArray>
+            </Var>
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="CandleEnabled" displayName="LightRewrite_Candle_Enabled"
