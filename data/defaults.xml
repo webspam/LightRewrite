@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Default">
+        <!-- Candles -->
+        <override tag_name="LR_Candle"
+                  label="candle"
+                  brightness="6"
+                  radius="4"
+                  attenuation="1">
+          <match>candle</match>
+          <shadows fade_distance="10"
+                   fade_range="5"
+                   blend_factor="1" />
+        </override>
+
+        <!-- Torches -->
+        <override tag_name="LR_Torch"
+                  label="torch"
+                  brightness="30"
+                  radius="10"
+                  attenuation="1.0">
+          <match>torch</match>
+          <shadows fade_distance="12"
+                   fade_range="5"
+                   blend_factor="1" />
+        </override>
+
+        <!-- Braziers -->
+        <override tag_name="LR_Brazier"
+                  label="brazier"
+                  brightness="40"
+                  radius="10"
+                  attenuation="1.0">
+          <match>brazier</match>
+          <shadows fade_distance="20"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override>
+
+        <!-- Candelabras -->
+        <override tag_name="LR_Candelabra"
+                  label="candelabra"
+                  brightness="8"
+                  radius="12"
+                  attenuation="1.0">
+          <match>candelabra</match>
+          <shadows fade_distance="5"
+                   fade_range="5"
+                   blend_factor="1" />
+        </override>
+
+        <!-- Campfires -->
+        <override tag_name="LR_Campfire"
+                  label="campfire"
+                  brightness="10"
+                  radius="15"
+                  attenuation="1.0">
+          <match>campfire</match>
+          <shadows fade_distance="15"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override>
+
+        <!-- Chandeliers -->
+        <override tag_name="LR_Chandelier"
+                  label="chandelier"
+                  brightness="12"
+                  radius="18"
+                  attenuation="1.0">
+          <match>chandelier</match>
+          <shadows fade_distance="20"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

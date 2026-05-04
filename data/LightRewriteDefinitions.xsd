@@ -65,6 +65,14 @@
         </xs:annotation>
       </xs:element>
     </xs:sequence>
+    <xs:attribute name="profile_name"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>The profile that these overrides are part of. Users can change the active
+          profile from the in-game mod menu. A profile can be split across multiple files.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="overrideEntryType">
@@ -75,8 +83,7 @@
 
   <xs:complexType name="lightEntryBaseType">
     <xs:annotation>
-      <xs:documentation>Shared base type for default and override light entries. Required
-        attributes: tag_name, label. All other attributes are optional.</xs:documentation>
+      <xs:documentation>Shared base type for default and override light entries.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="match"
