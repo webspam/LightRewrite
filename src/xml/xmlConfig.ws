@@ -154,15 +154,15 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
 
             if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
                 switch (strVal) {
-                    case "layer": rule.matchType = 'layer'; break;
+                    case "layer": rule.matchType = LR_Match_Layer; break;
                 }
             }
 
             if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
                 switch (strVal) {
-                    case "endsWith": rule.matchMode = 'endsWith'; break;
-                    case "contains": rule.matchMode = 'contains'; break;
-                    case "exact": rule.matchMode = 'exact'; break;
+                    case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
+                    case "contains": rule.matchMode = LR_Match_Contains; break;
+                    case "exact": rule.matchMode = LR_Match_Exact; break;
                 }
             }
 
