@@ -378,10 +378,12 @@ class CLightRewriteSettings {
         }
 
         if (params) {
-            count = loadedOverrides.Size();
-            for (i = 0; i < count; i += 1) {
-                if (loadedOverrides[i].MatchesEntity(entity)) {
-                    matched = loadedOverrides[i];
+            if (!params.menuOverrideActive) {
+                count = loadedOverrides.Size();
+                for (i = 0; i < count; i += 1) {
+                    if (loadedOverrides[i].MatchesEntity(entity)) {
+                        matched = loadedOverrides[i];
+                    }
                 }
             }
 
