@@ -27,8 +27,6 @@ class CLightRewriteOverrideParams {
 
     // Whether the colour should be overridden
     public var hasColour : bool;
-    // This allows disabling a previously enabled colour override
-    public var shouldOverrideColour : bool;
     // The colour to use for the light source
     public var color : Color;
 
@@ -53,7 +51,7 @@ class CLightRewriteOverrideParams {
         if (hasShadowFadeRange)   { params.shadowFadeRange   = shadowFadeRange;   }
         if (hasShadowBlendFactor) { params.shadowBlendFactor = shadowBlendFactor; }
         if (hasColour) {
-            params.shouldOverrideColour = shouldOverrideColour;
+            params.shouldOverrideColour = true;
             params.color                = color;
         }
     }

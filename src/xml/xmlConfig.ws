@@ -163,7 +163,6 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
             override.hasColour = true;
-            override.shouldOverrideColour = true;
             override.color.Red = StringToInt(strVal, override.color.Red);
             dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
             override.color.Green = StringToInt(strVal, override.color.Green);
