@@ -8,9 +8,14 @@ class CLightRewriteSettings {
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
 
+    // Label key constants (must match XML Var id values)
+    private const var CURRENT_PRESET_LABEL : string;    default CURRENT_PRESET_LABEL    = 'LightRewrite_CurrentProfile';
+    private const var NONE_PRESET_LABEL : string;        default NONE_PRESET_LABEL        = 'LightRewrite_None';
+
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
     private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
+    private const var CURRENT_PRESET : name;            default CURRENT_PRESET          = 'CurrentProfile';
 
     // Internal group IDs resolved at init time
     private var generalGroupId  : int;
@@ -85,6 +90,8 @@ class CLightRewriteSettings {
         lightSourceMenu.PushBack(campfireMenu);
         lightSourceMenu.PushBack(chandelierMenu);
     }
+
+    public function GetEnabledOptionId() : name { return ENABLED; }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
     // Used to filter out option-change events fired by other mods.
@@ -299,7 +306,13 @@ class CLightRewriteSettings {
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
+        var optionKeys : array<name>;
+
+        optionKeys.PushBack('LightRewrite_None');
+        FindLightRewriteProfileNames(optionKeys);
+
         UpdateAllGroupsDisabledState();
+        LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
     }
 
     private function UpdateAllGroupsDisabledState() {

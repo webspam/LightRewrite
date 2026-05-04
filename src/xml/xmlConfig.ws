@@ -1,3 +1,25 @@
+function FindLightRewriteProfileNames(out profileNames : array<name>) {
+    var dm : CDefinitionsManagerAccessor;
+    var lrNode, overridesNode, entryNode : SCustomNode;
+    var i, count : int;
+    var nameVal : name;
+
+    dm = theGame.GetDefinitionsManager();
+    lrNode = dm.GetCustomDefinition('light_rewrite');
+
+    count = lrNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        if (
+            dm.GetCustomNodeAttributeValueName(lrNode.subNodes[i], 'profile_name', nameVal) &&
+            !profileNames.Contains(nameVal)
+        ) {
+            profileNames.PushBack(nameVal);
+        }
+
+        LogLightRewrite("[XmlConfig] Found profile: " + NameToString(nameVal));
+    }
+}
+
 // Loads CLightRewriteSourceParams from menu_defaults.xml via the definitions manager.
 function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourceParams> {
     var paramsArray : array<CLightRewriteSourceParams>;
