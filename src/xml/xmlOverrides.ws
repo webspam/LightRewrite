@@ -18,22 +18,22 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
 }
 
 function LoadLightRewriteOverridesGroup(
-    owner         : CObject,
-    dm            : CDefinitionsManagerAccessor,
+    owner : CObject,
+    dm : CDefinitionsManagerAccessor,
     overridesNode : SCustomNode,
     out overrides : array<CLightRewriteSourceParams>
 ) {
-    var entryNode  : SCustomNode;
+    var entryNode : SCustomNode;
     var colourNode : SCustomNode;
-    var override   : CLightRewriteSourceParams;
-    var strVal     : string;
-    var nameVal    : name;
-    var i, count   : int;
+    var override : CLightRewriteSourceParams;
+    var strVal : string;
+    var nameVal : name;
+    var i, count : int;
 
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
         entryNode = overridesNode.subNodes[i];
-        override  = new CLightRewriteSourceParams in owner;
+        override = new CLightRewriteSourceParams in owner;
 
         dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
         override.tag = nameVal;
@@ -44,17 +44,17 @@ function LoadLightRewriteOverridesGroup(
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
             override.hasBrightness = true;
-            override.brightness    = StringToFloat(strVal, 0.f);
+            override.brightness = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
             override.hasRadius = true;
-            override.radius    = StringToFloat(strVal, 0.f);
+            override.radius = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
             override.hasAttenuation = true;
-            override.attenuation    = StringToFloat(strVal, 0.f);
+            override.attenuation = StringToFloat(strVal, 0.f);
         }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);

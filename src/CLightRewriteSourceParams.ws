@@ -9,7 +9,7 @@
  */
 class CLightRewriteSourceParams {
     // Always required
-    public var tag         : name;
+    public var tag : name;
     public var displayName : string;
     default displayName = "generic";
 
@@ -18,47 +18,47 @@ class CLightRewriteSourceParams {
 
     // Whether this light source type is active
     public var hasEnabled : bool;
-    public var enabled    : bool;
+    public var enabled : bool;
 
     // The rewriter implementation to use
     public var hasRewriterType : bool;
-    public var rewriterType    : ELightRewriteType;
+    public var rewriterType : ELightRewriteType;
 
     // Light source brightness
     public var hasBrightness : bool;
-    public var brightness    : float;
+    public var brightness : float;
 
     // Cutoff radius (sphere)
     public var hasRadius : bool;
-    public var radius    : float;
+    public var radius : float;
 
     // Attenuation — how quickly the light fades out with distance
     public var hasAttenuation : bool;
-    public var attenuation    : float;
+    public var attenuation : float;
 
     // Distance at which the player shadow starts to fade
     public var hasShadowFadeDistance : bool;
-    public var shadowFadeDistance    : float;
+    public var shadowFadeDistance : float;
 
     // Range over which the shadow fades from shadowFadeDistance
     public var hasShadowFadeRange : bool;
-    public var shadowFadeRange    : float;
+    public var shadowFadeRange : float;
 
     public var hasShadowBlendFactor : bool;
-    public var shadowBlendFactor    : float;
+    public var shadowBlendFactor : float;
 
     // Colour override — hasColour replaces the old shouldOverrideColour sentinel
     public var hasColour : bool;
-    public var color     : Color;
+    public var color : Color;
 
     // Point-light alignment to fire FX slots
     public var hasAlignPointLights : bool;
-    public var alignPointLights    : bool;
-    public var pointLightOffset    : Vector;
+    public var alignPointLights : bool;
+    public var pointLightOffset : Vector;
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var hasUseSpotlightColor : bool;
-    public var useSpotlightColor    : bool;
+    public var useSpotlightColor : bool;
 
     // Virtual constructor
     public function Init() {}
