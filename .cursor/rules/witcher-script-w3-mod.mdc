@@ -13,6 +13,7 @@ alwaysApply: false
 - Prefer patterns from **nearby vanilla or mod code** over guessed engine APIs.
 - `name` type uses single quotes `'`
   - A `name` becomes a symbol in backend code.
+  - `const` vars starting with `TAG_` should always be `name`
 - `string` type uses double quotes `"`
 
 ## Layout in this repo

@@ -16,6 +16,10 @@ class CLightRewriteSourceParams {
     // Override matching — empty means this is a base-params entry, not an override
     public var matchRules : array<CLightRewriteMatchRule>;
 
+    // Set by the in-game menu when its per-type override toggle is on.
+    // When true, FindParamsForEntity skips XML override matching so menu values win.
+    public var menuOverrideActive : bool;
+
     // Whether this light source type is active
     public var hasEnabled : bool;
     public var enabled : bool;
