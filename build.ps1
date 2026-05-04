@@ -71,12 +71,12 @@ Remove-DirectoryIfExists $modsRoot
 New-Directory $buildDir
 New-Directory $scriptsDir
 
-# Stage defaults.xml into the in-bundle path
-$defaultsSource = Join-Path $RepoRoot "data/*.xml"
-$defaultsDestDir = Join-Path $buildDir "gameplay/abilities"
+# Stage XML files into the in-bundle path
+$xmlSource = Join-Path $RepoRoot "data/*.xml"
+$xmlDestDir = Join-Path $buildDir "gameplay/abilities"
 
-New-Directory $defaultsDestDir
-Copy-Item -Force -Path $defaultsSource -Destination $defaultsDestDir
+New-Directory $xmlDestDir
+Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
 
 # Prefix all XML files with "lightrewrite_"
 Get-ChildItem -Path $defaultsDestDir -Filter "*.xml" | ForEach-Object {

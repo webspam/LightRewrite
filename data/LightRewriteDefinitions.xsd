@@ -28,8 +28,8 @@
       <xs:documentation>LightRewrite configuration section.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="defaults"
-                  type="defaultsType"
+      <xs:element name="menu_defaults"
+                  type="menuDefaultsType"
                   minOccurs="0" />
       <xs:element name="overrides"
                   type="overridesType"
@@ -37,16 +37,16 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="defaultsType">
+  <xs:complexType name="menuDefaultsType">
     <xs:annotation>
-      <xs:documentation>Default parameters for each light source type.</xs:documentation>
+      <xs:documentation>The default values for the mod menu config overrides.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="default"
-                  type="defaultEntryType"
+      <xs:element name="menu_default"
+                  type="menuDefaultEntryType"
                   maxOccurs="unbounded">
         <xs:annotation>
-          <xs:documentation>Configuration for a single group of light sources.</xs:documentation>
+          <xs:documentation>Configuration for a single light source type in the mod menu.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -171,7 +171,7 @@
     </xs:attribute>
   </xs:complexType>
 
-  <xs:complexType name="defaultEntryType">
+  <xs:complexType name="menuDefaultEntryType">
     <xs:complexContent>
       <xs:extension base="lightEntryBaseType" />
     </xs:complexContent>

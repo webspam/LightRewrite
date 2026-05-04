@@ -1,4 +1,4 @@
-// Loads CLightRewriteSourceParams from defaults.xml via the definitions manager.
+// Loads CLightRewriteSourceParams from menu_defaults.xml via the definitions manager.
 function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourceParams> {
     var paramsArray : array<CLightRewriteSourceParams>;
     var dm : CDefinitionsManagerAccessor;
@@ -10,7 +10,7 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
-    defaultsNode = dm.GetCustomDefinitionSubNode(lrNode, 'defaults');
+    defaultsNode = dm.GetCustomDefinitionSubNode(lrNode, 'menu_defaults');
 
     count = defaultsNode.subNodes.Size();
 
