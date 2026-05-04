@@ -78,7 +78,7 @@ function OnSpawned(spawnData : SEntitySpawnData) {
 }
 @wrapMethod(W3Campfire)
 function OnSpawned(spawnData : SEntitySpawnData) {
-    InitialiseLightRewrite();
+    if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
