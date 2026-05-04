@@ -39,6 +39,8 @@ class CLightRewriteSettings {
     private var lightSourceParams : array<CLightRewriteSourceParams>;
     private var lightSourceMenu : array<CLightRewriteSourceMenu>;
 
+    private var loadedOverrides : array<CLightRewriteOverrideParams>;
+
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams : array<CLightRewriteSourceParams>;
@@ -47,7 +49,8 @@ class CLightRewriteSettings {
         gameConfig      = theGame.GetInGameConfigWrapper();
         generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
-        loadedParams = LoadLightRewriteParams(this);
+        loadedParams    = LoadLightRewriteParams(this);
+        loadedOverrides = LoadLightRewriteOverrides(this);
 
         count = loadedParams.Size();
         for (i = 0; i < count; i += 1) {
@@ -325,7 +328,9 @@ class CLightRewriteSettings {
 
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
-        var params : CLightRewriteSourceParams = NULL;
+        var params  : CLightRewriteSourceParams = NULL;
+        var matched : CLightRewriteOverrideParams = NULL;
+        var i       : int;
 
         var editorPath : string = entity.ToString();
         var fileName : string = StrAfterLast(editorPath, StrChar(92));
@@ -347,6 +352,20 @@ class CLightRewriteSettings {
         }
         else if (StrFindFirst(fileName, "campfire") != -1) {
             params = campfireParams;
+        }
+
+        if (params) {
+            for (i = 0; i < loadedOverrides.Size(); i += 1) {
+                if (loadedOverrides[i].MatchesEntity(entity)) {
+                    matched = loadedOverrides[i];
+                }
+            }
+
+            if (matched) {
+                params = (CLightRewriteSourceParams)params.Clone(this);
+                matched.ApplyTo(params);
+                LogLightRewrite("[XmlConfig] Applied override '" + matched.displayName + "' to " + editorPath);
+            }
         }
 
         return params;
