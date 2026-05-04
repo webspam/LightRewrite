@@ -3,7 +3,8 @@
         xsi:noNamespaceSchemaLocation="LightRewriteDefinitions.xsd">
   <custom>
     <light_rewrite>
-      <overrides profile_name="Default">
+      <overrides profile_name="Default"
+                 weight="0">
         <!-- Candles -->
         <override tag_name="LR_Candle"
                   label="candle"
