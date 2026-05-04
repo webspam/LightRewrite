@@ -246,7 +246,6 @@ class CLightRewriteSettings {
 
         // v9 → v10: Disable menu overrides by default.
         if (initVersion <= 9) {
-            LogLightRewrite("Writing settings v10");
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_ENABLED, false);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_ENABLED, false);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_ENABLED, false);
