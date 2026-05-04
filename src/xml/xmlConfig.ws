@@ -125,8 +125,6 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
     for (i = 0; i < overridesCount; i += 1) {
         overridesNode = lrNode.subNodes[i];
 
-        LogLightRewrite("[XmlConfig] Loading overrides " + i);
-
         count = overridesNode.subNodes.Size();
         for (j = 0; j < count; j += 1) {
             entryNode = overridesNode.subNodes[j];
