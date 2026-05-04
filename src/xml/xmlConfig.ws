@@ -1,27 +1,22 @@
 // Loads CLightRewriteSourceParams from defaults.xml via the definitions manager.
 function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourceParams> {
-    var paramsArray  : array<CLightRewriteSourceParams>;
-    var dm           : CDefinitionsManagerAccessor;
-    var lrNode       : SCustomNode;
-    var defaultsNode : SCustomNode;
-    var entryNode    : SCustomNode;
-    var shadowsNode  : SCustomNode;
-    var colourNode   : SCustomNode;
-    var alignNode    : SCustomNode;
-    var params       : CLightRewriteSourceParams;
-    var i, count     : int;
-    var strVal       : string;
-    var nameVal      : name;
+    var paramsArray : array<CLightRewriteSourceParams>;
+    var dm : CDefinitionsManagerAccessor;
+    var lrNode, defaultsNode, entryNode, shadowsNode, colourNode, alignNode : SCustomNode;
+    var params : CLightRewriteSourceParams;
+    var i, count : int;
+    var strVal : string;
+    var nameVal : name;
 
-    dm           = theGame.GetDefinitionsManager();
-    lrNode       = dm.GetCustomDefinition('light_rewrite');
+    dm = theGame.GetDefinitionsManager();
+    lrNode = dm.GetCustomDefinition('light_rewrite');
     defaultsNode = dm.GetCustomDefinitionSubNode(lrNode, 'defaults');
 
     count = defaultsNode.subNodes.Size();
 
     for (i = 0; i < count; i += 1) {
         entryNode = defaultsNode.subNodes[i];
-        params    = new CLightRewriteSourceParams in owner;
+        params = new CLightRewriteSourceParams in owner;
 
         dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
         params.tag = nameVal;
@@ -92,18 +87,14 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
 
 // Loads CLightRewriteOverrideParams from all XML files via the definitions manager.
 function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrideParams> {
-    var overridesArray  : array<CLightRewriteOverrideParams>;
-    var dm              : CDefinitionsManagerAccessor;
-    var lrNode          : SCustomNode;
-    var overridesNode   : SCustomNode;
-    var entryNode       : SCustomNode;
-    var matchNode       : SCustomNode;
-    var colourNode      : SCustomNode;
-    var override        : CLightRewriteOverrideParams;
-    var rule            : CLightRewriteMatchRule;
+    var overridesArray : array<CLightRewriteOverrideParams>;
+    var dm : CDefinitionsManagerAccessor;
+    var lrNode, overridesNode, entryNode, matchNode, colourNode : SCustomNode;
+    var override : CLightRewriteOverrideParams;
+    var rule : CLightRewriteMatchRule;
     var i, j, count, matchCount : int;
-    var strVal          : string;
-    var nameVal         : name;
+    var strVal : string;
+    var nameVal : name;
 
     dm            = theGame.GetDefinitionsManager();
     lrNode        = dm.GetCustomDefinition('light_rewrite');
@@ -154,15 +145,15 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
 
             if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
                 switch (strVal) {
-                    case "layer": rule.matchType = 'layer'; break;
+                    case "layer": rule.matchType = LR_Match_Layer; break;
                 }
             }
 
             if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
                 switch (strVal) {
-                    case "endsWith": rule.matchMode = 'endsWith'; break;
-                    case "contains": rule.matchMode = 'contains'; break;
-                    case "exact": rule.matchMode = 'exact'; break;
+                    case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
+                    case "contains": rule.matchMode = LR_Match_Contains; break;
+                    case "exact": rule.matchMode = LR_Match_Exact; break;
                 }
             }
 
@@ -171,13 +162,12 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
 
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-            override.hasColour            = true;
-            override.shouldOverrideColour = true;
-            override.color.Red            = StringToInt(strVal, override.color.Red);
+            override.hasColour = true;
+            override.color.Red = StringToInt(strVal, override.color.Red);
             dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-            override.color.Green          = StringToInt(strVal, override.color.Green);
+            override.color.Green = StringToInt(strVal, override.color.Green);
             dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-            override.color.Blue           = StringToInt(strVal, override.color.Blue);
+            override.color.Blue = StringToInt(strVal, override.color.Blue);
         }
 
         LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");

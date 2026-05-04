@@ -1,65 +1,34 @@
-class CLightRewriteMatchRule {
-    public var matchType  : name;   // 'entity' (default) or 'layer'
-    public var matchMode  : name;   // 'startsWith' (default), 'contains', 'endsWith', 'exact'
-    public var matchValue : name;
-
-    default matchType = 'entity';
-    default matchMode = 'startsWith';
-
-    public function Matches(entity : CGameplayEntity) : bool {
-        var subject : string;
-        var value   : string = NameToString(matchValue);
-
-        if (matchType == 'layer') {
-            subject = StrBeforeFirst(StrAfterFirst(entity.ToString(), "\""), "\"");
-        } else {
-            // type 'entity' (default): filename only
-            subject = StrAfterLast(entity.ToString(), StrChar(92));
-        }
-
-        if (matchMode == 'contains') {
-            return StrFindFirst(subject, value) != -1;
-        }
-        else if (matchMode == 'endsWith') {
-            return StrEndsWith(subject, value);
-        }
-        else if (matchMode == 'exact') {
-            return subject == value;
-        }
-        else {
-            // mode 'startsWith' (default)
-            return StrBeginsWith(subject, value);
-        }
-    }
-}
-
+/** Override parameters for a light source type. */
 class CLightRewriteOverrideParams {
-    public var matchRules   : array<CLightRewriteMatchRule>;
+    // The match rules for this override
+    public var matchRules : array<CLightRewriteMatchRule>;
 
-    public var tag          : name;
-    public var displayName  : string;
+    // The tag for this override
+    public var tag : name;
+    public var displayName : string;
 
-    public var hasBrightness        : bool;
-    public var brightness           : float;
+    public var hasBrightness : bool;
+    public var brightness : float;
 
-    public var hasRadius            : bool;
-    public var radius               : float;
+    public var hasRadius : bool;
+    public var radius : float;
 
-    public var hasAttenuation       : bool;
-    public var attenuation          : float;
+    public var hasAttenuation : bool;
+    public var attenuation : float;
 
     public var hasShadowFadeDistance : bool;
-    public var shadowFadeDistance    : float;
+    public var shadowFadeDistance : float;
 
-    public var hasShadowFadeRange   : bool;
-    public var shadowFadeRange      : float;
+    public var hasShadowFadeRange : bool;
+    public var shadowFadeRange : float;
 
     public var hasShadowBlendFactor : bool;
-    public var shadowBlendFactor    : float;
+    public var shadowBlendFactor : float;
 
-    public var hasColour            : bool;
-    public var shouldOverrideColour : bool;
-    public var color                : Color;
+    // Whether the colour should be overridden
+    public var hasColour : bool;
+    // The colour to use for the light source
+    public var color : Color;
 
     public function MatchesEntity(entity : CGameplayEntity) : bool {
         var i, count : int;
@@ -82,7 +51,7 @@ class CLightRewriteOverrideParams {
         if (hasShadowFadeRange)   { params.shadowFadeRange   = shadowFadeRange;   }
         if (hasShadowBlendFactor) { params.shadowBlendFactor = shadowBlendFactor; }
         if (hasColour) {
-            params.shouldOverrideColour = shouldOverrideColour;
+            params.shouldOverrideColour = true;
             params.color                = color;
         }
     }
