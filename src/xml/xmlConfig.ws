@@ -20,7 +20,7 @@ function FindLightRewriteProfileNames(out profileNames : array<name>) {
     }
 }
 
-// Loads CLightRewriteSourceParams from menu_defaults.xml via the definitions manager.
+/** Loads CLightRewriteSourceParams from menu_defaults.xml via the definitions manager. */
 function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourceParams> {
     var paramsArray : array<CLightRewriteSourceParams>;
     var dm : CDefinitionsManagerAccessor;
