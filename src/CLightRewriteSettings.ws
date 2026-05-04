@@ -330,7 +330,7 @@ class CLightRewriteSettings {
     public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
         var params  : CLightRewriteSourceParams = NULL;
         var matched : CLightRewriteOverrideParams = NULL;
-        var i       : int;
+        var i, count : int;
 
         var editorPath : string = entity.ToString();
         var fileName : string = StrAfterLast(editorPath, StrChar(92));
@@ -355,7 +355,8 @@ class CLightRewriteSettings {
         }
 
         if (params) {
-            for (i = 0; i < loadedOverrides.Size(); i += 1) {
+            count = loadedOverrides.Size();
+            for (i = 0; i < count; i += 1) {
                 if (loadedOverrides[i].MatchesEntity(entity)) {
                     matched = loadedOverrides[i];
                 }
