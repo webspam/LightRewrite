@@ -1,6 +1,9 @@
+/** Override parameters for a light source type. */
 class CLightRewriteOverrideParams {
+    // The match rules for this override
     public var matchRules   : array<CLightRewriteMatchRule>;
 
+    // The tag for this override
     public var tag          : name;
     public var displayName  : string;
 
@@ -22,8 +25,11 @@ class CLightRewriteOverrideParams {
     public var hasShadowBlendFactor : bool;
     public var shadowBlendFactor    : float;
 
+    // Whether the colour should be overridden
     public var hasColour            : bool;
+    // This allows disabling a previously enabled colour override
     public var shouldOverrideColour : bool;
+    // The colour to use for the light source
     public var color                : Color;
 
     public function MatchesEntity(entity : CGameplayEntity) : bool {
