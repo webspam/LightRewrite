@@ -9,6 +9,12 @@ function New-Directory([string]$Path) {
   New-Item -ItemType Directory -Force -Path $Path | Out-Null
 }
 
+function Remove-DirectoryIfExists([string]$LiteralPath) {
+  if (Test-Path -LiteralPath $LiteralPath) {
+    Remove-Item -Recurse -Force -LiteralPath $LiteralPath
+  }
+}
+
 function Invoke-WccLite {
   param([Parameter(Mandatory)] [string] $Arguments)
 
@@ -58,17 +64,24 @@ $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
 
 # Main execution
 
+# Clean build dirs
+Remove-DirectoryIfExists $buildDir
+Remove-DirectoryIfExists $modsRoot
+
 New-Directory $buildDir
 New-Directory $scriptsDir
-New-Directory $modContentDir
 
 # Stage defaults.xml into the in-bundle path
-$defaultsSource = Join-Path $RepoRoot "data/defaults.xml"
+$defaultsSource = Join-Path $RepoRoot "data/*.xml"
 $defaultsDestDir = Join-Path $buildDir "gameplay/abilities"
-$defaultsDest = Join-Path $defaultsDestDir "lightrewrite_defaults.xml"
 
 New-Directory $defaultsDestDir
-Copy-Item -Force -Path $defaultsSource -Destination $defaultsDest
+Copy-Item -Force -Path $defaultsSource -Destination $defaultsDestDir
+
+# Prefix all XML files with "lightrewrite_"
+Get-ChildItem -Path $defaultsDestDir -Filter "*.xml" | ForEach-Object {
+  Rename-Item -Path $_.FullName -NewName "lightrewrite_$($_.Name)"
+}
 
 # Copy mod scripts
 Copy-Item -Force -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
