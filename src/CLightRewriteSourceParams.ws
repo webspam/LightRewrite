@@ -79,20 +79,50 @@ class CLightRewriteSourceParams {
 
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target : CLightRewriteSourceParams) {
-        if (hasEnabled)            { target.hasEnabled = true;            target.enabled            = enabled;            }
-        if (hasRewriterType)       { target.hasRewriterType = true;       target.rewriterType       = rewriterType;       }
-        if (hasBrightness)         { target.hasBrightness = true;         target.brightness         = brightness;         }
-        if (hasRadius)             { target.hasRadius = true;             target.radius             = radius;             }
-        if (hasAttenuation)        { target.hasAttenuation = true;        target.attenuation        = attenuation;        }
-        if (hasShadowFadeDistance) { target.hasShadowFadeDistance = true; target.shadowFadeDistance = shadowFadeDistance; }
-        if (hasShadowFadeRange)    { target.hasShadowFadeRange = true;    target.shadowFadeRange    = shadowFadeRange;    }
-        if (hasShadowBlendFactor)  { target.hasShadowBlendFactor = true;  target.shadowBlendFactor  = shadowBlendFactor;  }
-        if (hasColour)             { target.hasColour = true;             target.color              = color;              }
-        if (hasAlignPointLights)   {
-            target.hasAlignPointLights = true;
-            target.alignPointLights    = alignPointLights;
-            target.pointLightOffset    = pointLightOffset;
+        if (hasEnabled) {
+            target.hasEnabled = true;
+            target.enabled = enabled;
         }
-        if (hasUseSpotlightColor)  { target.hasUseSpotlightColor = true;  target.useSpotlightColor  = useSpotlightColor;  }
+        if (hasRewriterType) {
+            target.hasRewriterType = true;
+            target.rewriterType = rewriterType;
+        }
+        if (hasBrightness) {
+            target.hasBrightness = true;
+            target.brightness = brightness;
+        }
+        if (hasRadius) {
+            target.hasRadius = true;
+            target.radius = radius;
+        }
+        if (hasAttenuation) {
+            target.hasAttenuation = true;
+            target.attenuation = attenuation;
+        }
+        if (hasShadowFadeDistance) {
+            target.hasShadowFadeDistance = true;
+            target.shadowFadeDistance = shadowFadeDistance;
+        }
+        if (hasShadowFadeRange) {
+            target.hasShadowFadeRange = true;
+            target.shadowFadeRange = shadowFadeRange;
+        }
+        if (hasShadowBlendFactor) {
+            target.hasShadowBlendFactor = true;
+            target.shadowBlendFactor = shadowBlendFactor;
+        }
+        if (hasColour) {
+            target.hasColour = true;
+            target.color = color;
+        }
+        if (hasAlignPointLights) {
+            target.hasAlignPointLights = true;
+            target.alignPointLights = alignPointLights;
+            target.pointLightOffset = pointLightOffset;
+        }
+        if (hasUseSpotlightColor) {
+            target.hasUseSpotlightColor = true;
+            target.useSpotlightColor = useSpotlightColor;
+        }
     }
 }
