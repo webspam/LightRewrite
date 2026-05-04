@@ -1,6 +1,7 @@
 param(
   [Parameter(Mandatory = $false)]
-  [string]$RepoRoot = $PSScriptRoot
+  [string]$RepoRoot = $PSScriptRoot,
+  [switch]$SkipWcc
 )
 
 $ErrorActionPreference = "Stop"
@@ -91,16 +92,21 @@ New-Directory $modContentDir
 Copy-Item -Force -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
 
 # Execute wcc_lite to pack the content into a new bundle
-try {
-  Invoke-WccLite -Arguments "pack -dir=`"$buildDir`" -outdir=`"$modContentDir`""
+if ($SkipWcc) {
+  Write-Host -ForegroundColor Yellow "Skipping wcc_lite (SkipWcc flag set)"
 }
-catch {
-  throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
-}
+else {
+  try {
+    Invoke-WccLite -Arguments "pack -dir=`"$buildDir`" -outdir=`"$modContentDir`""
+  }
+  catch {
+    throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
+  }
 
-try {
-  Invoke-WccLite -Arguments "metadatastore -path=`"$modContentDir`""
-}
-catch {
-  throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
+  try {
+    Invoke-WccLite -Arguments "metadatastore -path=`"$modContentDir`""
+  }
+  catch {
+    throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
+  }
 }
