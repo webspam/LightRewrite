@@ -18,8 +18,11 @@ class CLightRewriteSourceMenu {
 
     // Reads the game config for this light source into the supplied params object.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name, params : CLightRewriteSourceParams) {
-        params.hasEnabled = true;
         params.enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
+        params.hasEnabled = params.enabled;
+
+        // When the menu override is off, leave all other params at their XML-loaded values.
+        if (!params.enabled) return;
 
         params.hasBrightness = true;
         params.brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness);
