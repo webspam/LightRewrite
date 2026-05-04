@@ -44,7 +44,7 @@ class CLightRewriteSettings {
     private var lightSourceParams : array<CLightRewriteSourceParams>;
     private var lightSourceMenu : array<CLightRewriteSourceMenu>;
 
-    private var loadedOverrides : array<CLightRewriteOverrideParams>;
+    private var loadedOverrides : array<CLightRewriteSourceParams>;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
@@ -137,11 +137,11 @@ class CLightRewriteSettings {
 
         // v2 → v3: add per-source colour override settings.
         if (initVersion <= 2) {
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_OVERRIDE_COLOUR, candleParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_OVERRIDE_COLOUR, candleParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RED, candleParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_GREEN, candleParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_BLUE, candleParams.color.Blue);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_OVERRIDE_COLOUR, torchParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_OVERRIDE_COLOUR, torchParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RED, torchParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_GREEN, torchParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_BLUE, torchParams.color.Blue);
@@ -152,7 +152,7 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BRIGHTNESS, brazierParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RADIUS, brazierParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_ATTENUATION, brazierParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_OVERRIDE_COLOUR, brazierParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_OVERRIDE_COLOUR, brazierParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RED, brazierParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_GREEN, brazierParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BLUE, brazierParams.color.Blue);
@@ -163,14 +163,14 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_BRIGHTNESS, candelabraParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_RADIUS, candelabraParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_ATTENUATION, candelabraParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_OVERRIDE_COLOUR, candelabraParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_OVERRIDE_COLOUR, candelabraParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_RED, candelabraParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_GREEN, candelabraParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_BLUE, candelabraParams.color.Blue);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BRIGHTNESS, campfireParams.brightness);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RADIUS, campfireParams.radius);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_ATTENUATION, campfireParams.attenuation);
-            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_OVERRIDE_COLOUR, campfireParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_OVERRIDE_COLOUR, campfireParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RED, campfireParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_GREEN, campfireParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BLUE, campfireParams.color.Blue);
@@ -232,7 +232,7 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_DISTANCE, chandelierParams.shadowFadeDistance);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_RANGE, chandelierParams.shadowFadeRange);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_SHADOW_BLEND, chandelierParams.shadowBlendFactor);
-            gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_OVERRIDE_COLOUR, chandelierParams.shouldOverrideColour);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_OVERRIDE_COLOUR, chandelierParams.hasColour);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_RED, chandelierParams.color.Red);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_GREEN, chandelierParams.color.Green);
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_BLUE, chandelierParams.color.Blue);
@@ -352,7 +352,7 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
         var params : CLightRewriteSourceParams = NULL;
-        var matched : CLightRewriteOverrideParams = NULL;
+        var matched : CLightRewriteSourceParams = NULL;
         var i, count : int;
 
         var editorPath : string = entity.ToString();
@@ -386,7 +386,7 @@ class CLightRewriteSettings {
             }
 
             if (matched) {
-                params = (CLightRewriteSourceParams)params.Clone(entity);
+                params = params.Clone(entity);
                 matched.ApplyTo(params);
                 LogLightRewrite("[XmlConfig] Applied override '" + matched.displayName + "' to " + editorPath);
             }

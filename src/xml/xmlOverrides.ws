@@ -1,6 +1,6 @@
 /** Loads all overrides from all XML files */
-function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrideParams> {
-    var overrides : array<CLightRewriteOverrideParams>;
+function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceParams> {
+    var overrides : array<CLightRewriteSourceParams>;
     var dm : CDefinitionsManagerAccessor;
     var lrNode, overridesNode : SCustomNode;
     var i, count : int;
@@ -21,11 +21,11 @@ function LoadLightRewriteOverridesGroup(
     owner         : CObject,
     dm            : CDefinitionsManagerAccessor,
     overridesNode : SCustomNode,
-    out overrides : array<CLightRewriteOverrideParams>
+    out overrides : array<CLightRewriteSourceParams>
 ) {
     var entryNode  : SCustomNode;
     var colourNode : SCustomNode;
-    var override   : CLightRewriteOverrideParams;
+    var override   : CLightRewriteSourceParams;
     var strVal     : string;
     var nameVal    : name;
     var i, count   : int;
@@ -33,7 +33,7 @@ function LoadLightRewriteOverridesGroup(
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
         entryNode = overridesNode.subNodes[i];
-        override  = new CLightRewriteOverrideParams in owner;
+        override  = new CLightRewriteSourceParams in owner;
 
         dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
         override.tag = nameVal;
@@ -76,7 +76,7 @@ function LoadLightRewriteOverridesGroup(
 
 /** Parses the match rules for a single override. */
 function ParseLightRewriteMatchRules(
-    override : CLightRewriteOverrideParams,
+    override : CLightRewriteSourceParams,
     dm : CDefinitionsManagerAccessor,
     entryNode : SCustomNode
 ) {

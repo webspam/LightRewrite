@@ -18,14 +18,28 @@ class CLightRewriteSourceMenu {
 
     // Reads the game config for this light source into the supplied params object.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name, params : CLightRewriteSourceParams) {
+        params.hasEnabled = true;
         params.enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
+
+        params.hasBrightness = true;
         params.brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness);
+
+        params.hasRadius = true;
         params.radius = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), params.radius);
+
+        params.hasAttenuation = true;
         params.attenuation = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), params.attenuation);
+
+        params.hasShadowFadeDistance = true;
         params.shadowFadeDistance = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE), params.shadowFadeDistance);
+
+        params.hasShadowFadeRange = true;
         params.shadowFadeRange = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE), params.shadowFadeRange);
+
+        params.hasShadowBlendFactor = true;
         params.shadowBlendFactor = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), params.shadowBlendFactor);
-        params.shouldOverrideColour = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
+
+        params.hasColour = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
         params.color.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.Red);
         params.color.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.Green);
         params.color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.Blue);
@@ -52,9 +66,9 @@ class CLightRewriteSourceMenu {
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled);
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled);
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_OVERRIDE_COLOUR, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !params.enabled || !params.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !params.enabled || !params.shouldOverrideColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !params.enabled || !params.shouldOverrideColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !params.enabled || !params.hasColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !params.enabled || !params.hasColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !params.enabled || !params.hasColour);
 
         UpdateSpecialMenuDisabledState(flashValueStorage, dataArray, params);
 
