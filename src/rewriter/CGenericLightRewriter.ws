@@ -8,6 +8,7 @@
  */
 class CGenericLightRewriter extends ILightSourceRewriter {
     public function RewriteLight() {
+        var p : CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;
@@ -15,7 +16,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count : int = components.Size();
 
-        if (params.hasUseSpotlightColor && params.useSpotlightColor) {
+        if (p.hasUseSpotlightColor && p.useSpotlightColor) {
             spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
         }
 

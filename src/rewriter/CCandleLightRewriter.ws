@@ -17,6 +17,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     }
 
     public function RewriteLight() {
+        var p : CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;
@@ -27,7 +28,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         // Clusters of candles emit most of their light via a single spotlight.
         // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-        if (params.hasUseSpotlightColor && params.useSpotlightColor) {
+        if (p.hasUseSpotlightColor && p.useSpotlightColor) {
             spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
         }
 
@@ -43,7 +44,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             SetPointLightSettings(pointLight);
             SetPointLightColour(pointLight, spotLight);
 
-            if (params.hasAlignPointLights && params.alignPointLights) {
+            if (p.hasAlignPointLights && p.alignPointLights) {
                 AlignPointLight(i, pointLight);
             }
 
@@ -75,7 +76,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             slotPos = VecTransform(worldToLocal, slotWorldPos) / scale / scale;
 
             // Arbitrary fire FX offset: centre of candle flame (ish)
-            slotPos += params.pointLightOffset * scale;
+            slotPos += GetEffectiveParams().pointLightOffset * scale;
 
             pointLight.SetPosition(slotPos);
         }
