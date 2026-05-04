@@ -31,6 +31,7 @@ function OnConfigUI() {
     wrappedMethod();
 
     lightRewriteSettings = theGame.GetLightRewriteSettings();
+    lightRewriteSettings.EnsureGameConfigIsInitialised();
 }
 
 // Configure the LightRewrite settings menu when it is opened.
