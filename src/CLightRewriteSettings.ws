@@ -49,31 +49,31 @@ class CLightRewriteSettings {
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams : array<CLightRewriteSourceParams>;
-        var i, count     : int;
+        var i, count : int;
 
-        gameConfig      = theGame.GetInGameConfigWrapper();
-        generalGroupId  = gameConfig.GetGroupIdx(GENERAL_GROUP);
+        gameConfig = theGame.GetInGameConfigWrapper();
+        generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
-        loadedParams    = LoadLightRewriteParams(this);
+        loadedParams = LoadLightRewriteParams(this);
         loadedOverrides = LoadLightRewriteOverrides(this);
 
         count = loadedParams.Size();
         for (i = 0; i < count; i += 1) {
             switch (loadedParams[i].tag) {
-                case 'LR_Candle':     candleParams     = loadedParams[i]; break;
-                case 'LR_Torch':      torchParams      = loadedParams[i]; break;
-                case 'LR_Brazier':    brazierParams    = loadedParams[i]; break;
+                case 'LR_Candle':     candleParams = loadedParams[i];     break;
+                case 'LR_Torch':      torchParams = loadedParams[i];      break;
+                case 'LR_Brazier':    brazierParams = loadedParams[i];    break;
                 case 'LR_Candelabra': candelabraParams = loadedParams[i]; break;
-                case 'LR_Campfire':   campfireParams   = loadedParams[i]; break;
+                case 'LR_Campfire':   campfireParams = loadedParams[i];   break;
                 case 'LR_Chandelier': chandelierParams = loadedParams[i]; break;
             }
         }
 
-        candleMenu     = new CLightRewriteMenuCandle     in this;
-        torchMenu      = new CLightRewriteMenuTorch      in this;
-        brazierMenu    = new CLightRewriteMenuBrazier    in this;
+        candleMenu = new CLightRewriteMenuCandle in this;
+        torchMenu = new CLightRewriteMenuTorch in this;
+        brazierMenu = new CLightRewriteMenuBrazier in this;
         candelabraMenu = new CLightRewriteMenuCandelabra in this;
-        campfireMenu   = new CLightRewriteMenuCampfire   in this;
+        campfireMenu = new CLightRewriteMenuCampfire in this;
         chandelierMenu = new CLightRewriteMenuChandelier in this;
 
         lightSourceParams.PushBack(candleParams);
