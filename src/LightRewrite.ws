@@ -76,6 +76,11 @@ function OnSpawned(spawnData : SEntitySpawnData) {
     if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
+@wrapMethod(W3Campfire)
+function OnSpawned(spawnData : SEntitySpawnData) {
+    InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
 
 // Ensure lights that are ignited (e.g. by the player) are rewritten.
 @wrapMethod(CGameplayEntity)
