@@ -1,0 +1,22 @@
+---
+description: Witcher 3 modding conventions for Witcher Script (.ws)
+globs: "bin/config/r4game/user_config_matrix/pc/*.xml"
+alwaysApply: false
+---
+
+# Witcher XML config conventions (The Witcher 3)
+
+## XML user config (`user_config_matrix`)
+
+- `displayName` values in XML config files are **localization/display keys**, not free-form strings.
+- They are looked up in a localization table, so they must be **alphanumeric with `.` or `_` only** — no spaces, hyphens, or other special characters.
+
+```xml
+<!-- BAD — spaces and hyphens are not valid in a display key -->
+<Group id="ModName_General" displayName="Mods.ModName.ModName - General">
+<Var id="CandleBrightness" displayName="Candle Brightness" />
+
+<!-- GOOD -->
+<Group id="ModName_General" displayName="Mods.ModName.ModName_General">
+<Var id="CandleBrightness" displayName="Mods.ModName.CandleBrightness" />
+```
