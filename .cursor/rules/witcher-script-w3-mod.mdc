@@ -54,3 +54,11 @@ if (foo) {
     foo.bar;
 }
 ```
+
+## Common pitfalls
+
+- Ternaries are **not** supported; use e.g.:
+  ```ws
+  if (thing != otherThing) return true;
+  else return false;
+  ```
