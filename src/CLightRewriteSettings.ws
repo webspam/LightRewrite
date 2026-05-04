@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 9;
+    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 10;
 
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
@@ -103,6 +103,8 @@ class CLightRewriteSettings {
         var initVersion : int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
 
         if (initVersion == CONFIG_VERSION) return;
+
+        LogLightRewrite("Migrating config from version " + initVersion + " to " + CONFIG_VERSION);
 
         // Never initialised - write the v1 defaults, then apply the same migrations below.
         if (initVersion == 0) {
@@ -240,6 +242,17 @@ class CLightRewriteSettings {
         // v8 → v9: add candle point-light alignment setting.
         if (initVersion <= 8) {
             gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_ALIGN_POINT_LIGHTS, candleParams.alignPointLights);
+        }
+
+        // v9 → v10: Disable menu overrides by default.
+        if (initVersion <= 9) {
+            LogLightRewrite("Writing settings v10");
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_ENABLED, false);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_ENABLED, false);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_ENABLED, false);
+            gameConfig.SetVarValue(GENERAL_GROUP, candelabraMenu.TAG_ENABLED, false);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_ENABLED, false);
+            gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_ENABLED, false);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
