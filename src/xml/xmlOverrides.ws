@@ -11,6 +11,8 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
     count = lrNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
         overridesNode = lrNode.subNodes[i];
+        if (overridesNode.nodeName != 'overrides') continue;
+
         LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides);
     }
 
