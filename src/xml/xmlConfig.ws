@@ -151,68 +151,80 @@ function ParseLightRewriteMatchRules(
     }
 }
 
-// Loads CLightRewriteOverrideParams from all XML files via the definitions manager.
+/** Loads all overrides from all XML files */
 function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrideParams> {
-    var overridesArray : array<CLightRewriteOverrideParams>;
+    var overrides : array<CLightRewriteOverrideParams>;
     var dm : CDefinitionsManagerAccessor;
-    var lrNode, overridesNode, entryNode, colourNode : SCustomNode;
-    var override : CLightRewriteOverrideParams;
-    var i, j, overridesCount, count : int;
-    var strVal : string;
-    var nameVal : name;
+    var lrNode, overridesNode : SCustomNode;
+    var i, count : int;
 
-    dm            = theGame.GetDefinitionsManager();
-    lrNode        = dm.GetCustomDefinition('light_rewrite');
+    dm = theGame.GetDefinitionsManager();
+    lrNode = dm.GetCustomDefinition('light_rewrite');
 
-    overridesCount = lrNode.subNodes.Size();
-    for (i = 0; i < overridesCount; i += 1) {
+    count = lrNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
         overridesNode = lrNode.subNodes[i];
-
-        count = overridesNode.subNodes.Size();
-        for (j = 0; j < count; j += 1) {
-            entryNode = overridesNode.subNodes[j];
-            override  = new CLightRewriteOverrideParams in owner;
-
-            dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
-            override.tag = nameVal;
-
-            if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
-                override.displayName = strVal;
-            }
-
-            if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
-                override.hasBrightness = true;
-                override.brightness    = StringToFloat(strVal, 0.f);
-            }
-
-            if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
-                override.hasRadius = true;
-                override.radius    = StringToFloat(strVal, 0.f);
-            }
-
-            if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
-                override.hasAttenuation = true;
-                override.attenuation    = StringToFloat(strVal, 0.f);
-            }
-
-            ParseLightRewriteMatchRules(override, dm, entryNode);
-
-            colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
-            if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-                override.hasColour = true;
-                override.color.Red = StringToInt(strVal, override.color.Red);
-                dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-                override.color.Green = StringToInt(strVal, override.color.Green);
-                dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-                override.color.Blue = StringToInt(strVal, override.color.Blue);
-            }
-
-            LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
-            overridesArray.PushBack(override);
-        }
+        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides);
     }
 
-    return overridesArray;
+    return overrides;
+}
+
+function LoadLightRewriteOverridesGroup(
+    owner         : CObject,
+    dm            : CDefinitionsManagerAccessor,
+    overridesNode : SCustomNode,
+    out overrides : array<CLightRewriteOverrideParams>
+) {
+    var entryNode  : SCustomNode;
+    var colourNode : SCustomNode;
+    var override   : CLightRewriteOverrideParams;
+    var strVal     : string;
+    var nameVal    : name;
+    var i, count   : int;
+
+    count = overridesNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        entryNode = overridesNode.subNodes[i];
+        override  = new CLightRewriteOverrideParams in owner;
+
+        dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
+        override.tag = nameVal;
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
+            override.displayName = strVal;
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
+            override.hasBrightness = true;
+            override.brightness    = StringToFloat(strVal, 0.f);
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
+            override.hasRadius = true;
+            override.radius    = StringToFloat(strVal, 0.f);
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
+            override.hasAttenuation = true;
+            override.attenuation    = StringToFloat(strVal, 0.f);
+        }
+
+        ParseLightRewriteMatchRules(override, dm, entryNode);
+
+        colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
+        if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
+            override.hasColour = true;
+            override.color.Red = StringToInt(strVal, override.color.Red);
+            dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
+            override.color.Green = StringToInt(strVal, override.color.Green);
+            dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
+            override.color.Blue = StringToInt(strVal, override.color.Blue);
+        }
+
+        LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
+        overrides.PushBack(override);
+    }
 }
 
 function ParseLightRewriteType(str : string) : ELightRewriteType {
