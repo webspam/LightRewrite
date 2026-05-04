@@ -114,86 +114,91 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
     var lrNode, overridesNode, entryNode, matchNode, colourNode : SCustomNode;
     var override : CLightRewriteOverrideParams;
     var rule : CLightRewriteMatchRule;
-    var i, j, count, matchCount : int;
+    var i, j, k, overridesCount, count, matchCount : int;
     var strVal : string;
     var nameVal : name;
 
     dm            = theGame.GetDefinitionsManager();
     lrNode        = dm.GetCustomDefinition('light_rewrite');
-    overridesNode = dm.GetCustomDefinitionSubNode(lrNode, 'overrides');
 
-    count = overridesNode.subNodes.Size();
+    overridesCount = lrNode.subNodes.Size();
+    for (i = 0; i < overridesCount; i += 1) {
+        overridesNode = lrNode.subNodes[i];
 
-    for (i = 0; i < count; i += 1) {
-        entryNode = overridesNode.subNodes[i];
-        override  = new CLightRewriteOverrideParams in owner;
+        LogLightRewrite("[XmlConfig] Loading overrides " + i);
 
-        dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
-        override.tag = nameVal;
+        count = overridesNode.subNodes.Size();
+        for (j = 0; j < count; j += 1) {
+            entryNode = overridesNode.subNodes[j];
+            override  = new CLightRewriteOverrideParams in owner;
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
-            override.displayName = strVal;
-        }
+            dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
+            override.tag = nameVal;
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
-            override.hasBrightness = true;
-            override.brightness    = StringToFloat(strVal, 0.f);
-        }
-
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
-            override.hasRadius = true;
-            override.radius    = StringToFloat(strVal, 0.f);
-        }
-
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
-            override.hasAttenuation = true;
-            override.attenuation    = StringToFloat(strVal, 0.f);
-        }
-
-        matchCount = entryNode.subNodes.Size();
-        for (j = 0; j < matchCount; j += 1) {
-            matchNode = entryNode.subNodes[j];
-
-            if (matchNode.nodeName != 'match') {
-                continue;
+            if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
+                override.displayName = strVal;
             }
 
-            if (matchNode.values.Size() == 0) {
-                continue;
+            if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
+                override.hasBrightness = true;
+                override.brightness    = StringToFloat(strVal, 0.f);
             }
 
-            rule = new CLightRewriteMatchRule in owner;
-            rule.matchValue = matchNode.values[0];
+            if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
+                override.hasRadius = true;
+                override.radius    = StringToFloat(strVal, 0.f);
+            }
 
-            if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-                switch (strVal) {
-                    case "layer": rule.matchType = LR_Match_Layer; break;
+            if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
+                override.hasAttenuation = true;
+                override.attenuation    = StringToFloat(strVal, 0.f);
+            }
+
+            matchCount = entryNode.subNodes.Size();
+            for (k = 0; k < matchCount; k += 1) {
+                matchNode = entryNode.subNodes[k];
+
+                if (matchNode.nodeName != 'match') {
+                    continue;
                 }
-            }
 
-            if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
-                switch (strVal) {
-                    case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
-                    case "contains": rule.matchMode = LR_Match_Contains; break;
-                    case "exact": rule.matchMode = LR_Match_Exact; break;
+                if (matchNode.values.Size() == 0) {
+                    continue;
                 }
+
+                rule = new CLightRewriteMatchRule in owner;
+                rule.matchValue = matchNode.values[0];
+
+                if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
+                    switch (strVal) {
+                        case "layer": rule.matchType = LR_Match_Layer; break;
+                    }
+                }
+
+                if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
+                    switch (strVal) {
+                        case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
+                        case "contains": rule.matchMode = LR_Match_Contains; break;
+                        case "exact": rule.matchMode = LR_Match_Exact; break;
+                    }
+                }
+
+                override.matchRules.PushBack(rule);
             }
 
-            override.matchRules.PushBack(rule);
-        }
+            colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
+            if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
+                override.hasColour = true;
+                override.color.Red = StringToInt(strVal, override.color.Red);
+                dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
+                override.color.Green = StringToInt(strVal, override.color.Green);
+                dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
+                override.color.Blue = StringToInt(strVal, override.color.Blue);
+            }
 
-        colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
-        if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-            override.hasColour = true;
-            override.color.Red = StringToInt(strVal, override.color.Red);
-            dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-            override.color.Green = StringToInt(strVal, override.color.Green);
-            dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-            override.color.Blue = StringToInt(strVal, override.color.Blue);
+            LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
+            overridesArray.PushBack(override);
         }
-
-        LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
-        overridesArray.PushBack(override);
     }
 
     return overridesArray;
