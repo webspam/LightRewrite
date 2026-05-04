@@ -95,29 +95,4 @@ class CLightRewriteSourceParams {
         }
         if (hasUseSpotlightColor)  { target.hasUseSpotlightColor = true;  target.useSpotlightColor  = useSpotlightColor;  }
     }
-
-    // Returns a shallow copy of this object (matchRules excluded) owned by owner.
-    public function Clone(owner : CObject) : CLightRewriteSourceParams {
-        var copy : CLightRewriteSourceParams;
-        copy = new CLightRewriteSourceParams in owner;
-
-        copy.tag         = tag;
-        copy.displayName = displayName;
-
-        copy.hasEnabled   = hasEnabled;   copy.enabled   = enabled;
-        copy.hasRewriterType = hasRewriterType; copy.rewriterType = rewriterType;
-        copy.hasBrightness = hasBrightness; copy.brightness = brightness;
-        copy.hasRadius     = hasRadius;     copy.radius     = radius;
-        copy.hasAttenuation = hasAttenuation; copy.attenuation = attenuation;
-        copy.hasShadowFadeDistance = hasShadowFadeDistance; copy.shadowFadeDistance = shadowFadeDistance;
-        copy.hasShadowFadeRange    = hasShadowFadeRange;    copy.shadowFadeRange    = shadowFadeRange;
-        copy.hasShadowBlendFactor  = hasShadowBlendFactor;  copy.shadowBlendFactor  = shadowBlendFactor;
-        copy.hasColour = hasColour; copy.color = color;
-        copy.hasAlignPointLights = hasAlignPointLights;
-        copy.alignPointLights    = alignPointLights;
-        copy.pointLightOffset    = pointLightOffset;
-        copy.hasUseSpotlightColor = hasUseSpotlightColor; copy.useSpotlightColor = useSpotlightColor;
-
-        return copy;
-    }
 }
