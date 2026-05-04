@@ -27,7 +27,6 @@ class CLightRewriteMatchRule {
             return subject == value;
         }
         else {
-            // mode 'startsWith' (default)
             return StrBeginsWith(subject, value);
         }
     }
