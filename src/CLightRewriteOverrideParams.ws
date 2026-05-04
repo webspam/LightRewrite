@@ -28,7 +28,6 @@ class CLightRewriteMatchRule {
         if (matchType == LR_Match_Layer) {
             subject = StrBeforeFirst(StrAfterFirst(entity.ToString(), "\""), "\"");
         } else {
-            // type 'entity' (default): filename only
             subject = StrAfterLast(entity.ToString(), StrChar(92));
         }
 
