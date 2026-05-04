@@ -107,14 +107,57 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
     return paramsArray;
 }
 
+/** Parses the match rules for a single override. */
+function ParseLightRewriteMatchRules(
+    override : CLightRewriteOverrideParams,
+    dm : CDefinitionsManagerAccessor,
+    entryNode : SCustomNode
+) {
+    var matchNode : SCustomNode;
+    var rule : CLightRewriteMatchRule;
+    var i, count : int;
+    var strVal : string;
+
+    count = entryNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        matchNode = entryNode.subNodes[i];
+
+        if (matchNode.nodeName != 'match') {
+            continue;
+        }
+
+        if (matchNode.values.Size() == 0) {
+            continue;
+        }
+
+        rule = new CLightRewriteMatchRule in override;
+        rule.matchValue = matchNode.values[0];
+
+        if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
+            switch (strVal) {
+                case "layer": rule.matchType = LR_Match_Layer; break;
+            }
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
+            switch (strVal) {
+                case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
+                case "contains": rule.matchMode = LR_Match_Contains; break;
+                case "exact": rule.matchMode = LR_Match_Exact; break;
+            }
+        }
+
+        override.matchRules.PushBack(rule);
+    }
+}
+
 // Loads CLightRewriteOverrideParams from all XML files via the definitions manager.
 function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrideParams> {
     var overridesArray : array<CLightRewriteOverrideParams>;
     var dm : CDefinitionsManagerAccessor;
-    var lrNode, overridesNode, entryNode, matchNode, colourNode : SCustomNode;
+    var lrNode, overridesNode, entryNode, colourNode : SCustomNode;
     var override : CLightRewriteOverrideParams;
-    var rule : CLightRewriteMatchRule;
-    var i, j, k, overridesCount, count, matchCount : int;
+    var i, j, overridesCount, count : int;
     var strVal : string;
     var nameVal : name;
 
@@ -152,37 +195,7 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteOverrid
                 override.attenuation    = StringToFloat(strVal, 0.f);
             }
 
-            matchCount = entryNode.subNodes.Size();
-            for (k = 0; k < matchCount; k += 1) {
-                matchNode = entryNode.subNodes[k];
-
-                if (matchNode.nodeName != 'match') {
-                    continue;
-                }
-
-                if (matchNode.values.Size() == 0) {
-                    continue;
-                }
-
-                rule = new CLightRewriteMatchRule in owner;
-                rule.matchValue = matchNode.values[0];
-
-                if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-                    switch (strVal) {
-                        case "layer": rule.matchType = LR_Match_Layer; break;
-                    }
-                }
-
-                if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
-                    switch (strVal) {
-                        case "endsWith": rule.matchMode = LR_Match_EndsWith; break;
-                        case "contains": rule.matchMode = LR_Match_Contains; break;
-                        case "exact": rule.matchMode = LR_Match_Exact; break;
-                    }
-                }
-
-                override.matchRules.PushBack(rule);
-            }
+            ParseLightRewriteMatchRules(override, dm, entryNode);
 
             colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
             if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
