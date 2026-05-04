@@ -31,17 +31,11 @@ class CLightRewriteMatchRule {
             subject = StrAfterLast(entity.ToString(), StrChar(92));
         }
 
-        if (matchMode == LR_Match_Contains) {
-            return StrFindFirst(subject, value) != -1;
-        }
-        else if (matchMode == LR_Match_EndsWith) {
-            return StrEndsWith(subject, value);
-        }
-        else if (matchMode == LR_Match_Exact) {
-            return subject == value;
-        }
-        else {
-            return StrBeginsWith(subject, value);
+        switch (matchMode) {
+            case LR_Match_Contains: return StrFindFirst(subject, value) != -1;
+            case LR_Match_EndsWith: return StrEndsWith(subject, value);
+            case LR_Match_Exact:    return subject == value;
+            default:                return StrBeginsWith(subject, value);
         }
     }
 }
