@@ -264,8 +264,6 @@ class CLightRewriteSettings {
     public function ReadGameConfig() {
         var i, count : int;
 
-        EnsureGameConfigIsInitialised();
-
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
         count = lightSourceMenu.Size();
