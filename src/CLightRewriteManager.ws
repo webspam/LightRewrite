@@ -23,6 +23,7 @@ class CLightRewriteManager {
         }
 
         rewriter.Init(entity, params);
+        rewriter.globalOverrideType = GetGlobalOverrideType(entity);
         return rewriter;
     }
 
@@ -76,5 +77,18 @@ class CLightRewriteManager {
             entity = (CGameplayEntity)nodes[i];
             if (entity) entities.PushBack(entity);
         }
+    }
+
+    // Get the global override type for a given entity. Borderline legacy code at this point.
+    private function GetGlobalOverrideType(entity : CGameplayEntity) : ELightRewriteType {
+        var fileName : string = StrAfterLast(entity.ToString(), StrChar(92));
+
+        if (StrFindFirst(fileName, "candelabra") != -1) return LRT_Candelabra;
+        else if (StrFindFirst(fileName, "chandelier") != -1) return LRT_Chandelier;
+        else if (StrFindFirst(fileName, "candle") != -1) return LRT_Candle;
+        else if (StrFindFirst(fileName, "torch") != -1) return LRT_Torch;
+        else if (StrFindFirst(fileName, "brazier") != -1) return LRT_Brazier;
+        else if (StrFindFirst(fileName, "campfire") != -1) return LRT_Campfire;
+        return LRT_None;
     }
 }
