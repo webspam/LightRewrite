@@ -52,7 +52,10 @@ function LoadLightRewriteOverridesGroup(
         override = new CLightRewriteSourceParams in owner;
         override.weight = weight;
 
-        dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
+        if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
+            LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
+            continue;
+        }
         override.tag = nameVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
