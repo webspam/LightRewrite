@@ -74,27 +74,22 @@ function LoadLightRewriteOverridesGroup(
             override.hasEnabled = true;
             override.enabled = (strVal != "false");
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
             override.hasRewriterType = true;
             override.rewriterType = ParseLightRewriteType(strVal);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
             override.hasUseSpotlightColor = true;
             override.useSpotlightColor = (strVal == "true");
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
             override.hasBrightness = true;
             override.brightness = StringToFloat(strVal, 0.f);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
             override.hasRadius = true;
             override.radius = StringToFloat(strVal, 0.f);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
             override.hasAttenuation = true;
             override.attenuation = StringToFloat(strVal, 0.f);
