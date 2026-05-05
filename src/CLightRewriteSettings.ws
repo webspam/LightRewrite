@@ -48,6 +48,9 @@ class CLightRewriteSettings {
     // All overrides loaded from XML files, sorted by weight
     private var loadedOverrides : array<CLightRewriteSourceParams>;
 
+    // Profile names in dropdown order, built once at init from XML
+    private var profileOptions : array<name>;
+
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams : array<CLightRewriteSourceParams>;
@@ -58,6 +61,9 @@ class CLightRewriteSettings {
 
         loadedParams = LoadLightRewriteParams(this);
         loadedOverrides = LoadLightRewriteOverrides(this);
+
+        profileOptions.PushBack(NONE_PRESET_LABEL);
+        FindLightRewriteProfileNames(profileOptions);
 
         count = loadedParams.Size();
         for (i = 0; i < count; i += 1) {
@@ -272,13 +278,10 @@ class CLightRewriteSettings {
     public function ReadGameConfig() {
         var i, count : int;
 
-        var profileOptions : array<name>;
         var profileIndex : int;
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        profileOptions.PushBack(NONE_PRESET_LABEL);
-        FindLightRewriteProfileNames(profileOptions);
         profileIndex = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PRESET), 0);
         if (profileIndex >= 0 && profileIndex < profileOptions.Size()) {
             currentProfile = profileOptions[profileIndex];
