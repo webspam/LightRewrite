@@ -24,6 +24,7 @@ class CLightRewriteSettings {
 
     // Light rewrite parameters
     public var isEnabled : bool;                       default isEnabled                = true;
+    private var currentProfile : name;
 
     // Runtime params for each light source type
     public var candleParams : CLightRewriteSourceParams;
@@ -272,6 +273,7 @@ class CLightRewriteSettings {
         var i, count : int;
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
+        currentProfile = StringToName(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PRESET));
 
         count = lightSourceMenu.Size();
         for (i = 0; i < count; i += 1) {
