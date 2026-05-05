@@ -352,42 +352,12 @@ class CLightRewriteSettings {
         var matched : CLightRewriteSourceParams = NULL;
         var i, count : int;
 
-        var editorPath : string = entity.ToString();
-        var fileName : string = StrAfterLast(editorPath, StrChar(92));
-
-        if (StrFindFirst(fileName, "candelabra") != -1) {
-            params = candelabraParams;
-        }
-        else if (StrFindFirst(fileName, "chandelier") != -1) {
-            params = chandelierParams;
-        }
-        else if (StrFindFirst(fileName, "candle") != -1) {
-            params = candleParams;
-        }
-        else if (StrFindFirst(fileName, "torch") != -1) {
-            params = torchParams;
-        }
-        else if (StrFindFirst(fileName, "brazier") != -1) {
-            params = brazierParams;
-        }
-        else if (StrFindFirst(fileName, "campfire") != -1) {
-            params = campfireParams;
-        }
-
-        if (params) {
-            if (!params.menuOverrideActive) {
-                count = loadedOverrides.Size();
-                for (i = 0; i < count; i += 1) {
-                    if (loadedOverrides[i].MatchesEntity(entity)) {
-                        matched = loadedOverrides[i];
-                    }
-                }
-            }
-
-            if (matched) {
-                params = (CLightRewriteSourceParams)params.Clone(entity);
-                matched.ApplyTo(params);
-                LogLightRewrite("[XmlConfig] Applied override '" + matched.displayName + "' to " + editorPath);
+        // Build params object by applying all overrides that match the entity
+        count = loadedOverrides.Size();
+        for (i = 0; i < count; i += 1) {
+            if (loadedOverrides[i].MatchesEntity(entity)) {
+                if (!params) params = new CLightRewriteSourceParams in entity;
+                loadedOverrides[i].ApplyTo(params);
             }
         }
 
