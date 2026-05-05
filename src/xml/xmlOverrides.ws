@@ -40,7 +40,9 @@ function LoadLightRewriteOverridesGroup(
     weight : int
 ) {
     var entryNode : SCustomNode;
+    var shadowsNode : SCustomNode;
     var colourNode : SCustomNode;
+    var alignNode : SCustomNode;
     var override : CLightRewriteSourceParams;
     var strVal : string;
     var nameVal : name;
@@ -62,6 +64,21 @@ function LoadLightRewriteOverridesGroup(
             override.displayName = strVal;
         }
 
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
+            override.hasEnabled = true;
+            override.enabled = (strVal != "false");
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
+            override.hasRewriterType = true;
+            override.rewriterType = ParseLightRewriteType(strVal);
+        }
+
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
+            override.hasUseSpotlightColor = true;
+            override.useSpotlightColor = (strVal == "true");
+        }
+
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
             override.hasBrightness = true;
             override.brightness = StringToFloat(strVal, 0.f);
@@ -79,6 +96,20 @@ function LoadLightRewriteOverridesGroup(
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
+        shadowsNode = dm.GetCustomDefinitionSubNode(entryNode, 'shadows');
+        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
+            override.hasShadowFadeDistance = true;
+            override.shadowFadeDistance = StringToFloat(strVal, 0.f);
+        }
+        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
+            override.hasShadowFadeRange = true;
+            override.shadowFadeRange = StringToFloat(strVal, 0.f);
+        }
+        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
+            override.hasShadowBlendFactor = true;
+            override.shadowBlendFactor = StringToFloat(strVal, 0.f);
+        }
+
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
             override.hasColour = true;
@@ -87,6 +118,17 @@ function LoadLightRewriteOverridesGroup(
             override.color.Green = StringToInt(strVal, override.color.Green);
             dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
             override.color.Blue = StringToInt(strVal, override.color.Blue);
+        }
+
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
+        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+            override.hasAlignPointLights = true;
+            override.alignPointLights = true;
+            override.pointLightOffset.X = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
+            override.pointLightOffset.Y = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
+            override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
         }
 
         LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
