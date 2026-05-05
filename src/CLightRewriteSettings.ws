@@ -295,7 +295,9 @@ class CLightRewriteSettings {
 
             // ForceProcessFlashStorage() inside UpdateMenuDisabledState resets dynamic
             // option lists back to XML defaults, so we must restore them afterwards.
-            ReplacePresetMenuOptions();
+            if (ShouldRefreshProfileMenu(optionName)) {
+                ReplacePresetMenuOptions();
+            }
 
             // We've just turned the mod off
             if (isEnabled != wasEnabled && !isEnabled) {
@@ -313,6 +315,26 @@ class CLightRewriteSettings {
     public function ConfigureModMenu() {
         UpdateAllGroupsDisabledState();
         ReplacePresetMenuOptions();
+    }
+
+    private function ShouldRefreshProfileMenu(optionName : name) : bool {
+        switch (optionName) {
+            case candleMenu.TAG_ENABLED:
+            case torchMenu.TAG_ENABLED:
+            case brazierMenu.TAG_ENABLED:
+            case candelabraMenu.TAG_ENABLED:
+            case campfireMenu.TAG_ENABLED:
+            case chandelierMenu.TAG_ENABLED:
+            case candleMenu.TAG_OVERRIDE_COLOUR:
+            case torchMenu.TAG_OVERRIDE_COLOUR:
+            case brazierMenu.TAG_OVERRIDE_COLOUR:
+            case candelabraMenu.TAG_OVERRIDE_COLOUR:
+            case campfireMenu.TAG_OVERRIDE_COLOUR:
+            case chandelierMenu.TAG_OVERRIDE_COLOUR:
+                return true;
+            default:
+                return false;
+        }
     }
 
     private function ReplacePresetMenuOptions() {
