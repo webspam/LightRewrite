@@ -84,7 +84,7 @@ function LoadLightRewriteOverridesGroup(
             override.color.Blue = StringToInt(strVal, override.color.Blue);
         }
 
-        LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
+        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
         overrides.PushBack(override);
     }
 }
