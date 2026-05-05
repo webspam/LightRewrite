@@ -44,6 +44,7 @@ class CLightRewriteSettings {
     private var lightSourceParams : array<CLightRewriteSourceParams>;
     private var lightSourceMenu : array<CLightRewriteSourceMenu>;
 
+    // All overrides loaded from XML files, sorted by weight
     private var loadedOverrides : array<CLightRewriteSourceParams>;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
