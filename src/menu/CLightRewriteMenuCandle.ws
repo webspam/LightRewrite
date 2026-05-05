@@ -20,6 +20,6 @@ class CLightRewriteMenuCandle extends CLightRewriteSourceMenu {
     }
 
     protected function UpdateSpecialMenuDisabledState(flashValueStorage : CScriptedFlashValueStorage, dataArray : CScriptedFlashArray, params : CLightRewriteSourceParams) {
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ALIGN_POINT_LIGHTS, !params.menuOverrideActive);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ALIGN_POINT_LIGHTS, !params.enabled);
     }
 }

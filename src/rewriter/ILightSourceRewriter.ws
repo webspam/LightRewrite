@@ -11,22 +11,39 @@ abstract class ILightSourceRewriter {
     // The parameters for this light source
     protected var params : CLightRewriteSourceParams;
 
+    // When set, RewriteLight uses these instead of params.
+    protected var menuOverrideParams : CLightRewriteSourceParams;
+
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
-    public function Init(parentEntity : CGameplayEntity, params : CLightRewriteSourceParams) {
+    public function Init(
+        parentEntity : CGameplayEntity,
+        params : CLightRewriteSourceParams,
+        globalOverrides : CLightRewriteSourceParams
+    ) {
         this.parentEntity = parentEntity;
         this.params = params;
 
-        AddEntityTag();
+        parentEntity.AddTag(params.tag);
+        if (globalOverrides) {
+            parentEntity.AddTag(globalOverrides.tag);
+            SetGlobalOverride(globalOverrides);
+        }
+    }
+
+    // If the params passed in (global params) are enabled, set the menu override params to them.
+    public function SetGlobalOverride(params : CLightRewriteSourceParams) {
+        if (params.enabled) menuOverrideParams = params;
+        else menuOverrideParams = NULL;
+    }
+
+    protected function GetEffectiveParams() : CLightRewriteSourceParams {
+        if (menuOverrideParams) return menuOverrideParams;
+        return params;
     }
 
     // If this rewriter is enabled (params group is enabled)
     public function IsEnabled() : bool {
         return !params.hasEnabled || params.enabled;
-    }
-
-    // Adds the tag for this light source type to the parent entity.
-    public function AddEntityTag() {
-        parentEntity.AddTag(params.tag);
     }
 
     // Rewrites the light source with the configured parameters.
@@ -105,12 +122,14 @@ abstract class ILightSourceRewriter {
 
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight : CPointLightComponent) {
-        if (params.hasBrightness) pointLight.brightness = params.brightness;
-        if (params.hasRadius) pointLight.radius = params.radius;
-        if (params.hasAttenuation) pointLight.attenuation = params.attenuation;
-        if (params.hasShadowFadeDistance) pointLight.shadowFadeDistance = params.shadowFadeDistance;
-        if (params.hasShadowFadeRange) pointLight.shadowFadeRange = params.shadowFadeRange;
-        if (params.hasShadowBlendFactor) pointLight.shadowBlendFactor = params.shadowBlendFactor;
+        var pamparams : CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (pamparams.hasBrightness) pointLight.brightness = pamparams.brightness;
+        if (pamparams.hasRadius) pointLight.radius = pamparams.radius;
+        if (pamparams.hasAttenuation) pointLight.attenuation = pamparams.attenuation;
+        if (pamparams.hasShadowFadeDistance) pointLight.shadowFadeDistance = pamparams.shadowFadeDistance;
+        if (pamparams.hasShadowFadeRange) pointLight.shadowFadeRange = pamparams.shadowFadeRange;
+        if (pamparams.hasShadowBlendFactor) pointLight.shadowBlendFactor = pamparams.shadowBlendFactor;
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour
@@ -118,8 +137,10 @@ abstract class ILightSourceRewriter {
         pointLight : CPointLightComponent,
         optional spotLight : CSpotLightComponent
     ) {
-        if (params.hasColour) {
-            pointLight.color = params.color;
+        var pamparams : CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (pamparams.hasColour) {
+            pointLight.color = pamparams.color;
         }
         else if (spotLight) {
             pointLight.color = spotLight.color;

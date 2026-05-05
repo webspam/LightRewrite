@@ -1,9 +1,13 @@
+function LogLightRewriteXml(message : string) {
+    LogChannel('LightRewriteXml', message);
+}
+
 /** Loads all overrides from all XML files */
 function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceParams> {
     var overrides : array<CLightRewriteSourceParams>;
     var dm : CDefinitionsManagerAccessor;
     var lrNode, overridesNode : SCustomNode;
-    var i, count : int;
+    var i, count, weight : int;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -13,8 +17,17 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
         overridesNode = lrNode.subNodes[i];
         if (overridesNode.nodeName != 'overrides') continue;
 
-        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides);
+        if (!dm.GetCustomNodeAttributeValueInt(overridesNode, 'weight', weight)) {
+            LogLightRewriteXml("Skipping invalid overrides group - missing weight attribute.");
+            continue;
+        } else {
+            LogLightRewriteXml("Found overrides group with weight: " + weight + ", overrides: " + overridesNode.subNodes.Size());
+        }
+   
+        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight);
     }
+
+    ArraySortOverridesByWeight(overrides);
 
     return overrides;
 }
@@ -23,7 +36,8 @@ function LoadLightRewriteOverridesGroup(
     owner : CObject,
     dm : CDefinitionsManagerAccessor,
     overridesNode : SCustomNode,
-    out overrides : array<CLightRewriteSourceParams>
+    out overrides : array<CLightRewriteSourceParams>,
+    weight : int
 ) {
     var entryNode : SCustomNode;
     var colourNode : SCustomNode;
@@ -36,8 +50,12 @@ function LoadLightRewriteOverridesGroup(
     for (i = 0; i < count; i += 1) {
         entryNode = overridesNode.subNodes[i];
         override = new CLightRewriteSourceParams in owner;
+        override.weight = weight;
 
-        dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal);
+        if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
+            LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
+            continue;
+        }
         override.tag = nameVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
@@ -71,7 +89,7 @@ function LoadLightRewriteOverridesGroup(
             override.color.Blue = StringToInt(strVal, override.color.Blue);
         }
 
-        LogLightRewrite("[XmlConfig] Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
+        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
         overrides.PushBack(override);
     }
 }
@@ -117,5 +135,25 @@ function ParseLightRewriteMatchRules(
         }
 
         override.matchRules.PushBack(rule);
+    }
+}
+
+/** Sorts overrides ascending by weight using insertion sort (stable, O(n²)). */
+function ArraySortOverridesByWeight(out overrides : array<CLightRewriteSourceParams>) {
+    var i, j, keyWeight, count : int;
+    var keyOverride : CLightRewriteSourceParams;
+
+    count = overrides.Size();
+    for (i = 1; i < count; i += 1) {
+        keyOverride = overrides[i];
+        keyWeight = keyOverride.weight;
+        j = i - 1;
+
+        while (j >= 0 && overrides[j].weight > keyWeight) {
+            overrides[j + 1] = overrides[j];
+            j -= 1;
+        }
+
+        overrides[j + 1] = keyOverride;
     }
 }
