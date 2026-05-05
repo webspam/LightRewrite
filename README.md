@@ -18,7 +18,13 @@ Unless CDPR gives us a new baseline, this is just impractical.
 
 This mod instead edits the properties of lights at runtime. When entities are first spawned, light sources are identified and classified (in a semi-optimised way, purportedly). Candles get edited to have more candle-like candlelight. Torches get torched. etc.
 
-<img width="904" height="586" alt="image" src="https://github.com/user-attachments/assets/31ed49ff-223f-4c9c-9342-ec168a48150a" />
+#### Before
+
+<img width="3840" height="1440" alt="vizima-welcome-before-219" src="https://github.com/user-attachments/assets/0c185c38-c12e-48b0-ac2d-968e8fd7f641" />
+
+#### After
+
+<img width="3840" height="1440" alt="vizima-welcome-after-219" src="https://github.com/user-attachments/assets/9efcdcec-d6f8-4aae-ac18-ed0da16f8997" />
 
 ---
 
