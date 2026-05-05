@@ -343,6 +343,11 @@ class CLightRewriteSettings {
             tags.PushBack(lightSourceParams[i].tag);
         }
 
+        count = loadedOverrides.Size();
+        for (i = 0; i < count; i += 1) {
+            tags.PushBack(loadedOverrides[i].tag);
+        }
+
         return tags;
     }
 
@@ -358,6 +363,10 @@ class CLightRewriteSettings {
             if (loadedOverrides[i].MatchesEntity(entity)) {
                 if (!params) params = new CLightRewriteSourceParams in entity;
                 loadedOverrides[i].ApplyTo(params);
+
+                // TODO: Determine if we want tags from all merged overrides
+                params.tag = loadedOverrides[i].tag;
+                params.displayName = loadedOverrides[i].displayName;
             }
         }
 
