@@ -19,6 +19,9 @@ class CLightRewriteSourceParams {
     // Weight of the override — higher weights override lower weights
     public var weight : int;
 
+    // Profile this override belongs to — empty means no profile assigned
+    public var profileName : name;
+
     // Whether this light source type is active
     public var hasEnabled : bool;
     public var enabled : bool;

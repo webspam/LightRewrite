@@ -8,6 +8,7 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
     var dm : CDefinitionsManagerAccessor;
     var lrNode, overridesNode : SCustomNode;
     var i, count, weight : int;
+    var profileName : name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -20,11 +21,12 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
         if (!dm.GetCustomNodeAttributeValueInt(overridesNode, 'weight', weight)) {
             LogLightRewriteXml("Skipping invalid overrides group - missing weight attribute.");
             continue;
-        } else {
-            LogLightRewriteXml("Found overrides group with weight: " + weight + ", overrides: " + overridesNode.subNodes.Size());
         }
-   
-        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight);
+
+        dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
+        LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
+
+        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight, profileName);
     }
 
     ArraySortOverridesByWeight(overrides);
@@ -37,7 +39,8 @@ function LoadLightRewriteOverridesGroup(
     dm : CDefinitionsManagerAccessor,
     overridesNode : SCustomNode,
     out overrides : array<CLightRewriteSourceParams>,
-    weight : int
+    weight : int,
+    profileName : name
 ) {
     var entryNode : SCustomNode;
     var shadowsNode : SCustomNode;
@@ -53,6 +56,7 @@ function LoadLightRewriteOverridesGroup(
         entryNode = overridesNode.subNodes[i];
         override = new CLightRewriteSourceParams in owner;
         override.weight = weight;
+        override.profileName = profileName;
 
         if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
             LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
