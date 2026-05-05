@@ -64,9 +64,11 @@ function LoadLightRewriteOverridesGroup(
         }
         override.tag = nameVal;
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
-            override.displayName = strVal;
+        if (!dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
+            LogLightRewriteXml("Skipping invalid override - missing label attribute.");
+            continue;
         }
+        override.displayName = strVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
             override.hasEnabled = true;
