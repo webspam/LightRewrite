@@ -20,6 +20,8 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
         if (!dm.GetCustomNodeAttributeValueInt(overridesNode, 'weight', weight)) {
             LogLightRewriteXml("Skipping invalid overrides group - missing weight attribute.");
             continue;
+        } else {
+            LogLightRewriteXml("Found overrides group with weight: " + weight + ", overrides: " + overridesNode.subNodes.Size());
         }
    
         LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight);
