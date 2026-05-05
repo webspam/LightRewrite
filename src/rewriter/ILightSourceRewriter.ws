@@ -7,8 +7,6 @@ abstract class ILightSourceRewriter {
 
     // The entity that this rewriter is owned by
     public var parentEntity : CGameplayEntity;
-    // The type of global override that is in effect for this light source.
-    public var globalOverrideType : ELightRewriteType;
 
     // The parameters for this light source
     protected var params : CLightRewriteSourceParams;
@@ -17,11 +15,19 @@ abstract class ILightSourceRewriter {
     protected var menuOverrideParams : CLightRewriteSourceParams;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
-    public function Init(parentEntity : CGameplayEntity, params : CLightRewriteSourceParams) {
+    public function Init(
+        parentEntity : CGameplayEntity,
+        params : CLightRewriteSourceParams,
+        globalOverrides : CLightRewriteSourceParams
+    ) {
         this.parentEntity = parentEntity;
         this.params = params;
 
-        AddEntityTag();
+        parentEntity.AddTag(params.tag);
+        if (globalOverrides) {
+            parentEntity.AddTag(globalOverrides.tag);
+            SetGlobalOverride(globalOverrides);
+        }
     }
 
     // If the params passed in (global params) are enabled, set the menu override params to them.
@@ -38,11 +44,6 @@ abstract class ILightSourceRewriter {
     // If this rewriter is enabled (params group is enabled)
     public function IsEnabled() : bool {
         return !params.hasEnabled || params.enabled;
-    }
-
-    // Adds the tag for this light source type to the parent entity.
-    public function AddEntityTag() {
-        parentEntity.AddTag(params.tag);
     }
 
     // Rewrites the light source with the configured parameters.

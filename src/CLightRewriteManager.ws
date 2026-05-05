@@ -16,14 +16,15 @@ class CLightRewriteManager {
         entity : CGameplayEntity
     ) : ILightSourceRewriter {
         var rewriter : ILightSourceRewriter;
+        var globalOverrides : CLightRewriteSourceParams;
 
         switch (params.rewriterType) {
             case LRT_Candle:         rewriter = new CCandleLightRewriter in entity;     break;
             default:                 rewriter = new CGenericLightRewriter in entity;    break;
         }
 
-        rewriter.Init(entity, params);
-        rewriter.globalOverrideType = GetGlobalOverrideType(entity);
+        globalOverrides = settings.GetGlobalOverrideParams(GetGlobalOverrideType(entity));
+        rewriter.Init(entity, params, globalOverrides);
         return rewriter;
     }
 
@@ -59,6 +60,21 @@ class CLightRewriteManager {
 
         for (i = 0; i < count; i += 1) {
             entities[i].lightSourceRewriter.RestoreOriginalState();
+        }
+    }
+
+    public function SetGlobalOverride(params : CLightRewriteSourceParams) {
+        var entities : array<CEntity>;
+        var entity : CGameplayEntity;
+        var i : int;
+        var count : int;
+
+        theGame.GetEntitiesByTag(params.tag, entities);
+        count = entities.Size();
+
+        for (i = 0; i < count; i += 1) {
+            entity = (CGameplayEntity)entities[i];
+            if (entity) entity.lightSourceRewriter.SetGlobalOverride(params);
         }
     }
 
