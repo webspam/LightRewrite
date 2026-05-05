@@ -19,10 +19,6 @@ class CLightRewriteSourceParams {
     // Weight of the override — higher weights override lower weights
     public var weight : int;
 
-    // Set by the in-game menu when its per-type override toggle is on.
-    // When true, FindParamsForEntity skips XML override matching so menu values win.
-    public var menuOverrideActive : bool;
-
     // Whether this light source type is active
     public var hasEnabled : bool;
     public var enabled : bool;

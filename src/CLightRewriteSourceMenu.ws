@@ -18,10 +18,7 @@ class CLightRewriteSourceMenu {
 
     // Reads the game config for this light source into the supplied params object.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name, params : CLightRewriteSourceParams) {
-        params.menuOverrideActive = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
-
-        // When the mod menu override is disabled, leave all params at their XML-loaded values.
-        if (!params.menuOverrideActive) return;
+        params.enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
 
         params.hasBrightness = true;
         params.brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness);
@@ -61,16 +58,16 @@ class CLightRewriteSourceMenu {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_DISTANCE, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_OVERRIDE_COLOUR, !params.menuOverrideActive);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !params.menuOverrideActive || !params.hasColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !params.menuOverrideActive || !params.hasColour);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !params.menuOverrideActive || !params.hasColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_DISTANCE, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_OVERRIDE_COLOUR, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RED, !params.enabled || !params.hasColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_GREEN, !params.enabled || !params.hasColour);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BLUE, !params.enabled || !params.hasColour);
 
         UpdateSpecialMenuDisabledState(flashValueStorage, dataArray, params);
 
