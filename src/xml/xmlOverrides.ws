@@ -164,9 +164,7 @@ function ParseLightRewriteMatchRules(
         rule.matchValue = matchNode.values[0];
 
         if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-            switch (strVal) {
-                case "layer": rule.matchType = LR_Match_Layer; break;
-            }
+            if (strVal == "layer") rule.matchType = LR_Match_Layer;
         }
 
         if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
