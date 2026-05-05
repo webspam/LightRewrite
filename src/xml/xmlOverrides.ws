@@ -157,13 +157,8 @@ function ParseLightRewriteMatchRules(
     for (i = 0; i < count; i += 1) {
         matchNode = entryNode.subNodes[i];
 
-        if (matchNode.nodeName != 'match') {
-            continue;
-        }
-
-        if (matchNode.values.Size() == 0) {
-            continue;
-        }
+        if (matchNode.nodeName != 'match') continue;
+        if (matchNode.values.Size() == 0) continue;
 
         rule = new CLightRewriteMatchRule in override;
         rule.matchValue = matchNode.values[0];
