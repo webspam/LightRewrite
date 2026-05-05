@@ -48,6 +48,7 @@ class CLightRewriteSourceMenu {
     // Designed to be called for every option-change event.
     public function OptionValueChanged(optionName : name, params : CLightRewriteSourceParams) {
         if (optionName == TAG_ENABLED || optionName == TAG_OVERRIDE_COLOUR) UpdateMenuDisabledState(params);
+        if (optionName == TAG_ENABLED) theGame.lightRewrite.SetGlobalOverride(params);
     }
 
     // Updates the disabled state of all options in this source's settings group.
