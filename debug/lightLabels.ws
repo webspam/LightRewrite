@@ -490,6 +490,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
     var step : float;
     var point : CPointLightComponent;
     var spot : CSpotLightComponent;
+    var sourceLight : CLightComponent;
     var params : CLightRewriteSourceParams;
     var rewriter : ILightSourceRewriter;
 
@@ -506,19 +507,26 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
     spot = LRDebug_FirstSpotLight(target);
     step = LRDebug_GetAttributeStep(attr);
 
+    if (spot && StrFindFirst(target.ToString(), "candle") != -1 && StrFindFirst(target.ToString(), "candle_holder") == -1) {
+        sourceLight = spot;
+    }
+    else {
+        sourceLight = point;
+    }
+
     switch (attr) {
         case 'brightness':
             if (!params.hasBrightness) {
                 params.hasBrightness = true;
-                if (point) params.brightness = point.brightness;
+                if (sourceLight) params.brightness = sourceLight.brightness;
             }
-            params.brightness += step * sign;
+            params.brightness += (step * sign);
             break;
 
         case 'radius':
             if (!params.hasRadius) {
                 params.hasRadius = true;
-                if (point) params.radius = point.radius;
+                if (sourceLight) params.radius = sourceLight.radius;
             }
             params.radius += step * sign;
             break;
@@ -526,7 +534,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'attenuation':
             if (!params.hasAttenuation) {
                 params.hasAttenuation = true;
-                if (point) params.attenuation = point.attenuation;
+                if (sourceLight) params.attenuation = sourceLight.attenuation;
             }
             params.attenuation += step * sign;
             break;
@@ -534,7 +542,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'shadowFadeDistance':
             if (!params.hasShadowFadeDistance) {
                 params.hasShadowFadeDistance = true;
-                if (point) params.shadowFadeDistance = point.shadowFadeDistance;
+                if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
             }
             params.shadowFadeDistance += step * sign;
             break;
@@ -542,7 +550,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'shadowFadeRange':
             if (!params.hasShadowFadeRange) {
                 params.hasShadowFadeRange = true;
-                if (point) params.shadowFadeRange = point.shadowFadeRange;
+                if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
             }
             params.shadowFadeRange += step * sign;
             break;
@@ -550,7 +558,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'shadowBlendFactor':
             if (!params.hasShadowBlendFactor) {
                 params.hasShadowBlendFactor = true;
-                if (point) params.shadowBlendFactor = point.shadowBlendFactor;
+                if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
             }
             params.shadowBlendFactor += step * sign;
             break;
@@ -576,14 +584,14 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'overrideColour':
             params.hasColour = (sign > 0);
             if (params.hasColour && point) {
-                params.color = point.color;
+                params.color = sourceLight.color;
             }
             break;
 
         case 'colourR':
             if (!params.hasColour) {
                 params.hasColour = true;
-                if (point) params.color = point.color;
+                if (sourceLight) params.color = sourceLight.color;
             }
             params.color.Red = (byte)Clamp(params.color.Red + sign, 0, 255);
             break;
@@ -591,7 +599,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'colourG':
             if (!params.hasColour) {
                 params.hasColour = true;
-                if (point) params.color = point.color;
+                if (sourceLight) params.color = sourceLight.color;
             }
             params.color.Green = (byte)Clamp(params.color.Green + sign, 0, 255);
             break;
@@ -599,7 +607,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
         case 'colourB':
             if (!params.hasColour) {
                 params.hasColour = true;
-                if (point) params.color = point.color;
+                if (sourceLight) params.color = sourceLight.color;
             }
             params.color.Blue = (byte)Clamp(params.color.Blue + sign, 0, 255);
             break;
