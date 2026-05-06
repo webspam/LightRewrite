@@ -86,6 +86,12 @@ function LRDebug_GetFloatStep(value : float) : float {
     return 0.01;
 }
 
+function LRDebug_GetFloatStepDirectional(value : float, sign : float) : float {
+    // When decreasing exactly on a threshold (e.g. 1.0), use the *lower* band’s step.
+    if (sign < 0.0) return LRDebug_GetFloatStep(value - 0.00001);
+    return LRDebug_GetFloatStep(value);
+}
+
 function LRDebug_ClampAttributeValue(attr : name, value : float) : float {
     // Aside from alignOffsetZ, none of these can be negative.
     switch (attr) {
@@ -124,7 +130,12 @@ function LRDebug_ApplyDynamicFloatDelta(attr : name, currentValue : float, delta
 
     // Apply in sub-steps so large deltas don’t skip step thresholds.
     for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-        step = LRDebug_GetDynamicAttributeStep(attr, currentValue);
+        if (attr == 'alignOffsetZ' || attr == 'attenuation' || attr == 'shadowBlendFactor') {
+            step = LRDebug_GetDynamicAttributeStep(attr, currentValue);
+        }
+        else {
+            step = LRDebug_GetFloatStepDirectional(currentValue, sign);
+        }
         if (step <= 0.0) break;
 
         if (step > remaining * sign) step = remaining * sign;
