@@ -97,6 +97,90 @@ function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent 
     return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
 }
 
+function LRDebug_GetAttributeValueString(entity : CGameplayEntity, attr : name) : string {
+    var params : CLightRewriteSourceParams;
+    var point : CPointLightComponent;
+    var valF : float;
+    var valI : int;
+
+    if (!entity) return "?";
+
+    params = entity.lrDebugTempParams;
+    point = LRDebug_FirstPointLight(entity);
+
+    switch (attr) {
+        case 'brightness':
+            if (params && params.hasBrightness) valF = params.brightness;
+            else if (point) valF = point.brightness;
+            return FloatToString(valF);
+
+        case 'radius':
+            if (params && params.hasRadius) valF = params.radius;
+            else if (point) valF = point.radius;
+            return FloatToString(valF);
+
+        case 'attenuation':
+            if (params && params.hasAttenuation) valF = params.attenuation;
+            else if (point) valF = point.attenuation;
+            return FloatToString(valF);
+
+        case 'shadowFadeDistance':
+            if (params && params.hasShadowFadeDistance) valF = params.shadowFadeDistance;
+            else if (point) valF = point.shadowFadeDistance;
+            return FloatToString(valF);
+
+        case 'shadowFadeRange':
+            if (params && params.hasShadowFadeRange) valF = params.shadowFadeRange;
+            else if (point) valF = point.shadowFadeRange;
+            return FloatToString(valF);
+
+        case 'shadowBlendFactor':
+            if (params && params.hasShadowBlendFactor) valF = params.shadowBlendFactor;
+            else if (point) valF = point.shadowBlendFactor;
+            return FloatToString(valF);
+
+        case 'useSpotlightColor':
+            if (params && params.hasUseSpotlightColor) {
+                if (params.useSpotlightColor) return "true";
+                return "false";
+            }
+            return "?";
+
+        case 'alignPointLights':
+            if (params && params.hasAlignPointLights) {
+                if (params.alignPointLights) return "true";
+                return "false";
+            }
+            return "?";
+
+        case 'alignOffsetZ':
+            if (params && params.hasAlignPointLights) valF = params.pointLightOffset.Z;
+            else valF = 0.0;
+            return FloatToString(valF);
+
+        case 'overrideColour':
+            if (params && params.hasColour) return "true";
+            return "false";
+
+        case 'colourR':
+            if (params && params.hasColour) valI = params.color.Red;
+            else if (point) valI = point.color.Red;
+            return IntToString(valI);
+
+        case 'colourG':
+            if (params && params.hasColour) valI = params.color.Green;
+            else if (point) valI = point.color.Green;
+            return IntToString(valI);
+
+        case 'colourB':
+            if (params && params.hasColour) valI = params.color.Blue;
+            else if (point) valI = point.color.Blue;
+            return IntToString(valI);
+    }
+
+    return "?";
+}
+
 function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
     var desc : string = entity.ToString();
     if (StrFindFirst(desc, "candle") != -1) return LRT_Candle;
@@ -205,6 +289,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var headerHtml : string;
         var attrId : name;
         var attrLabel : string;
+        var attrValue : string;
 
         var descriptor : string = entity.ToString();
         var fontSize : int = 13;
@@ -216,7 +301,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             attrId = LRDebug_GetAttributeId(thePlayer.lrDebugAttrIndex);
             attrLabel = LRDebug_GetAttributeLabel(attrId);
-            headerHtml = "<font color='#ff0000'>" + attrLabel + "</font><br/>";
+            attrValue = LRDebug_GetAttributeValueString(entity, attrId);
+            headerHtml = "<font color='#ff0000'>" + attrLabel + ": " + attrValue + "</font><br/>";
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
 
@@ -303,7 +389,7 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) public var lrDebugAttrIndex : int;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
-@addField(CGameplayEntity) private var lrDebugTempParams : CLightRewriteSourceParams;
+@addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
 
 @wrapMethod(CR4Player)
 function OnSpawned(spawnData : SEntitySpawnData) {
