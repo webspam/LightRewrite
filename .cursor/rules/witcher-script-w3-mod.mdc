@@ -14,6 +14,7 @@ alwaysApply: false
 - `name` type uses single quotes `'`
   - A `name` becomes a symbol in backend code.
   - `const` vars starting with `TAG_` should always be `name`
+  - For convenience, `name` may be implicit cast to `string`, but there is no way to cast variables to `name`
 - `string` type uses double quotes `"`
 
 ## Layout in this repo
