@@ -1,6 +1,7 @@
-// Image compare: full-bleed track (2rem viewport inset), centre slider; no upscaling past intrinsic image size.
-// Breakout margin: ryanmulligan.dev/blog/css-breakout/
+// Image compare: full-bleed track with 2rem viewport inset, slider centred; intrinsic image size (no width="100%" in markup).
+// Symmetric margins avoid a single-sided breakout shifting too far sideways (see e.g. ryanmulligan.dev/blog/css-breakout/).
 .comparison-slider-bleed {
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -9,19 +10,9 @@
 }
 
 .comparison-slider-bleed img-comparison-slider {
-  flex: 0 1 auto;
-  min-width: 0;
-  max-width: 100%;
   --divider-color: rgba(255, 255, 255, 0.9);
   --divider-width: 2px;
   --default-handle-color: #e8e8e8;
   --default-handle-opacity: 1;
   --default-handle-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-// Intrinsic width/height; cap to track only on narrow viewports (max-width: 100% of host).
-.comparison-slider-bleed img-comparison-slider img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
 }
