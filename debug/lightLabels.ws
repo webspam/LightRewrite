@@ -128,15 +128,40 @@ function LRDebug_IsAcceleratedAttribute(attr : name) : bool {
 @addMethod(CR4Player)
 private function LRDebug_GetAdjustMultiplier() : float {
     var now : float = theGame.GetEngineTimeAsSeconds();
+    var dt : float = now - this.lrDebugLastAdjustTime;
 
-    if (now - this.lrDebugLastAdjustTime > 0.3) {
+    // Hard reset only after a longer pause to support “finger reposition” on scroll wheels.
+    if (dt > 0.5) {
         this.lrDebugAdjustStreak = 0;
+        this.lrDebugAdjustFastStreak = 0;
+        this.lrDebugAdjustAccelerating = false;
     }
     else {
-        this.lrDebugAdjustStreak += 1;
+        // Acceleration only starts after a tight burst (<= 75ms between events).
+        if (!this.lrDebugAdjustAccelerating) {
+            if (dt <= 0.075) this.lrDebugAdjustFastStreak += 1;
+            else this.lrDebugAdjustFastStreak = 0;
+
+            if (this.lrDebugAdjustFastStreak >= 2) {
+                this.lrDebugAdjustAccelerating = true;
+                this.lrDebugAdjustStreak = 0;
+            }
+        }
+        else {
+            // While accelerating, keep it “sticky” until the 500ms reset,
+            // but gently decelerate if events slow down.
+            if (dt <= 0.075) {
+                this.lrDebugAdjustStreak += 1;
+            }
+            else {
+                this.lrDebugAdjustStreak = Max(0, this.lrDebugAdjustStreak - 1);
+            }
+        }
     }
 
     this.lrDebugLastAdjustTime = now;
+
+    if (!this.lrDebugAdjustAccelerating) return 1.0;
 
     // Ramp quickly but cap to avoid wild jumps.
     return ClampF(1.0 + (this.lrDebugAdjustStreak * 0.5), 1.0, 8.0);
@@ -485,6 +510,8 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) private var lrDebugToast : LRDebug_ToastOneLiner;
 @addField(CR4Player) private var lrDebugLastAdjustTime : float;
 @addField(CR4Player) private var lrDebugAdjustStreak : int;
+@addField(CR4Player) private var lrDebugAdjustFastStreak : int;
+@addField(CR4Player) private var lrDebugAdjustAccelerating : bool;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 @addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
