@@ -95,15 +95,21 @@ function LRDebug_GetFloatStepDirectional(value : float, sign : float) : float {
 function LRDebug_ClampAttributeValue(attr : name, value : float) : float {
     // Aside from alignOffsetZ, none of these can be negative.
     switch (attr) {
-        case 'brightness':         return ClampF(value, 0.0, 100.0);
-        case 'radius':             return ClampF(value, 0.0, 50.0);
-        case 'attenuation':        return ClampF(value, 0.0, 1.0);
-        case 'shadowFadeDistance': return ClampF(value, 0.0, 100.0);
-        case 'shadowFadeRange':    return ClampF(value, 0.0, 100.0);
-        case 'shadowBlendFactor':  return ClampF(value, 0.0, 1.0);
-        case 'alignOffsetZ':       return ClampF(value, -3.0, 3.0);
+        case 'brightness':         return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
+        case 'radius':             return LRDebug_RoundTo01(ClampF(value, 0.0, 50.0));
+        case 'attenuation':        return LRDebug_RoundTo01(ClampF(value, 0.0, 1.0));
+        case 'shadowFadeDistance': return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
+        case 'shadowFadeRange':    return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
+        case 'shadowBlendFactor':  return LRDebug_RoundTo01(ClampF(value, 0.0, 1.0));
+        case 'alignOffsetZ':       return LRDebug_RoundTo01(ClampF(value, -3.0, 3.0));
     }
     return value;
+}
+
+function LRDebug_RoundTo01(value : float) : float {
+    // Avoid relying on RoundF semantics; do deterministic rounding.
+    if (value >= 0.0) return (float)FloorF(value * 100.0 + 0.5) / 100.0;
+    return (float)CeilF(value * 100.0 - 0.5) / 100.0;
 }
 
 function LRDebug_GetDynamicAttributeStep(attr : name, currentValue : float) : float {
@@ -121,6 +127,7 @@ function LRDebug_ApplyDynamicFloatDelta(attr : name, currentValue : float, delta
     var remaining : float = delta;
     var sign : float;
     var step : float;
+    var prevValue : float;
     var i : int;
 
     if (remaining == 0.0) return currentValue;
@@ -140,8 +147,12 @@ function LRDebug_ApplyDynamicFloatDelta(attr : name, currentValue : float, delta
 
         if (step > remaining * sign) step = remaining * sign;
 
+        prevValue = currentValue;
         currentValue = currentValue + (step * sign);
         currentValue = LRDebug_ClampAttributeValue(attr, currentValue);
+
+        // If rounding/clamping prevented any change, stop to avoid getting stuck.
+        if (currentValue == prevValue) break;
 
         remaining = remaining - (step * sign);
         if (currentValue == 0.0 && sign < 0.0) break;
