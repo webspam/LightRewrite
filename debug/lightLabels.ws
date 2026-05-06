@@ -569,6 +569,10 @@ public function LRDebug_EnsureTempParams() : CLightRewriteSourceParams {
     return lrDebugTempParams;
 }
 
+function LRDebug_IsCandle(entity : CGameplayEntity) : bool {
+    return StrFindFirst(entity.ToString(), "candle") != -1 && StrFindFirst(entity.ToString(), "candle_holder") == -1;
+}
+
 @addMethod(CR4Player)
 private function LRDebug_AdjustTargetedAttribute(sign : int) {
     var target : CGameplayEntity = this.lrDebugTarget;
@@ -593,7 +597,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
     spot = LRDebug_FirstSpotLight(target);
     step = LRDebug_GetAttributeStep(attr);
 
-    if (spot && spot.IsEnabled() && StrFindFirst(target.ToString(), "candle") != -1 && StrFindFirst(target.ToString(), "candle_holder") == -1) {
+    if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
         sourceLight = spot;
     }
     else {
