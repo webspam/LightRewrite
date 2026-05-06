@@ -593,7 +593,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
     spot = LRDebug_FirstSpotLight(target);
     step = LRDebug_GetAttributeStep(attr);
 
-    if (spot && StrFindFirst(target.ToString(), "candle") != -1 && StrFindFirst(target.ToString(), "candle_holder") == -1) {
+    if (spot && spot.IsEnabled() && StrFindFirst(target.ToString(), "candle") != -1 && StrFindFirst(target.ToString(), "candle_holder") == -1) {
         sourceLight = spot;
     }
     else {
