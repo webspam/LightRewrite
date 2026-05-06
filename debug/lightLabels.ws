@@ -143,12 +143,7 @@ function LRDebug_ApplyDynamicFloatDelta(attr : name, currentValue : float, delta
 
     // Apply in sub-steps so large deltas don’t skip step thresholds.
     for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-        if (attr == 'alignOffsetZ' || attr == 'attenuation' || attr == 'shadowBlendFactor') {
-            step = LRDebug_GetDynamicAttributeStep(attr, currentValue, sign);
-        }
-        else {
-            step = LRDebug_GetFloatStepDirectional(currentValue, sign);
-        }
+        step = LRDebug_GetDynamicAttributeStep(attr, currentValue, sign);
         if (step <= 0.0) break;
 
         if (step > remaining * sign) step = remaining * sign;
