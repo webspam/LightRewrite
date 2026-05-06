@@ -56,3 +56,10 @@ function OnOptionValueChanged(groupId : int, optionName : name, optionValue : st
 
     return wrappedReturnValue;
 }
+
+// Apply any deferred Light Rewrite menu changes when exiting the menu
+@wrapMethod(CR4IngameMenu)
+function OnOptionPanelNavigateBack() {
+    lightRewriteSettings.ApplyPendingChanges();
+    return wrappedMethod();
+}

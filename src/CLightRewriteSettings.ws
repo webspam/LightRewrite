@@ -52,6 +52,8 @@ class CLightRewriteSettings {
     private var profileOptions : array<name>;
     private var profileIndex : int;
 
+    // Index of the profile that was selected when the menu was opened
+    private var previousProfile : int;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
@@ -322,16 +324,22 @@ class CLightRewriteSettings {
 
             // Some change was made, and the mod is enabled
             else if (isEnabled) {
-                if (optionName == CURRENT_PRESET) {
-                    theGame.lightRewrite.ChangeProfile();
-                }
                 theGame.lightRewrite.RewriteAllLightSources();
             }
         }
     }
 
+    // Apples pending settings changes.
+    public function ApplyPendingChanges() : void {
+        if (!(previousProfile >= 0)) previousProfile = 0;
+        if (profileIndex != previousProfile) theGame.lightRewrite.ChangeProfile();
+    }
+
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
+        // Change detection: record the selected profile when the menu is opened
+        previousProfile = profileIndex;
+
         UpdateAllGroupsDisabledState();
         ReplacePresetMenuOptions();
     }
