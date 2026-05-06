@@ -621,7 +621,9 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
     var sign : int;
-    
+
+    if (!action.value) return false;
+
     // Convert from +/- 3.0 (or any other value) to (int)+/-1
     if (action.value > 0.0) sign = 1;
     else sign = -1;
