@@ -64,7 +64,10 @@ public function LightRewriteProfileChanged() {
     var params : CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
 
     bypassLightRewrite = !params;
-    if (bypassLightRewrite) return;
+    if (bypassLightRewrite) {
+        if (lightSourceRewriter) lightSourceRewriter.RestoreOriginalState();
+        return;
+    }
 
     // TODO: Confirm if discarding the previous rewriter has any impact on memory (at least until loading another zone)
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
