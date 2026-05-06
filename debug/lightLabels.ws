@@ -344,6 +344,49 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 }
 
+statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
+    public var seconds : float;
+
+    public function Init(text : string, seconds : float) {
+        this.text = text;
+        this.seconds = seconds;
+    }
+
+    public function LRDebug_Start() {
+        this.GotoState('FollowPlayer');
+    }
+}
+
+state Idle in LRDebug_ToastOneLiner {}
+
+state FollowPlayer in LRDebug_ToastOneLiner {
+    event OnEnterState(previous_state_name : name) {
+        super.OnEnterState(previous_state_name);
+        parent.register();
+        Follow();
+    }
+
+    event OnLeaveState(next_state_name : name) {
+        parent.unregister();
+        super.OnLeaveState(next_state_name);
+    }
+
+    entry function Follow() : void {
+        var startTime, now : float;
+
+        startTime = theGame.GetEngineTimeAsSeconds();
+        now = startTime;
+
+        while ((now - startTime) < parent.seconds && thePlayer) {
+            parent.position = thePlayer.GetWorldPosition() + Vector(0, 0, 1.7);
+            SleepOneFrame();
+            now = theGame.GetEngineTimeAsSeconds();
+        }
+
+        parent.GotoState('Idle');
+    }
+}
+
 state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
@@ -387,9 +430,12 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) public var lrDebugShowPathLabels : bool;
 @addField(CR4Player) private var lrDebugTarget : CGameplayEntity;
 @addField(CR4Player) public var lrDebugAttrIndex : int;
+@addField(CR4Player) private var lrDebugToast : LRDebug_ToastOneLiner;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 @addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
+
+@addField(ILightSourceRewriter) public var inOriginalState : bool;
 
 @wrapMethod(CR4Player)
 function OnSpawned(spawnData : SEntitySpawnData) {
@@ -407,6 +453,60 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
+    theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
+}
+
+@addMethod(CR4Player)
+private function LRDebug_ShowToast(text : string) {
+    if (this.lrDebugToast) {
+        this.lrDebugToast.unregister();
+        this.lrDebugToast = NULL;
+    }
+
+    this.lrDebugToast = new LRDebug_ToastOneLiner in this;
+    this.lrDebugToast.Init("<font size='14'>" + text + "</font>", 1.0);
+    this.lrDebugToast.LRDebug_Start();
+}
+
+@wrapMethod(CCandleLightRewriter)
+function RewriteLight() {
+    wrappedMethod();
+    inOriginalState = false;
+}
+@wrapMethod(CGenericLightRewriter)
+function RewriteLight() {
+    wrappedMethod();
+    inOriginalState = false;
+}
+@wrapMethod(ILightSourceRewriter)
+function RestoreOriginalState() {
+    wrappedMethod();
+    inOriginalState = true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
+    var target : CGameplayEntity;
+    var rewriter : ILightSourceRewriter;
+
+    if (!IsPressed(action) || !thePlayer) return false;
+
+    target = this.lrDebugTarget;
+    if (!target) return false;
+
+    rewriter = LRDebug_EnsureEntityHasRewriter(target);
+    if (!rewriter) return false;
+
+    if (rewriter.inOriginalState) {
+        rewriter.RewriteLight();
+        LRDebug_ShowToast("LightRewrite: ON");
+    }
+    else {
+        rewriter.RestoreOriginalState();
+        LRDebug_ShowToast("LightRewrite: OFF");
+    }
+
+    return true;
 }
 
 @addMethod(CR4Player)
