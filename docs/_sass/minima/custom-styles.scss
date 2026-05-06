@@ -1,5 +1,17 @@
+// Full-bleed main column when the compare slider is present (no side padding / no content max-width). Header and footer keep Minima’s wrapper.
+.page-content > .wrapper:has(img-comparison-slider) {
+  max-width: none;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 // Image compare slider — handle and divider tuned for Minima dark skin
 img-comparison-slider {
+  display: block;
+  width: 100%;
+  max-width: none;
   --divider-color: rgba(255, 255, 255, 0.9);
   --divider-width: 2px;
   --default-handle-color: #e8e8e8;
