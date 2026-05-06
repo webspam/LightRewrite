@@ -40,6 +40,25 @@ private var isEnabled : bool;  default isEnabled = true;
 - Preserve comments and call order unless behavior must change.
 - Avoid renaming symbols that may be referenced from XML, other scripts, or tooling.
 
+## Witcher 3 script library / Core scripts
+
+- Run .\Import-DotEnv.ps1 to populate `$env:WITCHER_SCRIPTS_PATH`
+- The actual game scripts are available in the following locations
+
+| location                            | notes                                        |
+| ----------------------------------- | -------------------------------------------- |
+| `$env:WITCHER_SCRIPTS_PATH/core/`   | Math, array, string, etc. type decalarations |
+| `$env:WITCHER_SCRIPTS_PATH/engine/` | Camera, 3d engine, some base classes         |
+| `$env:WITCHER_SCRIPTS_PATH/game/`   | Majority of game code                        |
+
+- Many core functions are imported from native code (fast)
+
+## Witcher 3 DeepWiki
+
+Contains a DeepWiki generated from the complete set of Witcher 3 scripts.
+
+https://deepwiki.com/juanchoix/W3-Scripts/1-overview
+
 ## Verification
 
 - There is **no in-repo compiler** here; verification requires human intervention.
