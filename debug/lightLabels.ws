@@ -182,8 +182,7 @@ function LRDebug_GetAttributeValueString(entity : CGameplayEntity, attr : name) 
 }
 
 function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
-    var desc : string = entity.ToString();
-    if (StrFindFirst(desc, "candle") != -1) return LRT_Candle;
+    if (LRDebug_IsCandle(entity)) return LRT_Candle;
     return LRT_Unknown;
 }
 
