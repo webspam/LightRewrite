@@ -35,6 +35,14 @@ function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : i
     return components.Size();
 }
 
+function LRDebug_GetCameraPositionAndDirection(out camPos : Vector, out camDir : Vector) {
+    var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
+    if (!director) return;
+
+    camPos = director.GetCameraPosition();
+    camDir = director.GetCameraDirection();
+}
+
 function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
     var maxRange : float;
 
@@ -48,6 +56,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     public var entity : CGameplayEntity;
     public var pointLights, spotLights : int;
     public var active : bool;
+    public var highlighted : bool;
 
     public function Init(tracked_entity : CGameplayEntity, pointLights_ : int, spotLights_ : int) {
         this.entity = tracked_entity;
@@ -69,6 +78,11 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         this.GotoState('FollowEntity');
     }
 
+    public function LRDebug_SetHighlighted(highlighted : bool) {
+        this.highlighted = highlighted;
+        this.LRDebug_RegenerateText();
+    }
+
     private function CountToHtml(prefix : string, count : int) : string {
         var html : string = "<font color='";
 
@@ -85,12 +99,17 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function LRDebug_GenerateText() : string {
-        var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour : string;
+        var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour, body : string;
 
+        var descriptor : string = entity.ToString();
         var fontSize : int = 13;
         var countString : string = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
-        var body : string = "<font size='" + fontSize + "'>" + countString + "</font>";
-        var descriptor : string = entity.ToString();
+        var marker : string = "<font color='#ffdd00'>-</font> ";
+
+        if (this.highlighted) {
+            countString = marker + countString + " <font color='#aaffaa'>-</font>";
+        }
+        body = "<font size='" + fontSize + "'>" + countString + "</font>";
 
         if (pointLights > 0) pointsColour = "#";
         else pointsColour = "black";
@@ -171,6 +190,7 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) private var lrdebugTagSeq : int;
 @addField(CR4Player) public var lrDebugLabels : bool;
 @addField(CR4Player) public var lrDebugShowPathLabels : bool;
+@addField(CR4Player) private var lrDebugTarget : CGameplayEntity;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 
@@ -194,10 +214,21 @@ timer function LRDebug_RefreshOnelinersTimer(dt : float, id : int) {
     var entities : array<CGameplayEntity>;
     var entity : CGameplayEntity;
     var i, count, pointLights, spotLights : int;
+    var camPos, camDir, entPos, toEnt : Vector;
+    var score, bestScore, dot, visibilityRange : float;
+    var bestEntity : CGameplayEntity;
 
     if (!this.lrDebugLabels || !theGame || !thePlayer) return;
 
     LRDebug_FindNearbyLights(entities);
+
+    bestScore = -1.0;
+    bestEntity = NULL;
+    LRDebug_GetCameraPositionAndDirection(camPos, camDir);
+    camDir = VecNormalize(camDir);
+
+    if (theGame.IsFocusModeActive()) visibilityRange = 25.0;
+    else visibilityRange = 10.0;
 
     count = entities.Size();
     for (i = 0; i < count; i += 1) {
@@ -208,12 +239,44 @@ timer function LRDebug_RefreshOnelinersTimer(dt : float, id : int) {
             entity.lrdebugOneliner.LRDebug_Start();
             continue;
         }
+        else {
+            pointLights = LRDebug_CountComponents(entity, 'CPointLightComponent');
+            spotLights = LRDebug_CountComponents(entity, 'CSpotLightComponent');
+            if (pointLights == 0 && spotLights == 0) continue;
 
-        pointLights = LRDebug_CountComponents(entity, 'CPointLightComponent');
-        spotLights = LRDebug_CountComponents(entity, 'CSpotLightComponent');
-        if (pointLights == 0 && spotLights == 0) continue;
+            LRDebug_CreateOnelinerForEntity(entity, pointLights, spotLights);
+            continue;
+        }
 
-        LRDebug_CreateOnelinerForEntity(entity, pointLights, spotLights);
+        entPos = entity.GetWorldPosition();
+        if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) continue;
+
+        toEnt = entPos - camPos;
+        if (VecLengthSquared(toEnt) < 0.001) continue;
+
+        toEnt = VecNormalize(toEnt);
+        dot = VecDot(toEnt, camDir);
+        score = dot * 4.0;
+
+        // Rough in-front filter to reduce “behind camera” picks
+        if (dot < 0.6) continue;
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestEntity = entity;
+        }
+    }
+
+    if (bestEntity != this.lrDebugTarget) {
+        if (this.lrDebugTarget && this.lrDebugTarget.lrdebugOneliner) {
+            this.lrDebugTarget.lrdebugOneliner.LRDebug_SetHighlighted(false);
+        }
+
+        this.lrDebugTarget = bestEntity;
+
+        if (this.lrDebugTarget && this.lrDebugTarget.lrdebugOneliner) {
+            this.lrDebugTarget.lrdebugOneliner.LRDebug_SetHighlighted(true);
+        }
     }
 }
 
