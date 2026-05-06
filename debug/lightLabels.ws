@@ -75,18 +75,40 @@ function LRDebug_GetAttributeLabel(attr : name) : string {
     return "unknown";
 }
 
-function LRDebug_GetAttributeStep(attr : name) : float {
-    // Derived from Candle sliders in LightRewrite.xml (except alignOffsetZ, which is explicit).
+function LRDebug_GetFloatStep(value : float) : float {
+    if (value >= 50.0) return 5.0;
+    if (value >= 25.0) return 2.5;
+    if (value >= 15.0) return 1.0;
+    if (value >= 3.5) return 0.5;
+    if (value >= 1.0) return 0.25;
+    if (value >= 0.5) return 0.1;
+    if (value >= 0.1) return 0.05;
+    return 0.01;
+}
+
+function LRDebug_ClampAttributeValue(attr : name, value : float) : float {
+    // Aside from alignOffsetZ, none of these can be negative.
     switch (attr) {
-        case 'brightness':        return 0.5;
-        case 'radius':            return 0.5;
-        case 'attenuation':       return 0.05;
-        case 'shadowFadeDistance': return 0.5;
-        case 'shadowFadeRange':   return 0.5;
-        case 'shadowBlendFactor': return 0.05;
-        case 'alignOffsetZ':      return 0.05;
+        case 'brightness':         return ClampF(value, 0.0, 100.0);
+        case 'radius':             return ClampF(value, 0.0, 50.0);
+        case 'attenuation':        return ClampF(value, 0.0, 1.0);
+        case 'shadowFadeDistance': return ClampF(value, 0.0, 100.0);
+        case 'shadowFadeRange':    return ClampF(value, 0.0, 100.0);
+        case 'shadowBlendFactor':  return ClampF(value, 0.0, 1.0);
+        case 'alignOffsetZ':       return ClampF(value, -3.0, 3.0);
     }
-    return 1.0;
+    return value;
+}
+
+function LRDebug_GetDynamicAttributeStep(attr : name, currentValue : float) : float {
+    switch (attr) {
+        case 'alignOffsetZ':
+        case 'attenuation':
+        case 'shadowBlendFactor':
+            return 0.05;
+        default:
+            return LRDebug_GetFloatStep(currentValue);
+    }
 }
 
 function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
@@ -694,7 +716,6 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
 
     point = LRDebug_FirstPointLight(target);
     spot = LRDebug_FirstSpotLight(target);
-    step = LRDebug_GetAttributeStep(attr);
 
     if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
         sourceLight = spot;
@@ -710,7 +731,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 if (sourceLight) params.brightness = sourceLight.brightness;
                 if (sourceLight == spot) params.brightness *= 0.5f;
             }
-            params.brightness += (step * sign);
+            step = LRDebug_GetDynamicAttributeStep(attr, params.brightness);
+            params.brightness = LRDebug_ClampAttributeValue(attr, params.brightness + (step * sign));
             break;
 
         case 'radius':
@@ -718,7 +740,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasRadius = true;
                 if (sourceLight) params.radius = sourceLight.radius;
             }
-            params.radius += step * sign;
+            step = LRDebug_GetDynamicAttributeStep(attr, params.radius);
+            params.radius = LRDebug_ClampAttributeValue(attr, params.radius + (step * sign));
             break;
 
         case 'attenuation':
@@ -726,7 +749,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasAttenuation = true;
                 if (sourceLight) params.attenuation = sourceLight.attenuation;
             }
-            params.attenuation += step * sign;
+            step = LRDebug_GetDynamicAttributeStep(attr, params.attenuation);
+            params.attenuation = LRDebug_ClampAttributeValue(attr, params.attenuation + (step * sign));
             break;
 
         case 'shadowFadeDistance':
@@ -734,7 +758,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasShadowFadeDistance = true;
                 if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
             }
-            params.shadowFadeDistance += step * sign;
+            step = LRDebug_GetDynamicAttributeStep(attr, params.shadowFadeDistance);
+            params.shadowFadeDistance = LRDebug_ClampAttributeValue(attr, params.shadowFadeDistance + (step * sign));
             break;
 
         case 'shadowFadeRange':
@@ -742,7 +767,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasShadowFadeRange = true;
                 if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
             }
-            params.shadowFadeRange += step * sign;
+            step = LRDebug_GetDynamicAttributeStep(attr, params.shadowFadeRange);
+            params.shadowFadeRange = LRDebug_ClampAttributeValue(attr, params.shadowFadeRange + (step * sign));
             break;
 
         case 'shadowBlendFactor':
@@ -750,7 +776,8 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasShadowBlendFactor = true;
                 if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
             }
-            params.shadowBlendFactor += step * sign;
+            step = LRDebug_GetDynamicAttributeStep(attr, params.shadowBlendFactor);
+            params.shadowBlendFactor = LRDebug_ClampAttributeValue(attr, params.shadowBlendFactor + (step * sign));
             break;
 
         case 'useSpotlightColor':
@@ -768,6 +795,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
                 params.hasAlignPointLights = true;
                 params.alignPointLights = true;
             }
+            step = LRDebug_GetDynamicAttributeStep(attr, params.pointLightOffset.Z);
             params.pointLightOffset.Z += step * sign;
             break;
 
