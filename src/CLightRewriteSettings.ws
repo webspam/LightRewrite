@@ -50,6 +50,8 @@ class CLightRewriteSettings {
 
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions : array<name>;
+    private var profileIndex : int;
+
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
@@ -277,8 +279,6 @@ class CLightRewriteSettings {
     // its own fields directly.
     public function ReadGameConfig() {
         var i, count : int;
-
-        var profileIndex : int;
 
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
