@@ -1,17 +1,20 @@
-// Image compare slider — handle and divider tuned for Minima dark skin
-img-comparison-slider {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: auto;
-  margin-right: auto;
+// Image compare: full-bleed track (2rem viewport inset), centre slider; no upscaling past intrinsic image size.
+// Breakout margin: ryanmulligan.dev/blog/css-breakout/
+.comparison-slider-bleed {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: calc(100vw - 4rem);
+  margin-left: calc(50% - 50vw + 2rem);
+}
+
+.comparison-slider-bleed img-comparison-slider {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
   --divider-color: rgba(255, 255, 255, 0.9);
   --divider-width: 2px;
   --default-handle-color: #e8e8e8;
   --default-handle-opacity: 1;
   --default-handle-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-.image-compare-links {
-  text-align: center;
-  margin-top: 0.5rem;
 }
