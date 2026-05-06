@@ -609,6 +609,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
             if (!params.hasBrightness) {
                 params.hasBrightness = true;
                 if (sourceLight) params.brightness = sourceLight.brightness;
+                if (sourceLight == spot) params.brightness *= 0.5f;
             }
             params.brightness += (step * sign);
             break;
