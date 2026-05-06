@@ -50,9 +50,7 @@ private var isEnabled : bool;  default isEnabled = true;
 // foo?.bar
 
 // GOOD (explicit guard)
-if (foo) {
-    foo.bar;
-}
+if (foo) foo.bar;
 ```
 
 ## Common pitfalls
