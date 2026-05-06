@@ -126,7 +126,7 @@ function LRDebug_IsAcceleratedAttribute(attr : name) : bool {
 }
 
 @addMethod(CR4Player)
-private function LRDebug_GetAdjustMultiplier() : float {
+private function LRDebug_GetAdjustMultiplier(sign : int) : float {
     var now : float = theGame.GetEngineTimeAsSeconds();
     var dt : float = now - this.lrDebugLastAdjustTime;
 
@@ -135,8 +135,18 @@ private function LRDebug_GetAdjustMultiplier() : float {
         this.lrDebugAdjustStreak = 0;
         this.lrDebugAdjustFastStreak = 0;
         this.lrDebugAdjustAccelerating = false;
+        this.lrDebugAccelCutPendingDrop = false;
     }
     else {
+        // If we recently cut accel due to a direction reversal, drop accel entirely
+        // if there is even a small pause before the next event.
+        if (this.lrDebugAccelCutPendingDrop && dt > 0.075) {
+            this.lrDebugAdjustStreak = 0;
+            this.lrDebugAdjustFastStreak = 0;
+            this.lrDebugAdjustAccelerating = false;
+            this.lrDebugAccelCutPendingDrop = false;
+        }
+
         // Acceleration only starts after a tight burst (<= 75ms between events).
         if (!this.lrDebugAdjustAccelerating) {
             if (dt <= 0.075) this.lrDebugAdjustFastStreak += 1;
@@ -148,6 +158,15 @@ private function LRDebug_GetAdjustMultiplier() : float {
             }
         }
         else {
+            // One event opposite to the current direction cuts accel in half immediately.
+            if (this.lrDebugLastAdjustSign != 0 && sign != 0 && sign != this.lrDebugLastAdjustSign) {
+                this.lrDebugAdjustStreak = this.lrDebugAdjustStreak / 2;
+                this.lrDebugAccelCutPendingDrop = true;
+            }
+            else {
+                this.lrDebugAccelCutPendingDrop = false;
+            }
+
             // While accelerating, keep it “sticky” until the 500ms reset,
             // but gently decelerate if events slow down.
             if (dt <= 0.075) {
@@ -160,6 +179,7 @@ private function LRDebug_GetAdjustMultiplier() : float {
     }
 
     this.lrDebugLastAdjustTime = now;
+    this.lrDebugLastAdjustSign = sign;
 
     if (!this.lrDebugAdjustAccelerating) return 1.0;
 
@@ -512,6 +532,8 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) private var lrDebugAdjustStreak : int;
 @addField(CR4Player) private var lrDebugAdjustFastStreak : int;
 @addField(CR4Player) private var lrDebugAdjustAccelerating : bool;
+@addField(CR4Player) private var lrDebugLastAdjustSign : int;
+@addField(CR4Player) private var lrDebugAccelCutPendingDrop : bool;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 @addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
@@ -779,7 +801,7 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
     spot = LRDebug_FirstSpotLight(target);
 
     accel = 1.0;
-    if (LRDebug_IsAcceleratedAttribute(attr)) accel = this.LRDebug_GetAdjustMultiplier();
+    if (LRDebug_IsAcceleratedAttribute(attr)) accel = this.LRDebug_GetAdjustMultiplier(sign);
 
     if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
         sourceLight = spot;
