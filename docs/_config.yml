@@ -13,5 +13,11 @@ baseurl: "/LightRewrite"
 remote_theme: jekyll/minima@4de322363fca5927e6f4012cb94f6dad69ab5e6c
 plugins:
   - jekyll-remote-theme
+
+# GitHub Pages loads jekyll-titles-from-headings by default; without strip_title, the first # heading
+# becomes page.title (theme prints <h1>) and the heading stays in the body → duplicate title.
+titles_from_headings:
+  strip_title: true
+
 minima:
   skin: dark
