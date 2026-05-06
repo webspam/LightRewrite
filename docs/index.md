@@ -2,7 +2,11 @@
 layout: home
 ---
 
-# Defaults
+# Comparison images
+
+| Left   | Right |
+| ------ | ----- |
+| Before | After |
 
 ## Vizima castle
 
