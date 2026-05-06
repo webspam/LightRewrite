@@ -35,6 +35,22 @@ function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : i
     return components.Size();
 }
 
+function LRDebug_GetAttributeCount() : int {
+    return 6;
+}
+
+function LRDebug_GetAttributeName(idx : int) : string {
+    switch (idx) {
+        case 0: return "brightness";
+        case 1: return "radius";
+        case 2: return "attenuation";
+        case 3: return "shadow";
+        case 4: return "blend factor";
+        case 5: return "colour";
+    }
+    return "unknown";
+}
+
 function LRDebug_GetCameraPositionAndDirection(out camPos : Vector, out camDir : Vector) {
     var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
     if (!director) return;
@@ -100,16 +116,20 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      */
     private function LRDebug_GenerateText() : string {
         var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour, body : string;
+        var headerHtml, attrName : string;
 
         var descriptor : string = entity.ToString();
         var fontSize : int = 13;
         var countString : string = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
-        var marker : string = "<font color='#ffdd00'>-</font> ";
+        var marker : string = "<font color='#ff0000'>-</font> ";
 
         if (this.highlighted) {
-            countString = marker + countString + " <font color='#aaffaa'>-</font>";
+            countString = marker + countString + " <font color='#ff0000'>-</font>";
+
+            attrName = LRDebug_GetAttributeName(thePlayer.lrDebugAttrIndex);
+            headerHtml = "<font color='#ff0000'>" + attrName + "</font><br/>";
         }
-        body = "<font size='" + fontSize + "'>" + countString + "</font>";
+        body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
 
         if (pointLights > 0) pointsColour = "#";
         else pointsColour = "black";
@@ -191,6 +211,7 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) public var lrDebugLabels : bool;
 @addField(CR4Player) public var lrDebugShowPathLabels : bool;
 @addField(CR4Player) private var lrDebugTarget : CGameplayEntity;
+@addField(CR4Player) private var lrDebugAttrIndex : int;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 
@@ -207,6 +228,8 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
 
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
 }
 
 @addMethod(CR4Player)
@@ -328,5 +351,33 @@ public function LRDebug_OnInputToggleLabelPaths(action : SInputAction) : bool {
         entities[i].lrdebugOneliner.LRDebug_RegenerateText();
     }
 
+    return true;
+}
+
+@addMethod(CR4Player)
+private function LRDebug_CycleAttribute(delta : int) {
+    var count : int = LRDebug_GetAttributeCount();
+    if (count <= 0) return;
+
+    this.lrDebugAttrIndex += delta;
+    while (this.lrDebugAttrIndex < 0) this.lrDebugAttrIndex += count;
+    while (this.lrDebugAttrIndex >= count) this.lrDebugAttrIndex -= count;
+
+    if (this.lrDebugTarget && this.lrDebugTarget.lrdebugOneliner) {
+        this.lrDebugTarget.lrdebugOneliner.LRDebug_RegenerateText();
+    }
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleAttrPrev(action : SInputAction) : bool {
+    if (!IsPressed(action) || !thePlayer) return false;
+    LRDebug_CycleAttribute(-1);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
+    if (!IsPressed(action) || !thePlayer) return false;
+    LRDebug_CycleAttribute(1);
     return true;
 }
