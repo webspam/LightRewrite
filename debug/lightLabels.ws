@@ -321,7 +321,6 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
-    theInput.RegisterListener(this, 'LRDebug_OnInputAdjustUp', 'LRDebug_AdjustUp');
 }
 
 @addMethod(CR4Player)
@@ -613,16 +612,12 @@ private function LRDebug_AdjustTargetedAttribute(sign : int) {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
-    LogChannel('LRDebug', "LRDebug_OnInputAdjustDown " + action.lastFrameValue + " -> " + action.value);
+    var sign : int;
     
-    if (!IsPressed(action) || !thePlayer) return false;
-    LRDebug_AdjustTargetedAttribute(-1);
-    return true;
-}
+    // Convert from +/- 3.0 (or any other value) to (int)+/-1
+    if (action.value > 0.0) sign = 1;
+    else sign = -1;
 
-@addMethod(CR4Player)
-public function LRDebug_OnInputAdjustUp(action : SInputAction) : bool {
-    if (!IsPressed(action) || !thePlayer) return false;
-    LRDebug_AdjustTargetedAttribute(1);
+    LRDebug_AdjustTargetedAttribute(sign);
     return true;
 }
