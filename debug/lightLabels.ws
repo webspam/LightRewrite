@@ -237,7 +237,6 @@ timer function LRDebug_RefreshOnelinersTimer(dt : float, id : int) {
 
         if (entity.lrdebugOneliner) {
             entity.lrdebugOneliner.LRDebug_Start();
-            continue;
         }
         else {
             pointLights = LRDebug_CountComponents(entity, 'CPointLightComponent');
@@ -245,7 +244,6 @@ timer function LRDebug_RefreshOnelinersTimer(dt : float, id : int) {
             if (pointLights == 0 && spotLights == 0) continue;
 
             LRDebug_CreateOnelinerForEntity(entity, pointLights, spotLights);
-            continue;
         }
 
         entPos = entity.GetWorldPosition();
