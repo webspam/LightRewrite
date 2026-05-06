@@ -8,6 +8,7 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
     var dm : CDefinitionsManagerAccessor;
     var lrNode, overridesNode : SCustomNode;
     var i, count, weight : int;
+    var profileName : name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -20,11 +21,12 @@ function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceP
         if (!dm.GetCustomNodeAttributeValueInt(overridesNode, 'weight', weight)) {
             LogLightRewriteXml("Skipping invalid overrides group - missing weight attribute.");
             continue;
-        } else {
-            LogLightRewriteXml("Found overrides group with weight: " + weight + ", overrides: " + overridesNode.subNodes.Size());
         }
-   
-        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight);
+
+        dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
+        LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
+
+        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight, profileName);
     }
 
     ArraySortOverridesByWeight(overrides);
@@ -37,7 +39,8 @@ function LoadLightRewriteOverridesGroup(
     dm : CDefinitionsManagerAccessor,
     overridesNode : SCustomNode,
     out overrides : array<CLightRewriteSourceParams>,
-    weight : int
+    weight : int,
+    profileName : name
 ) {
     var entryNode : SCustomNode;
     var shadowsNode : SCustomNode;
@@ -53,6 +56,7 @@ function LoadLightRewriteOverridesGroup(
         entryNode = overridesNode.subNodes[i];
         override = new CLightRewriteSourceParams in owner;
         override.weight = weight;
+        override.profileName = profileName;
 
         if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
             LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
@@ -60,35 +64,32 @@ function LoadLightRewriteOverridesGroup(
         }
         override.tag = nameVal;
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
-            override.displayName = strVal;
+        if (!dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
+            LogLightRewriteXml("Skipping invalid override - missing label attribute.");
+            continue;
         }
+        override.displayName = strVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
             override.hasEnabled = true;
             override.enabled = (strVal != "false");
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
             override.hasRewriterType = true;
             override.rewriterType = ParseLightRewriteType(strVal);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
             override.hasUseSpotlightColor = true;
             override.useSpotlightColor = (strVal == "true");
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
             override.hasBrightness = true;
             override.brightness = StringToFloat(strVal, 0.f);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
             override.hasRadius = true;
             override.radius = StringToFloat(strVal, 0.f);
         }
-
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
             override.hasAttenuation = true;
             override.attenuation = StringToFloat(strVal, 0.f);
@@ -151,21 +152,14 @@ function ParseLightRewriteMatchRules(
     for (i = 0; i < count; i += 1) {
         matchNode = entryNode.subNodes[i];
 
-        if (matchNode.nodeName != 'match') {
-            continue;
-        }
-
-        if (matchNode.values.Size() == 0) {
-            continue;
-        }
+        if (matchNode.nodeName != 'match') continue;
+        if (matchNode.values.Size() == 0) continue;
 
         rule = new CLightRewriteMatchRule in override;
         rule.matchValue = matchNode.values[0];
 
         if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-            switch (strVal) {
-                case "layer": rule.matchType = LR_Match_Layer; break;
-            }
+            if (strVal == "layer") rule.matchType = LR_Match_Layer;
         }
 
         if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {

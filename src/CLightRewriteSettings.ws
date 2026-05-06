@@ -10,7 +10,7 @@ class CLightRewriteSettings {
 
     // Label key constants (must match XML Var id values)
     private const var CURRENT_PRESET_LABEL : string;    default CURRENT_PRESET_LABEL    = 'LightRewrite_CurrentProfile';
-    private const var NONE_PRESET_LABEL : string;        default NONE_PRESET_LABEL        = 'LightRewrite_None';
+    private const var NONE_PRESET_LABEL : name;          default NONE_PRESET_LABEL        = 'LightRewrite_None';
 
     // Setting name constants (must match XML Var id values)
     private const var ENABLED : name;                  default ENABLED                = 'Enabled';
@@ -24,6 +24,7 @@ class CLightRewriteSettings {
 
     // Light rewrite parameters
     public var isEnabled : bool;                       default isEnabled                = true;
+    private var currentProfile : name;
 
     // Runtime params for each light source type
     public var candleParams : CLightRewriteSourceParams;
@@ -47,6 +48,9 @@ class CLightRewriteSettings {
     // All overrides loaded from XML files, sorted by weight
     private var loadedOverrides : array<CLightRewriteSourceParams>;
 
+    // Profile names in dropdown order, built once at init from XML
+    private var profileOptions : array<name>;
+
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams : array<CLightRewriteSourceParams>;
@@ -57,6 +61,9 @@ class CLightRewriteSettings {
 
         loadedParams = LoadLightRewriteParams(this);
         loadedOverrides = LoadLightRewriteOverrides(this);
+
+        profileOptions.PushBack(NONE_PRESET_LABEL);
+        FindLightRewriteProfileNames(profileOptions);
 
         count = loadedParams.Size();
         for (i = 0; i < count; i += 1) {
@@ -271,7 +278,16 @@ class CLightRewriteSettings {
     public function ReadGameConfig() {
         var i, count : int;
 
+        var profileIndex : int;
+
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
+
+        profileIndex = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PRESET), 0);
+        if (profileIndex >= 0 && profileIndex < profileOptions.Size()) {
+            currentProfile = profileOptions[profileIndex];
+        } else {
+            currentProfile = NONE_PRESET_LABEL;
+        }
 
         count = lightSourceMenu.Size();
         for (i = 0; i < count; i += 1) {
@@ -306,6 +322,9 @@ class CLightRewriteSettings {
 
             // Some change was made, and the mod is enabled
             else if (isEnabled) {
+                if (optionName == CURRENT_PRESET) {
+                    theGame.lightRewrite.ChangeProfile();
+                }
                 theGame.lightRewrite.RewriteAllLightSources();
             }
         }
@@ -340,7 +359,7 @@ class CLightRewriteSettings {
     private function ReplacePresetMenuOptions() {
         var optionKeys : array<name>;
 
-        optionKeys.PushBack('LightRewrite_None');
+        optionKeys.PushBack(NONE_PRESET_LABEL);
         FindLightRewriteProfileNames(optionKeys);
 
         LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
@@ -391,9 +410,13 @@ class CLightRewriteSettings {
         var matched : CLightRewriteSourceParams = NULL;
         var i, count : int;
 
-        // Build params object by applying all overrides that match the entity
+        // Build params object by applying all overrides that match the entity and selected profile
+        if (currentProfile == NONE_PRESET_LABEL) return NULL;
+
         count = loadedOverrides.Size();
         for (i = 0; i < count; i += 1) {
+            if (loadedOverrides[i].profileName != currentProfile) continue;
+
             if (loadedOverrides[i].MatchesEntity(entity)) {
                 if (!params) params = new CLightRewriteSourceParams in entity;
                 loadedOverrides[i].ApplyTo(params);

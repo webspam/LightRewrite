@@ -42,17 +42,31 @@ function OnGameStarting(restored : bool) {
 // Before accessing, confirm that bypassLightRewrite is false.
 @addField(CGameplayEntity) public var lightSourceRewriter : ILightSourceRewriter;
 
+@addMethod(CGameplayEntity)
+public function HasRewritableLight() : bool {
+    return
+        GetComponentsCountByClassName('CPointLightComponent') > 0 ||
+        GetComponentsCountByClassName('CSpotLightComponent') > 0;
+}
+
 // Identify light sources, and rewrite matched entities to work properly with RT.
 @addMethod(CGameplayEntity)
 protected function InitialiseLightRewrite() {
+    if (!HasRewritableLight()) return;
+
+    AddTag(theGame.lightRewrite.TAG_HAS_LIGHT);
+
+    LightRewriteProfileChanged();
+}
+
+@addMethod(CGameplayEntity)
+public function LightRewriteProfileChanged() {
     var params : CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
 
-    // Not a valid light source.
-    if (!params) {
-        bypassLightRewrite = true;
-        return;
-    }
+    bypassLightRewrite = !params;
+    if (bypassLightRewrite) return;
 
+    // TODO: Confirm if discarding the previous rewriter has any impact on memory (at least until loading another zone)
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
 
     if (theGame.GetLightRewriteSettings().isEnabled && IsLightRewritable()) {
