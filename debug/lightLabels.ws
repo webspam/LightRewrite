@@ -35,20 +35,106 @@ function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : i
     return components.Size();
 }
 
-function LRDebug_GetAttributeCount() : int {
-    return 6;
+function LRDebug_GetAttributeCount() : int { return 13; }
+
+function LRDebug_GetAttributeId(idx : int) : name {
+    switch (idx) {
+        case 0:  return 'brightness';
+        case 1:  return 'radius';
+        case 2:  return 'attenuation';
+        case 3:  return 'shadowFadeDistance';
+        case 4:  return 'shadowFadeRange';
+        case 5:  return 'shadowBlendFactor';
+        case 6:  return 'useSpotlightColor';
+        case 7:  return 'alignPointLights';
+        case 8:  return 'alignOffsetZ';
+        case 9:  return 'overrideColour';
+        case 10: return 'colourR';
+        case 11: return 'colourG';
+        case 12: return 'colourB';
+    }
+    return 'unknown';
 }
 
-function LRDebug_GetAttributeName(idx : int) : string {
-    switch (idx) {
-        case 0: return "brightness";
-        case 1: return "radius";
-        case 2: return "attenuation";
-        case 3: return "shadow";
-        case 4: return "blend factor";
-        case 5: return "colour";
+function LRDebug_GetAttributeLabel(attr : name) : string {
+    switch (attr) {
+        case 'brightness':        return "brightness";
+        case 'radius':            return "radius";
+        case 'attenuation':       return "attenuation";
+        case 'shadowFadeDistance': return "shadow distance";
+        case 'shadowFadeRange':   return "shadow range";
+        case 'shadowBlendFactor': return "shadow blend";
+        case 'useSpotlightColor': return "use spotlight colour";
+        case 'alignPointLights':  return "align point lights";
+        case 'alignOffsetZ':      return "align offset Z";
+        case 'overrideColour':    return "override colour";
+        case 'colourR':           return "colour R";
+        case 'colourG':           return "colour G";
+        case 'colourB':           return "colour B";
     }
     return "unknown";
+}
+
+function LRDebug_GetAttributeStep(attr : name) : float {
+    // Derived from Candle sliders in LightRewrite.xml (except alignOffsetZ, which is explicit).
+    switch (attr) {
+        case 'brightness':        return 0.5;
+        case 'radius':            return 0.5;
+        case 'attenuation':       return 0.05;
+        case 'shadowFadeDistance': return 0.5;
+        case 'shadowFadeRange':   return 0.5;
+        case 'shadowBlendFactor': return 0.05;
+        case 'alignOffsetZ':      return 0.05;
+    }
+    return 1.0;
+}
+
+function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
+    return (CPointLightComponent)entity.GetComponent('CPointLightComponent0');
+}
+
+function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
+    return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
+}
+
+function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
+    var desc : string = entity.ToString();
+    if (StrFindFirst(desc, "candle") != -1) return LRT_Candle;
+    return LRT_Unknown;
+}
+
+@addMethod(ILightSourceRewriter)
+public function LRDebug_SetMenuOverrideParams(p : CLightRewriteSourceParams) {
+    this.menuOverrideParams = p;
+}
+
+@addMethod(ILightSourceRewriter)
+public function LRDebug_ClearMenuOverrideParams() {
+    this.menuOverrideParams = NULL;
+}
+
+function LRDebug_EnsureEntityHasRewriter(entity : CGameplayEntity) : ILightSourceRewriter {
+    var params : CLightRewriteSourceParams;
+    var rewriter : ILightSourceRewriter;
+
+    if (!entity) return NULL;
+    if (entity.lightSourceRewriter) return entity.lightSourceRewriter;
+
+    params = theGame.GetLightRewriteSettings().FindParamsForEntity(entity);
+    if (!params) {
+        params = new CLightRewriteSourceParams in entity;
+        params.hasEnabled = true;
+        params.enabled = true;
+        params.hasRewriterType = true;
+        params.rewriterType = LRDebug_GuessRewriterType(entity);
+        params.tag = 'LR_DebugTemp';
+        params.displayName = "debug";
+    }
+
+    entity.bypassLightRewrite = false;
+    rewriter = theGame.lightRewrite.CreateRewriterFromParams(params, entity);
+    entity.lightSourceRewriter = rewriter;
+    return rewriter;
 }
 
 function LRDebug_GetCameraPositionAndDirection(out camPos : Vector, out camDir : Vector) {
@@ -116,7 +202,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      */
     private function LRDebug_GenerateText() : string {
         var layerPart, entityPath, levelPath, fileName, filePath, pointsColour, spotsColour, body : string;
-        var headerHtml, attrName : string;
+        var headerHtml : string;
+        var attrId : name;
+        var attrLabel : string;
 
         var descriptor : string = entity.ToString();
         var fontSize : int = 13;
@@ -126,8 +214,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         if (this.highlighted) {
             countString = marker + countString + " <font color='#ff0000'>-</font>";
 
-            attrName = LRDebug_GetAttributeName(thePlayer.lrDebugAttrIndex);
-            headerHtml = "<font color='#ff0000'>" + attrName + "</font><br/>";
+            attrId = LRDebug_GetAttributeId(thePlayer.lrDebugAttrIndex);
+            attrLabel = LRDebug_GetAttributeLabel(attrId);
+            headerHtml = "<font color='#ff0000'>" + attrLabel + "</font><br/>";
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
 
@@ -211,9 +300,10 @@ state FollowEntity in LRDebug_LightOneLiner {
 @addField(CR4Player) public var lrDebugLabels : bool;
 @addField(CR4Player) public var lrDebugShowPathLabels : bool;
 @addField(CR4Player) private var lrDebugTarget : CGameplayEntity;
-@addField(CR4Player) private var lrDebugAttrIndex : int;
+@addField(CR4Player) public var lrDebugAttrIndex : int;
 
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
+@addField(CGameplayEntity) private var lrDebugTempParams : CLightRewriteSourceParams;
 
 @wrapMethod(CR4Player)
 function OnSpawned(spawnData : SEntitySpawnData) {
@@ -230,6 +320,8 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
+    theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
+    theInput.RegisterListener(this, 'LRDebug_OnInputAdjustUp', 'LRDebug_AdjustUp');
 }
 
 @addMethod(CR4Player)
@@ -379,5 +471,158 @@ public function LRDebug_OnInputCycleAttrPrev(action : SInputAction) : bool {
 public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
     LRDebug_CycleAttribute(1);
+    return true;
+}
+
+@addMethod(CGameplayEntity)
+public function LRDebug_EnsureTempParams() : CLightRewriteSourceParams {
+    if (!lrDebugTempParams) {
+        lrDebugTempParams = new CLightRewriteSourceParams in this;
+        lrDebugTempParams.hasEnabled = true;
+        lrDebugTempParams.enabled = true;
+    }
+    return lrDebugTempParams;
+}
+
+@addMethod(CR4Player)
+private function LRDebug_AdjustTargetedAttribute(sign : int) {
+    var target : CGameplayEntity = this.lrDebugTarget;
+    var attr : name = LRDebug_GetAttributeId(this.lrDebugAttrIndex);
+    var step : float;
+    var point : CPointLightComponent;
+    var spot : CSpotLightComponent;
+    var params : CLightRewriteSourceParams;
+    var rewriter : ILightSourceRewriter;
+
+    if (!target) return;
+    if (!target.lrdebugOneliner) return;
+
+    rewriter = LRDebug_EnsureEntityHasRewriter(target);
+    if (!rewriter) return;
+
+    params = target.LRDebug_EnsureTempParams();
+    if (!params) return;
+
+    point = LRDebug_FirstPointLight(target);
+    spot = LRDebug_FirstSpotLight(target);
+    step = LRDebug_GetAttributeStep(attr);
+
+    switch (attr) {
+        case 'brightness':
+            if (!params.hasBrightness) {
+                params.hasBrightness = true;
+                if (point) params.brightness = point.brightness;
+            }
+            params.brightness += step * sign;
+            break;
+
+        case 'radius':
+            if (!params.hasRadius) {
+                params.hasRadius = true;
+                if (point) params.radius = point.radius;
+            }
+            params.radius += step * sign;
+            break;
+
+        case 'attenuation':
+            if (!params.hasAttenuation) {
+                params.hasAttenuation = true;
+                if (point) params.attenuation = point.attenuation;
+            }
+            params.attenuation += step * sign;
+            break;
+
+        case 'shadowFadeDistance':
+            if (!params.hasShadowFadeDistance) {
+                params.hasShadowFadeDistance = true;
+                if (point) params.shadowFadeDistance = point.shadowFadeDistance;
+            }
+            params.shadowFadeDistance += step * sign;
+            break;
+
+        case 'shadowFadeRange':
+            if (!params.hasShadowFadeRange) {
+                params.hasShadowFadeRange = true;
+                if (point) params.shadowFadeRange = point.shadowFadeRange;
+            }
+            params.shadowFadeRange += step * sign;
+            break;
+
+        case 'shadowBlendFactor':
+            if (!params.hasShadowBlendFactor) {
+                params.hasShadowBlendFactor = true;
+                if (point) params.shadowBlendFactor = point.shadowBlendFactor;
+            }
+            params.shadowBlendFactor += step * sign;
+            break;
+
+        case 'useSpotlightColor':
+            params.hasUseSpotlightColor = true;
+            params.useSpotlightColor = (sign > 0);
+            break;
+
+        case 'alignPointLights':
+            params.hasAlignPointLights = true;
+            params.alignPointLights = (sign > 0);
+            break;
+
+        case 'alignOffsetZ':
+            if (!params.hasAlignPointLights) {
+                params.hasAlignPointLights = true;
+                params.alignPointLights = true;
+            }
+            params.pointLightOffset.Z += step * sign;
+            break;
+
+        case 'overrideColour':
+            params.hasColour = (sign > 0);
+            if (params.hasColour && point) {
+                params.color = point.color;
+            }
+            break;
+
+        case 'colourR':
+            if (!params.hasColour) {
+                params.hasColour = true;
+                if (point) params.color = point.color;
+            }
+            params.color.Red = (byte)Clamp(params.color.Red + sign, 0, 255);
+            break;
+
+        case 'colourG':
+            if (!params.hasColour) {
+                params.hasColour = true;
+                if (point) params.color = point.color;
+            }
+            params.color.Green = (byte)Clamp(params.color.Green + sign, 0, 255);
+            break;
+
+        case 'colourB':
+            if (!params.hasColour) {
+                params.hasColour = true;
+                if (point) params.color = point.color;
+            }
+            params.color.Blue = (byte)Clamp(params.color.Blue + sign, 0, 255);
+            break;
+    }
+
+    rewriter.LRDebug_SetMenuOverrideParams(params);
+    rewriter.RewriteLight();
+    target.lrdebugOneliner.LRDebug_RegenerateText();
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
+    LogChannel('LRDebug', "LRDebug_OnInputAdjustDown " + action.lastFrameValue + " -> " + action.value);
+    
+    if (!IsPressed(action) || !thePlayer) return false;
+    LRDebug_AdjustTargetedAttribute(-1);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputAdjustUp(action : SInputAction) : bool {
+    if (!IsPressed(action) || !thePlayer) return false;
+    LRDebug_AdjustTargetedAttribute(1);
     return true;
 }
