@@ -18,3 +18,10 @@
   --default-handle-opacity: 1;
   --default-handle-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
+
+// Intrinsic width/height; cap to track only on narrow viewports (max-width: 100% of host).
+.comparison-slider-bleed img-comparison-slider img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
