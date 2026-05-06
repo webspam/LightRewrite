@@ -2,7 +2,15 @@
 # Posted by dabell, modified by community. See post 'Timeline' for change history
 # Retrieved 2026-05-06, License - CC BY-SA 4.0
 
-remote_theme: jekyll/minima
+title: Light Rewrite
+description: Lighting comparison for the Witcher 3 mod.
+
+# GitHub Pages project site — matches origin (https://github.com/webspam/LightRewrite)
+url: "https://webspam.github.io"
+baseurl: "/LightRewrite"
+
+# Pinned jekyll/minima (master @ 2026-05-06)
+remote_theme: jekyll/minima@4de322363fca5927e6f4012cb94f6dad69ab5e6c
 plugins:
   - jekyll-remote-theme
 minima:
