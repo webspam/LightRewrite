@@ -2,6 +2,9 @@
  * Handles enabling and disabling Light Rewrite on entities, and other related tasks.
  */
 class CLightRewriteManager {
+    // Tag to identify entities that have a rewritable light.
+    public const var TAG_HAS_LIGHT : name; default TAG_HAS_LIGHT = "LR_HasLight";
+
     // Mod settings, which may be initialised prior to game load.
     public var settings : CLightRewriteSettings;
 
@@ -26,6 +29,21 @@ class CLightRewriteManager {
         globalOverrides = settings.GetGlobalOverrideParams(GetGlobalOverrideType(entity));
         rewriter.Init(entity, params, globalOverrides);
         return rewriter;
+    }
+
+    public function ChangeProfile() {
+        var i, count : int;
+        var entities : array<CEntity>;
+        var entity : CGameplayEntity;
+
+        LogLightRewrite("Changing Light Rewrite profile");
+        theGame.GetEntitiesByTag(TAG_HAS_LIGHT, entities);
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            entity = (CGameplayEntity)entities[i];
+            if (entity) entity.LightRewriteProfileChanged();
+        }
     }
 
     // Refreshes Light Rewrite on all light sources.

@@ -322,6 +322,9 @@ class CLightRewriteSettings {
 
             // Some change was made, and the mod is enabled
             else if (isEnabled) {
+                if (optionName == CURRENT_PRESET) {
+                    theGame.lightRewrite.ChangeProfile();
+                }
                 theGame.lightRewrite.RewriteAllLightSources();
             }
         }
