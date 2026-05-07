@@ -59,37 +59,3 @@ function LRDebug_GetDynamicAttributeStep(attr : name, currentValue : float, sign
             return LRDebug_GetFloatStepDirectional(currentValue, sign);
     }
 }
-
-function LRDebug_ApplyDynamicFloatDelta(attr : name, currentValue : float, delta : float) : float {
-    var remaining : float;
-    var sign : float;
-    var step : float;
-    var prevValue : float;
-    var i : int;
-
-    if (delta == 0.0) return currentValue;
-
-    remaining = delta;
-    sign = 1.0;
-    if (remaining < 0.0) sign = -1.0;
-
-    // Apply in sub-steps so large deltas don't skip step-size thresholds.
-    for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-        step = LRDebug_GetDynamicAttributeStep(attr, currentValue, sign);
-        if (step <= 0.0) break;
-
-        if (step > remaining * sign) step = remaining * sign;
-
-        prevValue = currentValue;
-        currentValue = currentValue + (step * sign);
-        currentValue = LRDebug_ClampAttributeValue(attr, currentValue);
-
-        // If rounding/clamping prevented any change, stop to avoid getting stuck.
-        if (currentValue == prevValue) break;
-
-        remaining = remaining - (step * sign);
-        if (currentValue == 0.0 && sign < 0.0) break;
-    }
-
-    return currentValue;
-}

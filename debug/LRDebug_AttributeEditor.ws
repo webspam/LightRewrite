@@ -46,6 +46,40 @@ class LRDebug_AttributeEditor {
         return "unknown";
     }
 
+    private function ApplyFloatDelta(attr : name, currentValue : float, delta : float) : float {
+        var remaining : float;
+        var sign : float;
+        var step : float;
+        var prevValue : float;
+        var i : int;
+
+        if (delta == 0.0) return currentValue;
+
+        remaining = delta;
+        sign = 1.0;
+        if (remaining < 0.0) sign = -1.0;
+
+        // Apply in sub-steps so large deltas don't skip step-size thresholds.
+        for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
+            step = LRDebug_GetDynamicAttributeStep(attr, currentValue, sign);
+            if (step <= 0.0) break;
+
+            if (step > remaining * sign) step = remaining * sign;
+
+            prevValue = currentValue;
+            currentValue = currentValue + (step * sign);
+            currentValue = LRDebug_ClampAttributeValue(attr, currentValue);
+
+            // If rounding/clamping prevented any change, stop to avoid getting stuck.
+            if (currentValue == prevValue) break;
+
+            remaining = remaining - (step * sign);
+            if (currentValue == 0.0 && sign < 0.0) break;
+        }
+
+        return currentValue;
+    }
+
     public function CycleAttribute(delta : int) {
         var count : int = 13;
         if (count <= 0) return;
@@ -109,7 +143,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight == spot) params.brightness *= 0.5f;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.brightness, sign) * accelMult;
-                params.brightness = LRDebug_ApplyDynamicFloatDelta(attr, params.brightness, step * sign);
+                params.brightness = ApplyFloatDelta(attr, params.brightness, step * sign);
                 break;
 
             case 'radius':
@@ -118,7 +152,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.radius = sourceLight.radius;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.radius, sign) * accelMult;
-                params.radius = LRDebug_ApplyDynamicFloatDelta(attr, params.radius, step * sign);
+                params.radius = ApplyFloatDelta(attr, params.radius, step * sign);
                 break;
 
             case 'attenuation':
@@ -127,7 +161,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.attenuation = sourceLight.attenuation;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.attenuation, sign) * accelMult;
-                params.attenuation = LRDebug_ApplyDynamicFloatDelta(attr, params.attenuation, step * sign);
+                params.attenuation = ApplyFloatDelta(attr, params.attenuation, step * sign);
                 break;
 
             case 'shadowFadeDistance':
@@ -136,7 +170,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.shadowFadeDistance, sign) * accelMult;
-                params.shadowFadeDistance = LRDebug_ApplyDynamicFloatDelta(attr, params.shadowFadeDistance, step * sign);
+                params.shadowFadeDistance = ApplyFloatDelta(attr, params.shadowFadeDistance, step * sign);
                 break;
 
             case 'shadowFadeRange':
@@ -145,7 +179,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.shadowFadeRange, sign) * accelMult;
-                params.shadowFadeRange = LRDebug_ApplyDynamicFloatDelta(attr, params.shadowFadeRange, step * sign);
+                params.shadowFadeRange = ApplyFloatDelta(attr, params.shadowFadeRange, step * sign);
                 break;
 
             case 'shadowBlendFactor':
@@ -154,7 +188,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
                 }
                 step = LRDebug_GetDynamicAttributeStep(attr, params.shadowBlendFactor, sign) * accelMult;
-                params.shadowBlendFactor = LRDebug_ApplyDynamicFloatDelta(attr, params.shadowBlendFactor, step * sign);
+                params.shadowBlendFactor = ApplyFloatDelta(attr, params.shadowBlendFactor, step * sign);
                 break;
 
             case 'useSpotlightColor':
