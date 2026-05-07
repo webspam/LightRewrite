@@ -102,7 +102,7 @@ public function LRDebug_OnInputCycleAttrPrev(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.CycleAttribute(-1);
-    RefreshTargetOneliner();
+    lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
@@ -111,7 +111,7 @@ public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.CycleAttribute(1);
-    RefreshTargetOneliner();
+    lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
@@ -120,7 +120,6 @@ public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
     var sign : int;
-    var target : CGameplayEntity;
 
     if (!action.value) return false;
 
@@ -128,13 +127,7 @@ public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
     if (action.value > 0.0) sign = 1;
     else sign = -1;
 
-    target = lrDebugLabelManager.GetTarget();
-    if (lrDebugAttrEditor.AdjustAttribute(sign, target, lrDebugAccelerator)) {
-        if (target && target.lrdebugOneliner) {
-            target.lrdebugOneliner.LRDebug_RegenerateText();
-        }
-    }
-
+    lrDebugLabelManager.ApplyAttributeAdjustment(sign, lrDebugAttrEditor, lrDebugAccelerator);
     return true;
 }
 
@@ -142,35 +135,14 @@ public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
-    var target : CGameplayEntity;
-    var rewriter : ILightSourceRewriter;
+    var result : string;
 
     if (!IsPressed(action) || !thePlayer) return false;
 
-    target = lrDebugLabelManager.GetTarget();
-    if (!target) return false;
-
-    rewriter = LRDebug_EnsureEntityHasRewriter(target);
-    if (!rewriter) return false;
-
-    if (rewriter.inOriginalState) {
-        rewriter.RewriteLight();
-        LRDebug_ShowToast("LightRewrite: ON");
-    }
-    else {
-        rewriter.RestoreOriginalState();
-        LRDebug_ShowToast("LightRewrite: OFF");
+    result = lrDebugLabelManager.ToggleRewriterOnTarget();
+    if (result != "") {
+        LRDebug_ShowToast("LightRewrite: " + result);
     }
 
     return true;
-}
-
-// ---- Internal helpers ----
-
-@addMethod(CR4Player)
-private function RefreshTargetOneliner() {
-    var target : CGameplayEntity = lrDebugLabelManager.GetTarget();
-    if (target && target.lrdebugOneliner) {
-        target.lrdebugOneliner.LRDebug_RegenerateText();
-    }
 }

@@ -102,6 +102,50 @@ class LRDebug_LabelManager {
         }
     }
 
+    public function RefreshTargetOneliner() {
+        if (target && target.lrdebugOneliner) {
+            target.lrdebugOneliner.LRDebug_RegenerateText();
+        }
+    }
+
+    /**
+     * Applies a signed attribute adjustment to the target entity and refreshes its
+     * oneliner if the adjustment took effect. Combines the editor, accelerator, and
+     * oneliner refresh into one coordinated call so the player handler stays minimal.
+     */
+    public function ApplyAttributeAdjustment(
+        sign : int,
+        editor : LRDebug_AttributeEditor,
+        accel : LRDebug_AdjustAccelerator
+    ) {
+        if (editor.AdjustAttribute(sign, target, accel)) {
+            RefreshTargetOneliner();
+        }
+    }
+
+    /**
+     * Toggles the rewriter on the targeted entity between its original and rewritten
+     * state. Returns the new state as a short string ("ON" / "OFF") for the caller
+     * to display as a toast, or an empty string if there was no valid target.
+     */
+    public function ToggleRewriterOnTarget() : string {
+        var rewriter : ILightSourceRewriter;
+
+        if (!target) return "";
+
+        rewriter = LRDebug_EnsureEntityHasRewriter(target);
+        if (!rewriter) return "";
+
+        if (rewriter.inOriginalState) {
+            rewriter.RewriteLight();
+            return "ON";
+        }
+        else {
+            rewriter.RestoreOriginalState();
+            return "OFF";
+        }
+    }
+
     private function CreateOnelinerForEntity(
         entity : CGameplayEntity,
         pointLights : int,
