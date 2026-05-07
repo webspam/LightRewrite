@@ -1,0 +1,107 @@
+---
+description: Agent summary for debug/lightLabels.ws — in-game light authoring overlay
+globs: "debug/lightLabels.ws"
+alwaysApply: false
+---
+
+# debug/lightLabels.ws — In-Game Light Authoring Overlay
+
+`debug/lightLabels.ws` is a **debug-only authoring tool** (excluded from release builds).
+It provides a floating-label HUD over nearby light entities so a developer can identify,
+inspect, and live-edit light parameters without leaving the game.
+
+## External dependency
+
+Requires `mod_sharedutils_oneliners` (external mod, not in this repo) which provides the
+`SU_Oneliner` base class used for all floating-text overlays.
+
+## How it works
+
+### Scanning and labels
+
+- A 0.25-second repeating timer (`LRDebug_RefreshOnelinersTimer`) scans for nearby
+  `CGameplayEntity` instances that own at least one `CPointLightComponent` or
+  `CSpotLightComponent`.
+- Normal range: 10 m. Focus Mode (Witcher Senses) range: 25 m.
+- Each qualifying entity gets one `LRDebug_LightOneLiner` for its lifetime
+  (statemachine; `Idle` ↔ `FollowEntity`). The object is reused — it is never
+  destroyed and recreated while the entity stays in range.
+- Markup is generated once at creation and **only** recomputed on explicit events
+  (attribute cycle, path-label toggle, highlight change). The timer does no markup
+  work per tick.
+
+### Target selection
+
+Each timer tick, the entity most directly in front of the camera (highest dot-product
+against camera direction, minimum 0.6 threshold) is selected as `lrDebugTarget` and
+highlighted with red markers. Only one entity is targeted at a time.
+
+### Live attribute editing
+
+13 attributes are editable on the targeted entity:
+
+| Group | Attributes |
+|---|---|
+| Light shape | `brightness`, `radius`, `attenuation` |
+| Shadow | `shadowFadeDistance`, `shadowFadeRange`, `shadowBlendFactor` |
+| Colour | `overrideColour`, `colourR`, `colourG`, `colourB` |
+| Rewriter | `useSpotlightColor`, `alignPointLights`, `alignOffsetZ` |
+
+- **Cycle** through attributes via `LRDebug_CycleAttrPrev` / `LRDebug_CycleAttrNext`.
+- **Adjust** the selected attribute via `LRDebug_AdjustDown` — a single bidirectional
+  binding (scroll wheel or analog axis). Positive `action.value` increments; negative
+  decrements.
+- **Step sizing** is dynamic: larger values use larger steps. Attributes with fixed
+  fine-grained steps (`attenuation`, `shadowBlendFactor`, `alignOffsetZ`) always use
+  0.05 steps regardless of value.
+- **Acceleration**: holding a direction in tight bursts (≥ 2 events within 75 ms each)
+  triggers up to 8× step multiplier. A direction reversal cuts the multiplier in half;
+  a pause of > 500 ms resets it entirely.
+
+### Edit state and application
+
+- Edits accumulate in `entity.lrDebugTempParams` (`CLightRewriteSourceParams`), a
+  volatile working copy **separate from the production params**. It resets on game load.
+- `LRDebug_EnsureEntityHasRewriter` lazily creates an `ILightSourceRewriter` for an
+  entity if it doesn't already have one (using existing config params or a temporary
+  debug entry tagged `LR_DebugTemp`).
+- After each adjustment, `rewriter.LRDebug_SetMenuOverrideParams(params)` +
+  `rewriter.RewriteLight()` apply the change live in-game.
+- `LRDebug_ToggleRewriter` (`inOriginalState` flag) lets the developer toggle the
+  rewriter on/off to A/B the entity against its vanilla state.
+
+### Capturing values for production config
+
+A log/output mechanism exists to extract the current `lrDebugTempParams` values so
+they can be written into the production XML config. Values are not automatically
+persisted — the developer must trigger this output and transfer them manually.
+
+## Fields added via @addField / @addMethod
+
+| Class | Fields added |
+|---|---|
+| `CR4Player` | `lrDebugLabels`, `lrDebugShowPathLabels`, `lrDebugTarget`, `lrDebugAttrIndex`, `lrDebugToast`, plus acceleration state fields |
+| `CGameplayEntity` | `lrdebugOneliner`, `lrDebugTempParams` |
+| `ILightSourceRewriter` | `inOriginalState` |
+
+## Input bindings (input.settings)
+
+```
+IK_NumPad7=(Action=LRDebug_ToggleLabels)
+IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
+```
+
+Additional bindings (`LRDebug_CycleAttrPrev`, `LRDebug_CycleAttrNext`,
+`LRDebug_AdjustDown`, `LRDebug_ToggleRewriter`) require separate input.settings entries.
+
+## Key design invariants to preserve
+
+- **Do not recompute markup on the refresh timer.** Markup is only rebuilt on explicit
+  state changes to keep the tick path cheap.
+- **`lrDebugTempParams` is the working edit state.** It is not the production
+  `params` object — edits here do not affect the config system directly.
+- **One oneliner per entity, reused.** Do not create a new `LRDebug_LightOneLiner`
+  for an entity that already has one in `entity.lrdebugOneliner`.
+- **`LRDebug_IsCandle` determines spotlight vs point light source** when reading the
+  initial light value for an entity. This is the current heuristic; extend it if new
+  entity types need different source-light selection logic.
