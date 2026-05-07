@@ -126,8 +126,7 @@ class LRDebug_LabelManager {
 
     /**
      * Toggles the rewriter on the targeted entity between its original and rewritten
-     * state. Returns the new state as a short string ("ON" / "OFF") for the caller
-     * to display as a toast, or an empty string if there was no valid target.
+     * state.
      */
     public function ToggleRewriterOnTarget() {
         var rewriter : ILightSourceRewriter;
