@@ -8,7 +8,24 @@
 class LRDebug_AttributeEditor {
     private var attrIndex : int;
 
-    public function GetCurrentAttrId() : name { return LRDebug_GetAttributeId(attrIndex); }
+    public function GetCurrentAttrId() : name {
+        switch (attrIndex) {
+            case 0:  return 'brightness';
+            case 1:  return 'radius';
+            case 2:  return 'attenuation';
+            case 3:  return 'shadowFadeDistance';
+            case 4:  return 'shadowFadeRange';
+            case 5:  return 'shadowBlendFactor';
+            case 6:  return 'useSpotlightColor';
+            case 7:  return 'alignPointLights';
+            case 8:  return 'alignOffsetZ';
+            case 9:  return 'overrideColour';
+            case 10: return 'colourR';
+            case 11: return 'colourG';
+            case 12: return 'colourB';
+        }
+        return 'unknown';
+    }
 
     public function GetCurrentAttrLabel() : string { return LRDebug_GetAttributeLabel(GetCurrentAttrId()); }
 
