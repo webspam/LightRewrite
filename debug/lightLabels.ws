@@ -140,9 +140,7 @@ public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
     result = lrDebugLabelManager.ToggleRewriterOnTarget();
-    if (result != "") {
-        LRDebug_ShowToast("LightRewrite: " + result);
-    }
+    if (result != "") LRDebug_ShowToast("LightRewrite: " + result);
 
     return true;
 }
