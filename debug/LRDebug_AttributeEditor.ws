@@ -8,17 +8,11 @@
 class LRDebug_AttributeEditor {
     private var attrIndex : int;
 
-    public function GetCurrentAttrIndex() : int {
-        return attrIndex;
-    }
+    public function GetCurrentAttrIndex() : int { return attrIndex; }
 
-    public function GetCurrentAttrId() : name {
-        return LRDebug_GetAttributeId(attrIndex);
-    }
+    public function GetCurrentAttrId() : name { return LRDebug_GetAttributeId(attrIndex); }
 
-    public function GetCurrentAttrLabel() : string {
-        return LRDebug_GetAttributeLabel(GetCurrentAttrId());
-    }
+    public function GetCurrentAttrLabel() : string { return LRDebug_GetAttributeLabel(GetCurrentAttrId()); }
 
     public function CycleAttribute(delta : int) {
         var count : int = LRDebug_GetAttributeCount();
