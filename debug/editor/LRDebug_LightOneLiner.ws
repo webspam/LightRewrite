@@ -168,16 +168,16 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         descriptor = entity.ToString();
         fontSize = 13;
         countString = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
-        marker = "<font color='#ff0000'>-</font> ";
+        marker = "<font color='#dd88ff'>-</font> ";
 
         // Read display state from the player's manager objects.
         showPaths = thePlayer.lrDebugLabelManager.showPathLabels;
 
         if (this.highlighted) {
-            countString = marker + countString + " <font color='#ff0000'>-</font>";
+            countString = marker + countString + " <font color='#dd88ff'>-</font>";
 
             attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId();
-            headerHtml = "<font color='#ff0000'>"
+            headerHtml = "<font color='#dd88ff'>"
                 + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel() + ": "
                 + GetAttributeValueString(attrId)
                 + "</font><br/>";
