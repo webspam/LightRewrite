@@ -47,7 +47,7 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleAttribute(delta : int) {
-        var count : int = LRDebug_GetAttributeCount();
+        var count : int = 13;
         if (count <= 0) return;
 
         attrIndex += delta;

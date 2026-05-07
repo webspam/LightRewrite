@@ -5,7 +5,6 @@
  * The 13 editable attributes are indexed 0–12.
  */
 
-function LRDebug_GetAttributeCount() : int { return 13; }
 
 
 
