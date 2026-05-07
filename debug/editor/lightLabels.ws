@@ -62,7 +62,7 @@ public function LRDebug_OnInputToggleLabels(action : SInputAction) : bool {
 
     RemoveTimer('LRDebug_RefreshOnelinersTimer');
     if (lrDebugLabels) {
-        AddTimer('LRDebug_RefreshOnelinersTimer', 0.25f, true);
+        AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
     }
 
     return true;
