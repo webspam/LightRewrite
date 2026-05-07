@@ -72,7 +72,7 @@ public function LRDebug_OnInputToggleLabels(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabelPaths(action : SInputAction) : bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.TogglePathLabels();
     return true;
@@ -82,7 +82,7 @@ public function LRDebug_OnInputToggleLabelPaths(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleAttrPrev(action : SInputAction) : bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.CycleAttribute(-1);
     lrDebugLabelManager.RefreshTargetOneliner();
@@ -91,7 +91,7 @@ public function LRDebug_OnInputCycleAttrPrev(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.CycleAttribute(1);
     lrDebugLabelManager.RefreshTargetOneliner();
@@ -102,7 +102,7 @@ public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
-    if (!action.value) return false;
+    if (!lrDebugLabels || !action.value || !thePlayer) return false;
 
     // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
     lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333334f, lrDebugAttrEditor);
@@ -113,7 +113,7 @@ public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
