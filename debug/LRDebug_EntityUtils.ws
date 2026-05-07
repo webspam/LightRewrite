@@ -8,8 +8,10 @@
 
 // ---- CGameplayEntity extensions ----
 
+/** The params used to edit the light source */
 @addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
 
+/** Lazy getter */
 @addMethod(CGameplayEntity)
 public function LRDebug_GetTempParams() : CLightRewriteSourceParams {
     if (!lrDebugTempParams) {
