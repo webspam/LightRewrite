@@ -91,7 +91,7 @@ class LRDebug_AttributeEditor {
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    private function GetDynamicAttributeStep(attr : name, currentValue : float, sign : float) : float {
+    private function GetDynamicStep(attr : name, currentValue : float, sign : float) : float {
         switch (attr) {
             case 'alignOffsetZ':
             case 'attenuation':
@@ -117,7 +117,7 @@ class LRDebug_AttributeEditor {
 
         // Apply in sub-steps so large deltas don't skip step-size thresholds.
         for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-            step = GetDynamicAttributeStep(attr, currentValue, sign);
+            step = GetDynamicStep(attr, currentValue, sign);
             if (step <= 0.0) break;
 
             if (step > remaining * sign) step = remaining * sign;
@@ -199,7 +199,7 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.brightness = sourceLight.brightness;
                     if (sourceLight == spot) params.brightness *= 0.5f;
                 }
-                step = GetDynamicAttributeStep(attr, params.brightness, sign) * accelMult;
+                step = GetDynamicStep(attr, params.brightness, sign) * accelMult;
                 params.brightness = ApplyFloatDelta(attr, params.brightness, step * sign);
                 break;
 
@@ -208,7 +208,7 @@ class LRDebug_AttributeEditor {
                     params.hasRadius = true;
                     if (sourceLight) params.radius = sourceLight.radius;
                 }
-                step = GetDynamicAttributeStep(attr, params.radius, sign) * accelMult;
+                step = GetDynamicStep(attr, params.radius, sign) * accelMult;
                 params.radius = ApplyFloatDelta(attr, params.radius, step * sign);
                 break;
 
@@ -217,7 +217,7 @@ class LRDebug_AttributeEditor {
                     params.hasAttenuation = true;
                     if (sourceLight) params.attenuation = sourceLight.attenuation;
                 }
-                step = GetDynamicAttributeStep(attr, params.attenuation, sign) * accelMult;
+                step = GetDynamicStep(attr, params.attenuation, sign) * accelMult;
                 params.attenuation = ApplyFloatDelta(attr, params.attenuation, step * sign);
                 break;
 
@@ -226,7 +226,7 @@ class LRDebug_AttributeEditor {
                     params.hasShadowFadeDistance = true;
                     if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
                 }
-                step = GetDynamicAttributeStep(attr, params.shadowFadeDistance, sign) * accelMult;
+                step = GetDynamicStep(attr, params.shadowFadeDistance, sign) * accelMult;
                 params.shadowFadeDistance = ApplyFloatDelta(attr, params.shadowFadeDistance, step * sign);
                 break;
 
@@ -235,7 +235,7 @@ class LRDebug_AttributeEditor {
                     params.hasShadowFadeRange = true;
                     if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
                 }
-                step = GetDynamicAttributeStep(attr, params.shadowFadeRange, sign) * accelMult;
+                step = GetDynamicStep(attr, params.shadowFadeRange, sign) * accelMult;
                 params.shadowFadeRange = ApplyFloatDelta(attr, params.shadowFadeRange, step * sign);
                 break;
 
@@ -244,7 +244,7 @@ class LRDebug_AttributeEditor {
                     params.hasShadowBlendFactor = true;
                     if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
                 }
-                step = GetDynamicAttributeStep(attr, params.shadowBlendFactor, sign) * accelMult;
+                step = GetDynamicStep(attr, params.shadowBlendFactor, sign) * accelMult;
                 params.shadowBlendFactor = ApplyFloatDelta(attr, params.shadowBlendFactor, step * sign);
                 break;
 
@@ -263,7 +263,7 @@ class LRDebug_AttributeEditor {
                     params.hasAlignPointLights = true;
                     params.alignPointLights = true;
                 }
-                step = GetDynamicAttributeStep(attr, params.pointLightOffset.Z, sign) * accelMult;
+                step = GetDynamicStep(attr, params.pointLightOffset.Z, sign) * accelMult;
                 params.pointLightOffset.Z += step * sign;
                 break;
 
