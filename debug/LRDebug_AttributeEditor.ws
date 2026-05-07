@@ -27,7 +27,24 @@ class LRDebug_AttributeEditor {
         return 'unknown';
     }
 
-    public function GetCurrentAttrLabel() : string { return LRDebug_GetAttributeLabel(GetCurrentAttrId()); }
+    public function GetCurrentAttrLabel() : string {
+        switch (GetCurrentAttrId()) {
+            case 'brightness':         return "brightness";
+            case 'radius':             return "radius";
+            case 'attenuation':        return "attenuation";
+            case 'shadowFadeDistance': return "shadow distance";
+            case 'shadowFadeRange':    return "shadow range";
+            case 'shadowBlendFactor':  return "shadow blend";
+            case 'useSpotlightColor':  return "use spotlight colour";
+            case 'alignPointLights':   return "align point lights";
+            case 'alignOffsetZ':       return "align offset Z";
+            case 'overrideColour':     return "override colour";
+            case 'colourR':            return "colour R";
+            case 'colourG':            return "colour G";
+            case 'colourB':            return "colour B";
+        }
+        return "unknown";
+    }
 
     public function CycleAttribute(delta : int) {
         var count : int = LRDebug_GetAttributeCount();

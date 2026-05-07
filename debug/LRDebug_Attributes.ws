@@ -8,24 +8,6 @@
 function LRDebug_GetAttributeCount() : int { return 13; }
 
 
-function LRDebug_GetAttributeLabel(attr : name) : string {
-    switch (attr) {
-        case 'brightness':         return "brightness";
-        case 'radius':             return "radius";
-        case 'attenuation':        return "attenuation";
-        case 'shadowFadeDistance': return "shadow distance";
-        case 'shadowFadeRange':    return "shadow range";
-        case 'shadowBlendFactor':  return "shadow blend";
-        case 'useSpotlightColor':  return "use spotlight colour";
-        case 'alignPointLights':   return "align point lights";
-        case 'alignOffsetZ':       return "align offset Z";
-        case 'overrideColour':     return "override colour";
-        case 'colourR':            return "colour R";
-        case 'colourG':            return "colour G";
-        case 'colourB':            return "colour B";
-    }
-    return "unknown";
-}
 
 function LRDebug_IsAcceleratedAttribute(attr : name) : bool {
     switch (attr) {
