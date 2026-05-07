@@ -1,23 +1,178 @@
-// Image compare: full-bleed track with 2rem viewport inset, slider centred; intrinsic image size (no width="100%" in markup).
-// Symmetric margins avoid a single-sided breakout shifting too far sideways (see e.g. ryanmulligan.dev/blog/css-breakout/).
-.comparison-slider-bleed {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+// ── Gallery wrapper + expand toggle ──
+.gallery-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  transition: max-width 0.3s ease, margin 0.3s ease, width 0.3s ease;
+}
+
+.gallery-wrap.is-expanded {
+  // Break out of Minima's content column — same bleed technique as the old sliders.
+  // Symmetric margins avoid a single-sided breakout shifting too far sideways.
   width: calc(100vw - 4rem);
+  max-width: none;
   margin-left: calc(50% - 50vw + 2rem);
 }
 
-.comparison-slider-bleed img-comparison-slider {
-  --divider-color: rgba(255, 255, 255, 0.9);
-  --divider-width: 2px;
-  --default-handle-color: #e8e8e8;
-  --default-handle-opacity: 1;
-  --default-handle-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+.gallery-header {
+  margin-bottom: 0.5rem;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
 }
 
-.image-compare-links {
+// ── Expand button ──
+.gallery-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s, border-color 0.2s;
+  user-select: none;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.75;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+// ── Swiper container ──
+.swiper {
+  width: 100%;
+  user-select: none;
+}
+
+// ── Slide layout ──
+.swiper-slide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+// Slide title — above the image in normal flow
+.slide-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-align: center;
-  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  flex-shrink: 0;
+}
+
+// Image wrap — nav buttons centre on this, not the whole slide
+.slide-image-wrap {
+  position: relative;
+}
+
+// ── Before / After corner labels ──
+.label-before,
+.label-after {
+  position: absolute;
+  bottom: 0.6rem;
+  z-index: 10;
+  padding: 0.15rem 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 2px black;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.label-before { left: 0.6rem; }
+.label-after  { right: 0.6rem; }
+
+// ── Comparison slider ──
+img-comparison-slider {
+  display: block;
+  width: 100%;
+  --divider-width: 1px;
+  --divider-color: rgba(179, 179, 179, 0.5);
+  --default-handle-opacity: 0;
+
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+// ── Swiper navigation arrows ──
+:root { --swiper-navigation-size: 24px; }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgba(255, 255, 255, 0.6);
+
+  // Expanded hit area — doesn't affect layout
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1.5rem;
+  }
+
+  &:hover { color: #fff; }
+}
+
+// ── Thumbnail strip ──
+.swiper-thumbs {
+  width: 100%;
+  max-width: 960px;
+  margin: 1rem auto 0;
+
+  .swiper-slide {
+    width: auto;
+    opacity: 0.45;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+
+    &.swiper-slide-thumb-active { opacity: 1; }
+
+    // Separator line between thumbnails — inset 20% from top and bottom
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.25);
+      transition: background 0.2s;
+    }
+
+    // Highlight separators flanking the active thumbnail
+    &.swiper-slide-thumb-active::after,
+    &:has(+ .swiper-slide-thumb-active)::after {
+      background: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  img {
+    display: block;
+    height: 72px;
+    width: auto;
+    border-radius: 3px;
+  }
 }
