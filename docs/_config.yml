@@ -24,3 +24,4 @@ exclude:
 
 minima:
   skin: dark
+  hide_site_feed_link: true
