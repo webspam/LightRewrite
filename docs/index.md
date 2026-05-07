@@ -5,6 +5,7 @@ layout: home
 <div class="gallery-wrap" id="gallery" markdown="0">
 
   <div class="swiper">
+    <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
     <div class="swiper-wrapper">
 
       <div class="swiper-slide">

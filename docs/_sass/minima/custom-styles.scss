@@ -65,9 +65,19 @@
   // width: 100%;
   user-select: none;
 
-  // Hide until Swiper has initialised to prevent a flash of stacked slides.
+  // Hide until Swiper has initialised to prevent a flash of stacked slides,
+  // but keep the preloader spinner visible during that window.
   &:not(.swiper-initialized) {
     visibility: hidden;
+
+    .swiper-lazy-preloader {
+      visibility: visible;
+    }
+  }
+
+  // Hide the preloader once Swiper is ready.
+  &.swiper-initialized .swiper-lazy-preloader {
+    display: none;
   }
 }
 
