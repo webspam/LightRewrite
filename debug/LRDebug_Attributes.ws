@@ -9,27 +9,24 @@
 
 
 
+// RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
 function LRDebug_ClampAttributeValue(attr : name, value : float) : float {
+    var clamped : float;
+
     // alignOffsetZ is the only attribute that can go negative.
     switch (attr) {
-        case 'brightness':         return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
-        case 'radius':             return LRDebug_RoundTo01(ClampF(value, 0.0, 50.0));
-        case 'attenuation':        return LRDebug_RoundTo01(ClampF(value, 0.0, 1.0));
-        case 'shadowFadeDistance': return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
-        case 'shadowFadeRange':    return LRDebug_RoundTo01(ClampF(value, 0.0, 100.0));
-        case 'shadowBlendFactor':  return LRDebug_RoundTo01(ClampF(value, 0.0, 1.0));
-        case 'alignOffsetZ':       return LRDebug_RoundTo01(ClampF(value, -3.0, 3.0));
+        case 'brightness':         clamped = ClampF(value, 0.0, 100.0); break;
+        case 'radius':             clamped = ClampF(value, 0.0, 50.0);  break;
+        case 'attenuation':        clamped = ClampF(value, 0.0, 1.0);   break;
+        case 'shadowFadeDistance': clamped = ClampF(value, 0.0, 100.0); break;
+        case 'shadowFadeRange':    clamped = ClampF(value, 0.0, 100.0); break;
+        case 'shadowBlendFactor':  clamped = ClampF(value, 0.0, 1.0);   break;
+        case 'alignOffsetZ':       clamped = ClampF(value, -3.0, 3.0);  break;
+        default: return value;
     }
-    return value;
-}
 
-/**
- * The core implementation of RoundF() does not play nicely here.
- * RoundF(0.05 * 100.0) / 100.0 == 0.04
- */
-function LRDebug_RoundTo01(value : float) : float {
-    if (value >= 0.0) return (float)FloorF(value * 100.0 + 0.5) / 100.0;
-    return (float)CeilF(value * 100.0 - 0.5) / 100.0;
+    if (clamped >= 0.0) return (float)FloorF(clamped * 100.0 + 0.5) / 100.0;
+    return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
 }
 
 function LRDebug_GetFloatStep(value : float) : float {
