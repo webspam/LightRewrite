@@ -15,7 +15,6 @@
 // ---- CR4Player fields ----
 
 @addField(CR4Player) public var lrDebugLabels : bool;
-@addField(CR4Player) private var lrDebugToast : LRDebug_ToastOneLiner;
 @addField(CR4Player) public var lrDebugLabelManager : LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugAttrEditor : LRDebug_AttributeEditor;
 @addField(CR4Player) private var lrDebugAccelerator : LRDebug_AdjustAccelerator;
@@ -34,9 +33,9 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     if (!theGame || !thePlayer) return;
 
     lrDebugLabelManager = new LRDebug_LabelManager in this;
+    lrDebugLabelManager.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugAccelerator = new LRDebug_AdjustAccelerator in this;
-    lrDebugToast = new LRDebug_ToastOneLiner in this;
 
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels',    'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
@@ -44,14 +43,6 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext',   'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown',      'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter',  'LRDebug_ToggleRewriter');
-}
-
-// ---- Toast helper ----
-
-@addMethod(CR4Player)
-private function LRDebug_ShowToast(text : string) {
-    lrDebugToast.Init("<font size='14'>" + text + "</font>", 1.0);
-    lrDebugToast.Start();
 }
 
 // ---- Refresh timer ----
@@ -130,12 +121,8 @@ public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
-    var result : string;
-
     if (!IsPressed(action) || !thePlayer) return false;
 
-    result = lrDebugLabelManager.ToggleRewriterOnTarget();
-    if (result != "") LRDebug_ShowToast("LightRewrite: " + result);
-
+    lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
 }

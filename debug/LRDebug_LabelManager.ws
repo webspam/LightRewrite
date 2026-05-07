@@ -12,6 +12,16 @@ class LRDebug_LabelManager {
     private var tagSeq : int;
     public var showPathLabels : bool;
     private var target : CGameplayEntity;
+    private var toast : LRDebug_ToastOneLiner;
+
+    public function Init() {
+        toast = new LRDebug_ToastOneLiner in thePlayer;
+    }
+
+    private function ShowToast(text : string) {
+        toast.Init("<font size='14'>" + text + "</font>", 1.0);
+        toast.Start();
+    }
 
     public function Scan() {
         var entities : array<CGameplayEntity>;
@@ -124,19 +134,20 @@ class LRDebug_LabelManager {
      * state. Returns the new state as a short string ("ON" / "OFF") for the caller
      * to display as a toast, or an empty string if there was no valid target.
      */
-    public function ToggleRewriterOnTarget() : string {
+    public function ToggleRewriterOnTarget() {
         var rewriter : ILightSourceRewriter;
 
-        if (!target) return "";
+        if (!target) return;
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         if (rewriter.inOriginalState) {
             rewriter.RewriteLight();
-            return "ON";
+            ShowToast("LightRewrite: ON");
         }
-
-        rewriter.RestoreOriginalState();
-        return "OFF";
+        else {
+            rewriter.RestoreOriginalState();
+            ShowToast("LightRewrite: OFF");
+        }
     }
 
     private function FindNearbyLights(out entities : array<CGameplayEntity>) {
