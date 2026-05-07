@@ -110,12 +110,13 @@ img-comparison-slider {
 }
 
 // ── Swiper navigation arrows ──
-:root { --swiper-navigation-size: 24px; }
+:root {
+  --swiper-navigation-size: 24px;
+  --swiper-navigation-color: rgba(255, 255, 255, 0.6);
+}
 
 .swiper-button-prev,
 .swiper-button-next {
-  color: rgba(255, 255, 255, 0.6);
-
   // Expanded hit area — doesn't affect layout
   &::before {
     content: '';
@@ -123,7 +124,9 @@ img-comparison-slider {
     inset: -1.5rem;
   }
 
-  &:hover { color: #fff; }
+  &:hover {
+    --swiper-navigation-color: #fff;
+  }
 }
 
 // ── Thumbnail strip ──
