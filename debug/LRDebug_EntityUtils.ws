@@ -6,6 +6,28 @@
  * - @wrapMethod hooks that track inOriginalState on ILightSourceRewriter
  */
 
+// ---- Component helpers ----
+
+function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
+    return (CPointLightComponent)entity.GetComponent('CPointLightComponent0');
+}
+
+function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
+    return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
+}
+
+// ---- Entity classification ----
+
+function LRDebug_IsCandle(entity : CGameplayEntity) : bool {
+    return StrFindFirst(entity.ToString(), "candle") != -1
+        && StrFindFirst(entity.ToString(), "candle_holder") == -1;
+}
+
+function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
+    if (LRDebug_IsCandle(entity)) return LRT_Candle;
+    return LRT_Unknown;
+}
+
 // ---- CGameplayEntity extensions ----
 
 /** The params used to edit the light source */
@@ -56,28 +78,6 @@ function RestoreOriginalState() {
     inOriginalState = true;
 }
 
-// ---- Component helpers ----
-
-function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
-    return (CPointLightComponent)entity.GetComponent('CPointLightComponent0');
-}
-
-function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
-    return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
-}
-
-// ---- Entity classification ----
-
-function LRDebug_IsCandle(entity : CGameplayEntity) : bool {
-    return StrFindFirst(entity.ToString(), "candle") != -1
-        && StrFindFirst(entity.ToString(), "candle_holder") == -1;
-}
-
-function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
-    if (LRDebug_IsCandle(entity)) return LRT_Candle;
-    return LRT_Unknown;
-}
-
 // ---- Rewriter access ----
 
 /**
@@ -106,4 +106,3 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
     return lightSourceRewriter;
 }
-
