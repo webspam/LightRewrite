@@ -110,23 +110,23 @@ img-comparison-slider {
 }
 
 // ── Swiper navigation arrows ──
+// Use Swiper's own CSS variables — avoids brittle overrides across versions.
 :root {
   --swiper-navigation-size: 24px;
   --swiper-navigation-color: rgba(255, 255, 255, 0.6);
+  --swiper-navigation-sides-offset: 0px;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
-  // Expanded hit area — doesn't affect layout
+  // Expanded hit area via pseudo-element — no Swiper variable exists for this.
   &::before {
     content: '';
     position: absolute;
     inset: -1.5rem;
   }
 
-  &:hover {
-    --swiper-navigation-color: #fff;
-  }
+  &:hover { --swiper-navigation-color: #fff; }
 }
 
 // ── Thumbnail strip ──
@@ -157,7 +157,10 @@ img-comparison-slider {
     }
 
     // Highlight separators flanking the active thumbnail
-    &.swiper-slide-thumb-active::after,
+    &.swiper-slide-thumb-active::after {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
     &:has(+ .swiper-slide-thumb-active)::after {
       background: rgba(255, 255, 255, 0.7);
     }
