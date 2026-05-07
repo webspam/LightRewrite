@@ -46,19 +46,9 @@ public function LRDebug_GetParams() : CLightRewriteSourceParams {
 
 // ---- ILightSourceRewriter extensions ----
 
-@addField(ILightSourceRewriter) public var inOriginalState : bool;
-
-@addMethod(ILightSourceRewriter)
-public function LRDebug_SetMenuOverrideParams(params : CLightRewriteSourceParams) {
-    this.menuOverrideParams = params;
-}
-
-@addMethod(ILightSourceRewriter)
-public function LRDebug_ClearMenuOverrideParams() {
-    this.menuOverrideParams = NULL;
-}
-
 // Track inOriginalState as rewriters are applied or restored.
+
+@addField(ILightSourceRewriter) public var inOriginalState : bool;
 
 @wrapMethod(CCandleLightRewriter)
 function RewriteLight() {
@@ -76,6 +66,18 @@ function RewriteLight() {
 function RestoreOriginalState() {
     wrappedMethod();
     inOriginalState = true;
+}
+
+// Override rewriter params
+
+@addMethod(ILightSourceRewriter)
+public function LRDebug_SetMenuOverrideParams(params : CLightRewriteSourceParams) {
+    this.menuOverrideParams = params;
+}
+
+@addMethod(ILightSourceRewriter)
+public function LRDebug_ClearMenuOverrideParams() {
+    this.menuOverrideParams = NULL;
 }
 
 // ---- Rewriter access ----
