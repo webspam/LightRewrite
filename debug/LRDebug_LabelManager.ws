@@ -131,7 +131,7 @@ class LRDebug_LabelManager {
 
         if (!target) return "";
 
-        rewriter = LRDebug_EnsureEntityHasRewriter(target);
+        rewriter = target.LRDebug_GetOrCreateRewriter();
         if (!rewriter) return "";
 
         if (rewriter.inOriginalState) {

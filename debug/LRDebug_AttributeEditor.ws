@@ -162,7 +162,7 @@ class LRDebug_AttributeEditor {
         if (!target) return false;
         if (!target.lrdebugOneliner) return false;
 
-        rewriter = LRDebug_EnsureEntityHasRewriter(target);
+        rewriter = target.LRDebug_GetOrCreateRewriter();
         if (!rewriter) return false;
 
         params = target.LRDebug_GetTempParams();

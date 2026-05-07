@@ -171,27 +171,32 @@ function LRDebug_GetAttributeValueString(entity : CGameplayEntity, attr : name) 
 
 // ---- Rewriter access ----
 
-function LRDebug_EnsureEntityHasRewriter(entity : CGameplayEntity) : ILightSourceRewriter {
+/**
+ * This is a slight clobbering of the Light Rewrite logic, that ensures the debug system works
+ * correctly. Any entities not covered by the active Light Rewrite profile will be given a
+ * debug rewriter.
+ */
+@addMethod(CGameplayEntity)
+public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
     var params : CLightRewriteSourceParams;
     var rewriter : ILightSourceRewriter;
 
-    if (!entity) return NULL;
-    if (entity.lightSourceRewriter) return entity.lightSourceRewriter;
+    if (lightSourceRewriter) return lightSourceRewriter;
 
-    params = theGame.GetLightRewriteSettings().FindParamsForEntity(entity);
+    params = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
     if (!params) {
-        params = new CLightRewriteSourceParams in entity;
+        params = new CLightRewriteSourceParams in this;
         params.hasEnabled = true;
         params.enabled = true;
         params.hasRewriterType = true;
-        params.rewriterType = LRDebug_GuessRewriterType(entity);
+        params.rewriterType = LRDebug_GuessRewriterType(this);
         params.tag = 'LR_DebugTemp';
         params.displayName = "debug";
     }
 
-    entity.bypassLightRewrite = false;
-    rewriter = theGame.lightRewrite.CreateRewriterFromParams(params, entity);
-    entity.lightSourceRewriter = rewriter;
+    bypassLightRewrite = false;
+    rewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
+    lightSourceRewriter = rewriter;
     return rewriter;
 }
 
