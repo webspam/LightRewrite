@@ -103,9 +103,9 @@ class LRDebug_LabelManager {
     }
 
     public function RefreshTargetOneliner() {
-        if (target && target.lrdebugOneliner) {
-            target.lrdebugOneliner.LRDebug_RegenerateText();
-        }
+        if (!target || !target.lrdebugOneliner) return;
+
+        target.lrdebugOneliner.LRDebug_RegenerateText();
     }
 
     /**
@@ -118,9 +118,9 @@ class LRDebug_LabelManager {
         editor : LRDebug_AttributeEditor,
         accel : LRDebug_AdjustAccelerator
     ) {
-        if (editor.AdjustAttribute(sign, target, accel)) {
-            RefreshTargetOneliner();
-        }
+        if (!editor.AdjustAttribute(sign, target, accel)) return;
+
+        RefreshTargetOneliner();
     }
 
     /**
@@ -140,10 +140,9 @@ class LRDebug_LabelManager {
             rewriter.RewriteLight();
             return "ON";
         }
-        else {
-            rewriter.RestoreOriginalState();
-            return "OFF";
-        }
+
+        rewriter.RestoreOriginalState();
+        return "OFF";
     }
 
     private function CreateOnelinerForEntity(
