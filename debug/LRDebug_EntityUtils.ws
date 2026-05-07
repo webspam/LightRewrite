@@ -202,7 +202,6 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
 
 function LRDebug_GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
     var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
-    if (!director) return;
 
     cameraPosition = director.GetCameraPosition();
     cameraDirection = director.GetCameraDirection();
