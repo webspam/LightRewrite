@@ -163,11 +163,7 @@ class LRDebug_AttributeEditor {
         if (!target.lrdebugOneliner) return false;
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
-        if (!rewriter) return false;
-
         params = target.LRDebug_GetParams();
-        if (!params) return false;
-
         attr = GetCurrentAttrId();
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);

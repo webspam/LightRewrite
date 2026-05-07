@@ -132,8 +132,6 @@ class LRDebug_LabelManager {
         if (!target) return "";
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
-        if (!rewriter) return "";
-
         if (rewriter.inOriginalState) {
             rewriter.RewriteLight();
             return "ON";
