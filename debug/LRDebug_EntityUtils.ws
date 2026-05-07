@@ -208,10 +208,8 @@ function LRDebug_GetCameraPositionAndDirection(out cameraPosition : Vector, out 
 }
 
 function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
-    var maxRange : float;
+    var maxRange : float = 10.0;
 
     if (theGame.IsFocusModeActive()) maxRange = 25.0;
-    else maxRange = 10.0;
-
     FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
 }
