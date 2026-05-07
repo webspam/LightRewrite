@@ -62,15 +62,8 @@
 
 // ── Swiper container ──
 .swiper {
-  width: 100%;
+  // width: 100%;
   user-select: none;
-}
-
-// ── Slide layout ──
-.swiper-slide {
-  position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 // Slide title
