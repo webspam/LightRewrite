@@ -19,5 +19,8 @@ plugins:
 titles_from_headings:
   strip_title: true
 
+exclude:
+  - AGENTS.md
+
 minima:
   skin: dark
