@@ -151,7 +151,10 @@ img-comparison-slider {
 
 // ── Swiper navigation arrows ──
 // Use Swiper's own CSS variables — avoids brittle overrides across versions.
-:root {
+// Swiper bundle CSS is loaded after our stylesheet (via custom-head.html) so its
+// :root declarations win on load order. Bumping specificity to html:root ensures
+// our values are applied last regardless of source order.
+html:root {
   --swiper-navigation-size: 24px;
   --swiper-navigation-color: rgba(255, 255, 255, 0.6);
   --swiper-navigation-sides-offset: 0px;
@@ -169,6 +172,24 @@ img-comparison-slider {
 
   &:hover {
     --swiper-navigation-color: #fff;
+  }
+}
+
+// At viewports wider than the max intrinsic image width plus the nav button and
+// surrounding space, the next button sits in empty space beside the image.
+// Stretch it to full height so the entire right edge becomes a click target.
+// 24px = --swiper-navigation-size (CSS vars are not valid in @media conditions).
+@media (min-width: calc(3840px + 3rem + 24px)) {
+  .swiper-button-next {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    margin-top: 0;
+    transform: none;
+
+    &::before {
+      inset-block: 0;
+    }
   }
 }
 
