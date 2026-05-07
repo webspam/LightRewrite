@@ -103,12 +103,18 @@ img-comparison-slider:not(:defined) {
 }
 
 // ── Before / After corner labels ──
-.label-before,
-.label-after {
+// Labels live inside slot="first/second" figures so the slider's own clipping
+// mask hides them naturally as the handle passes over — no JS required.
+img-comparison-slider figure {
+  position: relative;
+  margin: 0;
+  line-height: 0;
+}
+
+img-comparison-slider figcaption {
   position: absolute;
   bottom: 0.6rem;
   z-index: 10;
-  padding: 0;
   color: rgba(255, 255, 255, 0.5);
   text-shadow: 0 0 2px black;
   font-size: 0.75rem;
@@ -118,11 +124,11 @@ img-comparison-slider:not(:defined) {
   pointer-events: none;
 }
 
-.label-before {
+img-comparison-slider [slot="first"] figcaption {
   left: 1.5rem;
 }
 
-.label-after {
+img-comparison-slider [slot="second"] figcaption {
   right: 1.5rem;
 }
 

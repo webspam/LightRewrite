@@ -13,11 +13,15 @@ layout: home
         <div class="slide-image-wrap">
           <div class="slider-wrap">
             <img-comparison-slider>
-              <img slot="first"  src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn — before" />
-              <img slot="second" src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"  alt="Spikeroog inn — after" />
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn — before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg" alt="Spikeroog inn — after" />
+                <figcaption>After</figcaption>
+              </figure>
             </img-comparison-slider>
-            <span class="label-before">Before</span>
-            <span class="label-after">After</span>
           </div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
@@ -29,11 +33,15 @@ layout: home
         <div class="slide-image-wrap">
           <div class="slider-wrap">
             <img-comparison-slider>
-              <img slot="first"  src="https://webspam.github.io/images/vizima-welcome-before-219.jpg" alt="Vizima castle — before" />
-              <img slot="second" src="https://webspam.github.io/images/vizima-welcome-after-219.jpg"  alt="Vizima castle — after" />
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/vizima-welcome-before-219.jpg" alt="Vizima castle — before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/vizima-welcome-after-219.jpg" alt="Vizima castle — after" />
+                <figcaption>After</figcaption>
+              </figure>
             </img-comparison-slider>
-            <span class="label-before">Before</span>
-            <span class="label-after">After</span>
           </div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
@@ -45,11 +53,15 @@ layout: home
         <div class="slide-image-wrap">
           <div class="slider-wrap">
             <img-comparison-slider>
-              <img slot="first"  src="https://webspam.github.io/images/vizima-stairwell-before-219.jpg" alt="Vizima stairwell — before" />
-              <img slot="second" src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg"  alt="Vizima stairwell — after" />
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/vizima-stairwell-before-219.jpg" alt="Vizima stairwell — before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg" alt="Vizima stairwell — after" />
+                <figcaption>After</figcaption>
+              </figure>
             </img-comparison-slider>
-            <span class="label-before">Before</span>
-            <span class="label-after">After</span>
           </div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
@@ -61,11 +73,15 @@ layout: home
         <div class="slide-image-wrap">
           <div class="slider-wrap">
             <img-comparison-slider>
-              <img slot="first"  src="https://webspam.github.io/images/novigrad-gate-before-219.jpg" alt="Novigrad gate — before" />
-              <img slot="second" src="https://webspam.github.io/images/novigrad-gate-after-219.jpg"  alt="Novigrad gate — after" />
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/novigrad-gate-before-219.jpg" alt="Novigrad gate — before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/novigrad-gate-after-219.jpg" alt="Novigrad gate — after" />
+                <figcaption>After</figcaption>
+              </figure>
             </img-comparison-slider>
-            <span class="label-before">Before</span>
-            <span class="label-after">After</span>
           </div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
