@@ -76,9 +76,6 @@ abstract class ILightSourceRewriter {
 
                 if (spotLight) {
                     spotLight.RestoreLightRewriteOriginalValues();
-                    // This is a cheap hack and is likely imperfect; we're not tracking enabled state after the initial rewrite.
-                    // Will only affect users playing in settings.
-                    if (parentEntity.HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
                 }
             }
         }

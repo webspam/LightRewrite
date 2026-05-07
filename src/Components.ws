@@ -2,6 +2,7 @@
 struct SLightRewriteOriginalValues {
     var hasBeenSaved : bool;
 
+    var enabled : bool;
     var position : Vector;
     var brightness : float;
     var radius : float;
@@ -22,6 +23,7 @@ public function SaveLightRewriteOriginalValues() {
 
     lightRewriteOriginalValues.hasBeenSaved = true;
 
+    lightRewriteOriginalValues.enabled = IsEnabled();
     lightRewriteOriginalValues.position = GetLocalPosition();
     lightRewriteOriginalValues.brightness = brightness;
     lightRewriteOriginalValues.radius = radius;
@@ -33,14 +35,13 @@ public function SaveLightRewriteOriginalValues() {
 }
 
 // Restores the light component to its original values.
+// Note: this will restore the original enabled state, which may have been changed.
+// As it stands, I cannot find a way to intercept calls to SetEnabled to track state changes.
 @addMethod(CLightComponent)
 public function RestoreLightRewriteOriginalValues() {
-    var wasEnabled : bool;
-
     if (!lightRewriteOriginalValues.hasBeenSaved) return;
 
-    wasEnabled = IsEnabled();
-    if (wasEnabled) SetEnabled(false);
+    if (IsEnabled()) SetEnabled(false);
 
     SetPosition(lightRewriteOriginalValues.position);
     brightness = lightRewriteOriginalValues.brightness;
@@ -51,5 +52,5 @@ public function RestoreLightRewriteOriginalValues() {
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     color = lightRewriteOriginalValues.color;
 
-    if (wasEnabled) SetEnabled(true);
+    if (lightRewriteOriginalValues.enabled) SetEnabled(true);
 }
