@@ -27,8 +27,8 @@ public function LRDebug_GetParams() : CLightRewriteSourceParams {
 @addField(ILightSourceRewriter) public var inOriginalState : bool;
 
 @addMethod(ILightSourceRewriter)
-public function LRDebug_SetMenuOverrideParams(p : CLightRewriteSourceParams) {
-    this.menuOverrideParams = p;
+public function LRDebug_SetMenuOverrideParams(params : CLightRewriteSourceParams) {
+    this.menuOverrideParams = params;
 }
 
 @addMethod(ILightSourceRewriter)
