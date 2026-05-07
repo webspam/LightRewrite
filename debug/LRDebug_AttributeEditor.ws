@@ -165,7 +165,7 @@ class LRDebug_AttributeEditor {
         rewriter = LRDebug_EnsureEntityHasRewriter(target);
         if (!rewriter) return false;
 
-        params = target.LRDebug_EnsureTempParams();
+        params = target.LRDebug_GetTempParams();
         if (!params) return false;
 
         attr = GetCurrentAttrId();

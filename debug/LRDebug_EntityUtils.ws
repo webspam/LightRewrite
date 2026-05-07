@@ -11,7 +11,7 @@
 @addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
 
 @addMethod(CGameplayEntity)
-public function LRDebug_EnsureTempParams() : CLightRewriteSourceParams {
+public function LRDebug_GetTempParams() : CLightRewriteSourceParams {
     if (!lrDebugTempParams) {
         lrDebugTempParams = new CLightRewriteSourceParams in this;
         lrDebugTempParams.hasEnabled = true;
