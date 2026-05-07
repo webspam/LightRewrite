@@ -8,8 +8,6 @@
 class LRDebug_AttributeEditor {
     private var attrIndex : int;
 
-    public function GetCurrentAttrIndex() : int { return attrIndex; }
-
     public function GetCurrentAttrId() : name { return LRDebug_GetAttributeId(attrIndex); }
 
     public function GetCurrentAttrLabel() : string { return LRDebug_GetAttributeLabel(GetCurrentAttrId()); }

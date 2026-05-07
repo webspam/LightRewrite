@@ -79,7 +79,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var headerHtml, body, countString, marker : string;
         var attrId : name;
         var fontSize : int;
-        var attrIndex : int;
         var showPaths : bool;
 
         descriptor = entity.ToString();
@@ -88,15 +87,14 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         marker = "<font color='#ff0000'>-</font> ";
 
         // Read display state from the player's manager objects.
-        attrIndex = thePlayer.lrDebugAttrEditor.GetCurrentAttrIndex();
         showPaths = thePlayer.lrDebugLabelManager.showPathLabels;
 
         if (this.highlighted) {
             countString = marker + countString + " <font color='#ff0000'>-</font>";
 
-            attrId = LRDebug_GetAttributeId(attrIndex);
+            attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId();
             headerHtml = "<font color='#ff0000'>"
-                + LRDebug_GetAttributeLabel(attrId) + ": "
+                + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel() + ": "
                 + LRDebug_GetAttributeValueString(entity, attrId)
                 + "</font><br/>";
         }
