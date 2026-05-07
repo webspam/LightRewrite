@@ -9,6 +9,22 @@ layout: home
     <div class="swiper-wrapper">
 
       <div class="swiper-slide">
+        <div class="slide-title">Spikeroog inn</div>
+        <div class="slide-image-wrap">
+          <div class="slider-wrap">
+            <img-comparison-slider>
+              <img slot="first"  src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn — before" />
+              <img slot="second" src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"  alt="Spikeroog inn — after" />
+            </img-comparison-slider>
+            <span class="label-before">Before</span>
+            <span class="label-after">After</span>
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+
+      <div class="swiper-slide">
         <div class="slide-title">Vizima castle</div>
         <div class="slide-image-wrap">
           <div class="slider-wrap">
@@ -56,32 +72,16 @@ layout: home
         </div>
       </div>
 
-      <div class="swiper-slide">
-        <div class="slide-title">Spikeroog inn</div>
-        <div class="slide-image-wrap">
-          <div class="slider-wrap">
-            <img-comparison-slider>
-              <img slot="first"  src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn — before" />
-              <img slot="second" src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"  alt="Spikeroog inn — after" />
-            </img-comparison-slider>
-            <span class="label-before">Before</span>
-            <span class="label-after">After</span>
-          </div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <!-- Thumbnail strip -->
   <div class="swiper swiper-thumbs">
     <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"    alt="Spikeroog inn" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/vizima-welcome-after-219.jpg"   alt="Vizima castle" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg" alt="Vizima stairwell" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/novigrad-gate-after-219.jpg"    alt="Novigrad gate" /></div>
-      <div class="swiper-slide"><img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"    alt="Spikeroog inn" /></div>
     </div>
   </div>
 
