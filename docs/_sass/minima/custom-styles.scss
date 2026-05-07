@@ -80,10 +80,16 @@
 // flex + center mirrors the old full-bleed approach: image renders at intrinsic
 // size and is centred, never stretched beyond its natural dimensions.
 .slide-image-wrap {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+// Shrink-wraps to the slider's intrinsic width so labels anchor to image edges.
+.slider-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
 }
 
 // ── Before / After corner labels ──
