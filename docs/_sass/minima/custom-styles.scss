@@ -70,9 +70,14 @@
   flex-shrink: 0;
 }
 
-// Image wrap — nav buttons centre on this, not the whole slide
+// Image wrap — nav buttons centre on this, not the whole slide.
+// flex + center mirrors the old full-bleed approach: image renders at intrinsic
+// size and is centred, never stretched beyond its natural dimensions.
 .slide-image-wrap {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 // ── Before / After corner labels ──
@@ -96,17 +101,14 @@
 .label-after  { right: 0.6rem; }
 
 // ── Comparison slider ──
+// No width: 100% — images render at intrinsic size so they never stretch on large screens.
+// max-width: 100% prevents overflow on small screens.
 img-comparison-slider {
   display: block;
-  width: 100%;
+  max-width: 100%;
   --divider-width: 1px;
   --divider-color: rgba(179, 179, 179, 0.5);
   --default-handle-opacity: 0;
-
-  img {
-    width: 100%;
-    display: block;
-  }
 }
 
 // ── Swiper navigation arrows ──
