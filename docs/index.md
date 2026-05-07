@@ -124,10 +124,20 @@ layout: home
 
   const gallery = document.getElementById('gallery');
   const expandBtn = document.getElementById('expand-btn');
-  expandBtn.addEventListener('click', () => {
-    const expanded = gallery.classList.toggle('is-expanded');
+  function setExpanded(expanded) {
+    gallery.classList.toggle('is-expanded', expanded);
     expandBtn.setAttribute('aria-expanded', expanded);
     expandBtn.innerHTML = `<i data-lucide="${expanded ? 'minimize-2' : 'maximize-2'}"></i> ${expanded ? 'Collapse' : 'Expand'}`;
     lucide.createIcons();
+  }
+
+  expandBtn.addEventListener('click', () => {
+    setExpanded(!gallery.classList.contains('is-expanded'));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && gallery.classList.contains('is-expanded')) {
+      setExpanded(false);
+    }
   });
 </script>
