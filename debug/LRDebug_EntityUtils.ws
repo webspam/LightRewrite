@@ -189,7 +189,7 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
         params.enabled = true;
         params.hasRewriterType = true;
         params.rewriterType = LRDebug_GuessRewriterType(this);
-        params.tag = 'LR_DebugTemp';
+        params.tag = 'LR_DebugLight';
         params.displayName = "debug";
     }
 
