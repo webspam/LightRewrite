@@ -56,7 +56,7 @@ private function LRDebug_ShowToast(text : string) {
 
     lrDebugToast = new LRDebug_ToastOneLiner in this;
     lrDebugToast.Init("<font size='14'>" + text + "</font>", 1.0);
-    lrDebugToast.LRDebug_Start();
+    lrDebugToast.Start();
 }
 
 // ---- Refresh timer ----

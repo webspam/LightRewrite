@@ -28,21 +28,21 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     // Changes to text require re-registering the oneliner.
-    public function LRDebug_RegenerateText() {
+    public function RegenerateText() {
         this.text = GenerateText();
         this.update();
     }
 
-    public function LRDebug_Start() {
+    public function Start() {
         if (this.active) return;
 
         this.active = true;
         this.GotoState('FollowEntity');
     }
 
-    public function LRDebug_SetHighlighted(isHighlighted : bool) {
+    public function SetHighlighted(isHighlighted : bool) {
         this.highlighted = isHighlighted;
-        this.LRDebug_RegenerateText();
+        this.RegenerateText();
     }
 
     private function CountToHtml(prefix : string, count : int) : string {

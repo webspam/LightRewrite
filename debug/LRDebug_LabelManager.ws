@@ -39,7 +39,7 @@ class LRDebug_LabelManager {
             if (!entity) continue;
 
             if (entity.lrdebugOneliner) {
-                entity.lrdebugOneliner.LRDebug_Start();
+                entity.lrdebugOneliner.Start();
             }
             else {
                 pointLights = LRDebug_CountComponents(entity, 'CPointLightComponent');
@@ -70,13 +70,13 @@ class LRDebug_LabelManager {
 
         if (bestEntity != target) {
             if (target && target.lrdebugOneliner) {
-                target.lrdebugOneliner.LRDebug_SetHighlighted(false);
+                target.lrdebugOneliner.SetHighlighted(false);
             }
 
             target = bestEntity;
 
             if (target && target.lrdebugOneliner) {
-                target.lrdebugOneliner.LRDebug_SetHighlighted(true);
+                target.lrdebugOneliner.SetHighlighted(true);
             }
         }
     }
@@ -96,14 +96,14 @@ class LRDebug_LabelManager {
         for (i = 0; i < count; i += 1) {
             if (!entities[i].lrdebugOneliner) continue;
 
-            entities[i].lrdebugOneliner.LRDebug_RegenerateText();
+            entities[i].lrdebugOneliner.RegenerateText();
         }
     }
 
     public function RefreshTargetOneliner() {
         if (!target || !target.lrdebugOneliner) return;
 
-        target.lrdebugOneliner.LRDebug_RegenerateText();
+        target.lrdebugOneliner.RegenerateText();
     }
 
     /**
@@ -156,6 +156,6 @@ class LRDebug_LabelManager {
         label.setTag("lrdebug-" + tagSeq);
 
         entity.lrdebugOneliner = label;
-        label.LRDebug_Start();
+        label.Start();
     }
 }

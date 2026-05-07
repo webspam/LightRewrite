@@ -12,7 +12,7 @@ statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
         this.seconds = seconds;
     }
 
-    public function LRDebug_Start() {
+    public function Start() {
         this.GotoState('FollowPlayer');
     }
 }
