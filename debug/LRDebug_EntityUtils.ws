@@ -13,7 +13,7 @@
 
 /** Lazy getter */
 @addMethod(CGameplayEntity)
-public function LRDebug_GetTempParams() : CLightRewriteSourceParams {
+public function LRDebug_GetParams() : CLightRewriteSourceParams {
     if (!lrDebugParams) {
         lrDebugParams = new CLightRewriteSourceParams in this;
         lrDebugParams.hasEnabled = true;
