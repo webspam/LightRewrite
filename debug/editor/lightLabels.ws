@@ -115,6 +115,12 @@ public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
     if (!lrDebugLabels || !action.value || !thePlayer) return false;
 
+    if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
+        lrDebugAttrEditor.CycleAttribute((int)SignF(action.value) * -1);
+        lrDebugLabelManager.RefreshTargetOneliner();
+        return true;
+    }
+
     // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
     lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333334f, lrDebugAttrEditor);
     return true;
