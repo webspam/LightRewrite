@@ -13,6 +13,8 @@ class LRDebug_AttributeEditor {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
     }
 
+    public function SetAttributeIndex(index : int) { attrIndex = index; }
+
     public function GetCurrentAttrId() : name {
         switch (attrIndex) {
             case 0:  return 'brightness';

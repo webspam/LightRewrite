@@ -40,6 +40,17 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext',   'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown',      'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter',  'LRDebug_ToggleRewriter');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectBrightness', 'LRDebug_SelectBrightness');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectRadius', 'LRDebug_SelectRadius');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectAttenuation', 'LRDebug_SelectAttenuation');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectShadowFadeDistance', 'LRDebug_SelectShadowFadeDistance');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectShadowFadeRange', 'LRDebug_SelectShadowFadeRange');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectShadowBlendFactor', 'LRDebug_SelectShadowBlendFactor');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectAlignOffsetZ', 'LRDebug_SelectAlignOffsetZ');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectOverrideColour', 'LRDebug_SelectOverrideColour');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectColourR', 'LRDebug_SelectColourR');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectColourG', 'LRDebug_SelectColourG');
+    theInput.RegisterListener(this, 'LRDebug_OnSelectColourB', 'LRDebug_SelectColourB');
 }
 
 // ---- Refresh timer ----
@@ -117,4 +128,138 @@ public function LRDebug_OnInputToggleRewriter(action : SInputAction) : bool {
 
     lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
+}
+
+// ---- Input: select attribute ----
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectBrightness(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectBrightness();
+        lrDebugAttrEditor.SetAttributeIndex(0);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectRadius(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectRadius();
+        lrDebugAttrEditor.SetAttributeIndex(1);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectAttenuation(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectAttenuation();
+        lrDebugAttrEditor.SetAttributeIndex(2);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectShadowFadeDistance(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectShadowFadeDistance();
+        lrDebugAttrEditor.SetAttributeIndex(3);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectShadowFadeRange(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectShadowFadeRange();
+        lrDebugAttrEditor.SetAttributeIndex(4);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectShadowBlendFactor(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectShadowBlendFactor();
+        lrDebugAttrEditor.SetAttributeIndex(5);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectAlignOffsetZ(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectAlignOffsetZ();
+        lrDebugAttrEditor.SetAttributeIndex(8);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectOverrideColour(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectOverrideColour();
+        lrDebugAttrEditor.SetAttributeIndex(9);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectColourR(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectColourR();
+        lrDebugAttrEditor.SetAttributeIndex(10);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectUseSpotlightColor(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectUseSpotlightColor();
+        lrDebugAttrEditor.SetAttributeIndex(11);
+        return true;
+    }
+    return false;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSelectAlignPointLights(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugLabels == true) {
+        // lrDebugLabelManager.SelectAlignPointLights();
+        lrDebugAttrEditor.SetAttributeIndex(12);
+        return true;
+    }
+    return false;
 }
