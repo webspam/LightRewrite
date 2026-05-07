@@ -160,24 +160,6 @@ img-comparison-slider {
   }
 }
 
-// At viewports wider than the max intrinsic image width plus the nav button and
-// surrounding space, the next button sits in empty space beside the image.
-// Stretch it to full height so the entire right edge becomes a click target.
-// 24px = --swiper-navigation-size (CSS vars are not valid in @media conditions).
-@media (min-width: calc(3840px + 3rem + 24px)) {
-  .swiper-button-next {
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    margin-top: 0;
-    transform: none;
-
-    &::before {
-      inset-block: 0;
-    }
-  }
-}
-
 // ── Thumbnail strip ──
 .swiper-thumbs {
   width: 100%;
