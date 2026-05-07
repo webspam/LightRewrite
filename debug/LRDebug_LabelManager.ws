@@ -13,11 +13,9 @@ class LRDebug_LabelManager {
     public var showPathLabels : bool;
     private var target : CGameplayEntity;
     private var toast : LRDebug_ToastOneLiner;
-    private var accel : LRDebug_AdjustAccelerator;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in thePlayer;
-        accel = new LRDebug_AdjustAccelerator in thePlayer;
     }
 
     private function ShowToast(text : string) {
@@ -122,7 +120,7 @@ class LRDebug_LabelManager {
      * oneliner refresh into one coordinated call so the player handler stays minimal.
      */
     public function ApplyAttributeAdjustment(sign : int, editor : LRDebug_AttributeEditor) {
-        if (!editor.AdjustAttribute(sign, target, accel)) return;
+        if (!editor.AdjustAttribute(sign, target)) return;
 
         RefreshTargetOneliner();
     }

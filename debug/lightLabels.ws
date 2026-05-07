@@ -33,6 +33,7 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
+    lrDebugAttrEditor.Init();
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels',    'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev',   'LRDebug_CycleAttrPrev');

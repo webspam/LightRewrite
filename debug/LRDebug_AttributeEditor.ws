@@ -7,6 +7,11 @@
  */
 class LRDebug_AttributeEditor {
     private var attrIndex : int;
+    private var accel : LRDebug_AdjustAccelerator;
+
+    public function Init() {
+        accel = new LRDebug_AdjustAccelerator in thePlayer;
+    }
 
     public function GetCurrentAttrId() : name {
         switch (attrIndex) {
@@ -145,11 +150,7 @@ class LRDebug_AttributeEditor {
      * given entity. Returns true if the adjustment was applied (caller should
      * then call LRDebug_RegenerateText on the entity's oneliner).
      */
-    public function AdjustAttribute(
-        sign : int,
-        target : CGameplayEntity,
-        accel : LRDebug_AdjustAccelerator
-    ) : bool {
+    public function AdjustAttribute(sign : int, target : CGameplayEntity) : bool {
         var attr : name;
         var step : float;
         var accelMult : float;
