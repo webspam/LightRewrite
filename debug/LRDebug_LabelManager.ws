@@ -13,8 +13,6 @@ class LRDebug_LabelManager {
     public var showPathLabels : bool;
     private var target : CGameplayEntity;
 
-    public function GetTarget() : CGameplayEntity { return target; }
-
     public function Scan() {
         var entities : array<CGameplayEntity>;
         var entity : CGameplayEntity;
