@@ -46,8 +46,7 @@ public function LRDebug_GetParams() : CLightRewriteSourceParams {
 
 // ---- ILightSourceRewriter extensions ----
 
-// Track inOriginalState as rewriters are applied or restored.
-
+/** Whether the rewriter is in its original state */
 @addField(ILightSourceRewriter) public var inOriginalState : bool;
 
 @wrapMethod(CCandleLightRewriter)
