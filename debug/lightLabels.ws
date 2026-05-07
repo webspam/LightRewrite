@@ -36,6 +36,7 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugAccelerator = new LRDebug_AdjustAccelerator in this;
+    lrDebugToast = new LRDebug_ToastOneLiner in this;
 
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels',    'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
@@ -49,12 +50,6 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
 
 @addMethod(CR4Player)
 private function LRDebug_ShowToast(text : string) {
-    if (lrDebugToast) {
-        lrDebugToast.unregister();
-        lrDebugToast = NULL;
-    }
-
-    lrDebugToast = new LRDebug_ToastOneLiner in this;
     lrDebugToast.Init("<font size='14'>" + text + "</font>", 1.0);
     lrDebugToast.Start();
 }
