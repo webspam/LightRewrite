@@ -64,6 +64,17 @@
 .swiper {
   // width: 100%;
   user-select: none;
+
+  // Hide until Swiper has initialised to prevent a flash of stacked slides.
+  &:not(.swiper-initialized) {
+    visibility: hidden;
+  }
+}
+
+// Hide comparison sliders until the custom element has registered,
+// preventing raw <img> pairs from rendering side-by-side during load.
+img-comparison-slider:not(:defined) {
+  visibility: hidden;
 }
 
 // Slide title
