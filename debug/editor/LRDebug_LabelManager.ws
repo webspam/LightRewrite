@@ -116,8 +116,7 @@ class LRDebug_LabelManager {
 
     /**
      * Applies a signed attribute adjustment to the target entity and refreshes its
-     * oneliner if the adjustment took effect. Combines the editor, accelerator, and
-     * oneliner refresh into one coordinated call so the player handler stays minimal.
+     * oneliner if the adjustment took effect.
      */
     public function ApplyAttributeAdjustment(value : float, editor : LRDebug_AttributeEditor) {
         if (!editor.AdjustAttribute(value, target)) return;
