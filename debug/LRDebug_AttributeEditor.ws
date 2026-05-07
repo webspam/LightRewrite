@@ -7,10 +7,10 @@
  */
 class LRDebug_AttributeEditor {
     private var attrIndex : int;
-    private var accel : LRDebug_AdjustAccelerator;
+    private var accelerator : LRDebug_AdjustAccelerator;
 
     public function Init() {
-        accel = new LRDebug_AdjustAccelerator in thePlayer;
+        accelerator = new LRDebug_AdjustAccelerator in thePlayer;
     }
 
     public function GetCurrentAttrId() : name {
@@ -153,15 +153,20 @@ class LRDebug_AttributeEditor {
     public function AdjustAttribute(sign : int, target : CGameplayEntity) : bool {
         var attr : name;
         var step : float;
-        var accelMult : float;
         var point : CPointLightComponent;
         var spot : CSpotLightComponent;
         var sourceLight : CLightComponent;
         var params : CLightRewriteSourceParams;
         var rewriter : ILightSourceRewriter;
 
+        var accelMult : float = 1.0;
+
         if (!target) return false;
         if (!target.lrdebugOneliner) return false;
+        if (!accelerator) {
+            LogLightRewrite("LRDebug_AttributeEditor: You need to call Init() on the attribute editor first.");
+            return false;
+        }
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams();
@@ -169,11 +174,15 @@ class LRDebug_AttributeEditor {
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
 
-        accelMult = 1.0;
-        if (accel && (attr == 'brightness' || attr == 'radius' || attr == 'attenuation'
-            || attr == 'shadowFadeDistance' || attr == 'shadowFadeRange'
-            || attr == 'shadowBlendFactor' || attr == 'alignOffsetZ')) {
-            accelMult = accel.GetMultiplier(sign);
+        switch (attr) {
+            case 'brightness':
+            case 'radius':
+            case 'attenuation':
+            case 'shadowFadeDistance':
+            case 'shadowFadeRange':
+            case 'shadowBlendFactor':
+            case 'alignOffsetZ':
+                accelMult = accelerator.GetMultiplier(sign);
         }
 
         if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
