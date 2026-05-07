@@ -108,23 +108,22 @@ img-comparison-slider:not(:defined) {
   position: absolute;
   bottom: 0.6rem;
   z-index: 10;
-  padding: 0.15rem 0.5rem;
+  padding: 0;
   color: rgba(255, 255, 255, 0.5);
   text-shadow: 0 0 2px black;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border-radius: 3px;
   pointer-events: none;
 }
 
 .label-before {
-  left: 0.6rem;
+  left: 1.5rem;
 }
 
 .label-after {
-  right: 0.6rem;
+  right: 1.5rem;
 }
 
 // ── Comparison slider ──
