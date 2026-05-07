@@ -151,10 +151,7 @@ img-comparison-slider {
 
 // ── Swiper navigation arrows ──
 // Use Swiper's own CSS variables — avoids brittle overrides across versions.
-// Swiper bundle CSS is loaded after our stylesheet (via custom-head.html) so its
-// :root declarations win on load order. Bumping specificity to html:root ensures
-// our values are applied last regardless of source order.
-html:root {
+:root {
   --swiper-navigation-size: 24px;
   --swiper-navigation-color: rgba(255, 255, 255, 0.6);
   --swiper-navigation-sides-offset: 0px;
