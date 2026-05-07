@@ -1,3 +1,17 @@
+// ── Footer ──
+.footer-col-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.footer-col {
+  float: none;
+  width: auto;
+  padding: 0 1rem;
+}
+
 // ── Gallery wrapper + expand toggle ──
 .gallery-wrap {
   max-width: 960px;
