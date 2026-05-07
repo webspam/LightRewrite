@@ -200,12 +200,12 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
 
 // ---- World/camera helpers ----
 
-function LRDebug_GetCameraPositionAndDirection(out camPos : Vector, out camDir : Vector) {
+function LRDebug_GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
     var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
     if (!director) return;
 
-    camPos = director.GetCameraPosition();
-    camDir = director.GetCameraDirection();
+    cameraPosition = director.GetCameraPosition();
+    cameraDirection = director.GetCameraDirection();
 }
 
 function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
