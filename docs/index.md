@@ -4,7 +4,6 @@ layout: home
 
 <div class="gallery-wrap" id="gallery" markdown="0">
 
-  <div class="swiper-main-wrap">
   <div class="swiper">
     <div class="swiper-wrapper">
 
@@ -66,7 +65,6 @@ layout: home
 
     </div>
   </div>
-  </div><!-- /.swiper-main-wrap -->
 
   <!-- Thumbnail strip -->
   <div class="swiper swiper-thumbs">
