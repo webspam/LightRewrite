@@ -21,8 +21,8 @@ class LRDebug_AdjustAccelerator {
     private const var MIN_MULTIPLIER : float;          default MIN_MULTIPLIER = 1.0;
     /** Weight factor applied to the streak value */
     private const var STREAK_WEIGHT : float;           default STREAK_WEIGHT = 0.5;
-    /** Factor by which the streak is decremented when reversing direction */
-    private const var STREAK_DECREMENT : float;        default STREAK_DECREMENT = 1.0;
+    /** Amount to decrement the streak when decelerating */
+    private const var STREAK_DECREMENT : int;          default STREAK_DECREMENT = 1;
     
     /** Last time the accelerator was updated */
     private var lastTime : float;
@@ -32,8 +32,8 @@ class LRDebug_AdjustAccelerator {
     private var fastStreak : int;
     /** Whether the accelerator is accelerating */
     private var accelerating : bool;
-    /** Last sign */
-    private var lastSign : int;
+    /** Last value */
+    private var lastValue : float;
     /** Whether a cut is pending */
     private var cutPending : bool;
 
@@ -45,10 +45,10 @@ class LRDebug_AdjustAccelerator {
     }
 
     /**
-     * Call once per adjustment event with the direction sign (+1 or -1).
+     * Call once per adjustment event with the value to adjust.
      * Returns the multiplier to apply to the base step (1.0 when not accelerating).
      */
-    public function GetMultiplier(sign : int) : float {
+    public function GetMultiplier(value : float) : float {
         var now : float = theGame.GetEngineTimeAsSeconds();
         var dt : float = now - lastTime;
 
@@ -74,7 +74,7 @@ class LRDebug_AdjustAccelerator {
             }
             else {
                 // One event opposite to the current direction cuts accel in half.
-                if (lastSign != 0 && sign != 0 && sign != lastSign) {
+                if ((value * lastValue) < 0) {
                     streak = streak / 2;
                     cutPending = true;
                 }
@@ -93,7 +93,7 @@ class LRDebug_AdjustAccelerator {
         }
 
         lastTime = now;
-        lastSign = sign;
+        lastValue = value;
 
         if (!accelerating) return 1.0;
 

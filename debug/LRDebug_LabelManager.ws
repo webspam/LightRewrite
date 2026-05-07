@@ -119,8 +119,8 @@ class LRDebug_LabelManager {
      * oneliner if the adjustment took effect. Combines the editor, accelerator, and
      * oneliner refresh into one coordinated call so the player handler stays minimal.
      */
-    public function ApplyAttributeAdjustment(sign : int, editor : LRDebug_AttributeEditor) {
-        if (!editor.AdjustAttribute(sign, target)) return;
+    public function ApplyAttributeAdjustment(value : float, editor : LRDebug_AttributeEditor) {
+        if (!editor.AdjustAttribute(value, target)) return;
 
         RefreshTargetOneliner();
     }

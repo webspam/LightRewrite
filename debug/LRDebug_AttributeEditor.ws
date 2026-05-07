@@ -62,13 +62,13 @@ class LRDebug_AttributeEditor {
         return 0.01;
     }
 
-    private function GetFloatStepDirectional(value : float, sign : float) : float {
-        var floatStep : float = GetFloatStep(value);
+    private function GetFloatStepDirectional(currentValue : float, value : float) : float {
+        var floatStep : float = GetFloatStep(currentValue);
 
-        if (sign > 0.0) return floatStep;
+        if (value > 0.0) return floatStep;
 
         // If decrementing would take us into a lower band, use the lower band's step.
-        return MinF(floatStep, GetFloatStep(value - floatStep));
+        return MinF(floatStep, GetFloatStep(currentValue - floatStep));
     }
 
     // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
@@ -91,14 +91,14 @@ class LRDebug_AttributeEditor {
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    private function GetDynamicStep(attr : name, currentValue : float, sign : float) : float {
+    private function GetDynamicStep(attr : name, currentValue : float, value : float) : float {
         switch (attr) {
             case 'alignOffsetZ':
             case 'attenuation':
             case 'shadowBlendFactor':
                 return 0.05;
             default:
-                return GetFloatStepDirectional(currentValue, sign);
+                return GetFloatStepDirectional(currentValue, value);
         }
     }
 
@@ -150,7 +150,7 @@ class LRDebug_AttributeEditor {
      * given entity. Returns true if the adjustment was applied (caller should
      * then call LRDebug_RegenerateText on the entity's oneliner).
      */
-    public function AdjustAttribute(sign : int, target : CGameplayEntity) : bool {
+    public function AdjustAttribute(value : float, target : CGameplayEntity) : bool {
         var attr : name;
         var step : float;
         var point : CPointLightComponent;
@@ -158,6 +158,7 @@ class LRDebug_AttributeEditor {
         var sourceLight : CLightComponent;
         var params : CLightRewriteSourceParams;
         var rewriter : ILightSourceRewriter;
+        var colourStep : int;
 
         var accelMult : float = 1.0;
 
@@ -182,7 +183,7 @@ class LRDebug_AttributeEditor {
             case 'shadowFadeRange':
             case 'shadowBlendFactor':
             case 'alignOffsetZ':
-                accelMult = accelerator.GetMultiplier(sign);
+                accelMult = accelerator.GetMultiplier(value);
         }
 
         if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
@@ -199,8 +200,8 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) params.brightness = sourceLight.brightness;
                     if (sourceLight == spot) params.brightness *= 0.5f;
                 }
-                step = GetDynamicStep(attr, params.brightness, sign) * accelMult;
-                params.brightness = ApplyFloatDelta(attr, params.brightness, step * sign);
+                step = GetDynamicStep(attr, params.brightness, value) * accelMult;
+                params.brightness = ApplyFloatDelta(attr, params.brightness, step * value);
                 break;
 
             case 'radius':
@@ -208,8 +209,8 @@ class LRDebug_AttributeEditor {
                     params.hasRadius = true;
                     if (sourceLight) params.radius = sourceLight.radius;
                 }
-                step = GetDynamicStep(attr, params.radius, sign) * accelMult;
-                params.radius = ApplyFloatDelta(attr, params.radius, step * sign);
+                step = GetDynamicStep(attr, params.radius, value) * accelMult;
+                params.radius = ApplyFloatDelta(attr, params.radius, step * value);
                 break;
 
             case 'attenuation':
@@ -217,8 +218,8 @@ class LRDebug_AttributeEditor {
                     params.hasAttenuation = true;
                     if (sourceLight) params.attenuation = sourceLight.attenuation;
                 }
-                step = GetDynamicStep(attr, params.attenuation, sign) * accelMult;
-                params.attenuation = ApplyFloatDelta(attr, params.attenuation, step * sign);
+                step = GetDynamicStep(attr, params.attenuation, value) * accelMult;
+                params.attenuation = ApplyFloatDelta(attr, params.attenuation, step * value);
                 break;
 
             case 'shadowFadeDistance':
@@ -226,8 +227,8 @@ class LRDebug_AttributeEditor {
                     params.hasShadowFadeDistance = true;
                     if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
                 }
-                step = GetDynamicStep(attr, params.shadowFadeDistance, sign) * accelMult;
-                params.shadowFadeDistance = ApplyFloatDelta(attr, params.shadowFadeDistance, step * sign);
+                step = GetDynamicStep(attr, params.shadowFadeDistance, value) * accelMult;
+                params.shadowFadeDistance = ApplyFloatDelta(attr, params.shadowFadeDistance, step * value);
                 break;
 
             case 'shadowFadeRange':
@@ -235,8 +236,8 @@ class LRDebug_AttributeEditor {
                     params.hasShadowFadeRange = true;
                     if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
                 }
-                step = GetDynamicStep(attr, params.shadowFadeRange, sign) * accelMult;
-                params.shadowFadeRange = ApplyFloatDelta(attr, params.shadowFadeRange, step * sign);
+                step = GetDynamicStep(attr, params.shadowFadeRange, value) * accelMult;
+                params.shadowFadeRange = ApplyFloatDelta(attr, params.shadowFadeRange, step * value);
                 break;
 
             case 'shadowBlendFactor':
@@ -244,18 +245,18 @@ class LRDebug_AttributeEditor {
                     params.hasShadowBlendFactor = true;
                     if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
                 }
-                step = GetDynamicStep(attr, params.shadowBlendFactor, sign) * accelMult;
-                params.shadowBlendFactor = ApplyFloatDelta(attr, params.shadowBlendFactor, step * sign);
+                step = GetDynamicStep(attr, params.shadowBlendFactor, value) * accelMult;
+                params.shadowBlendFactor = ApplyFloatDelta(attr, params.shadowBlendFactor, step * value);
                 break;
 
             case 'useSpotlightColor':
                 params.hasUseSpotlightColor = true;
-                params.useSpotlightColor = (sign > 0);
+                params.useSpotlightColor = (value > 0);
                 break;
 
             case 'alignPointLights':
                 params.hasAlignPointLights = true;
-                params.alignPointLights = (sign > 0);
+                params.alignPointLights = (value > 0);
                 break;
 
             case 'alignOffsetZ':
@@ -263,12 +264,12 @@ class LRDebug_AttributeEditor {
                     params.hasAlignPointLights = true;
                     params.alignPointLights = true;
                 }
-                step = GetDynamicStep(attr, params.pointLightOffset.Z, sign) * accelMult;
-                params.pointLightOffset.Z += step * sign;
+                step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
+                params.pointLightOffset.Z += step * value;
                 break;
 
             case 'overrideColour':
-                params.hasColour = (sign > 0);
+                params.hasColour = (value > 0);
                 if (params.hasColour && sourceLight) {
                     params.color = sourceLight.color;
                 }
@@ -279,7 +280,8 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Red = (byte)Clamp(params.color.Red + sign, 0, 255);
+                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
+                params.color.Red = (byte)Clamp(params.color.Red + colourStep, 0, 255);
                 break;
 
             case 'colourG':
@@ -287,7 +289,8 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Green = (byte)Clamp(params.color.Green + sign, 0, 255);
+                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
+                params.color.Green = (byte)Clamp(params.color.Green + colourStep, 0, 255);
                 break;
 
             case 'colourB':
@@ -295,7 +298,8 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Blue = (byte)Clamp(params.color.Blue + sign, 0, 255);
+                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
+                params.color.Blue = (byte)Clamp(params.color.Blue + colourStep, 0, 255);
                 break;
         }
 

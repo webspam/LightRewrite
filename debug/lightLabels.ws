@@ -102,15 +102,10 @@ public function LRDebug_OnInputCycleAttrNext(action : SInputAction) : bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action : SInputAction) : bool {
-    var sign : int;
-
     if (!action.value) return false;
 
-    // Convert from +/- float (e.g. ±3.0) to int sign.
-    if (action.value > 0.0) sign = 1;
-    else sign = -1;
-
-    lrDebugLabelManager.ApplyAttributeAdjustment(sign, lrDebugAttrEditor);
+    // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
+    lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333334f, lrDebugAttrEditor);
     return true;
 }
 
