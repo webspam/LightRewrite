@@ -1,26 +1,26 @@
 /**
  * Tracks scroll-wheel acceleration state for the LRDebug attribute editor.
  *
- * Acceleration activates after a tight burst of events (>=2 within 75 ms each)
+ * Acceleration activates after a tight burst of events (>=6 within 75 ms each)
  * and ramps the step multiplier up to 8x. A direction reversal cuts the streak
  * in half immediately. A pause longer than 500 ms resets everything.
  */
 class LRDebug_AdjustAccelerator {
     /** The number of events required to activate acceleration */
-    private const var ACCELERATE_THRESHOLD : int;      default ACCELERATE_THRESHOLD = 2;
+    private const var ACCELERATE_THRESHOLD : int;      default ACCELERATE_THRESHOLD = 6;
     /** Maximum time between events to classify as a burst */
-    private const var BURST_INTERVAL : float;          default BURST_INTERVAL = 0.075;
+    private const var BURST_INTERVAL : float;          default BURST_INTERVAL = 0.333;
     /** Time in seconds after receiving a reverse input, before the streak is reset */
-    private const var REVERSE_TIME : float;            default REVERSE_TIME = 0.150;
+    private const var REVERSE_TIME : float;            default REVERSE_TIME = 0.333;
     /** Time in seconds until the accelerator is reset, after receiving no input */
-    private const var RESET_TIME : float;              default RESET_TIME = 0.500;
+    private const var RESET_TIME : float;              default RESET_TIME = 0.750;
 
     /** Maximum multiplier */
-    private const var MAX_MULTIPLIER : float;          default MAX_MULTIPLIER = 8.0;
+    private const var MAX_MULTIPLIER : float;          default MAX_MULTIPLIER = 6.0;
     /** Minimum multiplier */
     private const var MIN_MULTIPLIER : float;          default MIN_MULTIPLIER = 1.0;
     /** Weight factor applied to the streak value */
-    private const var STREAK_WEIGHT : float;           default STREAK_WEIGHT = 0.5;
+    private const var STREAK_WEIGHT : float;           default STREAK_WEIGHT = 0.2;
     /** Amount to decrement the streak when decelerating */
     private const var STREAK_DECREMENT : int;          default STREAK_DECREMENT = 1;
     
@@ -84,7 +84,7 @@ class LRDebug_AdjustAccelerator {
 
                 // Keep acceleration sticky; gently decelerate if events slow down.
                 if (dt <= BURST_INTERVAL) {
-                    streak += 1;
+                    if (streak < (MAX_MULTIPLIER / STREAK_WEIGHT)) streak += 1;
                 }
                 else {
                     streak = Max(0, streak - STREAK_DECREMENT);
