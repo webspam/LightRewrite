@@ -21,11 +21,11 @@ class LRDebug_LabelManager {
         var score, bestScore, dot, visibilityRange : float;
         var bestEntity : CGameplayEntity;
 
-        LRDebug_FindNearbyLights(entities);
+        FindNearbyLights(entities);
 
         bestScore = -1.0;
         bestEntity = NULL;
-        LRDebug_GetCameraPositionAndDirection(camPos, camDir);
+        GetCameraPositionAndDirection(camPos, camDir);
         camDir = VecNormalize(camDir);
 
         if (theGame.IsFocusModeActive()) visibilityRange = 25.0;
@@ -40,8 +40,8 @@ class LRDebug_LabelManager {
                 entity.lrdebugOneliner.Start();
             }
             else {
-                pointLights = LRDebug_CountComponents(entity, 'CPointLightComponent');
-                spotLights = LRDebug_CountComponents(entity, 'CSpotLightComponent');
+                pointLights = CountComponents(entity, 'CPointLightComponent');
+                spotLights = CountComponents(entity, 'CSpotLightComponent');
                 if (pointLights == 0 && spotLights == 0) continue;
 
                 CreateOnelinerForEntity(entity, pointLights, spotLights);
@@ -88,7 +88,7 @@ class LRDebug_LabelManager {
 
         showPathLabels = !showPathLabels;
 
-        LRDebug_FindNearbyLights(entities);
+        FindNearbyLights(entities);
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
@@ -137,6 +137,25 @@ class LRDebug_LabelManager {
 
         rewriter.RestoreOriginalState();
         return "OFF";
+    }
+
+    private function FindNearbyLights(out entities : array<CGameplayEntity>) {
+        var maxRange : float = 10.0;
+
+        if (theGame.IsFocusModeActive()) maxRange = 25.0;
+        FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
+    }
+
+    private function GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
+        var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
+
+        cameraPosition = director.GetCameraPosition();
+        cameraDirection = director.GetCameraDirection();
+    }
+
+    private function CountComponents(entity : CGameplayEntity, className : name) : int {
+        var components : array<CComponent> = entity.GetComponentsByClassName(className);
+        return components.Size();
     }
 
     private function CreateOnelinerForEntity(

@@ -66,11 +66,6 @@ function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent 
     return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
 }
 
-function LRDebug_CountComponents(entity : CGameplayEntity, className : name) : int {
-    var components : array<CComponent> = entity.GetComponentsByClassName(className);
-    return components.Size();
-}
-
 // ---- Entity classification ----
 
 function LRDebug_IsCandle(entity : CGameplayEntity) : bool {
@@ -112,18 +107,3 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
     return lightSourceRewriter;
 }
 
-// ---- World/camera helpers ----
-
-function LRDebug_GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
-    var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
-
-    cameraPosition = director.GetCameraPosition();
-    cameraDirection = director.GetCameraDirection();
-}
-
-function LRDebug_FindNearbyLights(out entities : array<CGameplayEntity>) {
-    var maxRange : float = 10.0;
-
-    if (theGame.IsFocusModeActive()) maxRange = 25.0;
-    FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
-}
