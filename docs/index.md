@@ -40,3 +40,14 @@ layout: home
 </div>
 
 <p class="image-compare-links"><a href="https://webspam.github.io/images/novigrad-gate-before-219.jpg">Before</a> | <a href="https://webspam.github.io/images/novigrad-gate-after-219.jpg">After</a></p>
+
+## Spikeroog inn
+
+<div class="comparison-slider-bleed" markdown="0">
+<img-comparison-slider>
+  <img slot="first" alt="spikeroog-inn-before-219" src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" />
+  <img slot="second" alt="spikeroog-inn-after-219" src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg" />
+</img-comparison-slider>
+</div>
+
+<p class="image-compare-links"><a href="https://webspam.github.io/images/spikeroog-inn-before-219.jpg">Before</a> | <a href="https://webspam.github.io/images/spikeroog-inn-after-219.jpg">After</a></p>
