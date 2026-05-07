@@ -8,19 +8,6 @@
 
 
 
-function LRDebug_IsAcceleratedAttribute(attr : name) : bool {
-    switch (attr) {
-        case 'brightness':
-        case 'radius':
-        case 'attenuation':
-        case 'shadowFadeDistance':
-        case 'shadowFadeRange':
-        case 'shadowBlendFactor':
-        case 'alignOffsetZ':
-            return true;
-    }
-    return false;
-}
 
 function LRDebug_ClampAttributeValue(attr : name, value : float) : float {
     // alignOffsetZ is the only attribute that can go negative.

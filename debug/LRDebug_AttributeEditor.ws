@@ -88,7 +88,9 @@ class LRDebug_AttributeEditor {
         spot = LRDebug_FirstSpotLight(target);
 
         accelMult = 1.0;
-        if (accel && LRDebug_IsAcceleratedAttribute(attr)) {
+        if (accel && (attr == 'brightness' || attr == 'radius' || attr == 'attenuation'
+            || attr == 'shadowFadeDistance' || attr == 'shadowFadeRange'
+            || attr == 'shadowBlendFactor' || attr == 'alignOffsetZ')) {
             accelMult = accel.GetMultiplier(sign);
         }
 
