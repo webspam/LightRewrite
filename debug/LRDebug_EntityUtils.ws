@@ -9,17 +9,17 @@
 // ---- CGameplayEntity extensions ----
 
 /** The params used to edit the light source */
-@addField(CGameplayEntity) public var lrDebugTempParams : CLightRewriteSourceParams;
+@addField(CGameplayEntity) public var lrDebugParams : CLightRewriteSourceParams;
 
 /** Lazy getter */
 @addMethod(CGameplayEntity)
 public function LRDebug_GetTempParams() : CLightRewriteSourceParams {
-    if (!lrDebugTempParams) {
-        lrDebugTempParams = new CLightRewriteSourceParams in this;
-        lrDebugTempParams.hasEnabled = true;
-        lrDebugTempParams.enabled = true;
+    if (!lrDebugParams) {
+        lrDebugParams = new CLightRewriteSourceParams in this;
+        lrDebugParams.hasEnabled = true;
+        lrDebugParams.enabled = true;
     }
-    return lrDebugTempParams;
+    return lrDebugParams;
 }
 
 // ---- ILightSourceRewriter extensions ----
@@ -93,7 +93,7 @@ function LRDebug_GetAttributeValueString(entity : CGameplayEntity, attr : name) 
 
     if (!entity) return "?";
 
-    params = entity.lrDebugTempParams;
+    params = entity.lrDebugParams;
     point = LRDebug_FirstPointLight(entity);
 
     switch (attr) {
@@ -179,7 +179,6 @@ function LRDebug_GetAttributeValueString(entity : CGameplayEntity, attr : name) 
 @addMethod(CGameplayEntity)
 public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
     var params : CLightRewriteSourceParams;
-    var rewriter : ILightSourceRewriter;
 
     if (lightSourceRewriter) return lightSourceRewriter;
 
@@ -195,9 +194,8 @@ public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
     }
 
     bypassLightRewrite = false;
-    rewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
-    lightSourceRewriter = rewriter;
-    return rewriter;
+    lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
+    return lightSourceRewriter;
 }
 
 // ---- World/camera helpers ----
