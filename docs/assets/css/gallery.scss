@@ -1,0 +1,226 @@
+---
+---
+
+// ── Gallery wrapper + expand toggle ──
+.gallery-wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.gallery-wrap.is-expanded {
+  // Break out of Minima's content column — same bleed technique as the old sliders.
+  // Symmetric margins avoid a single-sided breakout shifting too far sideways.
+  width: calc(100vw - 4rem);
+  max-width: none;
+  margin-left: calc(50% - 50vw + 2rem);
+}
+
+// ── Expand button ──
+.gallery-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s, border-color 0.2s;
+  user-select: none;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.75;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+// ── Swiper container ──
+.swiper {
+  user-select: none;
+
+  // Hide until Swiper has initialised to prevent a flash of stacked slides,
+  // but keep the preloader spinner visible during that window.
+  &:not(.swiper-initialized) {
+    visibility: hidden;
+
+    .swiper-lazy-preloader {
+      visibility: visible;
+    }
+  }
+
+  // Hide the preloader once Swiper is ready.
+  &.swiper-initialized .swiper-lazy-preloader {
+    display: none;
+  }
+}
+
+// Hide comparison sliders until the custom element has registered,
+// preventing raw <img> pairs from rendering side-by-side during load.
+img-comparison-slider:not(:defined) {
+  visibility: hidden;
+}
+
+// Slide title
+.slide-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0.5rem 0;
+  flex-shrink: 0;
+}
+
+// Image wrap — nav buttons centre on this, not the whole slide.
+// flex + center mirrors the old full-bleed approach: image renders at intrinsic
+// size and is centred, never stretched beyond its natural dimensions.
+.slide-image-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+// Shrink-wraps to the slider's intrinsic width so labels anchor to image edges.
+.slider-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+// ── Before / After corner labels ──
+.label-before,
+.label-after {
+  position: absolute;
+  bottom: 0.6rem;
+  z-index: 10;
+  padding: 0.15rem 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 2px black;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.label-before {
+  left: 0.6rem;
+}
+
+.label-after {
+  right: 0.6rem;
+}
+
+// ── Comparison slider ──
+// No width: 100% — images render at intrinsic size so they never stretch on large screens.
+// max-width: 100% prevents overflow on small screens.
+img-comparison-slider {
+  display: block;
+  max-width: 100%;
+  --divider-width: 1px;
+  --divider-color: rgba(179, 179, 179, 0.5);
+  --default-handle-opacity: 0;
+}
+
+// ── Swiper navigation arrows ──
+// Use Swiper's own CSS variables — avoids brittle overrides across versions.
+:root {
+  --swiper-navigation-size: 24px;
+  --swiper-navigation-color: rgba(255, 255, 255, 0.6);
+  --swiper-navigation-sides-offset: 0px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+
+  // Expanded hit area via pseudo-element — no Swiper variable exists for this.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1.5rem;
+  }
+
+  &:hover {
+    --swiper-navigation-color: #fff;
+  }
+}
+
+// At viewports wider than the max intrinsic image width plus the nav button and
+// surrounding space, the next button sits in empty space beside the image.
+// Stretch it to full height so the entire right edge becomes a click target.
+// 24px = --swiper-navigation-size (CSS vars are not valid in @media conditions).
+@media (min-width: calc(3840px + 3rem + 24px)) {
+  .swiper-button-next {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    margin-top: 0;
+    transform: none;
+
+    &::before {
+      inset-block: 0;
+    }
+  }
+}
+
+// ── Thumbnail strip ──
+.swiper-thumbs {
+  width: 100%;
+  max-width: 1140px;
+  margin: 1rem auto 0;
+
+  .swiper-slide {
+    width: auto;
+    opacity: 0.45;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+
+    &.swiper-slide-thumb-active {
+      opacity: 1;
+    }
+
+    // Separator line between thumbnails — inset 20% from top and bottom
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.25);
+      transition: background 0.2s;
+    }
+
+    // Highlight separators flanking the active thumbnail
+    &.swiper-slide-thumb-active::after {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    &:has(+ .swiper-slide-thumb-active)::after {
+      background: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  img {
+    display: block;
+    height: 72px;
+    width: auto;
+    border-radius: 3px;
+  }
+}
