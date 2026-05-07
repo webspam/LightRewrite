@@ -16,7 +16,6 @@
 .gallery-wrap {
   max-width: 960px;
   margin: 0 auto;
-  transition: max-width 0.3s ease, margin 0.3s ease, width 0.3s ease;
 }
 
 .gallery-wrap.is-expanded {
@@ -111,8 +110,13 @@
   pointer-events: none;
 }
 
-.label-before { left: 0.6rem; }
-.label-after  { right: 0.6rem; }
+.label-before {
+  left: 0.6rem;
+}
+
+.label-after {
+  right: 0.6rem;
+}
 
 // ── Comparison slider ──
 // No width: 100% — images render at intrinsic size so they never stretch on large screens.
@@ -135,6 +139,7 @@ img-comparison-slider {
 
 .swiper-button-prev,
 .swiper-button-next {
+
   // Expanded hit area via pseudo-element — no Swiper variable exists for this.
   &::before {
     content: '';
@@ -142,7 +147,9 @@ img-comparison-slider {
     inset: -1.5rem;
   }
 
-  &:hover { --swiper-navigation-color: #fff; }
+  &:hover {
+    --swiper-navigation-color: #fff;
+  }
 }
 
 // ── Thumbnail strip ──
@@ -158,7 +165,9 @@ img-comparison-slider {
     transition: opacity 0.2s;
     position: relative;
 
-    &.swiper-slide-thumb-active { opacity: 1; }
+    &.swiper-slide-thumb-active {
+      opacity: 1;
+    }
 
     // Separator line between thumbnails — inset 20% from top and bottom
     &:not(:last-child)::after {
