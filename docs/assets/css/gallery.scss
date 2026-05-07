@@ -89,6 +89,7 @@ img-comparison-slider:not(:defined) {
 // flex + center mirrors the old full-bleed approach: image renders at intrinsic
 // size and is centred, never stretched beyond its natural dimensions.
 .slide-image-wrap {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-start;
