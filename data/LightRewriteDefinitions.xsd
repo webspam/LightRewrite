@@ -104,6 +104,8 @@
                   maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Filter that controls which light sources this entry applies to.</xs:documentation>
+          <xs:documentation>By default, matches the start of the entity file name (e.g.
+            candle_small.w2ent).</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="shadows"
@@ -124,8 +126,12 @@
                   type="alignPointLightsType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>Whether to align point lights to the light source - *many* point lights
-            have been moved manually. Offset to add when aligning point lights.</xs:documentation>
+          <xs:documentation>When present, this will move all point lights to an offset from the
+            entity itself. For complex candles, this will align individual point lights to the flame
+            FX.</xs:documentation>
+          <xs:documentation>N.B. *Many* point lights have been moved manually by the game designers,
+            as when the game was released, point lighting was often used for much smaller,
+            hand-crafted effects.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
@@ -199,6 +205,8 @@
   <xs:complexType name="matchType">
     <xs:annotation>
       <xs:documentation>A filter string matched against light source entity names or layer paths.</xs:documentation>
+      <xs:documentation>By default, matches the start of the entity file name (e.g.
+        candle_small.w2ent).</xs:documentation>
     </xs:annotation>
     <xs:simpleContent>
       <xs:extension base="xs:string">
@@ -208,6 +216,8 @@
                       default="entity">
           <xs:annotation>
             <xs:documentation>What to match against: entity name (default) or layer path.</xs:documentation>
+            <xs:documentation>The layer path is the full\path\to\the\layer.w2l, whilst the entity is
+              the base file name, without the path.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="mode"
@@ -225,8 +235,17 @@
 
   <xs:simpleType name="matchTypeEnum">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="entity" />
-      <xs:enumeration value="layer" />
+      <xs:enumeration value="entity">
+        <xs:annotation>
+          <xs:documentation>Match against the base file name of the entity, e.g. candle_small.w2ent</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="layer">
+        <xs:annotation>
+          <xs:documentation>Match against the layer path of an entity, e.g.
+            levels\prolog_village\some\layer.w2l</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
 
