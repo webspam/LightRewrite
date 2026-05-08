@@ -1,5 +1,5 @@
 ---
-description: Witcher 3 modding conventions for Witcher Script (.ws)
+description: Important information for editing Witcher 3 (.ws) files - modding & language conventions
 globs: "**/*.ws"
 alwaysApply: false
 ---
@@ -16,6 +16,8 @@ alwaysApply: false
   - `const` vars starting with `TAG_` should always be `name`
   - For convenience, `name` may be implicit cast to `string`, but there is no way to cast variables to `name`
 - `string` type uses double quotes `"`
+- `int` modulo uses %: `6 % 5 == 1` is `true`, `float` modulo uses `ModF(a, b)`
+- `NULL` is idiomatic null (it should be used where it can, but it is a `void` const)
 
 ## Layout in this repo
 
@@ -25,14 +27,15 @@ alwaysApply: false
 ## Style (match this project)
 
 - Use explicit types on members and functions (`: float`, `: string`, `: bool`, `: name`, etc.).
-- Initialize fields with `default` on its own line when the codebase does:
+- Initialize fields with `default` on its own line:
 
 ```ws
 private var isEnabled : bool;  default isEnabled = true;
 ```
 
+- Defaults must be compile-time const
 - Use `enum`, `class`, `function`, and `switch` in the same style as surrounding files.
-- Use `LogChannel` or project helpers (e.g. `LogRC`) consistently with existing files.
+- Use `LogChannel` or project helpers (e.g. `LogLightRewrite`) consistently with existing files.
 
 ## Modding discipline
 
@@ -80,3 +83,5 @@ if (foo) foo.bar;
   if (thing != otherThing) return true;
   else return false;
   ```
+- `RoundF()` behaviour is deterministic but illogical: `RoundF(0.05 * 100.0) / 100.0 == 0.04`
+  - `FloorF()` and `CeilF()` work as expected
