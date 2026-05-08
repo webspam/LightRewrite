@@ -1,3 +1,25 @@
+// ── Header GitHub link ──
+.site-header .wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.site-github-link {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &:hover {
+    color: #fff;
+  }
+}
+
 // ── Footer ──
 .footer-col-wrapper {
   display: flex;
