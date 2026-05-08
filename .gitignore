@@ -1,7 +1,5 @@
 # Build output
 /build/
-/mods/
-/modLightRewrite.zip
 
 # Scripts
 /debug.ps1

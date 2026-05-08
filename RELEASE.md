@@ -46,10 +46,10 @@ modLightRewrite-<tag>.zip
 High level overview of the build process. For actual steps, see build scripts.
 
 1. **Localisation (when needed)** — If you changed plain-text translations, regenerate the matching `w3strings` binaries before building; see `l10n/README.md`.
-2. **Stage scripts** — Copy the Witcher sources from `src/` into the mod script tree under `mods/`.
-3. **Stage localisation** — Copy the `w3strings` files from `l10n/` into the mod's `mods/modLightRewrite/content/` folder.
-4. **Bundle** — Run `wcc_lite pack` so the staged gameplay XML under `build/bundle/` is written as bundle files in the mod `mods/modLightRewrite/content/` folder.
-5. **Metadata store** — Run `wcc_lite metadatastore` on `mods/modLightRewrite/content/` to generate `metadata.store`.
+2. **Stage scripts** — Copy the Witcher sources from `src/` into the mod script tree under `build/mods/`.
+3. **Stage localisation** — Copy the `w3strings` files from `l10n/` into `build/mods/modLightRewrite/content/`.
+4. **Bundle** — Run `wcc_lite pack` so the staged gameplay XML under `build/bundle/` is written as bundle files in `build/mods/modLightRewrite/content/`.
+5. **Metadata store** — Run `wcc_lite metadatastore` on `build/mods/modLightRewrite/content/` to generate `metadata.store`.
 6. **Package** — Produce one zip whose root contains both `mods` and `bin`, matching the layout above.
 
 ### Build requirements

@@ -58,23 +58,24 @@ if (-not (Test-Path -Path $wccLiteExe)) {
   throw "wcc_lite.exe not found. Set WCC_LITE_PATH or WCC_LITE_DIR. Looked for: $wccLiteExe"
 }
 
-$buildDir = Join-Path $RepoRoot "build/bundle"
-$modsRoot = Join-Path $RepoRoot "mods"
+$buildRoot = Join-Path $RepoRoot "build"
+$bundleDir = Join-Path $buildRoot "bundle"
+$modsRoot = Join-Path $buildRoot "mods"
 $modContentDir = Join-Path $modsRoot "modLightRewrite/content"
 $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
 
 # Main execution
 
 # Clean build dirs
-Remove-DirectoryIfExists $buildDir
+Remove-DirectoryIfExists $bundleDir
 Remove-DirectoryIfExists $modsRoot
 
-New-Directory $buildDir
+New-Directory $bundleDir
 New-Directory $scriptsDir
 
 # Stage XML files into the in-bundle path
 $xmlSource = Join-Path $RepoRoot "data/*.xml"
-$xmlDestDir = Join-Path $buildDir "gameplay/abilities"
+$xmlDestDir = Join-Path $bundleDir "gameplay/abilities"
 
 New-Directory $xmlDestDir
 Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
@@ -97,7 +98,7 @@ if ($SkipWcc) {
 }
 else {
   try {
-    Invoke-WccLite -Arguments "pack -dir=`"$buildDir`" -outdir=`"$modContentDir`""
+    Invoke-WccLite -Arguments "pack -dir=`"$bundleDir`" -outdir=`"$modContentDir`""
   }
   catch {
     throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
