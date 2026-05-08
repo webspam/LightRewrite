@@ -137,6 +137,11 @@ layout: home
     },
   });
 
+  // Disable the 100ms animated snap-to-click; dragging and keyboard are unaffected.
+  customElements.whenDefined('img-comparison-slider').then(() => {
+    customElements.get('img-comparison-slider').prototype.enableTransition = function () {};
+  });
+
   lucide.createIcons();
 
   const gallery = document.getElementById('gallery');
