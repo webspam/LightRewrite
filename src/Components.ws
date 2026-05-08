@@ -23,7 +23,6 @@ public function SaveLightRewriteOriginalValues() {
 
     lightRewriteOriginalValues.hasBeenSaved = true;
 
-    lightRewriteOriginalValues.enabled = IsEnabled();
     lightRewriteOriginalValues.position = GetLocalPosition();
     lightRewriteOriginalValues.brightness = brightness;
     lightRewriteOriginalValues.radius = radius;
@@ -35,13 +34,14 @@ public function SaveLightRewriteOriginalValues() {
 }
 
 // Restores the light component to its original values.
-// Note: this will restore the original enabled state, which may have been changed.
-// As it stands, I cannot find a way to intercept calls to SetEnabled to track state changes.
 @addMethod(CLightComponent)
-public function RestoreLightRewriteOriginalValues() {
+public function RestoreLightRewriteOriginalValues(useEnabled : bool, optional enabled : bool) {
+    var wasEnabled : bool;
+
     if (!lightRewriteOriginalValues.hasBeenSaved) return;
 
-    if (IsEnabled()) SetEnabled(false);
+    wasEnabled = IsEnabled();
+    if (wasEnabled) SetEnabled(false);
 
     SetPosition(lightRewriteOriginalValues.position);
     brightness = lightRewriteOriginalValues.brightness;
@@ -52,5 +52,13 @@ public function RestoreLightRewriteOriginalValues() {
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     color = lightRewriteOriginalValues.color;
 
-    if (lightRewriteOriginalValues.enabled) SetEnabled(true);
+    // The caller provided the parent entity's current enabled state
+    if (useEnabled) {
+        if (enabled) SetEnabled(enabled);
+    }
+    // Theoretically, this could result in light state corruption when toggling the mod OFF
+    // It is unlikely once we're closer to full release and should be guarded against elsewhere
+    else if (wasEnabled) {
+        SetEnabled(true);
+    }
 }
