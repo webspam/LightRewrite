@@ -87,6 +87,7 @@ docs/
   AGENTS.md                          # This file (excluded from Jekyll build)
   _includes/
     custom-head.html                 # Loads img-comparison-slider, Swiper, and Lucide from CDN
+    header.html                      # Theme override — adds GitHub icon link to top-right of header
   _sass/minima/
     custom-styles.scss               # Minima overrides (if any)
   assets/css/
