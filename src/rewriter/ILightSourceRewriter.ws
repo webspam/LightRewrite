@@ -82,7 +82,7 @@ abstract class ILightSourceRewriter {
     }
 
     // Disables all spotlight components on the entity.
-    protected function DisableAllSpotlightComponents() {
+    public function DisableAllSpotlightComponents() {
         var lightComponent : CSpotLightComponent;
         var i : int;
 
