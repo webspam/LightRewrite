@@ -10,6 +10,7 @@
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
+ * IK_NumPad9=(Action=LRDebug_ExportEdited)
  */
 
 // ---- CR4Player fields ----
@@ -51,6 +52,7 @@ timer function LRDebug_DeferredLabelInstall(dt : float, id : int) {
     theInput.RegisterListener(this, 'LRDebug_OnSelectColourR', 'LRDebug_SelectColourR');
     theInput.RegisterListener(this, 'LRDebug_OnSelectColourG', 'LRDebug_SelectColourG');
     theInput.RegisterListener(this, 'LRDebug_OnSelectColourB', 'LRDebug_SelectColourB');
+    theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
 }
 
 // ---- Refresh timer ----
@@ -268,4 +270,14 @@ public function LRDebug_OnSelectAlignPointLights(action : SInputAction) : bool {
         return true;
     }
     return false;
+}
+
+// ---- Input: export edited lights ----
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputExportEdited(action : SInputAction) : bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    LRDebug_ExportEditedLights();
+    return true;
 }
