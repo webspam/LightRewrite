@@ -120,3 +120,10 @@ function AddTag(tag : name) {
 public function IsLightRewritable() : bool {
     return !bypassLightRewrite && lightSourceRewriter.IsEnabled();
 }
+
+@addMethod(CGameplayEntity)
+timer function LightRewriteDisableSpotlights(dt : float, id : int) {
+    if (!bypassLightRewrite && lightSourceRewriter) {
+        lightSourceRewriter.DisableAllSpotlightComponents();
+    }
+}

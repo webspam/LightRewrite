@@ -2,6 +2,7 @@
 struct SLightRewriteOriginalValues {
     var hasBeenSaved : bool;
 
+    var enabled : bool;
     var position : Vector;
     var brightness : float;
     var radius : float;
@@ -34,7 +35,7 @@ public function SaveLightRewriteOriginalValues() {
 
 // Restores the light component to its original values.
 @addMethod(CLightComponent)
-public function RestoreLightRewriteOriginalValues() {
+public function RestoreLightRewriteOriginalValues(useEnabled : bool, optional enabled : bool) {
     var wasEnabled : bool;
 
     if (!lightRewriteOriginalValues.hasBeenSaved) return;
@@ -51,5 +52,13 @@ public function RestoreLightRewriteOriginalValues() {
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     color = lightRewriteOriginalValues.color;
 
-    if (wasEnabled) SetEnabled(true);
+    // The caller provided the parent entity's current enabled state
+    if (useEnabled) {
+        if (enabled) SetEnabled(enabled);
+    }
+    // Theoretically, this could result in light state corruption when toggling the mod OFF
+    // It is unlikely once we're closer to full release and should be guarded against elsewhere
+    else if (wasEnabled) {
+        SetEnabled(true);
+    }
 }

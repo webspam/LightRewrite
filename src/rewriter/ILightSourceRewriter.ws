@@ -54,15 +54,23 @@ abstract class ILightSourceRewriter {
         var spotLight : CSpotLightComponent;
         var pointLight : CPointLightComponent;
         var i : int;
+        var interactionComponent : CGameplayLightComponent;
+        var useEntityState, entityLightState : bool;
 
         var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count : int = components.Size();
+
+        interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
+        if (interactionComponent) {
+            useEntityState = true;
+            entityLightState = interactionComponent.IsLightOn();
+        }
 
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
 
             if (pointLight) {
-                pointLight.RestoreLightRewriteOriginalValues();
+                pointLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
             }
         }
 
@@ -75,17 +83,14 @@ abstract class ILightSourceRewriter {
                 spotLight = (CSpotLightComponent)components[i];
 
                 if (spotLight) {
-                    spotLight.RestoreLightRewriteOriginalValues();
-                    // This is a cheap hack and is likely imperfect; we're not tracking enabled state after the initial rewrite.
-                    // Will only affect users playing in settings.
-                    if (parentEntity.HasTag(theGame.params.TAG_OPEN_FIRE)) spotLight.SetEnabled(true);
+                    spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
                 }
             }
         }
     }
 
     // Disables all spotlight components on the entity.
-    protected function DisableAllSpotlightComponents() {
+    public function DisableAllSpotlightComponents() {
         var lightComponent : CSpotLightComponent;
         var i : int;
 

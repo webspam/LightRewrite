@@ -56,7 +56,12 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         }
 
         // Remove spotlights from candles that have point lights (should be all candles).
-        if (count > 0) DisableAllSpotlightComponents();
+        // TODO: Find a lifecycle hook where disabling the component actually works
+        if (count > 0) {
+            LogLightRewrite("[CCandleLightRewriter.RewriteLight] Deferring spotlight disable for 10ms: " + parentEntity.ToString());
+            parentEntity.AddTimer('LightRewriteDisableSpotlights', 0.01, false);
+        }
+        // if (count > 0) DisableAllSpotlightComponents();
     }
 
     /*
