@@ -119,12 +119,17 @@ abstract class ILightSourceRewriter {
         if (pamparams.hasColour) light.color = pamparams.color;
     }
 
-    protected function RewriteSingleSpotlight(spotLight : CSpotLightComponent, spotParams : CLightRewriteSpotlightParams) {
+    // Rewrites the spotlight component on the entity with the given params.
+    protected function RewriteSpotlight(spotlight : CLightRewriteSpotlightParams) {
+        var spotLight : CSpotLightComponent;
         var wasEnabled : bool;
+
+        spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
+        if (!spotLight) return;
 
         spotLight.SaveLightRewriteOriginalValues();
 
-        if (spotParams.hasEnabled && !spotParams.enabled) {
+        if (spotlight.hasEnabled && !spotlight.enabled) {
             spotLight.SetEnabled(false);
             return;
         }
@@ -132,25 +137,10 @@ abstract class ILightSourceRewriter {
         wasEnabled = spotLight.IsEnabled();
         if (wasEnabled) spotLight.SetEnabled(false);
 
-        ApplyLightParams(spotLight, spotParams);
-        if (spotParams.hasOffset) spotLight.SetPosition(spotParams.offset);
+        ApplyLightParams(spotLight, spotlight);
+        if (spotlight.hasOffset) spotLight.SetPosition(spotlight.offset);
 
         if (wasEnabled) spotLight.SetEnabled(true);
-    }
-
-    // Rewrites all spotlight components on the entity with the given spotlight params.
-    protected function RewriteSpotlight(spotlight : CLightRewriteSpotlightParams) {
-        var spotLight : CSpotLightComponent;
-        var components : array<CComponent>;
-        var i, count : int;
-
-        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-        count = components.Size();
-
-        for (i = 0; i < count; i += 1) {
-            spotLight = (CSpotLightComponent)components[i];
-            if (spotLight) RewriteSingleSpotlight(spotLight, spotlight);
-        }
     }
 
     // Rewrites the specified point light with the rewriter's params.
