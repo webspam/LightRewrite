@@ -43,8 +43,6 @@ function LoadLightRewriteOverridesGroup(
     profileName : name
 ) {
     var entryNode : SCustomNode;
-    var shadowsNode : SCustomNode;
-    var colourNode : SCustomNode;
     var alignNode : SCustomNode;
     var override : CLightRewriteSourceParams;
     var strVal : string;
@@ -71,10 +69,7 @@ function LoadLightRewriteOverridesGroup(
         }
         override.displayName = strVal;
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
-            override.hasEnabled = true;
-            override.enabled = (strVal != "false");
-        }
+        ParseLightRewriteBaseParams(override, dm, entryNode);
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
             override.hasRewriterType = true;
             override.rewriterType = ParseLightRewriteType(strVal);
@@ -83,44 +78,8 @@ function LoadLightRewriteOverridesGroup(
             override.hasUseSpotlightColor = true;
             override.useSpotlightColor = (strVal == "true");
         }
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
-            override.hasBrightness = true;
-            override.brightness = StringToFloat(strVal, 0.f);
-        }
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
-            override.hasRadius = true;
-            override.radius = StringToFloat(strVal, 0.f);
-        }
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
-            override.hasAttenuation = true;
-            override.attenuation = StringToFloat(strVal, 0.f);
-        }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
-
-        shadowsNode = dm.GetCustomDefinitionSubNode(entryNode, 'shadows');
-        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
-            override.hasShadowFadeDistance = true;
-            override.shadowFadeDistance = StringToFloat(strVal, 0.f);
-        }
-        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
-            override.hasShadowFadeRange = true;
-            override.shadowFadeRange = StringToFloat(strVal, 0.f);
-        }
-        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
-            override.hasShadowBlendFactor = true;
-            override.shadowBlendFactor = StringToFloat(strVal, 0.f);
-        }
-
-        colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
-        if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-            override.hasColour = true;
-            override.color.Red = StringToInt(strVal, override.color.Red);
-            dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-            override.color.Green = StringToInt(strVal, override.color.Green);
-            dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-            override.color.Blue = StringToInt(strVal, override.color.Blue);
-        }
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
@@ -180,6 +139,57 @@ function ParseLightRewriteMatchRules(
     }
 }
 
+// Populates ILightRewriteParams fields shared by both override entries and spotlight nodes.
+function ParseLightRewriteBaseParams(
+    params : ILightRewriteParams,
+    dm : CDefinitionsManagerAccessor,
+    node : SCustomNode
+) {
+    var strVal : string;
+    var shadowsNode, colourNode : SCustomNode;
+
+    if (dm.GetCustomNodeAttributeValueString(node, 'enabled', strVal)) {
+        params.hasEnabled = true;
+        params.enabled = (strVal != "false");
+    }
+    if (dm.GetCustomNodeAttributeValueString(node, 'brightness', strVal)) {
+        params.hasBrightness = true;
+        params.brightness = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(node, 'radius', strVal)) {
+        params.hasRadius = true;
+        params.radius = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(node, 'attenuation', strVal)) {
+        params.hasAttenuation = true;
+        params.attenuation = StringToFloat(strVal, 0.f);
+    }
+
+    shadowsNode = dm.GetCustomDefinitionSubNode(node, 'shadows');
+    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
+        params.hasShadowFadeDistance = true;
+        params.shadowFadeDistance = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
+        params.hasShadowFadeRange = true;
+        params.shadowFadeRange = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
+        params.hasShadowBlendFactor = true;
+        params.shadowBlendFactor = StringToFloat(strVal, 0.f);
+    }
+
+    colourNode = dm.GetCustomDefinitionSubNode(node, 'colour');
+    if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
+        params.hasColour = true;
+        params.color.Red = StringToInt(strVal, params.color.Red);
+        dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
+        params.color.Green = StringToInt(strVal, params.color.Green);
+        dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
+        params.color.Blue = StringToInt(strVal, params.color.Blue);
+    }
+}
+
 /** Parses a <spotlight> node into a new CLightRewriteSpotlightParams. */
 function ParseLightRewriteSpotlightParams(
     owner : CObject,
@@ -187,27 +197,12 @@ function ParseLightRewriteSpotlightParams(
     spotlightNode : SCustomNode
 ) : CLightRewriteSpotlightParams {
     var spotlight : CLightRewriteSpotlightParams;
-    var shadowsNode, colourNode, offsetNode : SCustomNode;
+    var offsetNode : SCustomNode;
     var strVal : string;
 
     spotlight = new CLightRewriteSpotlightParams in owner;
 
-    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'enabled', strVal)) {
-        spotlight.hasEnabled = true;
-        spotlight.enabled = (strVal != "false");
-    }
-    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'brightness', strVal)) {
-        spotlight.hasBrightness = true;
-        spotlight.brightness = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'radius', strVal)) {
-        spotlight.hasRadius = true;
-        spotlight.radius = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'attenuation', strVal)) {
-        spotlight.hasAttenuation = true;
-        spotlight.attenuation = StringToFloat(strVal, 0.f);
-    }
+    ParseLightRewriteBaseParams(spotlight, dm, spotlightNode);
     if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'innerAngle', strVal)) {
         spotlight.hasInnerAngle = true;
         spotlight.innerAngle = StringToFloat(strVal, 0.f);
@@ -219,30 +214,6 @@ function ParseLightRewriteSpotlightParams(
     if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'softness', strVal)) {
         spotlight.hasSoftness = true;
         spotlight.softness = StringToFloat(strVal, 0.f);
-    }
-
-    shadowsNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'shadows');
-    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
-        spotlight.hasShadowFadeDistance = true;
-        spotlight.shadowFadeDistance = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
-        spotlight.hasShadowFadeRange = true;
-        spotlight.shadowFadeRange = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
-        spotlight.hasShadowBlendFactor = true;
-        spotlight.shadowBlendFactor = StringToFloat(strVal, 0.f);
-    }
-
-    colourNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'colour');
-    if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-        spotlight.hasColour = true;
-        spotlight.color.Red = StringToInt(strVal, spotlight.color.Red);
-        dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-        spotlight.color.Green = StringToInt(strVal, spotlight.color.Green);
-        dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-        spotlight.color.Blue = StringToInt(strVal, spotlight.color.Blue);
     }
 
     offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
