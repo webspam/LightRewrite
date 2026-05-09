@@ -248,9 +248,9 @@ function BuildOverrideElement {
         $override.AppendChild($colour) | Out-Null
     }
 
-    # <align_point_lights> — only when alignPointLights is present
+    # <fire_fx_offset> — only when alignPointLights is present
     if ($Params.ContainsKey('alignPointLights')) {
-        $align = $Doc.CreateElement('align_point_lights')
+        $align = $Doc.CreateElement('fire_fx_offset')
         $align.SetAttribute('x', '0')
         $align.SetAttribute('y', '0')
         $align.SetAttribute('z', (FmtFloat ($Params.ContainsKey('alignOffsetZ') ? $Params['alignOffsetZ'] : 0.0)))

@@ -81,7 +81,7 @@ function LoadLightRewriteOverridesGroup(
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
-        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
             override.hasAlignPointLights = true;
             override.alignPointLights = true;
