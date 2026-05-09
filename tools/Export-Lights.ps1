@@ -275,7 +275,7 @@ function BuildXml {
 
     $root = $doc.CreateElement('redxml')
     $root.SetAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-    $root.SetAttribute('xsi:noNamespaceSchemaLocation', 'LightRewriteDefinitions.xsd')
+    $root.SetAttribute('noNamespaceSchemaLocation', 'http://www.w3.org/2001/XMLSchema-instance', 'LightRewriteDefinitions.xsd')
     $doc.AppendChild($root) | Out-Null
 
     $custom = $doc.CreateElement('custom')
