@@ -134,7 +134,7 @@ function LoadLightRewriteOverridesGroup(
         }
 
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
-        if (spotlightNode) {
+        if (spotlightNode.nodeName == 'spotlight') {
             override.spotlight = ParseLightRewriteSpotlightParams(owner, dm, spotlightNode);
         }
 
