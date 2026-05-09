@@ -397,6 +397,36 @@
         <xs:documentation>Spotlight attenuation - how quickly the light fades out with distance.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="innerAngle"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Angle in degrees from the spotlight centre axis to the edge of the
+          fully-lit cone. Light is at full intensity within this cone.</xs:documentation>
+        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light
+          cone is flipped, which may be confusing for others).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="outerAngle"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Angle in degrees from the spotlight centre axis to the outer edge of the
+          falloff cone. Light fades from full to zero between innerAngle and outerAngle.</xs:documentation>
+        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light
+          cone is flipped, which may be confusing for others).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="softness"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>The softness of the falloff of the light between innerAngle and
+          outerAngle.</xs:documentation>
+        <xs:documentation>Range 0-255 (0-2 in practice); 0 is an unrealistic sharp edge, 2 is
+          smooth. Higher values are barely perceptible in-game.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
 </xs:schema>

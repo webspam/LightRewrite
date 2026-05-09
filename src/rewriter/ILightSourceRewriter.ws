@@ -141,6 +141,9 @@ abstract class ILightSourceRewriter {
         if (wasEnabled) spotLight.SetEnabled(false);
 
         ApplyLightParams(spotLight, spotParams);
+        if (spotParams.hasInnerAngle) spotLight.innerAngle = spotParams.innerAngle;
+        if (spotParams.hasOuterAngle) spotLight.outerAngle = spotParams.outerAngle;
+        if (spotParams.hasSoftness) spotLight.softness = spotParams.softness;
         if (spotParams.hasOffset) spotLight.SetPosition(spotParams.offset);
 
         if (wasEnabled) spotLight.SetEnabled(true);

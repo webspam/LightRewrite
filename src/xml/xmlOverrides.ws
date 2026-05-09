@@ -208,6 +208,18 @@ function ParseLightRewriteSpotlightParams(
         spotlight.hasAttenuation = true;
         spotlight.attenuation = StringToFloat(strVal, 0.f);
     }
+    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'innerAngle', strVal)) {
+        spotlight.hasInnerAngle = true;
+        spotlight.innerAngle = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'outerAngle', strVal)) {
+        spotlight.hasOuterAngle = true;
+        spotlight.outerAngle = StringToFloat(strVal, 0.f);
+    }
+    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'softness', strVal)) {
+        spotlight.hasSoftness = true;
+        spotlight.softness = StringToFloat(strVal, 0.f);
+    }
 
     shadowsNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'shadows');
     if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
