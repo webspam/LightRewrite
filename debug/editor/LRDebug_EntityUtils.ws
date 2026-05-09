@@ -9,11 +9,17 @@
 // ---- Component helpers ----
 
 function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
-    return (CPointLightComponent)entity.GetComponent('CPointLightComponent0');
+    var components : array<CComponent>;
+    components = entity.GetComponentsByClassName('CPointLightComponent');
+    if (components.Size() > 0) return (CPointLightComponent)components[0];
+    return NULL;
 }
 
 function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
-    return (CSpotLightComponent)entity.GetComponent('CSpotLightComponent0');
+    var components : array<CComponent>;
+    components = entity.GetComponentsByClassName('CSpotLightComponent');
+    if (components.Size() > 0) return (CSpotLightComponent)components[0];
+    return NULL;
 }
 
 // ---- Entity classification ----
