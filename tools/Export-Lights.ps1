@@ -10,6 +10,7 @@
 
 .PARAMETER LogFile
     Path to the game log file containing [LREXPORT] lines.
+    If omitted, the value of the WITCHER_SCRIPTSLOG_PATH environment variable is used.
 
 .PARAMETER OutputFile
     Path to write the generated XML file. Default: exported_lights.xml
@@ -36,10 +37,9 @@
 
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)]
-    [string] $LogFile,
+    [string] $LogFile = '',
 
-    [string] $OutputFile = 'exported_lights.xml',
+    [string] $OutputFile = (Join-Path $PSScriptRoot '..\data\exported_lights.xml'),
 
     [string] $Profile = 'Exported',
 
@@ -275,7 +275,7 @@ function BuildXml {
 
     $root = $doc.CreateElement('redxml')
     $root.SetAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-    $root.SetAttribute('xsi:noNamespaceSchemaLocation', 'LightRewriteDefinitions.xsd')
+    $root.SetAttribute('noNamespaceSchemaLocation', 'http://www.w3.org/2001/XMLSchema-instance', 'LightRewriteDefinitions.xsd') | Out-Null
     $doc.AppendChild($root) | Out-Null
 
     $custom = $doc.CreateElement('custom')
@@ -335,6 +335,15 @@ function WriteUtf16Xml {
 }
 
 # ---- Entry point ----
+
+if ($LogFile -eq '') {
+    if ($env:WITCHER_SCRIPTSLOG_PATH) {
+        $LogFile = $env:WITCHER_SCRIPTSLOG_PATH
+    } else {
+        Write-Error 'No log file specified. Provide -LogFile or set WITCHER_SCRIPTSLOG_PATH.'
+        exit 1
+    }
+}
 
 if (-not (Test-Path $LogFile)) {
     Write-Error "Log file not found: $LogFile"
