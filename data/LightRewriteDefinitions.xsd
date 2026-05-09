@@ -364,7 +364,7 @@
         attenuation, shadows, and colour have the same meaning and constraints as on the parent
         override. Tag name and label are inherited from the parent override in code.</xs:documentation>
     </xs:annotation>
-    <xs:sequence>
+    <xs:all>
       <xs:element name="shadows"
                   type="shadowsType"
                   minOccurs="0">
@@ -387,7 +387,7 @@
             from the entity origin (0, 0, 0).</xs:documentation>
         </xs:annotation>
       </xs:element>
-    </xs:sequence>
+    </xs:all>
     <xs:attribute name="enabled"
                   type="xs:boolean"
                   use="optional">
