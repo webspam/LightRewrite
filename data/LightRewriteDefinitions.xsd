@@ -135,7 +135,7 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="align_point_lights"
-                  type="alignPointLightsType"
+                  type="vectorType"
                   minOccurs="0">
         <xs:annotation>
           <xs:documentation>When present, this will move all point lights to an offset from the
@@ -324,7 +324,7 @@
     </xs:attribute>
   </xs:complexType>
 
-  <xs:complexType name="alignPointLightsType">
+  <xs:complexType name="vectorType">
     <xs:attribute name="x"
                   type="xs:decimal"
                   use="required">
@@ -361,7 +361,7 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="offset"
-                  type="alignPointLightsType"
+                  type="vectorType"
                   minOccurs="0">
         <xs:annotation>
           <xs:documentation>When present, moves each spotlight component to this local-space
