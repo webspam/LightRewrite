@@ -46,6 +46,9 @@ abstract class ILightSourceRewriter {
         return !params.hasEnabled || params.enabled;
     }
 
+    // Virtual; Called after game has started and components may be disabled.
+    public function ProcessDeferredActions() {}
+
     // Rewrites the light source with the configured parameters.
     public function RewriteLight();
 

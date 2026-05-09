@@ -20,6 +20,18 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         FindLightRewriteFireFxSlotNames();
     }
 
+    public function ProcessDeferredActions() {
+        var p : CLightRewriteSourceParams = GetEffectiveParams();
+
+        super.ProcessDeferredActions();
+
+        if (p.spotlight) {
+            RewriteSpotlight(p.spotlight);
+        } else {
+            DisableAllSpotlightComponents();
+        }
+    }
+
     public function RewriteLight() {
         var p : CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight : CSpotLightComponent;
@@ -57,16 +69,13 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         // Remove spotlights from candles that have point lights (should be all candles),
         // unless a spotlight override is configured — in that case, apply it instead.
-        // TODO: Find a lifecycle hook where disabling the component actually works
         if (count > 0) {
             if (p.spotlight) {
                 RewriteSpotlight(p.spotlight);
             } else {
-                LogLightRewrite("[CCandleLightRewriter.RewriteLight] Deferring spotlight disable for 10ms: " + parentEntity.ToString());
-                parentEntity.AddTimer('LightRewriteDisableSpotlights', 0.01, false);
+                DisableAllSpotlightComponents();
             }
         }
-        // if (count > 0) DisableAllSpotlightComponents();
     }
 
     /*
