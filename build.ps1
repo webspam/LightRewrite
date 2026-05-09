@@ -81,7 +81,7 @@ New-Directory $xmlDestDir
 Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
 
 # Prefix all XML files with "lightrewrite_"
-Get-ChildItem -Path $defaultsDestDir -Filter "*.xml" | ForEach-Object {
+Get-ChildItem -Path $xmlDestDir -Filter "*.xml" | ForEach-Object {
   Rename-Item -Path $_.FullName -NewName "lightrewrite_$($_.Name)"
 }
 
