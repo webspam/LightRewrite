@@ -49,7 +49,12 @@ function LoadLightRewriteOverridesGroup(
     var override : CLightRewriteSourceParams;
     var strVal : string;
     var nameVal : name;
-    var i, count : int;
+    var i, j, count, subCount : int;
+    var subNode : SCustomNode;
+    var spotlightNode : SCustomNode;
+    var spotlightShadowsNode : SCustomNode;
+    var spotlightColourNode : SCustomNode;
+    var spotlightParams : CLightRewriteSpotlightParams;
 
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
@@ -130,6 +135,62 @@ function LoadLightRewriteOverridesGroup(
             override.pointLightOffset.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
             override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
+        }
+
+        subCount = entryNode.subNodes.Size();
+        for (j = 0; j < subCount; j += 1) {
+            subNode = entryNode.subNodes[j];
+            if (subNode.nodeName == 'spotlight') {
+                spotlightNode = subNode;
+                break;
+            }
+        }
+
+        if (spotlightNode.nodeName == 'spotlight') {
+            spotlightParams = new CLightRewriteSpotlightParams in owner;
+
+            if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'enabled', strVal)) {
+                spotlightParams.hasEnabled = true;
+                spotlightParams.enabled = (strVal != "false");
+            }
+            if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'brightness', strVal)) {
+                spotlightParams.hasBrightness = true;
+                spotlightParams.brightness = StringToFloat(strVal, 0.f);
+            }
+            if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'radius', strVal)) {
+                spotlightParams.hasRadius = true;
+                spotlightParams.radius = StringToFloat(strVal, 0.f);
+            }
+            if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'attenuation', strVal)) {
+                spotlightParams.hasAttenuation = true;
+                spotlightParams.attenuation = StringToFloat(strVal, 0.f);
+            }
+
+            spotlightShadowsNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'shadows');
+            if (dm.GetCustomNodeAttributeValueString(spotlightShadowsNode, 'fade_distance', strVal)) {
+                spotlightParams.hasShadowFadeDistance = true;
+                spotlightParams.shadowFadeDistance = StringToFloat(strVal, 0.f);
+            }
+            if (dm.GetCustomNodeAttributeValueString(spotlightShadowsNode, 'fade_range', strVal)) {
+                spotlightParams.hasShadowFadeRange = true;
+                spotlightParams.shadowFadeRange = StringToFloat(strVal, 0.f);
+            }
+            if (dm.GetCustomNodeAttributeValueString(spotlightShadowsNode, 'blend_factor', strVal)) {
+                spotlightParams.hasShadowBlendFactor = true;
+                spotlightParams.shadowBlendFactor = StringToFloat(strVal, 0.f);
+            }
+
+            spotlightColourNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'colour');
+            if (dm.GetCustomNodeAttributeValueString(spotlightColourNode, 'r', strVal)) {
+                spotlightParams.hasColour = true;
+                spotlightParams.color.Red = StringToInt(strVal, spotlightParams.color.Red);
+                dm.GetCustomNodeAttributeValueString(spotlightColourNode, 'g', strVal);
+                spotlightParams.color.Green = StringToInt(strVal, spotlightParams.color.Green);
+                dm.GetCustomNodeAttributeValueString(spotlightColourNode, 'b', strVal);
+                spotlightParams.color.Blue = StringToInt(strVal, spotlightParams.color.Blue);
+            }
+
+            override.spotlight = spotlightParams;
         }
 
         LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");

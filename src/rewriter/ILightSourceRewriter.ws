@@ -107,6 +107,42 @@ abstract class ILightSourceRewriter {
         }
     }
 
+    // Rewrites all spotlight components on the entity with the given spotlight params.
+    protected function RewriteSpotlight(spotlight : CLightRewriteSpotlightParams) {
+        var spotLight : CSpotLightComponent;
+        var components : array<CComponent>;
+        var wasEnabled : bool;
+        var i, count : int;
+
+        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
+
+        for (i = 0; i < count; i += 1) {
+            spotLight = (CSpotLightComponent)components[i];
+            if (!spotLight) continue;
+
+            spotLight.SaveLightRewriteOriginalValues();
+
+            if (spotlight.hasEnabled && !spotlight.enabled) {
+                spotLight.SetEnabled(false);
+                continue;
+            }
+
+            wasEnabled = spotLight.IsEnabled();
+            if (wasEnabled) spotLight.SetEnabled(false);
+
+            if (spotlight.hasBrightness) spotLight.brightness = spotlight.brightness;
+            if (spotlight.hasRadius) spotLight.radius = spotlight.radius;
+            if (spotlight.hasAttenuation) spotLight.attenuation = spotlight.attenuation;
+            if (spotlight.hasShadowFadeDistance) spotLight.shadowFadeDistance = spotlight.shadowFadeDistance;
+            if (spotlight.hasShadowFadeRange) spotLight.shadowFadeRange = spotlight.shadowFadeRange;
+            if (spotlight.hasShadowBlendFactor) spotLight.shadowBlendFactor = spotlight.shadowBlendFactor;
+            if (spotlight.hasColour) spotLight.color = spotlight.color;
+
+            if (wasEnabled) spotLight.SetEnabled(true);
+        }
+    }
+
     // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight : CPointLightComponent,

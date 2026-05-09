@@ -1,3 +1,29 @@
+class CLightRewriteSpotlightParams {
+    public var hasEnabled : bool;
+    public var enabled : bool;
+
+    public var hasBrightness : bool;
+    public var brightness : float;
+
+    public var hasRadius : bool;
+    public var radius : float;
+
+    public var hasAttenuation : bool;
+    public var attenuation : float;
+
+    public var hasShadowFadeDistance : bool;
+    public var shadowFadeDistance : float;
+
+    public var hasShadowFadeRange : bool;
+    public var shadowFadeRange : float;
+
+    public var hasShadowBlendFactor : bool;
+    public var shadowBlendFactor : float;
+
+    public var hasColour : bool;
+    public var color : Color;
+}
+
 /*
  * Unified params class for per-light-source configuration.
  *
@@ -66,6 +92,9 @@ class CLightRewriteSourceParams {
     public var hasUseSpotlightColor : bool;
     public var useSpotlightColor : bool;
 
+    // Spotlight-specific override — NULL if no <spotlight> element was present
+    public var spotlight : CLightRewriteSpotlightParams;
+
     // Virtual constructor
     public function Init() {}
 
@@ -129,6 +158,9 @@ class CLightRewriteSourceParams {
         if (hasUseSpotlightColor) {
             target.hasUseSpotlightColor = true;
             target.useSpotlightColor = useSpotlightColor;
+        }
+        if (spotlight) {
+            target.spotlight = spotlight;
         }
     }
 }
