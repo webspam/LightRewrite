@@ -167,15 +167,15 @@
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Whether this light source type should be rewritten. Default: true.</xs:documentation>
+        <xs:documentation>Whether this light source type should be rewritten. Default: `true`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="rewriter_type"
                   type="rewriterTypeEnum"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The type of light rewriter for this group. Default: generic light
-          rewriter.</xs:documentation>
+        <xs:documentation>The type of light rewriter for this group. Default: `LRT_None` (generic
+          light rewriter)</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
@@ -375,21 +375,21 @@
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>When false, disables the spotlight in game. Default: true.</xs:documentation>
+        <xs:documentation>When false, disables the spotlight in game. Default: `true`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Override the spotlight brightness.</xs:documentation>
+        <xs:documentation>How bright the spotlight is.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="radius"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Set the spotlight cutoff radius.</xs:documentation>
+        <xs:documentation>How far the light can reach (without raytracing).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="attenuation"
