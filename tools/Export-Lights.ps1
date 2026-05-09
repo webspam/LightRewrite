@@ -140,7 +140,7 @@ function Sanitize {
 }
 
 function AssignTagNames {
-    param([ordered] $Groups)
+    param([System.Collections.Specialized.OrderedDictionary] $Groups)
 
     $baseCounts = @{}
     foreach ($key in $Groups.Keys) {
@@ -192,9 +192,9 @@ function BuildOverrideElement {
     $override.SetAttribute('tag_name', $TagName)
     $override.SetAttribute('label', 'edited_' + (Sanitize $entityFile))
 
-    if ($Params.ContainsKey('brightness'))       { $override.SetAttribute('brightness',        FmtFloat $Params['brightness']) }
-    if ($Params.ContainsKey('radius'))           { $override.SetAttribute('radius',            FmtFloat $Params['radius']) }
-    if ($Params.ContainsKey('attenuation'))      { $override.SetAttribute('attenuation',       FmtFloat $Params['attenuation']) }
+    if ($Params.ContainsKey('brightness'))       { $override.SetAttribute('brightness',        (FmtFloat $Params['brightness'])) }
+    if ($Params.ContainsKey('radius'))           { $override.SetAttribute('radius',            (FmtFloat $Params['radius'])) }
+    if ($Params.ContainsKey('attenuation'))      { $override.SetAttribute('attenuation',       (FmtFloat $Params['attenuation'])) }
     if ($Params.ContainsKey('useSpotlightColor')) {
         $val = if ($Params['useSpotlightColor'] -eq 1) { 'true' } else { 'false' }
         $override.SetAttribute('use_spotlight_color', $val)
@@ -221,9 +221,9 @@ function BuildOverrideElement {
                   $Params.ContainsKey('shadowBlendFactor')
     if ($hasShadows) {
         $shadows = $Doc.CreateElement('shadows')
-        if ($Params.ContainsKey('shadowFadeDistance')) { $shadows.SetAttribute('fade_distance', FmtFloat $Params['shadowFadeDistance']) }
-        if ($Params.ContainsKey('shadowFadeRange'))    { $shadows.SetAttribute('fade_range',    FmtFloat $Params['shadowFadeRange']) }
-        if ($Params.ContainsKey('shadowBlendFactor'))  { $shadows.SetAttribute('blend_factor',  FmtFloat $Params['shadowBlendFactor']) }
+        if ($Params.ContainsKey('shadowFadeDistance')) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params['shadowFadeDistance'])) }
+        if ($Params.ContainsKey('shadowFadeRange'))    { $shadows.SetAttribute('fade_range',    (FmtFloat $Params['shadowFadeRange'])) }
+        if ($Params.ContainsKey('shadowBlendFactor'))  { $shadows.SetAttribute('blend_factor',  (FmtFloat $Params['shadowBlendFactor'])) }
         $override.AppendChild($shadows) | Out-Null
     }
 
@@ -241,7 +241,7 @@ function BuildOverrideElement {
         $align = $Doc.CreateElement('align_point_lights')
         $align.SetAttribute('x', '0')
         $align.SetAttribute('y', '0')
-        $align.SetAttribute('z', FmtFloat ($Params.ContainsKey('alignOffsetZ') ? $Params['alignOffsetZ'] : 0.0))
+        $align.SetAttribute('z', (FmtFloat ($Params.ContainsKey('alignOffsetZ') ? $Params['alignOffsetZ'] : 0.0)))
         $override.AppendChild($align) | Out-Null
     }
 
@@ -250,7 +250,7 @@ function BuildOverrideElement {
 
 function BuildXml {
     param(
-        [ordered] $Groups,
+        [System.Collections.Specialized.OrderedDictionary] $Groups,
         [hashtable] $TagNames,
         [string] $ProfileName,
         [int] $WeightValue
