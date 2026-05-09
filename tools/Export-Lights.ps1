@@ -34,7 +34,7 @@ param(
 
     [string] $OutputFile = 'exported_lights.xml',
 
-    [string] $Profile = 'Default',
+    [string] $Profile = 'Exported',
 
     [ValidateRange(0, 255)]
     [int] $Weight = 75,
