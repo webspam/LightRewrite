@@ -44,7 +44,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="menu_default"
-                  type="menuDefaultEntryType"
+                  type="overrideEntryType"
                   maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Configuration for a single light source type in the mod menu.</xs:documentation>
@@ -89,42 +89,6 @@
   </xs:complexType>
 
   <xs:complexType name="overrideEntryType">
-    <xs:complexContent>
-      <xs:extension base="lightEntryBaseType">
-        <xs:sequence>
-          <xs:element name="fire_fx_offset"
-                      type="vectorType"
-                      minOccurs="0">
-            <xs:annotation>
-              <xs:documentation>For complex candles, this will align individual point lights to the
-                flame FX.</xs:documentation>
-              <xs:documentation>Use `offset` to move normal point lights to an offset from the
-                entity itself.</xs:documentation>
-              <xs:documentation>If using `LRT_Candle` rewriter this will often function like
-                `offset`, however it may cause unexpected behaviour (e.g. if the entity has "fire"
-                fx slots).</xs:documentation>
-              <xs:documentation>N.B. *Many* point lights have been moved manually by the game
-                designers, as when the game was released, point lighting was often used for much
-                smaller, hand-crafted effects.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-          <xs:element name="spotlight"
-                      type="spotlightOverrideType"
-                      minOccurs="0">
-            <xs:annotation>
-              <xs:documentation>Optional spotlight override for this light source group. When
-                present, customises the spotlight independently of the point lights.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="lightEntryBaseType">
-    <xs:annotation>
-      <xs:documentation>Shared base type for default and override light entries.</xs:documentation>
-    </xs:annotation>
     <xs:choice minOccurs="0"
                maxOccurs="unbounded">
       <xs:element name="match"
@@ -152,6 +116,28 @@
         <xs:annotation>
           <xs:documentation>When present, moves each point light component to this local-space
             offset from the entity origin (0, 0, 0).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="fire_fx_offset"
+                  type="vectorType">
+        <xs:annotation>
+          <xs:documentation>For complex candles, this will align individual point lights to the
+            flame FX.</xs:documentation>
+          <xs:documentation>Use `offset` to move normal point lights to an offset from the
+            entity itself.</xs:documentation>
+          <xs:documentation>If using `LRT_Candle` rewriter this will often function like
+            `offset`, however it may cause unexpected behaviour (e.g. if the entity has "fire"
+            fx slots).</xs:documentation>
+          <xs:documentation>N.B. *Many* point lights have been moved manually by the game
+            designers, as when the game was released, point lighting was often used for much
+            smaller, hand-crafted effects.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="spotlight"
+                  type="spotlightOverrideType">
+        <xs:annotation>
+          <xs:documentation>Optional spotlight override for this light source group. When
+            present, customises the spotlight independently of the point lights.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:choice>
@@ -214,12 +200,6 @@
           scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-  </xs:complexType>
-
-  <xs:complexType name="menuDefaultEntryType">
-    <xs:complexContent>
-      <xs:extension base="lightEntryBaseType" />
-    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="matchType">
