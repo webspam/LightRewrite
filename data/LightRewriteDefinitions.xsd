@@ -262,6 +262,13 @@
   </xs:simpleType>
 
   <xs:complexType name="shadowsType">
+    <xs:attribute name="cast_shadows"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When set, enables or disables shadow casting on the light component itself.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="fade_distance"
                   type="xs:decimal"
                   use="optional">
