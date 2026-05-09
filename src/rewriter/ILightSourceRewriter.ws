@@ -108,7 +108,7 @@ abstract class ILightSourceRewriter {
     }
 
     // Rewrites all spotlight components on the entity with the given spotlight params.
-    protected function RewriteSpotlight(spotlight : ILightRewriteParams) {
+    protected function RewriteSpotlight(spotlight : CLightRewriteSpotlightParams) {
         var spotLight : CSpotLightComponent;
         var components : array<CComponent>;
         var wasEnabled : bool;
@@ -138,6 +138,7 @@ abstract class ILightSourceRewriter {
             if (spotlight.hasShadowFadeRange) spotLight.shadowFadeRange = spotlight.shadowFadeRange;
             if (spotlight.hasShadowBlendFactor) spotLight.shadowBlendFactor = spotlight.shadowBlendFactor;
             if (spotlight.hasColour) spotLight.color = spotlight.color;
+            if (spotlight.hasOffset) spotLight.SetPosition(spotlight.offset);
 
             if (wasEnabled) spotLight.SetEnabled(true);
         }

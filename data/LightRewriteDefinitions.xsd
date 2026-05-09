@@ -360,6 +360,14 @@
           <xs:documentation>If present, overrides the spotlight colour.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="offset"
+                  type="alignPointLightsType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>When present, moves each spotlight component to this local-space
+            offset from the entity origin (0, 0, 0).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
     <xs:attribute name="enabled"
                   type="xs:boolean"

@@ -54,6 +54,7 @@ function LoadLightRewriteOverridesGroup(
     var spotlightNode : SCustomNode;
     var spotlightShadowsNode : SCustomNode;
     var spotlightColourNode : SCustomNode;
+    var spotlightOffsetNode : SCustomNode;
     var spotlightParams : CLightRewriteSpotlightParams;
 
     count = overridesNode.subNodes.Size();
@@ -188,6 +189,16 @@ function LoadLightRewriteOverridesGroup(
                 spotlightParams.color.Green = StringToInt(strVal, spotlightParams.color.Green);
                 dm.GetCustomNodeAttributeValueString(spotlightColourNode, 'b', strVal);
                 spotlightParams.color.Blue = StringToInt(strVal, spotlightParams.color.Blue);
+            }
+
+            spotlightOffsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
+            if (dm.GetCustomNodeAttributeValueString(spotlightOffsetNode, 'x', strVal)) {
+                spotlightParams.hasOffset = true;
+                spotlightParams.offset.X = StringToFloat(strVal, 0.f);
+                dm.GetCustomNodeAttributeValueString(spotlightOffsetNode, 'y', strVal);
+                spotlightParams.offset.Y = StringToFloat(strVal, 0.f);
+                dm.GetCustomNodeAttributeValueString(spotlightOffsetNode, 'z', strVal);
+                spotlightParams.offset.Z = StringToFloat(strVal, 0.f);
             }
 
             override.spotlight = spotlightParams;
