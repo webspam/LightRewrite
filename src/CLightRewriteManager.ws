@@ -8,9 +8,27 @@ class CLightRewriteManager {
     // Mod settings, which may be initialised prior to game load.
     public var settings : CLightRewriteSettings;
 
+    // Whether the game has finished starting
+    public var gameStarted : bool;
+
     // Lazy constructor
     public function Init(settings : CLightRewriteSettings) {
         this.settings = settings;
+    }
+
+    public function ProcessDeferredActions() {
+        var i, count : int;
+        var entities : array<CGameplayEntity>;
+
+        if (gameStarted) return;
+        gameStarted = true;
+
+        GetAllLightSourceEntities(entities);
+        count = entities.Size();
+
+        for (i = 0; i < count; i += 1) {
+            entities[i].lightSourceRewriter.ProcessDeferredActions();
+        }
     }
 
     // Creates a new rewriter for a given light source type.

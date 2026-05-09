@@ -24,5 +24,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
             pointLight = (CPointLightComponent)components[i];
             if (pointLight) RewritePointLight(pointLight, spotLight);
         }
+
+        if (p.spotlight) RewriteSpotlight(p.spotlight);
     }
 }

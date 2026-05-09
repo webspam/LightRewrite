@@ -7,7 +7,7 @@
  * When matchRules is non-empty the object acts as an override: it will only
  * be applied to entities that satisfy all of its rules.
  */
-class CLightRewriteSourceParams {
+class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
     public var tag : name;
     public var displayName : string;
@@ -22,40 +22,9 @@ class CLightRewriteSourceParams {
     // Profile this override belongs to — empty means no profile assigned
     public var profileName : name;
 
-    // Whether this light source type is active
-    public var hasEnabled : bool;
-    public var enabled : bool;
-
     // The rewriter implementation to use
     public var hasRewriterType : bool;
     public var rewriterType : ELightRewriteType;
-
-    // Light source brightness
-    public var hasBrightness : bool;
-    public var brightness : float;
-
-    // Cutoff radius (sphere)
-    public var hasRadius : bool;
-    public var radius : float;
-
-    // Attenuation — how quickly the light fades out with distance
-    public var hasAttenuation : bool;
-    public var attenuation : float;
-
-    // Distance at which the player shadow starts to fade
-    public var hasShadowFadeDistance : bool;
-    public var shadowFadeDistance : float;
-
-    // Range over which the shadow fades from shadowFadeDistance
-    public var hasShadowFadeRange : bool;
-    public var shadowFadeRange : float;
-
-    public var hasShadowBlendFactor : bool;
-    public var shadowBlendFactor : float;
-
-    // Colour override — hasColour replaces the old shouldOverrideColour sentinel
-    public var hasColour : bool;
-    public var color : Color;
 
     // Point-light alignment to fire FX slots
     public var hasAlignPointLights : bool;
@@ -65,6 +34,9 @@ class CLightRewriteSourceParams {
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var hasUseSpotlightColor : bool;
     public var useSpotlightColor : bool;
+
+    // Spotlight-specific override — NULL if no <spotlight> element was present
+    public var spotlight : CLightRewriteSpotlightParams;
 
     // Virtual constructor
     public function Init() {}
@@ -129,6 +101,9 @@ class CLightRewriteSourceParams {
         if (hasUseSpotlightColor) {
             target.hasUseSpotlightColor = true;
             target.useSpotlightColor = useSpotlightColor;
+        }
+        if (spotlight) {
+            target.spotlight = spotlight;
         }
     }
 }

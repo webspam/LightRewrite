@@ -46,6 +46,9 @@ abstract class ILightSourceRewriter {
         return !params.hasEnabled || params.enabled;
     }
 
+    // Virtual; Called after game has started and components may be disabled.
+    public function ProcessDeferredActions() {}
+
     // Rewrites the light source with the configured parameters.
     public function RewriteLight();
 
@@ -107,6 +110,45 @@ abstract class ILightSourceRewriter {
         }
     }
 
+    // Shared application of ILightRewriteParams onto any light component — avoids duplicating
+    // the same property block for both CPointLightComponent and CSpotLightComponent.
+    protected function ApplyLightParams(light : CLightComponent, pamparams : ILightRewriteParams) {
+        if (pamparams.hasBrightness) light.brightness = pamparams.brightness;
+        if (pamparams.hasRadius) light.radius = pamparams.radius;
+        if (pamparams.hasAttenuation) light.attenuation = pamparams.attenuation;
+        if (pamparams.hasShadowFadeDistance) light.shadowFadeDistance = pamparams.shadowFadeDistance;
+        if (pamparams.hasShadowFadeRange) light.shadowFadeRange = pamparams.shadowFadeRange;
+        if (pamparams.hasShadowBlendFactor) light.shadowBlendFactor = pamparams.shadowBlendFactor;
+        if (pamparams.hasColour) light.color = pamparams.color;
+    }
+
+    // Rewrites the spotlight component on the entity with the given params.
+    protected function RewriteSpotlight(spotParams : CLightRewriteSpotlightParams) {
+        var spotLight : CSpotLightComponent;
+        var wasEnabled : bool;
+
+        spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
+        if (!spotLight) return;
+
+        spotLight.SaveLightRewriteOriginalValues();
+
+        if (spotParams.hasEnabled && !spotParams.enabled) {
+            spotLight.SetEnabled(false);
+            return;
+        }
+
+        wasEnabled = spotLight.IsEnabled();
+        if (wasEnabled) spotLight.SetEnabled(false);
+
+        ApplyLightParams(spotLight, spotParams);
+        if (spotParams.hasInnerAngle) spotLight.innerAngle = spotParams.innerAngle;
+        if (spotParams.hasOuterAngle) spotLight.outerAngle = spotParams.outerAngle;
+        if (spotParams.hasSoftness) spotLight.softness = spotParams.softness;
+        if (spotParams.hasOffset) spotLight.SetPosition(spotParams.offset);
+
+        if (wasEnabled) spotLight.SetEnabled(true);
+    }
+
     // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight : CPointLightComponent,
@@ -127,14 +169,7 @@ abstract class ILightSourceRewriter {
 
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight : CPointLightComponent) {
-        var pamparams : CLightRewriteSourceParams = GetEffectiveParams();
-
-        if (pamparams.hasBrightness) pointLight.brightness = pamparams.brightness;
-        if (pamparams.hasRadius) pointLight.radius = pamparams.radius;
-        if (pamparams.hasAttenuation) pointLight.attenuation = pamparams.attenuation;
-        if (pamparams.hasShadowFadeDistance) pointLight.shadowFadeDistance = pamparams.shadowFadeDistance;
-        if (pamparams.hasShadowFadeRange) pointLight.shadowFadeRange = pamparams.shadowFadeRange;
-        if (pamparams.hasShadowBlendFactor) pointLight.shadowBlendFactor = pamparams.shadowBlendFactor;
+        ApplyLightParams(pointLight, GetEffectiveParams());
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour

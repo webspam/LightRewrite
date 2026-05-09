@@ -36,6 +36,12 @@ function OnGameStarting(restored : bool) {
     lightRewrite.Init(GetLightRewriteSettings());
 }
 
+@wrapMethod(CR4Game)
+function OnGameStarted(restored : bool) {
+    wrappedMethod(restored);
+    lightRewrite.ProcessDeferredActions();
+}
+
 // Enable to bypass the mod.  When true, all Light Rewrite logic will quickly return without acting.
 // If this is false, lightSourceRewriter will likely be NULL.
 @addField(CGameplayEntity) public var bypassLightRewrite : bool;
