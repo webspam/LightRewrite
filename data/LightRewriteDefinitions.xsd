@@ -92,6 +92,22 @@
     <xs:complexContent>
       <xs:extension base="lightEntryBaseType">
         <xs:sequence>
+          <xs:element name="fire_fx_offset"
+                      type="vectorType"
+                      minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>For complex candles, this will align individual point lights to the
+                flame FX.</xs:documentation>
+              <xs:documentation>Use `offset` to move normal point lights to an offset from the
+                entity itself.</xs:documentation>
+              <xs:documentation>If using `LRT_Candle` rewriter this will often function like
+                `offset`, however it may cause unexpected behaviour (e.g. if the entity has "fire"
+                fx slots).</xs:documentation>
+              <xs:documentation>N.B. *Many* point lights have been moved manually by the game
+                designers, as when the game was released, point lighting was often used for much
+                smaller, hand-crafted effects.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
           <xs:element name="spotlight"
                       type="spotlightOverrideType"
                       minOccurs="0">
@@ -140,21 +156,6 @@
         <xs:annotation>
           <xs:documentation>When present, moves each point light component to this local-space
             offset from the entity origin (0, 0, 0).</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="fire_fx_offset"
-                  type="vectorType"
-                  minOccurs="0">
-        <xs:annotation>
-          <xs:documentation>For complex candles, this will align individual point lights to the
-            flame FX.</xs:documentation>
-          <xs:documentation>Use `offset` to move normal point lights to an offset from the entity
-            itself.</xs:documentation>
-          <xs:documentation>If using `LRT_Candle` rewriter this will often function like `offset`,
-            however it may cause unexpected behaviour (e.g. if the entity has "fire" fx slots).</xs:documentation>
-          <xs:documentation>N.B. *Many* point lights have been moved manually by the game designers,
-            as when the game was released, point lighting was often used for much smaller,
-            hand-crafted effects.</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
