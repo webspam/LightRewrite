@@ -107,11 +107,41 @@ abstract class ILightSourceRewriter {
         }
     }
 
+    // Shared application of ILightRewriteParams onto any light component — avoids duplicating
+    // the same property block for both CPointLightComponent and CSpotLightComponent.
+    protected function ApplyLightParams(light : CLightComponent, pamparams : ILightRewriteParams) {
+        if (pamparams.hasBrightness) light.brightness = pamparams.brightness;
+        if (pamparams.hasRadius) light.radius = pamparams.radius;
+        if (pamparams.hasAttenuation) light.attenuation = pamparams.attenuation;
+        if (pamparams.hasShadowFadeDistance) light.shadowFadeDistance = pamparams.shadowFadeDistance;
+        if (pamparams.hasShadowFadeRange) light.shadowFadeRange = pamparams.shadowFadeRange;
+        if (pamparams.hasShadowBlendFactor) light.shadowBlendFactor = pamparams.shadowBlendFactor;
+        if (pamparams.hasColour) light.color = pamparams.color;
+    }
+
+    protected function RewriteSingleSpotlight(spotLight : CSpotLightComponent, spotlight : CLightRewriteSpotlightParams) {
+        var wasEnabled : bool;
+
+        spotLight.SaveLightRewriteOriginalValues();
+
+        if (spotlight.hasEnabled && !spotlight.enabled) {
+            spotLight.SetEnabled(false);
+            return;
+        }
+
+        wasEnabled = spotLight.IsEnabled();
+        if (wasEnabled) spotLight.SetEnabled(false);
+
+        ApplyLightParams(spotLight, spotlight);
+        if (spotlight.hasOffset) spotLight.SetPosition(spotlight.offset);
+
+        if (wasEnabled) spotLight.SetEnabled(true);
+    }
+
     // Rewrites all spotlight components on the entity with the given spotlight params.
     protected function RewriteSpotlight(spotlight : CLightRewriteSpotlightParams) {
         var spotLight : CSpotLightComponent;
         var components : array<CComponent>;
-        var wasEnabled : bool;
         var i, count : int;
 
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
@@ -119,28 +149,7 @@ abstract class ILightSourceRewriter {
 
         for (i = 0; i < count; i += 1) {
             spotLight = (CSpotLightComponent)components[i];
-            if (!spotLight) continue;
-
-            spotLight.SaveLightRewriteOriginalValues();
-
-            if (spotlight.hasEnabled && !spotlight.enabled) {
-                spotLight.SetEnabled(false);
-                continue;
-            }
-
-            wasEnabled = spotLight.IsEnabled();
-            if (wasEnabled) spotLight.SetEnabled(false);
-
-            if (spotlight.hasBrightness) spotLight.brightness = spotlight.brightness;
-            if (spotlight.hasRadius) spotLight.radius = spotlight.radius;
-            if (spotlight.hasAttenuation) spotLight.attenuation = spotlight.attenuation;
-            if (spotlight.hasShadowFadeDistance) spotLight.shadowFadeDistance = spotlight.shadowFadeDistance;
-            if (spotlight.hasShadowFadeRange) spotLight.shadowFadeRange = spotlight.shadowFadeRange;
-            if (spotlight.hasShadowBlendFactor) spotLight.shadowBlendFactor = spotlight.shadowBlendFactor;
-            if (spotlight.hasColour) spotLight.color = spotlight.color;
-            if (spotlight.hasOffset) spotLight.SetPosition(spotlight.offset);
-
-            if (wasEnabled) spotLight.SetEnabled(true);
+            if (spotLight) RewriteSingleSpotlight(spotLight, spotlight);
         }
     }
 
@@ -164,14 +173,7 @@ abstract class ILightSourceRewriter {
 
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight : CPointLightComponent) {
-        var pamparams : CLightRewriteSourceParams = GetEffectiveParams();
-
-        if (pamparams.hasBrightness) pointLight.brightness = pamparams.brightness;
-        if (pamparams.hasRadius) pointLight.radius = pamparams.radius;
-        if (pamparams.hasAttenuation) pointLight.attenuation = pamparams.attenuation;
-        if (pamparams.hasShadowFadeDistance) pointLight.shadowFadeDistance = pamparams.shadowFadeDistance;
-        if (pamparams.hasShadowFadeRange) pointLight.shadowFadeRange = pamparams.shadowFadeRange;
-        if (pamparams.hasShadowBlendFactor) pointLight.shadowBlendFactor = pamparams.shadowBlendFactor;
+        ApplyLightParams(pointLight, GetEffectiveParams());
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour
