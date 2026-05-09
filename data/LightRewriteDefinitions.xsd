@@ -125,11 +125,10 @@
     <xs:annotation>
       <xs:documentation>Shared base type for default and override light entries.</xs:documentation>
     </xs:annotation>
-    <xs:sequence>
+    <xs:choice minOccurs="0"
+               maxOccurs="unbounded">
       <xs:element name="match"
-                  type="matchType"
-                  minOccurs="0"
-                  maxOccurs="unbounded">
+                  type="matchType">
         <xs:annotation>
           <xs:documentation>Filter that controls which light sources this entry applies to.</xs:documentation>
           <xs:documentation>By default, matches the start of the entity file name (e.g.
@@ -137,28 +136,25 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="shadows"
-                  type="shadowsType"
-                  minOccurs="0">
+                  type="shadowsType">
         <xs:annotation>
           <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="colour"
-                  type="overrideColourType"
-                  minOccurs="0">
+                  type="overrideColourType">
         <xs:annotation>
           <xs:documentation>If present, overrides the light source colour.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="offset"
-                  type="vectorType"
-                  minOccurs="0">
+                  type="vectorType">
         <xs:annotation>
           <xs:documentation>When present, moves each point light component to this local-space
             offset from the entity origin (0, 0, 0).</xs:documentation>
         </xs:annotation>
       </xs:element>
-    </xs:sequence>
+    </xs:choice>
     <xs:attribute name="tag_name"
                   type="lightTagType"
                   use="required">
