@@ -52,10 +52,10 @@ function ParseExportLines {
     $doneCount = $null
 
     foreach ($line in [System.IO.File]::ReadLines($Path)) {
-        $idx = $line.IndexOf('LRDebug_Export:')
-        if ($idx -lt 0) { continue }
+        $tag = '[LRDebug_Export]'
+        if (-not $line.StartsWith($tag)) { continue }
 
-        $fragment = $line.Substring($idx + 'LRDebug_Export:'.Length).Trim()
+        $fragment = $line.Substring($tag.Length).Trim()
         $pairs    = [regex]::Matches($fragment, '(\w+)=(\S+)')
 
         if ($pairs.Count -eq 0) { continue }
