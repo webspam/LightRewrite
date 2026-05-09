@@ -92,6 +92,16 @@ function LoadLightRewriteOverridesGroup(
             override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
         }
 
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
+        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+            override.hasPointLightOffset = true;
+            override.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
+            override.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
+            override.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
+        }
+
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
         if (spotlightNode.nodeName == 'spotlight') {
             override.spotlight = ParseLightRewriteSpotlightParams(owner, dm, spotlightNode);

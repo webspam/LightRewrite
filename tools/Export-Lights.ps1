@@ -257,6 +257,15 @@ function BuildOverrideElement {
         $override.AppendChild($align) | Out-Null
     }
 
+    # <offset> — only when pointLightOffset is present
+    if ($Params.ContainsKey('pointLightOffset')) {
+        $off = $Doc.CreateElement('offset')
+        $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey('pointLightOffsetX') ? $Params['pointLightOffsetX'] : 0.0)))
+        $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey('pointLightOffsetY') ? $Params['pointLightOffsetY'] : 0.0)))
+        $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey('pointLightOffsetZ') ? $Params['pointLightOffsetZ'] : 0.0)))
+        $override.AppendChild($off) | Out-Null
+    }
+
     return $override
 }
 
