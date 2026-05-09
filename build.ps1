@@ -81,7 +81,7 @@ New-Directory $xmlDestDir
 Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
 
 # Prefix all XML files with "lightrewrite_"
-Get-ChildItem -Path $defaultsDestDir -Filter "*.xml" | ForEach-Object {
+Get-ChildItem -Path $xmlDestDir -Filter "*.xml" | ForEach-Object {
   Rename-Item -Path $_.FullName -NewName "lightrewrite_$($_.Name)"
 }
 
@@ -94,7 +94,7 @@ Copy-Item -Force -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $mo
 
 # Execute wcc_lite to pack the content into a new bundle
 if ($SkipWcc) {
-  Write-Host -ForegroundColor Yellow "Skipping wcc_lite (SkipWcc flag set)"
+  Write-Host -ForegroundColor Yellow "⌛ Skipping wcc_lite (SkipWcc flag set)"
 }
 else {
   try {
