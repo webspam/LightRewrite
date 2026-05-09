@@ -94,7 +94,7 @@ Copy-Item -Force -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $mo
 
 # Execute wcc_lite to pack the content into a new bundle
 if ($SkipWcc) {
-  Write-Host -ForegroundColor Yellow "Skipping wcc_lite (SkipWcc flag set)"
+  Write-Host -ForegroundColor Yellow "⌛ Skipping wcc_lite (SkipWcc flag set)"
 }
 else {
   try {
