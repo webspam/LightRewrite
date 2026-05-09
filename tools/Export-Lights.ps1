@@ -39,7 +39,7 @@
 param(
     [string] $LogFile = '',
 
-    [string] $OutputFile = 'exported_lights.xml',
+    [string] $OutputFile = (Join-Path $PSScriptRoot '..\data\exported_lights.xml'),
 
     [string] $Profile = 'Exported',
 
