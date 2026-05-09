@@ -89,6 +89,10 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
             params.hasShadowBlendFactor = true;
             params.shadowBlendFactor = StringToFloat(strVal, 0.f);
         }
+        if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'cast_shadows', strVal)) {
+            params.hasCastShadows = true;
+            params.castShadows = (strVal == "true");
+        }
 
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {

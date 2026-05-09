@@ -93,6 +93,10 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             target.hasShadowBlendFactor = true;
             target.shadowBlendFactor = shadowBlendFactor;
         }
+        if (hasCastShadows) {
+            target.hasCastShadows = true;
+            target.castShadows = castShadows;
+        }
         if (hasColour) {
             target.hasColour = true;
             target.color = color;
