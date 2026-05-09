@@ -56,6 +56,7 @@ abstract class ILightSourceRewriter {
     public function RestoreOriginalState() {
         var spotLight: CSpotLightComponent;
         var pointLight: CPointLightComponent;
+        var drawable: CDrawableComponent;
         var i: int;
         var interactionComponent: CGameplayLightComponent;
         var useEntityState, entityLightState : bool;
@@ -89,6 +90,13 @@ abstract class ILightSourceRewriter {
                     spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
                 }
             }
+        }
+
+        components = parentEntity.GetComponentsByClassName('CDrawableComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            drawable = (CDrawableComponent)components[i];
+            if (drawable) drawable.RestoreDrawableRewriteOriginalValues();
         }
     }
 
@@ -160,7 +168,10 @@ abstract class ILightSourceRewriter {
         count = components.Size();
         for (i = 0; i < count; i += 1) {
             drawable = (CDrawableComponent)components[i];
-            if (drawable) drawable.SetCastingShadows(true);
+            if (drawable) {
+                drawable.SaveDrawableRewriteOriginalValues();
+                drawable.SetCastingShadows(true);
+            }
         }
     }
 
