@@ -259,4 +259,18 @@ abstract class ILightSourceRewriter {
             pointLight.color = pointLight.lightRewriteOriginalValues.color;
         }
     }
+
+    // Enables shadow casting on all drawable (mesh) components - for noshadow entities.
+    protected function EnableDrawableShadows() {
+        var drawable: CDrawableComponent;
+        var components: array<CComponent>;
+        var i, count: int;
+
+        components = parentEntity.GetComponentsByClassName('CDrawableComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            drawable = (CDrawableComponent)components[i];
+            if (drawable) drawable.SetCastingShadows(true);
+        }
+    }
 }
