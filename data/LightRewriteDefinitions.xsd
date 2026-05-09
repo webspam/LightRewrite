@@ -184,6 +184,15 @@
         <xs:documentation>Whether to copy the spotlight colour to point lights. By default, many candles use low-radius, very red point lights for a close-up glow offset from the bluish scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="force_cast_shadows"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When true, enables shadow casting on all drawable (mesh) components of
+          the entity. Useful for light sources that were optimised to not cast shadows (e.g.
+          noshadow chandeliers) but look uncanny under ray-traced lighting.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="matchType">
