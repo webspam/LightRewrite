@@ -150,6 +150,20 @@ abstract class ILightSourceRewriter {
         if (wasEnabled) spotLight.SetEnabled(true);
     }
 
+    // Enables shadow casting on all drawable (mesh) components — for noshadow entities.
+    protected function EnableDrawableShadows() {
+        var drawable : CDrawableComponent;
+        var components : array<CComponent>;
+        var i, count : int;
+
+        components = parentEntity.GetComponentsByClassName('CDrawableComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            drawable = (CDrawableComponent)components[i];
+            if (drawable) drawable.SetCastingShadows(true);
+        }
+    }
+
     // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight : CPointLightComponent,
