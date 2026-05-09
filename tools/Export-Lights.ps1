@@ -325,6 +325,11 @@ if (-not (Test-Path $LogFile)) {
     exit 1
 }
 
+if (Test-Path $OutputFile) {
+    Write-Error "Output file already exists: $OutputFile"
+    exit 1
+}
+
 $records, $doneCount = ParseExportLines $LogFile
 
 if ($records.Count -eq 0) {
