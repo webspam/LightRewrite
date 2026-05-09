@@ -27,15 +27,10 @@ function LRDebug_ParseLayerDir(descriptor : string) : string {
     return layerDir;
 }
 
-// Extracts the entity filename stem (e.g. "candle_small") from entity.ToString().
-function LRDebug_ParseEntityFileStem(descriptor : string) : string {
-    var fileName : string;
-
+// Extracts the entity filename (e.g. "candle_small.w2ent") from entity.ToString().
+function LRDebug_ParseEntityFileName(descriptor : string) : string {
     if (StrFindFirst(descriptor, "::") == -1) return "";
-
-    fileName = StrAfterLast(StrAfterFirst(descriptor, "::"), StrChar(92));
-    if (StrFindFirst(fileName, ".") != -1) fileName = StrBeforeFirst(fileName, ".");
-    return fileName;
+    return StrAfterLast(StrAfterFirst(descriptor, "::"), StrChar(92));
 }
 
 // Assembles the [LREXPORT] log line; only includes fields whose has* guard is true.
@@ -95,7 +90,7 @@ function LRDebug_ExportEditedLights() {
         if (!LRDebug_HasEdits(params)) continue;
 
         descriptor = entity.ToString();
-        entityFile = LRDebug_ParseEntityFileStem(descriptor);
+        entityFile = LRDebug_ParseEntityFileName(descriptor);
         layerPath  = LRDebug_ParseLayerDir(descriptor);
         if (entityFile == "") continue;
 
