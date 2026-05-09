@@ -49,8 +49,7 @@ function LoadLightRewriteOverridesGroup(
     var override : CLightRewriteSourceParams;
     var strVal : string;
     var nameVal : name;
-    var i, j, count, subCount : int;
-    var subNode : SCustomNode;
+    var i, count : int;
     var spotlightNode : SCustomNode;
     var spotlightShadowsNode : SCustomNode;
     var spotlightColourNode : SCustomNode;
@@ -138,15 +137,7 @@ function LoadLightRewriteOverridesGroup(
             override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
         }
 
-        subCount = entryNode.subNodes.Size();
-        for (j = 0; j < subCount; j += 1) {
-            subNode = entryNode.subNodes[j];
-            if (subNode.nodeName == 'spotlight') {
-                spotlightNode = subNode;
-                break;
-            }
-        }
-
+        spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
         if (spotlightNode.nodeName == 'spotlight') {
             spotlightParams = new CLightRewriteSpotlightParams in owner;
 
