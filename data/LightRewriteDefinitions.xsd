@@ -223,7 +223,7 @@
         candle_small.w2ent).</xs:documentation>
     </xs:annotation>
     <xs:simpleContent>
-      <xs:extension base="xs:string">
+      <xs:extension base="nonEmptyString">
         <xs:attribute name="type"
                       type="matchTypeEnum"
                       use="optional"
@@ -246,6 +246,12 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+
+  <xs:simpleType name="nonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="matchTypeEnum">
     <xs:restriction base="xs:string">
