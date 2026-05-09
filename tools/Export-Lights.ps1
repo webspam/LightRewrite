@@ -5,7 +5,7 @@
 .DESCRIPTION
     After running the in-game export (press the LRDebug_ExportEdited key while the
     debug editor is active), locate the game log and run this script against it.
-    It parses every [LREXPORT] line, groups entries by entity file and layer path,
+    It parses every LRDebug_Export channel line, groups entries by entity file and layer path,
     and writes a valid UTF-16 XML file compatible with the data/ override format.
 
 .PARAMETER LogFile
@@ -52,10 +52,10 @@ function ParseExportLines {
     $doneCount = $null
 
     foreach ($line in [System.IO.File]::ReadLines($Path)) {
-        $idx = $line.IndexOf('[LREXPORT]')
+        $idx = $line.IndexOf('LRDebug_Export:')
         if ($idx -lt 0) { continue }
 
-        $fragment = $line.Substring($idx + '[LREXPORT]'.Length).Trim()
+        $fragment = $line.Substring($idx + 'LRDebug_Export:'.Length).Trim()
         $pairs    = [regex]::Matches($fragment, '(\w+)=(\S+)')
 
         if ($pairs.Count -eq 0) { continue }

@@ -46,7 +46,7 @@ function LRDebug_BuildExportLine(
 ) : string {
     var line : string;
 
-    line = "[LREXPORT] entityFile=" + entityFile + " layerPath=" + layerPath;
+    line = "entityFile=" + entityFile + " layerPath=" + layerPath;
 
     if (params.hasBrightness)         line += " brightness="         + FloatToString(params.brightness);
     if (params.hasRadius)             line += " radius="             + FloatToString(params.radius);
@@ -99,11 +99,11 @@ function LRDebug_ExportEditedLights() {
         layerPath  = LRDebug_ParseLayerDir(descriptor);
         if (entityFile == "") continue;
 
-        LogChannel('LRDebug', LRDebug_BuildExportLine(params, entityFile, layerPath));
+        LogChannel('LRDebug_Export', LRDebug_BuildExportLine(params, entityFile, layerPath));
         exported += 1;
     }
 
-    LogChannel('LRDebug', "[LREXPORT] done exported=" + IntToString(exported));
+    LogChannel('LRDebug_Export', "done exported=" + IntToString(exported));
 
     toast = new LRDebug_ToastOneLiner in thePlayer;
     toast.Init("<font size='14'>Exported " + IntToString(exported) + " light(s)</font>", 2.0);
