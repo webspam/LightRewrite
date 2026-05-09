@@ -1,8 +1,10 @@
 /*
  * Base class for light entry params. Holds the light component properties that
  * are shared between point light overrides and spotlight overrides.
+ *
+ * Effectively maps to CLightComponent fields.
  */
-class CLightRewriteEntryBase {
+abstract class ILightRewriteParams {
     public var hasEnabled : bool;
     public var enabled : bool;
 

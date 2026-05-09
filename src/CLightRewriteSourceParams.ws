@@ -7,7 +7,7 @@
  * When matchRules is non-empty the object acts as an override: it will only
  * be applied to entities that satisfy all of its rules.
  */
-class CLightRewriteSourceParams extends CLightRewriteEntryBase {
+class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
     public var tag : name;
     public var displayName : string;

@@ -108,7 +108,7 @@ abstract class ILightSourceRewriter {
     }
 
     // Rewrites all spotlight components on the entity with the given spotlight params.
-    protected function RewriteSpotlight(spotlight : CLightRewriteEntryBase) {
+    protected function RewriteSpotlight(spotlight : ILightRewriteParams) {
         var spotLight : CSpotLightComponent;
         var components : array<CComponent>;
         var wasEnabled : bool;

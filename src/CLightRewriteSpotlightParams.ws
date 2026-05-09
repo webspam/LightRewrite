@@ -1,2 +1,2 @@
-class CLightRewriteSpotlightParams extends CLightRewriteEntryBase {
+class CLightRewriteSpotlightParams extends ILightRewriteParams {
 }
