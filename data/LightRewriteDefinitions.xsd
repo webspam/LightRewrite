@@ -139,10 +139,11 @@
                   minOccurs="0">
         <xs:annotation>
           <xs:documentation>For complex candles, this will align individual point lights to the
-            flame FX. Other entities with LRT_Candle rewriter will move point lights to an offset
-            from the entity itself.</xs:documentation>
+            flame FX.</xs:documentation>
           <xs:documentation>Use `offset` to move normal point lights to an offset from the entity
             itself.</xs:documentation>
+          <xs:documentation>If using `LRT_Candle` rewriter this will often function like `offset`,
+            however it may cause unexpected behaviour (e.g. if the entity has "fire" fx slots).</xs:documentation>
           <xs:documentation>N.B. *Many* point lights have been moved manually by the game designers,
             as when the game was released, point lighting was often used for much smaller,
             hand-crafted effects.</xs:documentation>
@@ -229,9 +230,10 @@
                       use="optional"
                       default="entity">
           <xs:annotation>
-            <xs:documentation>What to match against: entity name (default) or layer path.</xs:documentation>
+            <xs:documentation>What this rule will match against: entity name, or layer path.
+              Default: `entity`</xs:documentation>
             <xs:documentation>The layer path is the full\path\to\the\layer.w2l, whilst the entity is
-              the base file name, without the path.</xs:documentation>
+              the base file name, without the path (e.g. candle_small.w2ent).</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="mode"
