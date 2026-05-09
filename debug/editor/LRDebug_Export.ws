@@ -27,7 +27,6 @@ function LRDebug_ParseLayerDir(descriptor : string) : string {
     return layerDir;
 }
 
-// Extracts the entity filename (e.g. "candle_small.w2ent") from entity.ToString().
 function LRDebug_ParseEntityFileName(descriptor : string) : string {
     if (StrFindFirst(descriptor, "::") == -1) return "";
     return StrAfterLast(StrAfterFirst(descriptor, "::"), StrChar(92));
