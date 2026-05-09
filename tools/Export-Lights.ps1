@@ -37,7 +37,9 @@ param(
     [string] $Profile = 'Default',
 
     [ValidateRange(0, 255)]
-    [int] $Weight = 75
+    [int] $Weight = 75,
+
+    [switch] $AllowDuplicates
 )
 
 Set-StrictMode -Version Latest
@@ -104,7 +106,10 @@ function CoerceEntry {
 }
 
 function GroupEntities {
-    param([System.Collections.Generic.List[hashtable]] $Records)
+    param(
+        [System.Collections.Generic.List[hashtable]] $Records,
+        [switch] $AllowDuplicates
+    )
 
     $groups = [ordered]@{}
 
@@ -112,7 +117,13 @@ function GroupEntities {
         $entry      = CoerceEntry $raw
         $entityFile = $entry['entityFile']
         $layerPath  = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
-        $key        = "$entityFile|$layerPath"
+
+        if ($AllowDuplicates) {
+            $groups["$entityFile|$layerPath|$($groups.Count)"] = $entry
+            continue
+        }
+
+        $key = "$entityFile|$layerPath"
 
         if (-not $groups.Contains($key)) {
             $groups[$key] = $entry
@@ -321,7 +332,7 @@ if ($null -ne $doneCount) {
     Write-Host "Game reported $doneCount exported light(s)."
 }
 
-$groups   = GroupEntities $records
+$groups   = GroupEntities $records -AllowDuplicates:$AllowDuplicates
 Write-Host "Grouped into $($groups.Count) unique override(s)."
 
 $tagNames = AssignTagNames $groups
