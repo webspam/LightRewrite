@@ -50,7 +50,7 @@ $ErrorActionPreference = 'Stop'
 function ParseExportLines {
     param([string] $Path)
 
-    $records   = [System.Collections.Generic.List[hashtable]]::new()
+    $records = [System.Collections.Generic.List[hashtable]]::new()
     $doneCount = $null
 
     foreach ($line in [System.IO.File]::ReadLines($Path)) {
@@ -58,7 +58,7 @@ function ParseExportLines {
         if (-not $line.StartsWith($tag)) { continue }
 
         $fragment = $line.Substring($tag.Length).Trim()
-        $pairs    = [regex]::Matches($fragment, '(\w+)=(\S+)')
+        $pairs = [regex]::Matches($fragment, '(\w+)=(\S+)')
 
         if ($pairs.Count -eq 0) { continue }
 
@@ -84,8 +84,8 @@ function ParseExportLines {
 
 # ---- Grouping ----
 
-$floatFields  = 'brightness','radius','attenuation','shadowFadeDistance','shadowFadeRange','shadowBlendFactor','alignOffsetZ'
-$intFields    = 'colorR','colorG','colorB','alignPointLights','useSpotlightColor'
+$floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', 'alignOffsetZ'
+$intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor'
 
 function CoerceEntry {
     param([hashtable] $raw)
@@ -96,9 +96,11 @@ function CoerceEntry {
         $v = $kv.Value
         if ($k -in $floatFields) {
             $out[$k] = [double]::Parse($v, [System.Globalization.CultureInfo]::InvariantCulture)
-        } elseif ($k -in $intFields) {
+        }
+        elseif ($k -in $intFields) {
             $out[$k] = [int]$v
-        } else {
+        }
+        else {
             $out[$k] = $v
         }
     }
@@ -114,9 +116,9 @@ function GroupEntities {
     $groups = [ordered]@{}
 
     foreach ($raw in $Records) {
-        $entry      = CoerceEntry $raw
+        $entry = CoerceEntry $raw
         $entityFile = $entry['entityFile']
-        $layerPath  = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
+        $layerPath = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
 
         if ($AllowDuplicates) {
             $groups["$entityFile|$layerPath|$($groups.Count)"] = $entry
@@ -127,11 +129,12 @@ function GroupEntities {
 
         if (-not $groups.Contains($key)) {
             $groups[$key] = $entry
-        } else {
+        }
+        else {
             $existing = $groups[$key]
             foreach ($kv in $entry.GetEnumerator()) {
                 $k = $kv.Key
-                if ($k -in 'entityFile','layerPath') { continue }
+                if ($k -in 'entityFile', 'layerPath') { continue }
                 if ($existing.ContainsKey($k) -and $existing[$k] -ne $kv.Value) {
                     Write-Warning "Conflicting '$k' for ($entityFile, $layerPath): '$($existing[$k])' vs '$($kv.Value)' — using last seen."
                 }
@@ -161,7 +164,7 @@ function AssignTagNames {
     }
 
     $seenBases = @{}
-    $tagNames  = @{}
+    $tagNames = @{}
 
     foreach ($key in $Groups.Keys) {
         $stem = $Groups[$key]['entityFile']
@@ -171,7 +174,8 @@ function AssignTagNames {
 
         if ($n -eq 1) {
             $tagNames[$key] = $base
-        } else {
+        }
+        else {
             $tagNames[$key] = "${base}_${n}"
         }
     }
@@ -197,15 +201,15 @@ function BuildOverrideElement {
     )
 
     $entityFile = $Params['entityFile']
-    $layerPath  = if ($Params.ContainsKey('layerPath')) { $Params['layerPath'] } else { '' }
+    $layerPath = if ($Params.ContainsKey('layerPath')) { $Params['layerPath'] } else { '' }
 
     $override = $Doc.CreateElement('override')
     $override.SetAttribute('tag_name', $TagName)
     $override.SetAttribute('label', 'edited_' + (Sanitize $entityFile))
 
-    if ($Params.ContainsKey('brightness'))       { $override.SetAttribute('brightness',        (FmtFloat $Params['brightness'])) }
-    if ($Params.ContainsKey('radius'))           { $override.SetAttribute('radius',            (FmtFloat $Params['radius'])) }
-    if ($Params.ContainsKey('attenuation'))      { $override.SetAttribute('attenuation',       (FmtFloat $Params['attenuation'])) }
+    if ($Params.ContainsKey('brightness')) { $override.SetAttribute('brightness', (FmtFloat $Params['brightness'])) }
+    if ($Params.ContainsKey('radius')) { $override.SetAttribute('radius', (FmtFloat $Params['radius'])) }
+    if ($Params.ContainsKey('attenuation')) { $override.SetAttribute('attenuation', (FmtFloat $Params['attenuation'])) }
     if ($Params.ContainsKey('useSpotlightColor')) {
         $val = if ($Params['useSpotlightColor'] -eq 1) { 'true' } else { 'false' }
         $override.SetAttribute('use_spotlight_color', $val)
@@ -228,13 +232,13 @@ function BuildOverrideElement {
 
     # <shadows> — only when at least one shadow field is present
     $hasShadows = $Params.ContainsKey('shadowFadeDistance') -or
-                  $Params.ContainsKey('shadowFadeRange')    -or
-                  $Params.ContainsKey('shadowBlendFactor')
+    $Params.ContainsKey('shadowFadeRange') -or
+    $Params.ContainsKey('shadowBlendFactor')
     if ($hasShadows) {
         $shadows = $Doc.CreateElement('shadows')
         if ($Params.ContainsKey('shadowFadeDistance')) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params['shadowFadeDistance'])) }
-        if ($Params.ContainsKey('shadowFadeRange'))    { $shadows.SetAttribute('fade_range',    (FmtFloat $Params['shadowFadeRange'])) }
-        if ($Params.ContainsKey('shadowBlendFactor'))  { $shadows.SetAttribute('blend_factor',  (FmtFloat $Params['shadowBlendFactor'])) }
+        if ($Params.ContainsKey('shadowFadeRange')) { $shadows.SetAttribute('fade_range', (FmtFloat $Params['shadowFadeRange'])) }
+        if ($Params.ContainsKey('shadowBlendFactor')) { $shadows.SetAttribute('blend_factor', (FmtFloat $Params['shadowBlendFactor'])) }
         $override.AppendChild($shadows) | Out-Null
     }
 
@@ -267,7 +271,7 @@ function BuildXml {
         [int] $WeightValue
     )
 
-    $doc  = [System.Xml.XmlDocument]::new()
+    $doc = [System.Xml.XmlDocument]::new()
     $decl = $doc.CreateXmlDeclaration('1.0', 'UTF-16', $null)
     $doc.AppendChild($decl) | Out-Null
 
@@ -301,14 +305,15 @@ function WriteUtf16Xml {
         [string] $Path
     )
 
-    $settings          = [System.Xml.XmlWriterSettings]::new()
+    $settings = [System.Xml.XmlWriterSettings]::new()
     $settings.Encoding = [System.Text.Encoding]::Unicode
-    $settings.Indent   = $true
+    $settings.Indent = $true
 
     $writer = [System.Xml.XmlWriter]::Create($Path, $settings)
     try {
         $Doc.WriteTo($writer)
-    } finally {
+    }
+    finally {
         $writer.Close()
     }
 }
@@ -332,11 +337,11 @@ if ($null -ne $doneCount) {
     Write-Host "Game reported $doneCount exported light(s)."
 }
 
-$groups   = GroupEntities $records -AllowDuplicates:$AllowDuplicates
+$groups = GroupEntities $records -AllowDuplicates:$AllowDuplicates
 Write-Host "Grouped into $($groups.Count) unique override(s)."
 
 $tagNames = AssignTagNames $groups
-$doc      = BuildXml $groups $tagNames $Profile $Weight
+$doc = BuildXml $groups $tagNames $Profile $Weight
 WriteUtf16Xml $doc $OutputFile
 
 Write-Host "Written to: $OutputFile"
