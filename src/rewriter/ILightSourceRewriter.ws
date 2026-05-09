@@ -119,12 +119,12 @@ abstract class ILightSourceRewriter {
         if (pamparams.hasColour) light.color = pamparams.color;
     }
 
-    protected function RewriteSingleSpotlight(spotLight : CSpotLightComponent, spotlight : CLightRewriteSpotlightParams) {
+    protected function RewriteSingleSpotlight(spotLight : CSpotLightComponent, spotParams : CLightRewriteSpotlightParams) {
         var wasEnabled : bool;
 
         spotLight.SaveLightRewriteOriginalValues();
 
-        if (spotlight.hasEnabled && !spotlight.enabled) {
+        if (spotParams.hasEnabled && !spotParams.enabled) {
             spotLight.SetEnabled(false);
             return;
         }
@@ -132,8 +132,8 @@ abstract class ILightSourceRewriter {
         wasEnabled = spotLight.IsEnabled();
         if (wasEnabled) spotLight.SetEnabled(false);
 
-        ApplyLightParams(spotLight, spotlight);
-        if (spotlight.hasOffset) spotLight.SetPosition(spotlight.offset);
+        ApplyLightParams(spotLight, spotParams);
+        if (spotParams.hasOffset) spotLight.SetPosition(spotParams.offset);
 
         if (wasEnabled) spotLight.SetEnabled(true);
     }
