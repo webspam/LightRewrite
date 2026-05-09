@@ -90,7 +90,18 @@
 
   <xs:complexType name="overrideEntryType">
     <xs:complexContent>
-      <xs:extension base="lightEntryBaseType" />
+      <xs:extension base="lightEntryBaseType">
+        <xs:sequence>
+          <xs:element name="spotlight"
+                      type="spotlightOverrideType"
+                      minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Optional spotlight override for this light source group. When present,
+                customises the spotlight independently of the point lights.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
@@ -325,6 +336,58 @@
     <xs:attribute name="z"
                   type="xs:decimal"
                   use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="spotlightOverrideType">
+    <xs:annotation>
+      <xs:documentation>Spotlight-specific overrides for a light source group. Brightness, radius,
+        attenuation, shadows, and colour have the same meaning and constraints as on the parent
+        override. Tag name and label are inherited from the parent override in code.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="shadows"
+                  type="shadowsType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Shadow fade parameters for the spotlight.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="colour"
+                  type="overrideColourType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If present, overrides the spotlight colour.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="enabled"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When false, disables the spotlight in game. Default: true.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="brightness"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Override the spotlight brightness.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="radius"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Set the spotlight cutoff radius.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="attenuation"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Spotlight attenuation - how quickly the light fades out with distance.</xs:documentation>
+      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 
