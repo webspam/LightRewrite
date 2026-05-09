@@ -20,6 +20,13 @@
 .PARAMETER Weight
     The weight attribute for the <overrides> block (0-255). Default: 75
 
+.PARAMETER Force
+    Overwrite the output file if it already exists.
+
+    Duplicate entries (same entity file and layer path) are written to a separate
+    <overrides> block named <Profile>_Duplicates so they are visible rather than
+    silently merged. Exact duplicates are always collapsed to one entry.
+
 .EXAMPLE
     .\tools\Export-Lights.ps1 -LogFile "C:\Users\User\Documents\The Witcher 3\mods.log"
 
@@ -39,7 +46,7 @@ param(
     [ValidateRange(0, 255)]
     [int] $Weight = 75,
 
-    [switch] $AllowDuplicates
+    [switch] $Force
 )
 
 Set-StrictMode -Version Latest
@@ -53,7 +60,9 @@ function ParseExportLines {
     $records = [System.Collections.Generic.List[hashtable]]::new()
     $doneCount = $null
 
-    foreach ($line in [System.IO.File]::ReadLines($Path)) {
+    $sr = [System.IO.StreamReader]::new([System.IO.File]::Open($Path, 'Open', 'Read', 'ReadWrite'))
+    try { $lines = $sr.ReadToEnd() -split "`r?`n" } finally { $sr.Dispose() }
+    foreach ($line in $lines) {
         $tag = '[LRDebug_Export]'
         if (-not $line.StartsWith($tag)) { continue }
 
@@ -107,43 +116,40 @@ function CoerceEntry {
     return $out
 }
 
-function GroupEntities {
-    param(
-        [System.Collections.Generic.List[hashtable]] $Records,
-        [switch] $AllowDuplicates
-    )
+function EntriesIdentical {
+    param([hashtable] $A, [hashtable] $B)
+    foreach ($kv in $A.GetEnumerator()) {
+        if ($kv.Key -in 'entityFile', 'layerPath') { continue }
+        if (-not $B.ContainsKey($kv.Key) -or $B[$kv.Key] -ne $kv.Value) { return $false }
+    }
+    foreach ($kv in $B.GetEnumerator()) {
+        if ($kv.Key -in 'entityFile', 'layerPath') { continue }
+        if (-not $A.ContainsKey($kv.Key)) { return $false }
+    }
+    return $true
+}
 
-    $groups = [ordered]@{}
+function GroupEntities {
+    param([System.Collections.Generic.List[hashtable]] $Records)
+
+    $primary  = [ordered]@{}
+    $overflow = [ordered]@{}
 
     foreach ($raw in $Records) {
-        $entry = CoerceEntry $raw
+        $entry      = CoerceEntry $raw
         $entityFile = $entry['entityFile']
-        $layerPath = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
+        $layerPath  = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
+        $key        = "$entityFile|$layerPath"
 
-        if ($AllowDuplicates) {
-            $groups["$entityFile|$layerPath|$($groups.Count)"] = $entry
-            continue
+        if (-not $primary.Contains($key)) {
+            $primary[$key] = $entry
         }
-
-        $key = "$entityFile|$layerPath"
-
-        if (-not $groups.Contains($key)) {
-            $groups[$key] = $entry
-        }
-        else {
-            $existing = $groups[$key]
-            foreach ($kv in $entry.GetEnumerator()) {
-                $k = $kv.Key
-                if ($k -in 'entityFile', 'layerPath') { continue }
-                if ($existing.ContainsKey($k) -and $existing[$k] -ne $kv.Value) {
-                    Write-Warning "Conflicting '$k' for ($entityFile, $layerPath): '$($existing[$k])' vs '$($kv.Value)' — using last seen."
-                }
-                $existing[$k] = $kv.Value
-            }
+        elseif (-not (EntriesIdentical $primary[$key] $entry)) {
+            $overflow["$key|$($overflow.Count)"] = $entry
         }
     }
 
-    return $groups
+    return $primary, $overflow
 }
 
 # ---- Tag name assignment ----
@@ -154,29 +160,20 @@ function Sanitize {
 }
 
 function AssignTagNames {
-    param([System.Collections.Specialized.OrderedDictionary] $Groups)
-
-    $baseCounts = @{}
-    foreach ($key in $Groups.Keys) {
-        $stem = $Groups[$key]['entityFile']
-        $base = 'LR_Edited_' + (Sanitize $stem)
-        $baseCounts[$base] = ($baseCounts[$base] ?? 0) + 1
-    }
+    param(
+        [System.Collections.Specialized.OrderedDictionary] $Primary,
+        [System.Collections.Specialized.OrderedDictionary] $Overflow
+    )
 
     $seenBases = @{}
-    $tagNames = @{}
+    $tagNames  = @{}
 
-    foreach ($key in $Groups.Keys) {
-        $stem = $Groups[$key]['entityFile']
-        $base = 'LR_Edited_' + (Sanitize $stem)
-        $seenBases[$base] = ($seenBases[$base] ?? 0) + 1
-        $n = $seenBases[$base]
-
-        if ($n -eq 1) {
-            $tagNames[$key] = $base
-        }
-        else {
-            $tagNames[$key] = "${base}_${n}"
+    foreach ($dict in $Primary, $Overflow) {
+        foreach ($key in $dict.Keys) {
+            $base = 'LR_Edited_' + (Sanitize $dict[$key]['entityFile'])
+            $seenBases[$base] = ($seenBases[$base] ?? 0) + 1
+            $n = $seenBases[$base]
+            $tagNames[$key] = if ($n -eq 1) { $base } else { "${base}_${n}" }
         }
     }
 
@@ -221,11 +218,11 @@ function BuildOverrideElement {
     $matchEntity.InnerText = $entityFile
     $override.AppendChild($matchEntity) | Out-Null
 
-    # <match type="layer" mode="startsWith"> for layer directory
+    # <match type="layer" mode="exact"> for layer file
     if ($layerPath -ne '') {
         $matchLayer = $Doc.CreateElement('match')
         $matchLayer.SetAttribute('type', 'layer')
-        $matchLayer.SetAttribute('mode', 'startsWith')
+        $matchLayer.SetAttribute('mode', 'exact')
         $matchLayer.InnerText = $layerPath
         $override.AppendChild($matchLayer) | Out-Null
     }
@@ -266,6 +263,7 @@ function BuildOverrideElement {
 function BuildXml {
     param(
         [System.Collections.Specialized.OrderedDictionary] $Groups,
+        [System.Collections.Specialized.OrderedDictionary] $Overflow,
         [hashtable] $TagNames,
         [string] $ProfileName,
         [int] $WeightValue
@@ -286,6 +284,10 @@ function BuildXml {
     $lr = $doc.CreateElement('light_rewrite')
     $custom.AppendChild($lr) | Out-Null
 
+    if ($Overflow.Count -gt 0) {
+        $lr.AppendChild($doc.CreateComment(" WARNING: $($Overflow.Count) conflicting duplicate(s) were found. They are stored in the ${ProfileName}_Duplicates overrides block below. ")) | Out-Null
+    }
+
     $overridesEl = $doc.CreateElement('overrides')
     $overridesEl.SetAttribute('profile_name', $ProfileName)
     $overridesEl.SetAttribute('weight', [string]$WeightValue)
@@ -294,6 +296,20 @@ function BuildXml {
     foreach ($key in $Groups.Keys) {
         $el = BuildOverrideElement $doc $Groups[$key] $TagNames[$key]
         $overridesEl.AppendChild($el) | Out-Null
+    }
+
+    if ($Overflow.Count -gt 0) {
+        $lr.AppendChild($doc.CreateComment(" Duplicates: these entries share an entity file and layer path with an entry above but had conflicting field values. Review and merge manually. ")) | Out-Null
+
+        $dupEl = $doc.CreateElement('overrides')
+        $dupEl.SetAttribute('profile_name', "${ProfileName}_Duplicates")
+        $dupEl.SetAttribute('weight', [string]$WeightValue)
+        $lr.AppendChild($dupEl) | Out-Null
+
+        foreach ($key in $Overflow.Keys) {
+            $el = BuildOverrideElement $doc $Overflow[$key] $TagNames[$key]
+            $dupEl.AppendChild($el) | Out-Null
+        }
     }
 
     return $doc
@@ -325,8 +341,8 @@ if (-not (Test-Path $LogFile)) {
     exit 1
 }
 
-if (Test-Path $OutputFile) {
-    Write-Error "Output file already exists: $OutputFile"
+if ((Test-Path $OutputFile) -and -not $Force) {
+    Write-Error "Output file already exists: $OutputFile (use -Force to overwrite)"
     exit 1
 }
 
@@ -342,11 +358,14 @@ if ($null -ne $doneCount) {
     Write-Host "Game reported $doneCount exported light(s)."
 }
 
-$groups = GroupEntities $records -AllowDuplicates:$AllowDuplicates
-Write-Host "Grouped into $($groups.Count) unique override(s)."
+$primary, $overflow = GroupEntities $records
+Write-Host "Grouped into $($primary.Count) unique override(s)."
+if ($overflow.Count -gt 0) {
+    Write-Host "$($overflow.Count) conflicting duplicate(s) written to '${Profile}_Duplicates' overrides block."
+}
 
-$tagNames = AssignTagNames $groups
-$doc = BuildXml $groups $tagNames $Profile $Weight
+$tagNames = AssignTagNames $primary $overflow
+$doc = BuildXml $primary $overflow $tagNames $Profile $Weight
 WriteUtf16Xml $doc $OutputFile
 
 Write-Host "Written to: $OutputFile"

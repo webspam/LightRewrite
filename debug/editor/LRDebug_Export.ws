@@ -17,17 +17,12 @@ function LRDebug_HasEdits(params : CLightRewriteSourceParams) : bool {
         || params.hasAlignPointLights || params.hasUseSpotlightColor;
 }
 
-// -> levels\skellige\spikeroog\village_buildings\
+// -> levels\skellige\spikeroog\village_buildings.w2w
 function LRDebug_ParseLayerDir(descriptor : string) : string {
-    var layerFilePath, layerDir : string;
-
     if (StrFindFirst(descriptor, "::") == -1) return "";
     if (StrFindFirst(descriptor, "\"") == -1) return "";
 
-    layerFilePath = StrBeforeFirst(StrAfterFirst(StrBeforeFirst(descriptor, "::"), "\""), "\"");
-    layerDir = StrBeforeLast(layerFilePath, StrChar(92));
-    if (layerDir != "") layerDir = layerDir + StrChar(92);
-    return layerDir;
+    return StrBeforeFirst(StrAfterFirst(StrBeforeFirst(descriptor, "::"), "\""), "\"");
 }
 
 // -> braziers_floor_square_bounce.w2ent
