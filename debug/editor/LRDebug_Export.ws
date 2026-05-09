@@ -3,6 +3,9 @@
  * be distilled into XML config files by tools/Export-Lights.ps1.
  *
  * Called from lightLabels.ws via LRDebug_OnInputExportEdited.
+ *
+ * entity.ToString() format:
+ *   CLayer "levels\skellige\spikeroog\village_buildings.w2w"::levels\skellige\spikeroog\village_buildings\braziers_floor_square_bounce.w2ent
  */
 
 // Returns true if the entity has at least one real edit beyond the lazy-getter default.
@@ -14,7 +17,7 @@ function LRDebug_HasEdits(params : CLightRewriteSourceParams) : bool {
         || params.hasAlignPointLights || params.hasUseSpotlightColor;
 }
 
-// Extracts the layer directory (e.g. "levels\prolog_village\") from entity.ToString().
+// -> levels\skellige\spikeroog\village_buildings\
 function LRDebug_ParseLayerDir(descriptor : string) : string {
     var layerFilePath, layerDir : string;
 
@@ -27,6 +30,7 @@ function LRDebug_ParseLayerDir(descriptor : string) : string {
     return layerDir;
 }
 
+// -> braziers_floor_square_bounce.w2ent
 function LRDebug_ParseEntityFileName(descriptor : string) : string {
     if (StrFindFirst(descriptor, "::") == -1) return "";
     return StrAfterLast(StrAfterFirst(descriptor, "::"), StrChar(92));
