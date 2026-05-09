@@ -96,8 +96,8 @@
                       type="spotlightOverrideType"
                       minOccurs="0">
             <xs:annotation>
-              <xs:documentation>Optional spotlight override for this light source group. When present,
-                customises the spotlight independently of the point lights.</xs:documentation>
+              <xs:documentation>Optional spotlight override for this light source group. When
+                present, customises the spotlight independently of the point lights.</xs:documentation>
             </xs:annotation>
           </xs:element>
         </xs:sequence>
@@ -366,8 +366,8 @@
                   type="vectorType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>When present, moves each spotlight component to this local-space
-            offset from the entity origin (0, 0, 0).</xs:documentation>
+          <xs:documentation>When present, moves each spotlight component to this local-space offset
+            from the entity origin (0, 0, 0).</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:sequence>
