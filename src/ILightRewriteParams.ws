@@ -30,7 +30,7 @@ abstract class ILightRewriteParams {
     public var shadowBlendFactor : float;
 
     public var hasCastShadows : bool;
-    public var castShadows : bool;
+    public var castShadows : ELightShadowCastingMode;
 
     public var hasColour : bool;
     public var color : Color;
