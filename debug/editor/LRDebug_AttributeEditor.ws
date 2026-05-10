@@ -6,8 +6,8 @@
  * responsibility after each operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
-    private var attrIndex : int;
-    private var accelerator : LRDebug_AdjustAccelerator;
+    private var attrIndex: int;
+    private var accelerator: LRDebug_AdjustAccelerator;
 
     public function Init() {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
@@ -65,7 +65,7 @@ class LRDebug_AttributeEditor {
     }
 
     private function GetFloatStepDirectional(currentValue : float, value : float) : float {
-        var floatStep : float = GetFloatStep(currentValue);
+        var floatStep: float = GetFloatStep(currentValue);
 
         if (value > 0.0) return floatStep;
 
@@ -75,7 +75,7 @@ class LRDebug_AttributeEditor {
 
     // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
     private function ClampAttributeValue(attr : name, value : float) : float {
-        var clamped : float;
+        var clamped: float;
 
         // alignOffsetZ is the only attribute that can go negative.
         switch (attr) {
@@ -105,11 +105,11 @@ class LRDebug_AttributeEditor {
     }
 
     private function ApplyFloatDelta(attr : name, currentValue : float, delta : float) : float {
-        var remaining : float;
-        var sign : float;
-        var step : float;
-        var prevValue : float;
-        var i : int;
+        var remaining: float;
+        var sign: float;
+        var step: float;
+        var prevValue: float;
+        var i: int;
 
         if (delta == 0.0) return currentValue;
 
@@ -139,7 +139,7 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleAttribute(delta : int) {
-        var count : int = 13;
+        var count: int = 13;
         if (count <= 0) return;
 
         attrIndex += delta;
@@ -153,16 +153,16 @@ class LRDebug_AttributeEditor {
      * then call LRDebug_RegenerateText on the entity's oneliner).
      */
     public function AdjustAttribute(value : float, target : CGameplayEntity) : bool {
-        var attr : name;
-        var step : float;
-        var point : CPointLightComponent;
-        var spot : CSpotLightComponent;
-        var sourceLight : CLightComponent;
-        var params : CLightRewriteSourceParams;
-        var rewriter : ILightSourceRewriter;
-        var colourStep : int;
+        var attr: name;
+        var step: float;
+        var point: CPointLightComponent;
+        var spot: CSpotLightComponent;
+        var sourceLight: CLightComponent;
+        var params: CLightRewriteSourceParams;
+        var rewriter: ILightSourceRewriter;
+        var colourStep: int;
 
-        var accelMult : float = 1.0;
+        var accelMult: float = 1.0;
 
         if (!target) return false;
         if (!target.lrdebugOneliner) return false;

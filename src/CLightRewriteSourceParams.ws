@@ -9,38 +9,38 @@
  */
 class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
-    public var tag : name;
-    public var displayName : string;
+    public var tag: name;
+    public var displayName: string;
     default displayName = "generic";
 
     // Override matching — empty means this is a base-params entry, not an override
-    public var matchRules : array<CLightRewriteMatchRule>;
+    public var matchRules: array<CLightRewriteMatchRule>;
 
     // Weight of the override — higher weights override lower weights
-    public var weight : int;
+    public var weight: int;
 
     // Profile this override belongs to — empty means no profile assigned
-    public var profileName : name;
+    public var profileName: name;
 
     // The rewriter implementation to use
-    public var hasRewriterType : bool;
-    public var rewriterType : ELightRewriteType;
+    public var hasRewriterType: bool;
+    public var rewriterType: ELightRewriteType;
 
     // Point-light alignment to fire FX slots
-    public var hasAlignPointLights : bool;
-    public var alignPointLights : bool;
-    public var pointLightOffset : Vector;
+    public var hasAlignPointLights: bool;
+    public var alignPointLights: bool;
+    public var pointLightOffset: Vector;
 
     // Direct point-light position offset (non-candle lights)
-    public var hasPointLightOffset : bool;
-    public var pointLightOffsetPos : Vector;
+    public var hasPointLightOffset: bool;
+    public var pointLightOffsetPos: Vector;
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
-    public var hasUseSpotlightColor : bool;
-    public var useSpotlightColor : bool;
+    public var hasUseSpotlightColor: bool;
+    public var useSpotlightColor: bool;
 
     // Spotlight-specific override — NULL if no <spotlight> element was present
-    public var spotlight : CLightRewriteSpotlightParams;
+    public var spotlight: CLightRewriteSpotlightParams;
 
     // Virtual constructor
     public function Init() {}

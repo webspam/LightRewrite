@@ -37,7 +37,7 @@ function LRDebug_BuildExportLine(
     entityFile : string,
     layerPath  : string
 ) : string {
-    var line : string;
+    var line: string;
 
     line = "entityFile=" + entityFile + " layerPath=" + layerPath;
 
@@ -70,12 +70,12 @@ function LRDebug_BuildExportLine(
 
 // Scans all tagged light entities globally and logs any that carry session edits.
 function LRDebug_ExportEditedLights() {
-    var entities : array<CEntity>;
-    var entity : CGameplayEntity;
-    var params : CLightRewriteSourceParams;
+    var entities: array<CEntity>;
+    var entity: CGameplayEntity;
+    var params: CLightRewriteSourceParams;
     var descriptor, entityFile, layerPath : string;
     var i, count, exported : int;
-    var toast : LRDebug_ToastOneLiner;
+    var toast: LRDebug_ToastOneLiner;
 
     theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
     count = entities.Size();

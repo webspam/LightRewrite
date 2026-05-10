@@ -30,7 +30,7 @@ alwaysApply: false
 - Initialize fields with `default` on its own line:
 
 ```ws
-private var isEnabled : bool;  default isEnabled = true;
+private var isEnabled: bool;  default isEnabled = true;
 ```
 
 - Defaults must be compile-time const

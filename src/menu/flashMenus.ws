@@ -22,16 +22,16 @@ function LR_ReplaceFlashMenuOptions(
     groupId : name,
     optionKeys : array<name>
 ) {
-    var groupIndex : int;
+    var groupIndex: int;
     var newObject, existingObject, parentObject : CScriptedFlashObject;
     var flashArray, options : CScriptedFlashArray;
-    var currentValue : string;
+    var currentValue: string;
     var i, count : int;
-    var optionText : string;
+    var optionText: string;
 
-    var gameConfig : CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
-    var ingameMenu : CR4IngameMenu = theGame.GetGuiManager().GetIngameMenu();
-    var flash : CScriptedFlashValueStorage = ingameMenu.GetMenuFlashValueStorage();
+    var gameConfig: CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
+    var ingameMenu: CR4IngameMenu = theGame.GetGuiManager().GetIngameMenu();
+    var flash: CScriptedFlashValueStorage = ingameMenu.GetMenuFlashValueStorage();
 
     if (!ingameMenu) {
         LogLightRewrite("ReplaceFlashMenuOptions: no ingame menu");

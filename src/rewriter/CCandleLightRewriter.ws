@@ -1,14 +1,14 @@
 /*
  * This module is designed to align point lights to fire FX slots on "complex" candles.
- * 
+ *
  * As we cannot get CFXDefinitions from code, this is brittle, and works based on several assumptions.
  * If any mods alter the FX templates in a way that changes slot names, this may cause strange behaviour.
- * 
+ *
  * Unless very specific changes are made, it will simply stop working, rather than cause issues.
  */
 class CCandleLightRewriter extends ILightSourceRewriter {
     // Stores the names of the active fire FX slots found on this entity.
-    private var fireFxSlotNames : array<name>;
+    private var fireFxSlotNames: array<name>;
 
     public function Init(
         parentEntity : CGameplayEntity,
@@ -21,7 +21,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     }
 
     public function ProcessDeferredActions() {
-        var p : CLightRewriteSourceParams = GetEffectiveParams();
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
 
         super.ProcessDeferredActions();
 
@@ -33,14 +33,14 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     }
 
     public function RewriteLight() {
-        var p : CLightRewriteSourceParams = GetEffectiveParams();
-        var spotLight : CSpotLightComponent;
-        var pointLight : CPointLightComponent;
-        var i : int;
-        var wasEnabled : bool;
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+        var spotLight: CSpotLightComponent;
+        var pointLight: CPointLightComponent;
+        var i: int;
+        var wasEnabled: bool;
 
-        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count : int = components.Size();
+        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var count: int = components.Size();
 
         // Clusters of candles emit most of their light via a single spotlight.
         // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
@@ -83,12 +83,12 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * At time of writing, only testing / working on complex candles.
      */
     private function AlignPointLight(i : int, pointLight : CPointLightComponent) {
-        var slotPos : Vector;
-        var slotMatrix : Matrix;
+        var slotPos: Vector;
+        var slotMatrix: Matrix;
 
-        var worldToLocal : Matrix;
-        var slotWorldPos : Vector;
-        var scale : Vector;
+        var worldToLocal: Matrix;
+        var slotWorldPos: Vector;
+        var scale: Vector;
 
         if (fireFxSlotNames.Size()) {
             parentEntity.CalcEntitySlotMatrix(fireFxSlotNames[i], slotMatrix);
@@ -111,12 +111,12 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * Has not been validated against anything but candles in the complex dir.
      */
     private function FindLightRewriteFireFxSlotNames() {
-        var hasFire4 : bool = parentEntity.HasSlot('fire4');
-        var hasFire3 : bool = parentEntity.HasSlot('fire3');
-        var hasFire2 : bool = parentEntity.HasSlot('fire2');
-        var hasFire1 : bool = parentEntity.HasSlot('fire1');
-        var hasFire : bool = parentEntity.HasSlot('fire');
-        var hasFx : bool = parentEntity.HasSlot('fx');
+        var hasFire4: bool = parentEntity.HasSlot('fire4');
+        var hasFire3: bool = parentEntity.HasSlot('fire3');
+        var hasFire2: bool = parentEntity.HasSlot('fire2');
+        var hasFire1: bool = parentEntity.HasSlot('fire1');
+        var hasFire: bool = parentEntity.HasSlot('fire');
+        var hasFx: bool = parentEntity.HasSlot('fx');
 
         fireFxSlotNames.Clear();
 

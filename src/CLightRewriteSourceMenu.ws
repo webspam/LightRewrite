@@ -3,18 +3,18 @@
  */
 class CLightRewriteSourceMenu {
     // Mod settings IDs (must match XML Var id values)
-    public const var TAG_ENABLED : name;
-    public const var TAG_BRIGHTNESS : name;
-    public const var TAG_RADIUS : name;
-    public const var TAG_ATTENUATION : name;
-    public const var TAG_SHADOW_DISTANCE : name;
-    public const var TAG_SHADOW_RANGE : name;
-    public const var TAG_SHADOW_BLEND : name;
-    public const var TAG_OVERRIDE_COLOUR : name;
-    public const var TAG_RED : name;
-    public const var TAG_GREEN : name;
-    public const var TAG_BLUE : name;
-    public const var TAG_ALIGN_POINT_LIGHTS : name;
+    public const var TAG_ENABLED: name;
+    public const var TAG_BRIGHTNESS: name;
+    public const var TAG_RADIUS: name;
+    public const var TAG_ATTENUATION: name;
+    public const var TAG_SHADOW_DISTANCE: name;
+    public const var TAG_SHADOW_RANGE: name;
+    public const var TAG_SHADOW_BLEND: name;
+    public const var TAG_OVERRIDE_COLOUR: name;
+    public const var TAG_RED: name;
+    public const var TAG_GREEN: name;
+    public const var TAG_BLUE: name;
+    public const var TAG_ALIGN_POINT_LIGHTS: name;
 
     // Reads the game config for this light source into the supplied params object.
     public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name, params : CLightRewriteSourceParams) {
@@ -53,8 +53,8 @@ class CLightRewriteSourceMenu {
 
     // Updates the disabled state of all options in this source's settings group.
     public function UpdateMenuDisabledState(params : CLightRewriteSourceParams) {
-        var flashValueStorage : CScriptedFlashValueStorage;
-        var dataArray : CScriptedFlashArray;
+        var flashValueStorage: CScriptedFlashValueStorage;
+        var dataArray: CScriptedFlashArray;
 
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();

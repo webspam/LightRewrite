@@ -9,10 +9,10 @@
  * via thePlayer.lrDebugLabelManager.showPathLabels without a separate accessor.
  */
 class LRDebug_LabelManager {
-    private var tagSeq : int;
-    public var showPathLabels : bool;
-    private var target : CGameplayEntity;
-    private var toast : LRDebug_ToastOneLiner;
+    private var tagSeq: int;
+    public var showPathLabels: bool;
+    private var target: CGameplayEntity;
+    private var toast: LRDebug_ToastOneLiner;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in thePlayer;
@@ -24,12 +24,12 @@ class LRDebug_LabelManager {
     }
 
     public function Scan() {
-        var entities : array<CGameplayEntity>;
-        var entity : CGameplayEntity;
+        var entities: array<CGameplayEntity>;
+        var entity: CGameplayEntity;
         var i, count, pointLights, spotLights : int;
         var camPos, camDir, entPos, toEnt : Vector;
         var score, bestScore, dot, visibilityRange : float;
-        var bestEntity : CGameplayEntity;
+        var bestEntity: CGameplayEntity;
 
         FindNearbyLights(entities);
 
@@ -93,7 +93,7 @@ class LRDebug_LabelManager {
      * Toggles path-label visibility and regenerates markup on all nearby oneliners.
      */
     public function TogglePathLabels() {
-        var entities : array<CGameplayEntity>;
+        var entities: array<CGameplayEntity>;
         var i, count : int;
 
         showPathLabels = !showPathLabels;
@@ -129,7 +129,7 @@ class LRDebug_LabelManager {
      * state.
      */
     public function ToggleRewriterOnTarget() {
-        var rewriter : ILightSourceRewriter;
+        var rewriter: ILightSourceRewriter;
 
         if (!target) return;
 
@@ -145,21 +145,21 @@ class LRDebug_LabelManager {
     }
 
     private function FindNearbyLights(out entities : array<CGameplayEntity>) {
-        var maxRange : float = 10.0;
+        var maxRange: float = 10.0;
 
         if (theGame.IsFocusModeActive()) maxRange = 25.0;
         FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
     }
 
     private function GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
-        var director : CCameraDirector = theGame.GetWorld().GetCameraDirector();
+        var director: CCameraDirector = theGame.GetWorld().GetCameraDirector();
 
         cameraPosition = director.GetCameraPosition();
         cameraDirection = director.GetCameraDirection();
     }
 
     private function CountComponents(entity : CGameplayEntity, className : name) : int {
-        var components : array<CComponent> = entity.GetComponentsByClassName(className);
+        var components: array<CComponent> = entity.GetComponentsByClassName(className);
         return components.Size();
     }
 
@@ -168,7 +168,7 @@ class LRDebug_LabelManager {
         pointLights : int,
         spotLights : int
     ) {
-        var label : LRDebug_LightOneLiner = new LRDebug_LightOneLiner in entity;
+        var label: LRDebug_LightOneLiner = new LRDebug_LightOneLiner in entity;
 
         label.Init(entity, pointLights, spotLights);
 

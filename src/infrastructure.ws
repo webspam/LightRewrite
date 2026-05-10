@@ -10,7 +10,7 @@ function LR_SetMenuOptionDisabled(
     xmlVarId : name,
     disabled : bool
 ) {
-    var dataObject : CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
+    var dataObject: CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
 
     dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(xmlVarId));
     dataObject.SetMemberFlashBool("disabled", disabled);

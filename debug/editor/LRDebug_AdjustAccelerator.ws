@@ -7,35 +7,35 @@
  */
 class LRDebug_AdjustAccelerator {
     /** The number of events required to activate acceleration */
-    private const var ACCELERATE_THRESHOLD : int;      default ACCELERATE_THRESHOLD = 6;
+    private const var ACCELERATE_THRESHOLD: int;       default ACCELERATE_THRESHOLD = 6;
     /** Maximum time between events to classify as a burst */
-    private const var BURST_INTERVAL : float;          default BURST_INTERVAL = 0.333;
+    private const var BURST_INTERVAL: float;           default BURST_INTERVAL = 0.333;
     /** Time in seconds after receiving a reverse input, before the streak is reset */
-    private const var REVERSE_TIME : float;            default REVERSE_TIME = 0.333;
+    private const var REVERSE_TIME: float;             default REVERSE_TIME = 0.333;
     /** Time in seconds until the accelerator is reset, after receiving no input */
-    private const var RESET_TIME : float;              default RESET_TIME = 0.750;
+    private const var RESET_TIME: float;               default RESET_TIME = 0.750;
 
     /** Maximum multiplier */
-    private const var MAX_MULTIPLIER : float;          default MAX_MULTIPLIER = 6.0;
+    private const var MAX_MULTIPLIER: float;           default MAX_MULTIPLIER = 6.0;
     /** Minimum multiplier */
-    private const var MIN_MULTIPLIER : float;          default MIN_MULTIPLIER = 1.0;
+    private const var MIN_MULTIPLIER: float;           default MIN_MULTIPLIER = 1.0;
     /** Weight factor applied to the streak value */
-    private const var STREAK_WEIGHT : float;           default STREAK_WEIGHT = 0.2;
+    private const var STREAK_WEIGHT: float;            default STREAK_WEIGHT = 0.2;
     /** Amount to decrement the streak when decelerating */
-    private const var STREAK_DECREMENT : int;          default STREAK_DECREMENT = 1;
-    
+    private const var STREAK_DECREMENT: int;           default STREAK_DECREMENT = 1;
+
     /** Last time the accelerator was updated */
-    private var lastTime : float;
+    private var lastTime: float;
     /** Current streak */
-    private var streak : int;
+    private var streak: int;
     /** Fast streak */
-    private var fastStreak : int;
+    private var fastStreak: int;
     /** Whether the accelerator is accelerating */
-    private var accelerating : bool;
+    private var accelerating: bool;
     /** Last value */
-    private var lastValue : float;
+    private var lastValue: float;
     /** Whether a cut is pending */
-    private var cutPending : bool;
+    private var cutPending: bool;
 
     public function Reset() {
         streak = 0;
@@ -49,8 +49,8 @@ class LRDebug_AdjustAccelerator {
      * Returns the multiplier to apply to the base step (1.0 when not accelerating).
      */
     public function GetMultiplier(value : float) : float {
-        var now : float = theGame.GetEngineTimeAsSeconds();
-        var dt : float = now - lastTime;
+        var now: float = theGame.GetEngineTimeAsSeconds();
+        var dt: float = now - lastTime;
 
         // Hard reset after a longer pause to support "finger reposition" on scroll wheels.
         if (dt > RESET_TIME) {

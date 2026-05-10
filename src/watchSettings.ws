@@ -3,7 +3,7 @@
 // initial config read when the player spawns.
 
 @addField(CR4Game)
-private var lightRewriteSettings : CLightRewriteSettings;
+private var lightRewriteSettings: CLightRewriteSettings;
 
 // Gets the LightRewrite settings singleton - lazy initialised
 @addMethod(CR4Game)
@@ -24,7 +24,7 @@ function OnGameStarting(restored : bool) {
 }
 
 @addField(CR4IngameMenu)
-private var lightRewriteSettings : CLightRewriteSettings;
+private var lightRewriteSettings: CLightRewriteSettings;
 
 @wrapMethod(CR4IngameMenu)
 function OnConfigUI() {
@@ -48,7 +48,7 @@ function OnShowOptionSubmenu(actionType : int, menuTag : int, id : string) {
 // Forward every option-change event to the settings object for filtering.
 @wrapMethod(CR4IngameMenu)
 function OnOptionValueChanged(groupId : int, optionName : name, optionValue : string) {
-    var wrappedReturnValue : bool;
+    var wrappedReturnValue: bool;
 
     wrappedReturnValue = wrappedMethod(groupId, optionName, optionValue);
 

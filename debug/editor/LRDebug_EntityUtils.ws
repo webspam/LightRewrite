@@ -9,14 +9,14 @@
 // ---- Component helpers ----
 
 function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
-    var components : array<CComponent>;
+    var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CPointLightComponent');
     if (components.Size() > 0) return (CPointLightComponent)components[0];
     return NULL;
 }
 
 function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
-    var components : array<CComponent>;
+    var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CSpotLightComponent');
     if (components.Size() > 0) return (CSpotLightComponent)components[0];
     return NULL;
@@ -101,7 +101,7 @@ public function LRDebug_ClearMenuOverrideParams() {
  */
 @addMethod(CGameplayEntity)
 public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
-    var params : CLightRewriteSourceParams;
+    var params: CLightRewriteSourceParams;
 
     if (lightSourceRewriter) return lightSourceRewriter;
 

@@ -3,61 +3,61 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION : int;            default CONFIG_VERSION = 10;
+    private const var CONFIG_VERSION: int;             default CONFIG_VERSION = 10;
 
     // Group name constants (must match XML Group id values)
-    private const var GENERAL_GROUP : name;            default GENERAL_GROUP = 'LightRewrite_General';
+    private const var GENERAL_GROUP: name;             default GENERAL_GROUP = 'LightRewrite_General';
 
     // Label key constants (must match XML Var id values)
-    private const var CURRENT_PRESET_LABEL : string;    default CURRENT_PRESET_LABEL    = 'LightRewrite_CurrentProfile';
-    private const var NONE_PRESET_LABEL : name;          default NONE_PRESET_LABEL        = 'LightRewrite_None';
+    private const var CURRENT_PRESET_LABEL: string;    default CURRENT_PRESET_LABEL = 'LightRewrite_CurrentProfile';
+    private const var NONE_PRESET_LABEL: name;         default NONE_PRESET_LABEL = 'LightRewrite_None';
 
     // Setting name constants (must match XML Var id values)
-    private const var ENABLED : name;                  default ENABLED                = 'Enabled';
-    private const var INIT_VERSION : name;             default INIT_VERSION           = 'InitVersion';
-    private const var CURRENT_PRESET : name;            default CURRENT_PRESET          = 'CurrentProfile';
+    private const var ENABLED: name;                   default ENABLED = 'Enabled';
+    private const var INIT_VERSION: name;              default INIT_VERSION = 'InitVersion';
+    private const var CURRENT_PRESET: name;            default CURRENT_PRESET = 'CurrentProfile';
 
     // Internal group IDs resolved at init time
-    private var generalGroupId  : int;
+    private var generalGroupId: int;
 
-    private var gameConfig : CInGameConfigWrapper;
+    private var gameConfig: CInGameConfigWrapper;
 
     // Light rewrite parameters
-    public var isEnabled : bool;                       default isEnabled                = true;
-    private var currentProfile : name;
+    public var isEnabled: bool;                        default isEnabled = true;
+    private var currentProfile: name;
 
     // Runtime params for each light source type
-    public var candleParams : CLightRewriteSourceParams;
-    public var torchParams : CLightRewriteSourceParams;
-    public var brazierParams : CLightRewriteSourceParams;
-    public var candelabraParams : CLightRewriteSourceParams;
-    public var campfireParams : CLightRewriteSourceParams;
-    public var chandelierParams : CLightRewriteSourceParams;
+    public var candleParams: CLightRewriteSourceParams;
+    public var torchParams: CLightRewriteSourceParams;
+    public var brazierParams: CLightRewriteSourceParams;
+    public var candelabraParams: CLightRewriteSourceParams;
+    public var campfireParams: CLightRewriteSourceParams;
+    public var chandelierParams: CLightRewriteSourceParams;
 
     // Flash config menu settings for each light source type
-    private var candleMenu : CLightRewriteSourceMenu;
-    private var torchMenu : CLightRewriteSourceMenu;
-    private var brazierMenu : CLightRewriteSourceMenu;
-    private var candelabraMenu : CLightRewriteSourceMenu;
-    private var campfireMenu : CLightRewriteSourceMenu;
-    private var chandelierMenu : CLightRewriteSourceMenu;
+    private var candleMenu: CLightRewriteSourceMenu;
+    private var torchMenu: CLightRewriteSourceMenu;
+    private var brazierMenu: CLightRewriteSourceMenu;
+    private var candelabraMenu: CLightRewriteSourceMenu;
+    private var campfireMenu: CLightRewriteSourceMenu;
+    private var chandelierMenu: CLightRewriteSourceMenu;
 
-    private var lightSourceParams : array<CLightRewriteSourceParams>;
-    private var lightSourceMenu : array<CLightRewriteSourceMenu>;
+    private var lightSourceParams: array<CLightRewriteSourceParams>;
+    private var lightSourceMenu: array<CLightRewriteSourceMenu>;
 
     // All overrides loaded from XML files, sorted by weight
-    private var loadedOverrides : array<CLightRewriteSourceParams>;
+    private var loadedOverrides: array<CLightRewriteSourceParams>;
 
     // Profile names in dropdown order, built once at init from XML
-    private var profileOptions : array<name>;
-    private var profileIndex : int;
+    private var profileOptions: array<name>;
+    private var profileIndex: int;
 
     // Index of the profile that was selected when the menu was opened
-    private var previousProfile : int;
+    private var previousProfile: int;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
-        var loadedParams : array<CLightRewriteSourceParams>;
+        var loadedParams: array<CLightRewriteSourceParams>;
         var i, count : int;
 
         gameConfig = theGame.GetInGameConfigWrapper();
@@ -114,12 +114,12 @@ class CLightRewriteSettings {
     // If mod config has never been initialised, set the default values and save them.
     // Handles migration from older versions by writing any keys added since the stored version.
     public function EnsureGameConfigIsInitialised() {
-        var oldAttenuation : string;
-        var oldShadowFadeDistance : string;
-        var oldShadowFadeRange : string;
-        var oldShadowBlendFactor : string;
+        var oldAttenuation: string;
+        var oldShadowFadeDistance: string;
+        var oldShadowFadeRange: string;
+        var oldShadowBlendFactor: string;
         var i, count : int;
-        var initVersion : int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
+        var initVersion: int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
 
         if (initVersion == CONFIG_VERSION) return;
 
@@ -300,7 +300,7 @@ class CLightRewriteSettings {
     // To be called for every option-change event.
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId : int, optionName : name, optionValue : string) {
-        var wasEnabled : bool = isEnabled;
+        var wasEnabled: bool = isEnabled;
         var i, count : int;
 
         if (IsMyModSettingsGroup(groupId)) {
@@ -365,7 +365,7 @@ class CLightRewriteSettings {
     }
 
     private function ReplacePresetMenuOptions() {
-        var optionKeys : array<name>;
+        var optionKeys: array<name>;
 
         optionKeys.PushBack(NONE_PRESET_LABEL);
         FindLightRewriteProfileNames(optionKeys);
@@ -384,7 +384,7 @@ class CLightRewriteSettings {
 
     // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
     public function GetAllLightSourceTags() : array<name> {
-        var tags : array<name>;
+        var tags: array<name>;
         var i, count : int;
 
         count = lightSourceParams.Size();
@@ -414,8 +414,8 @@ class CLightRewriteSettings {
 
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
-        var params : CLightRewriteSourceParams = NULL;
-        var matched : CLightRewriteSourceParams = NULL;
+        var params: CLightRewriteSourceParams = NULL;
+        var matched: CLightRewriteSourceParams = NULL;
         var i, count : int;
 
         // Build params object by applying all overrides that match the entity and selected profile

@@ -26,7 +26,7 @@ enum ELightRewriteType {
 
 // The Light Rewrite module singleton.
 @addField(CR4Game)
-public var lightRewrite : CLightRewriteManager;
+public var lightRewrite: CLightRewriteManager;
 
 @wrapMethod(CR4Game)
 function OnGameStarting(restored : bool) {
@@ -67,7 +67,7 @@ protected function InitialiseLightRewrite() {
 
 @addMethod(CGameplayEntity)
 public function LightRewriteProfileChanged() {
-    var params : CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
+    var params: CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
 
     // Always reset to baseline; profiles aren't guaranteed to alter the same fields
     if (lightSourceRewriter) lightSourceRewriter.RestoreOriginalState();
