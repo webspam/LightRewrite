@@ -69,11 +69,11 @@ protected function InitialiseLightRewrite() {
 public function LightRewriteProfileChanged() {
     var params : CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
 
+    // Always reset to baseline; profiles aren't guaranteed to alter the same fields
+    if (lightSourceRewriter) lightSourceRewriter.RestoreOriginalState();
+
     bypassLightRewrite = !params;
-    if (bypassLightRewrite) {
-        if (lightSourceRewriter) lightSourceRewriter.RestoreOriginalState();
-        return;
-    }
+    if (bypassLightRewrite) return;
 
     // TODO: Confirm if discarding the previous rewriter has any impact on memory (at least until loading another zone)
     lightSourceRewriter = theGame.lightRewrite.CreateRewriterFromParams(params, this);
