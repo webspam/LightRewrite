@@ -261,7 +261,24 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="lightShadowCastingModeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="OnlyDynamic" />
+      <xs:enumeration value="OnlyStatic" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="shadowsType">
+    <xs:attribute name="casting_mode"
+                  type="lightShadowCastingModeEnum"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Override the shadow casting mode on the light component itself.</xs:documentation>
+        <xs:documentation>Matches ELightShadowCastingMode: `LSCM_None`, `LSCM_Normal`, `LSCM_OnlyDynamic`, `LSCM_OnlyStatic`.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="fade_distance"
                   type="xs:decimal"
                   use="optional">

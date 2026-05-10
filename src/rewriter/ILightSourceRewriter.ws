@@ -119,6 +119,7 @@ abstract class ILightSourceRewriter {
         if (pamparams.hasShadowFadeDistance) light.shadowFadeDistance = pamparams.shadowFadeDistance;
         if (pamparams.hasShadowFadeRange) light.shadowFadeRange = pamparams.shadowFadeRange;
         if (pamparams.hasShadowBlendFactor) light.shadowBlendFactor = pamparams.shadowBlendFactor;
+        if (pamparams.hasCastShadows) light.shadowCastingMode = pamparams.castShadows;
         if (pamparams.hasColour) light.color = pamparams.color;
     }
 

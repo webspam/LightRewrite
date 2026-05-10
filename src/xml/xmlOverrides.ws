@@ -188,6 +188,10 @@ function ParseLightRewriteBaseParams(
         params.hasShadowBlendFactor = true;
         params.shadowBlendFactor = StringToFloat(strVal, 0.f);
     }
+    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'casting_mode', strVal)) {
+        params.hasCastShadows = true;
+        params.castShadows = LR_StringToLightShadowCastingMode(strVal);
+    }
 
     colourNode = dm.GetCustomDefinitionSubNode(node, 'colour');
     if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
@@ -237,6 +241,16 @@ function ParseLightRewriteSpotlightParams(
     }
 
     return spotlight;
+}
+
+function LR_StringToLightShadowCastingMode(str : string) : ELightShadowCastingMode {
+    switch (str) {
+        case "None":        return LSCM_None;
+        case "Normal":      return LSCM_Normal;
+        case "OnlyDynamic": return LSCM_OnlyDynamic;
+        case "OnlyStatic":  return LSCM_OnlyStatic;
+        default:            return LSCM_None;
+    }
 }
 
 /** Sorts overrides ascending by weight using insertion sort (stable, O(n²)). */
