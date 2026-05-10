@@ -3,19 +3,19 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION: int;            default CONFIG_VERSION = 10;
+    private const var CONFIG_VERSION: int;             default CONFIG_VERSION = 10;
 
     // Group name constants (must match XML Group id values)
-    private const var GENERAL_GROUP: name;            default GENERAL_GROUP = 'LightRewrite_General';
+    private const var GENERAL_GROUP: name;             default GENERAL_GROUP = 'LightRewrite_General';
 
     // Label key constants (must match XML Var id values)
-    private const var CURRENT_PRESET_LABEL: string;    default CURRENT_PRESET_LABEL    = 'LightRewrite_CurrentProfile';
-    private const var NONE_PRESET_LABEL: name;          default NONE_PRESET_LABEL        = 'LightRewrite_None';
+    private const var CURRENT_PRESET_LABEL: string;    default CURRENT_PRESET_LABEL = 'LightRewrite_CurrentProfile';
+    private const var NONE_PRESET_LABEL: name;         default NONE_PRESET_LABEL = 'LightRewrite_None';
 
     // Setting name constants (must match XML Var id values)
-    private const var ENABLED: name;                  default ENABLED                = 'Enabled';
-    private const var INIT_VERSION: name;             default INIT_VERSION           = 'InitVersion';
-    private const var CURRENT_PRESET: name;            default CURRENT_PRESET          = 'CurrentProfile';
+    private const var ENABLED: name;                   default ENABLED = 'Enabled';
+    private const var INIT_VERSION: name;              default INIT_VERSION = 'InitVersion';
+    private const var CURRENT_PRESET: name;            default CURRENT_PRESET = 'CurrentProfile';
 
     // Internal group IDs resolved at init time
     private var generalGroupId: int;
@@ -23,7 +23,7 @@ class CLightRewriteSettings {
     private var gameConfig: CInGameConfigWrapper;
 
     // Light rewrite parameters
-    public var isEnabled: bool;                       default isEnabled                = true;
+    public var isEnabled: bool;                        default isEnabled = true;
     private var currentProfile: name;
 
     // Runtime params for each light source type
