@@ -44,7 +44,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="menu_default"
-                  type="menuDefaultEntryType"
+                  type="overrideEntryType"
                   maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>Configuration for a single light source type in the mod menu.</xs:documentation>
@@ -70,83 +70,64 @@
                   type="xs:string"
                   use="required">
       <xs:annotation>
-        <xs:documentation>The profile that these overrides are part of. Users can change the active
-          profile from the in-game mod menu. A profile can be split across multiple files.</xs:documentation>
+        <xs:documentation>The profile that these overrides are part of. Users can change the active profile from the in-game mod menu. A profile can be split across multiple files.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="weight"
                   type="xs:unsignedByte"
                   use="required">
       <xs:annotation>
-        <xs:documentation>Weight is effectively the order in which overrides are applied; 0 will be
-          applied first, so any values from groups with higher weight will overwrite them.</xs:documentation>
-        <xs:documentation>Groups with the same weight are applied in the order they are defined;
-          however, between files this may be non-deterministic.</xs:documentation>
-        <xs:documentation>Effectively, 0 is typically for global defaults, and 100 would be for a
-          very specific small area.</xs:documentation>
+        <xs:documentation>Weight is effectively the order in which overrides are applied; 0 will be applied first, so any values from groups with higher weight will overwrite them.</xs:documentation>
+        <xs:documentation>Groups with the same weight are applied in the order they are defined; however, between files this may be non-deterministic.</xs:documentation>
+        <xs:documentation>Effectively, 0 is typically for global defaults, and 100 would be for a very specific small area.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="overrideEntryType">
-    <xs:complexContent>
-      <xs:extension base="lightEntryBaseType">
-        <xs:sequence>
-          <xs:element name="spotlight"
-                      type="spotlightOverrideType"
-                      minOccurs="0">
-            <xs:annotation>
-              <xs:documentation>Optional spotlight override for this light source group. When present,
-                customises the spotlight independently of the point lights.</xs:documentation>
-            </xs:annotation>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="lightEntryBaseType">
-    <xs:annotation>
-      <xs:documentation>Shared base type for default and override light entries.</xs:documentation>
-    </xs:annotation>
-    <xs:sequence>
+    <xs:choice minOccurs="0"
+               maxOccurs="unbounded">
       <xs:element name="match"
-                  type="matchType"
-                  minOccurs="0"
-                  maxOccurs="unbounded">
+                  type="matchType">
         <xs:annotation>
           <xs:documentation>Filter that controls which light sources this entry applies to.</xs:documentation>
-          <xs:documentation>By default, matches the start of the entity file name (e.g.
-            candle_small.w2ent).</xs:documentation>
+          <xs:documentation>By default, matches the start of the entity file name (e.g. candle_small.w2ent).</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="shadows"
-                  type="shadowsType"
-                  minOccurs="0">
+                  type="shadowsType">
         <xs:annotation>
           <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="colour"
-                  type="overrideColourType"
-                  minOccurs="0">
+                  type="overrideColourType">
         <xs:annotation>
           <xs:documentation>If present, overrides the light source colour.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="align_point_lights"
-                  type="alignPointLightsType"
-                  minOccurs="0">
+      <xs:element name="offset"
+                  type="vectorType">
         <xs:annotation>
-          <xs:documentation>When present, this will move all point lights to an offset from the
-            entity itself. For complex candles, this will align individual point lights to the flame
-            FX.</xs:documentation>
-          <xs:documentation>N.B. *Many* point lights have been moved manually by the game designers,
-            as when the game was released, point lighting was often used for much smaller,
-            hand-crafted effects.</xs:documentation>
+          <xs:documentation>When present, moves each point light component to this local-space offset from the entity origin (0, 0, 0).</xs:documentation>
         </xs:annotation>
       </xs:element>
-    </xs:sequence>
+      <xs:element name="fire_fx_offset"
+                  type="vectorType">
+        <xs:annotation>
+          <xs:documentation>For complex candles, this will align individual point lights to the flame FX.</xs:documentation>
+          <xs:documentation>Use `offset` to move normal point lights to an offset from the entity itself.</xs:documentation>
+          <xs:documentation>If using `LRT_Candle` rewriter this will often function like `offset`, however it may cause unexpected behaviour (e.g. if the entity has "fire" fx slots).</xs:documentation>
+          <xs:documentation>N.B. *Many* point lights have been moved manually by the game designers, as when the game was released, point lighting was often used for much smaller, hand-crafted effects.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="spotlight"
+                  type="spotlightOverrideType">
+        <xs:annotation>
+          <xs:documentation>Optional spotlight override for this light source group. When present, customises the spotlight independently of the point lights.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
     <xs:attribute name="tag_name"
                   type="lightTagType"
                   use="required">
@@ -165,15 +146,14 @@
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Whether this light source type should be rewritten. Default: true.</xs:documentation>
+        <xs:documentation>Whether this light source type should be rewritten. Default: `true`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="rewriter_type"
                   type="rewriterTypeEnum"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The type of light rewriter for this group. Default: generic light
-          rewriter.</xs:documentation>
+        <xs:documentation>The type of light rewriter for this group. Default: `LRT_None` (generic light rewriter)</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
@@ -201,35 +181,25 @@
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Whether to copy the spotlight colour to point lights. By default, many
-          candles use low-radius, very red point lights for a close-up glow offset from the bluish
-          scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
+        <xs:documentation>Whether to copy the spotlight colour to point lights. By default, many candles use low-radius, very red point lights for a close-up glow offset from the bluish scene lighting, and a spotlight for normal mid-range lighting.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-  </xs:complexType>
-
-  <xs:complexType name="menuDefaultEntryType">
-    <xs:complexContent>
-      <xs:extension base="lightEntryBaseType" />
-    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="matchType">
     <xs:annotation>
       <xs:documentation>A filter string matched against light source entity names or layer paths.</xs:documentation>
-      <xs:documentation>By default, matches the start of the entity file name (e.g.
-        candle_small.w2ent).</xs:documentation>
+      <xs:documentation>By default, matches the start of the entity file name (e.g. candle_small.w2ent).</xs:documentation>
     </xs:annotation>
     <xs:simpleContent>
-      <xs:extension base="xs:string">
+      <xs:extension base="nonEmptyString">
         <xs:attribute name="type"
                       type="matchTypeEnum"
                       use="optional"
                       default="entity">
           <xs:annotation>
-            <xs:documentation>What to match against: entity name (default) or layer path.</xs:documentation>
-            <xs:documentation>The layer path is the full\path\to\the\layer.w2l, whilst the entity is
-              the base file name, without the path.</xs:documentation>
+            <xs:documentation>What this rule will match against: entity name, or layer path. Default: `entity`</xs:documentation>
+            <xs:documentation>The layer path is the full\path\to\the\layer.w2l, whilst the entity is the base file name, without the path (e.g. candle_small.w2ent).</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="mode"
@@ -237,13 +207,18 @@
                       use="optional"
                       default="startsWith">
           <xs:annotation>
-            <xs:documentation>How to compare the value: startsWith (default), endsWith, contains, or
-              exact.</xs:documentation>
+            <xs:documentation>How to compare the value: startsWith (default), endsWith, contains, or exact.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+
+  <xs:simpleType name="nonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="matchTypeEnum">
     <xs:restriction base="xs:string">
@@ -254,8 +229,7 @@
       </xs:enumeration>
       <xs:enumeration value="layer">
         <xs:annotation>
-          <xs:documentation>Match against the layer path of an entity, e.g.
-            levels\prolog_village\some\layer.w2l</xs:documentation>
+          <xs:documentation>Match against the layer path of an entity, e.g. levels\prolog_village\some\layer.w2l</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
     </xs:restriction>
@@ -292,8 +266,7 @@
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The distance the player is from a light source before the shadow starts to
-          fade.</xs:documentation>
+        <xs:documentation>The distance the player is from a light source before the shadow starts to fade.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="fade_range"
@@ -324,7 +297,7 @@
     </xs:attribute>
   </xs:complexType>
 
-  <xs:complexType name="alignPointLightsType">
+  <xs:complexType name="vectorType">
     <xs:attribute name="x"
                   type="xs:decimal"
                   use="required">
@@ -341,11 +314,9 @@
 
   <xs:complexType name="spotlightOverrideType">
     <xs:annotation>
-      <xs:documentation>Spotlight-specific overrides for a light source group. Brightness, radius,
-        attenuation, shadows, and colour have the same meaning and constraints as on the parent
-        override. Tag name and label are inherited from the parent override in code.</xs:documentation>
+      <xs:documentation>Spotlight-specific overrides for a light source group. Brightness, radius, attenuation, shadows, and colour have the same meaning and constraints as on the parent override. Tag name and label are inherited from the parent override in code.</xs:documentation>
     </xs:annotation>
-    <xs:sequence>
+    <xs:all>
       <xs:element name="shadows"
                   type="shadowsType"
                   minOccurs="0">
@@ -361,33 +332,32 @@
         </xs:annotation>
       </xs:element>
       <xs:element name="offset"
-                  type="alignPointLightsType"
+                  type="vectorType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>When present, moves each spotlight component to this local-space
-            offset from the entity origin (0, 0, 0).</xs:documentation>
+          <xs:documentation>When present, moves each spotlight component to this local-space offset from the entity origin (0, 0, 0).</xs:documentation>
         </xs:annotation>
       </xs:element>
-    </xs:sequence>
+    </xs:all>
     <xs:attribute name="enabled"
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>When false, disables the spotlight in game. Default: true.</xs:documentation>
+        <xs:documentation>When false, disables the spotlight in game. Default: `true`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="brightness"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Override the spotlight brightness.</xs:documentation>
+        <xs:documentation>How bright the spotlight is.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="radius"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Set the spotlight cutoff radius.</xs:documentation>
+        <xs:documentation>How far the light can reach (without raytracing).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="attenuation"
@@ -401,30 +371,24 @@
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Angle in degrees from the spotlight centre axis to the edge of the
-          fully-lit cone. Light is at full intensity within this cone.</xs:documentation>
-        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light
-          cone is flipped, which may be confusing for others).</xs:documentation>
+        <xs:documentation>Angle in degrees from the spotlight centre axis to the edge of the fully-lit cone. Light is at full intensity within this cone.</xs:documentation>
+        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light cone is flipped, which may be confusing for others).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="outerAngle"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>Angle in degrees from the spotlight centre axis to the outer edge of the
-          falloff cone. Light fades from full to zero between innerAngle and outerAngle.</xs:documentation>
-        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light
-          cone is flipped, which may be confusing for others).</xs:documentation>
+        <xs:documentation>Angle in degrees from the spotlight centre axis to the outer edge of the falloff cone. Light fades from full to zero between innerAngle and outerAngle.</xs:documentation>
+        <xs:documentation>Convention is to have innerAngle less than outerAngle (otherwise the light cone is flipped, which may be confusing for others).</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="softness"
                   type="xs:decimal"
                   use="optional">
       <xs:annotation>
-        <xs:documentation>The softness of the falloff of the light between innerAngle and
-          outerAngle.</xs:documentation>
-        <xs:documentation>Range 0-255 (0-2 in practice); 0 is an unrealistic sharp edge, 2 is
-          smooth. Higher values are barely perceptible in-game.</xs:documentation>
+        <xs:documentation>The softness of the falloff of the light between innerAngle and outerAngle.</xs:documentation>
+        <xs:documentation>Range 0-255 (0-2 in practice); 0 is an unrealistic sharp edge, 2 is smooth. Higher values are barely perceptible in-game.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>

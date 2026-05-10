@@ -81,7 +81,7 @@ function LoadLightRewriteOverridesGroup(
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
-        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
             override.hasAlignPointLights = true;
             override.alignPointLights = true;
@@ -90,6 +90,16 @@ function LoadLightRewriteOverridesGroup(
             override.pointLightOffset.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
             override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
+        }
+
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
+        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+            override.hasPointLightOffset = true;
+            override.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
+            override.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
+            override.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
         }
 
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');

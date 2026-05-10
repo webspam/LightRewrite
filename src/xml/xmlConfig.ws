@@ -100,7 +100,7 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
             params.color.Blue = StringToInt(strVal, params.color.Blue);
         }
 
-        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'align_point_lights');
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
             params.hasAlignPointLights = true;
             params.alignPointLights = true;
@@ -109,6 +109,16 @@ function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourcePara
             params.pointLightOffset.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
             params.pointLightOffset.Z = StringToFloat(strVal, 0.f);
+        }
+
+        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
+        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+            params.hasPointLightOffset = true;
+            params.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
+            params.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
+            params.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
         }
 
         LogLightRewrite("[XmlConfig] Loaded: " + params.displayName + " (tag=" + NameToString(params.tag) + ")");
