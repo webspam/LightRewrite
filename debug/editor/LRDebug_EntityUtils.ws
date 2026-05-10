@@ -39,11 +39,13 @@ function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType
 /** The params used to edit the light source */
 @addField(CGameplayEntity) public var lrDebugParams : CLightRewriteSourceParams;
 
-/** Lazy getter */
+/** Lazy getter. Copies current effective params on first call. */
 @addMethod(CGameplayEntity)
-public function LRDebug_GetParams() : CLightRewriteSourceParams {
+public function LRDebug_GetParams(rewriter : ILightSourceRewriter) : CLightRewriteSourceParams {
     if (!lrDebugParams) {
         lrDebugParams = new CLightRewriteSourceParams in this;
+
+        rewriter.LRDebug_GetEffectiveParams().ApplyTo(lrDebugParams);
         lrDebugParams.hasEnabled = true;
         lrDebugParams.enabled = true;
     }
@@ -71,6 +73,11 @@ function RewriteLight() {
 function RestoreOriginalState() {
     wrappedMethod();
     inOriginalState = true;
+}
+
+@addMethod(ILightSourceRewriter)
+public function LRDebug_GetEffectiveParams() : CLightRewriteSourceParams {
+    return GetEffectiveParams();
 }
 
 // Override rewriter params
