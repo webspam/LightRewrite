@@ -306,6 +306,7 @@ class LRDebug_AttributeEditor {
         }
 
         rewriter.LRDebug_SetMenuOverrideParams(params);
+        rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
         return true;
     }
