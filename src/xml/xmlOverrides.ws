@@ -78,6 +78,10 @@ function LoadLightRewriteOverridesGroup(
             override.hasUseSpotlightColor = true;
             override.useSpotlightColor = (strVal == "true");
         }
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'force_cast_shadows', strVal)) {
+            override.hasForceCastShadows = true;
+            override.forceCastShadows = (strVal == "true");
+        }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
