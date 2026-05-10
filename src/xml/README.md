@@ -26,14 +26,14 @@ function GetCustomNodeAttributeValueFloat(out node : SCustomNode, attName : name
 
 ```witcherscript
 struct SCustomNodeAttribute {
-  var attributeName : name;
+  var attributeName: name;
 }
 
 struct SCustomNode {
-  var nodeName : name;
-  var attributes : array<SCustomNodeAttribute>;
-  var values : array<name>;
-  var subNodes : array<SCustomNode>;
+  var nodeName: name;
+  var attributes: array<SCustomNodeAttribute>;
+  var values: array<name>;
+  var subNodes: array<SCustomNode>;
 }
 ```
 

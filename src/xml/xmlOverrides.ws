@@ -4,11 +4,11 @@ function LogLightRewriteXml(message : string) {
 
 /** Loads all overrides from all XML files */
 function LoadLightRewriteOverrides(owner : CObject) : array<CLightRewriteSourceParams> {
-    var overrides : array<CLightRewriteSourceParams>;
-    var dm : CDefinitionsManagerAccessor;
+    var overrides: array<CLightRewriteSourceParams>;
+    var dm: CDefinitionsManagerAccessor;
     var lrNode, overridesNode : SCustomNode;
     var i, count, weight : int;
-    var profileName : name;
+    var profileName: name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -42,13 +42,13 @@ function LoadLightRewriteOverridesGroup(
     weight : int,
     profileName : name
 ) {
-    var entryNode : SCustomNode;
-    var alignNode : SCustomNode;
-    var override : CLightRewriteSourceParams;
-    var strVal : string;
-    var nameVal : name;
+    var entryNode: SCustomNode;
+    var alignNode: SCustomNode;
+    var override: CLightRewriteSourceParams;
+    var strVal: string;
+    var nameVal: name;
     var i, count : int;
-    var spotlightNode : SCustomNode;
+    var spotlightNode: SCustomNode;
 
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
@@ -118,10 +118,10 @@ function ParseLightRewriteMatchRules(
     dm : CDefinitionsManagerAccessor,
     entryNode : SCustomNode
 ) {
-    var matchNode : SCustomNode;
-    var rule : CLightRewriteMatchRule;
+    var matchNode: SCustomNode;
+    var rule: CLightRewriteMatchRule;
     var i, count : int;
-    var strVal : string;
+    var strVal: string;
 
     count = entryNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
@@ -155,7 +155,7 @@ function ParseLightRewriteBaseParams(
     dm : CDefinitionsManagerAccessor,
     node : SCustomNode
 ) {
-    var strVal : string;
+    var strVal: string;
     var shadowsNode, colourNode : SCustomNode;
 
     if (dm.GetCustomNodeAttributeValueString(node, 'enabled', strVal)) {
@@ -210,9 +210,9 @@ function ParseLightRewriteSpotlightParams(
     dm : CDefinitionsManagerAccessor,
     spotlightNode : SCustomNode
 ) : CLightRewriteSpotlightParams {
-    var spotlight : CLightRewriteSpotlightParams;
-    var offsetNode : SCustomNode;
-    var strVal : string;
+    var spotlight: CLightRewriteSpotlightParams;
+    var offsetNode: SCustomNode;
+    var strVal: string;
 
     spotlight = new CLightRewriteSpotlightParams in owner;
 
@@ -256,7 +256,7 @@ function LR_StringToLightShadowCastingMode(str : string) : ELightShadowCastingMo
 /** Sorts overrides ascending by weight using insertion sort (stable, O(n²)). */
 function ArraySortOverridesByWeight(out overrides : array<CLightRewriteSourceParams>) {
     var i, j, keyWeight, count : int;
-    var keyOverride : CLightRewriteSourceParams;
+    var keyOverride: CLightRewriteSourceParams;
 
     count = overrides.Size();
     for (i = 1; i < count; i += 1) {

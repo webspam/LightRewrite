@@ -5,7 +5,7 @@
  * Requires: mod_sharedutils_oneliners (SU_Oneliner)
  */
 statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
-    public var seconds : float;
+    public var seconds: float;
 
     public function Init(text : string, seconds : float) {
         this.text = text;

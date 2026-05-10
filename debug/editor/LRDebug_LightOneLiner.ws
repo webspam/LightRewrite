@@ -14,11 +14,11 @@
 @addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
 
 statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
-    public var entity : CGameplayEntity;
-    public var pointLights : int;
-    public var spotLights : int;
-    public var active : bool;
-    public var highlighted : bool;
+    public var entity: CGameplayEntity;
+    public var pointLights: int;
+    public var spotLights: int;
+    public var active: bool;
+    public var highlighted: bool;
 
     public function Init(tracked_entity : CGameplayEntity, pointLights_ : int, spotLights_ : int) {
         this.entity = tracked_entity;
@@ -46,7 +46,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     private function CountToHtml(prefix : string, count : int) : string {
-        var html : string = "<font color='";
+        var html: string = "<font color='";
 
         if (count > 0) html += "#00ff00";
         else html += "#aaaaaa";
@@ -55,10 +55,10 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     private function GetAttributeValueString(attr : name) : string {
-        var params : CLightRewriteSourceParams;
-        var point : CPointLightComponent;
-        var valF : float;
-        var valI : int;
+        var params: CLightRewriteSourceParams;
+        var point: CPointLightComponent;
+        var valF: float;
+        var valI: int;
 
         if (!entity) return "?";
 
@@ -139,7 +139,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     }
 
     private function EscapeHtml(str : string) : string {
-        var r : string;
+        var r: string;
 
         r = StrReplaceAll(str, "&", "&amp;");
         r = StrReplaceAll(r, "<", "&lt;");
@@ -158,12 +158,12 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function GenerateText() : string {
-        var descriptor : string;
+        var descriptor: string;
         var layerPart, entityPath, levelPath, fileName, filePath : string;
         var headerHtml, body, countString, marker : string;
-        var attrId : name;
-        var fontSize : int;
-        var showPaths : bool;
+        var attrId: name;
+        var fontSize: int;
+        var showPaths: bool;
 
         descriptor = entity.ToString();
         fontSize = 13;
@@ -220,8 +220,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
-    private const var NORMAL_RANGE : float; default NORMAL_RANGE = 10.0;
-    private const var FOCUS_RANGE  : float; default FOCUS_RANGE  = 25.0;
+    private const var NORMAL_RANGE: float; default NORMAL_RANGE = 10.0;
+    private const var FOCUS_RANGE: float; default FOCUS_RANGE  = 25.0;
 
     event OnEnterState(previous_state_name : name) {
         super.OnEnterState(previous_state_name);
@@ -235,7 +235,7 @@ state FollowEntity in LRDebug_LightOneLiner {
     }
 
     entry function FollowEntity() : void {
-        var maxRange : float = FOCUS_RANGE;
+        var maxRange: float = FOCUS_RANGE;
 
         while (
             thePlayer.lrDebugLabels &&

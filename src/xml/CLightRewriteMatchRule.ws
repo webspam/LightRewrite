@@ -14,16 +14,16 @@ enum ELightRewriteMatchMode {
 
 /** A single match rule */
 class CLightRewriteMatchRule {
-    public var matchType : ELightRewriteMatchType;
-    public var matchMode : ELightRewriteMatchMode;
-    public var matchValue : name;
+    public var matchType: ELightRewriteMatchType;
+    public var matchMode: ELightRewriteMatchMode;
+    public var matchValue: name;
 
     default matchType = LR_Match_Entity;
     default matchMode = LR_Match_StartsWith;
 
     public function Matches(entity : CGameplayEntity) : bool {
-        var subject : string;
-        var value : string = NameToString(matchValue);
+        var subject: string;
+        var value: string = NameToString(matchValue);
 
         if (matchType == LR_Match_Layer) {
             subject = StrBeforeFirst(StrAfterFirst(entity.ToString(), "\""), "\"");

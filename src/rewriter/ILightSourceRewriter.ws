@@ -3,10 +3,10 @@
  */
 abstract class ILightSourceRewriter {
     // The type of light source this rewriter is for. Implementors must set.
-    public var type : ELightRewriteType;
+    public var type: ELightRewriteType;
 
     // The entity that this rewriter is owned by
-    public var parentEntity : CGameplayEntity;
+    public var parentEntity: CGameplayEntity;
 
     // The parameters for this light source
     protected var params : CLightRewriteSourceParams;
@@ -54,14 +54,14 @@ abstract class ILightSourceRewriter {
 
     // Restores the entity's lights to their original state.
     public function RestoreOriginalState() {
-        var spotLight : CSpotLightComponent;
-        var pointLight : CPointLightComponent;
-        var i : int;
-        var interactionComponent : CGameplayLightComponent;
+        var spotLight: CSpotLightComponent;
+        var pointLight: CPointLightComponent;
+        var i: int;
+        var interactionComponent: CGameplayLightComponent;
         var useEntityState, entityLightState : bool;
 
-        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count : int = components.Size();
+        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var count: int = components.Size();
 
         interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
         if (interactionComponent) {
@@ -94,11 +94,11 @@ abstract class ILightSourceRewriter {
 
     // Disables all spotlight components on the entity.
     public function DisableAllSpotlightComponents() {
-        var lightComponent : CSpotLightComponent;
-        var i : int;
+        var lightComponent: CSpotLightComponent;
+        var i: int;
 
-        var components : array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-        var count : int = components.Size();
+        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        var count: int = components.Size();
 
         for (i = 0; i < count; i += 1) {
             lightComponent = (CSpotLightComponent)components[i];
@@ -125,8 +125,8 @@ abstract class ILightSourceRewriter {
 
     // Rewrites the spotlight component on the entity with the given params.
     protected function RewriteSpotlight(spotParams : CLightRewriteSpotlightParams) {
-        var spotLight : CSpotLightComponent;
-        var wasEnabled : bool;
+        var spotLight: CSpotLightComponent;
+        var wasEnabled: bool;
 
         spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
         if (!spotLight) return;
@@ -155,7 +155,7 @@ abstract class ILightSourceRewriter {
         pointLight : CPointLightComponent,
         optional spotLight : CSpotLightComponent
     ) {
-        var wasEnabled : bool;
+        var wasEnabled: bool;
 
         pointLight.SaveLightRewriteOriginalValues();
 
@@ -178,7 +178,7 @@ abstract class ILightSourceRewriter {
         pointLight : CPointLightComponent,
         optional spotLight : CSpotLightComponent
     ) {
-        var pamparams : CLightRewriteSourceParams = GetEffectiveParams();
+        var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
 
         if (pamparams.hasColour) {
             pointLight.color = pamparams.color;

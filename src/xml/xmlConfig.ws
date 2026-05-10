@@ -1,8 +1,8 @@
 function FindLightRewriteProfileNames(out profileNames : array<name>) {
-    var dm : CDefinitionsManagerAccessor;
+    var dm: CDefinitionsManagerAccessor;
     var lrNode, overridesNode, entryNode : SCustomNode;
     var i, count : int;
-    var nameVal : name;
+    var nameVal: name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -22,13 +22,13 @@ function FindLightRewriteProfileNames(out profileNames : array<name>) {
 
 /** Loads CLightRewriteSourceParams from menu_defaults.xml via the definitions manager. */
 function LoadLightRewriteParams(owner : CObject) : array<CLightRewriteSourceParams> {
-    var paramsArray : array<CLightRewriteSourceParams>;
-    var dm : CDefinitionsManagerAccessor;
+    var paramsArray: array<CLightRewriteSourceParams>;
+    var dm: CDefinitionsManagerAccessor;
     var lrNode, defaultsNode, entryNode, shadowsNode, colourNode, alignNode : SCustomNode;
-    var params : CLightRewriteSourceParams;
+    var params: CLightRewriteSourceParams;
     var i, count : int;
-    var strVal : string;
-    var nameVal : name;
+    var strVal: string;
+    var nameVal: name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
