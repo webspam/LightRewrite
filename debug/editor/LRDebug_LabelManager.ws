@@ -8,19 +8,66 @@
  * showPathLabels is public so LRDebug_LightOneLiner.GenerateText can read it
  * via thePlayer.lrDebugLabelManager.showPathLabels without a separate accessor.
  */
+
+@wrapMethod(CR4HudModuleOneliners)
+function OnTick(timeDelta : float) {
+    wrappedMethod(timeDelta);
+
+    if (thePlayer.lrDebugLabelManager) {
+        thePlayer.lrDebugLabelManager.UpdateWorldMarkers();
+    }
+}
+
 class LRDebug_LabelManager {
     private var tagSeq: int;
+    private var markerIdSeq: int;
     public var showPathLabels: bool;
     private var target: CGameplayEntity;
     private var toast: LRDebug_ToastOneLiner;
+    private var targetMarkerLabels: array<LRDebug_WorldMarker>;
+    private var targetMarkerComponents: array<CComponent>;
+
+    public var marker: LRDebug_WorldMarker;
+
 
     public function Init() {
-        toast = new LRDebug_ToastOneLiner in thePlayer;
+        toast = new LRDebug_ToastOneLiner in this;
+
+        markerIdSeq = (int)theGame.GetLocalTimeAsMilliseconds();
+
+        marker = new LRDebug_WorldMarker in this;
+        marker.Init(
+            "+",
+            32,
+            "#ff0000",
+            NextMarkerId()
+        );
+
+        InitTargetMarkerLabels();
+        UpdateWorldMarkers();
     }
 
     private function ShowToast(text : string) {
         toast.Init("<font size='14'>" + text + "</font>", 1.0);
         toast.Start();
+    }
+
+    public function UpdateWorldMarkers() {
+        var i: int;
+        var position: Vector;
+
+        position = thePlayer.GetWorldPosition();
+        position.Z += 1.7f;
+        marker.SetWorldPosition(position);
+
+        for (i = 0; i < targetMarkerLabels.Size(); i += 1) {
+            if (thePlayer.lrDebugLabels && targetMarkerComponents[i]) {
+                targetMarkerLabels[i].SetWorldPosition(targetMarkerComponents[i].GetWorldPosition());
+            }
+            else {
+                targetMarkerLabels[i].Hide();
+            }
+        }
     }
 
     public function Scan() {
@@ -81,11 +128,14 @@ class LRDebug_LabelManager {
                 target.lrdebugOneliner.SetHighlighted(false);
             }
 
+            ClearTargetPinpoints();
             target = bestEntity;
 
             if (target && target.lrdebugOneliner) {
                 target.lrdebugOneliner.SetHighlighted(true);
             }
+
+            SetTargetPinpoints(target);
         }
     }
 
@@ -161,6 +211,57 @@ class LRDebug_LabelManager {
     private function CountComponents(entity : CGameplayEntity, className : name) : int {
         var components: array<CComponent> = entity.GetComponentsByClassName(className);
         return components.Size();
+    }
+
+    private function NextMarkerId() : int {
+        markerIdSeq += 1;
+        return markerIdSeq;
+    }
+
+    private function InitTargetMarkerLabels() {
+        var i: int;
+        var marker : LRDebug_WorldMarker;
+
+        for (i = 0; i < 5; i += 1) {
+            marker = new LRDebug_WorldMarker in this;
+            marker.Init("+", 16, "#00ff52", NextMarkerId());
+            targetMarkerLabels.PushBack(marker);
+            targetMarkerComponents.PushBack(NULL);
+        }
+
+        for (i = 0; i < 5; i += 1) {
+            marker = new LRDebug_WorldMarker in this;
+            marker.Init("+", 16, "#b100ff", NextMarkerId());
+            targetMarkerLabels.PushBack(marker);
+            targetMarkerComponents.PushBack(NULL);
+        }
+    }
+
+    private function SetTargetPinpoints(entity : CGameplayEntity) {
+        var components: array<CComponent>;
+        var i: int;
+
+        if (!entity) return;
+
+        components = entity.GetComponentsByClassName('CPointLightComponent');
+        for (i = 0; i < components.Size() && i < 5; i += 1) {
+            targetMarkerComponents[i] = components[i];
+        }
+
+        components.Clear();
+        components = entity.GetComponentsByClassName('CSpotLightComponent');
+        for (i = 0; i < components.Size() && i < 5; i += 1) {
+            targetMarkerComponents[i + 5] = components[i];
+        }
+    }
+
+    private function ClearTargetPinpoints() {
+        var i: int;
+
+        for (i = 0; i < targetMarkerLabels.Size(); i += 1) {
+            targetMarkerComponents[i] = NULL;
+            targetMarkerLabels[i].Hide();
+        }
     }
 
     private function CreateOnelinerForEntity(
