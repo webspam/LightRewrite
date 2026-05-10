@@ -23,7 +23,7 @@ class LRDebug_AdjustAccelerator {
     private const var STREAK_WEIGHT: float;            default STREAK_WEIGHT = 0.2;
     /** Amount to decrement the streak when decelerating */
     private const var STREAK_DECREMENT: int;           default STREAK_DECREMENT = 1;
-    
+
     /** Last time the accelerator was updated */
     private var lastTime: float;
     /** Current streak */
