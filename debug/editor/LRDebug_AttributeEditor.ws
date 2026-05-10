@@ -172,7 +172,7 @@ class LRDebug_AttributeEditor {
         }
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
-        params = target.LRDebug_GetParams();
+        params = target.LRDebug_GetParams(rewriter);
         attr = GetCurrentAttrId();
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
@@ -306,6 +306,7 @@ class LRDebug_AttributeEditor {
         }
 
         rewriter.LRDebug_SetMenuOverrideParams(params);
+        rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
         return true;
     }
