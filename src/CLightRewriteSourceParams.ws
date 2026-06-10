@@ -9,7 +9,7 @@
  */
 class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
-    public var tag: name;
+    public var tag        : name;
     public var displayName: string;
     default displayName = "generic";
 
@@ -24,12 +24,12 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // The rewriter implementation to use
     public var hasRewriterType: bool;
-    public var rewriterType: ELightRewriteType;
+    public var rewriterType   : ELightRewriteType;
 
     // Point-light alignment to fire FX slots
     public var hasAlignPointLights: bool;
-    public var alignPointLights: bool;
-    public var pointLightOffset: Vector;
+    public var alignPointLights   : bool;
+    public var pointLightOffset   : Vector;
 
     // Direct point-light position offset (non-candle lights)
     public var hasPointLightOffset: bool;
@@ -37,7 +37,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var hasUseSpotlightColor: bool;
-    public var useSpotlightColor: bool;
+    public var useSpotlightColor   : bool;
 
     // Spotlight-specific override — NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
@@ -46,8 +46,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public function Init() {}
 
     // Returns true if this params object matches the given entity (all rules must pass).
-    public function MatchesEntity(entity : CGameplayEntity) : bool {
-        var i, count : int;
+    public function MatchesEntity(entity: CGameplayEntity): bool {
+        var i, count: int;
 
         count = matchRules.Size();
         for (i = 0; i < count; i += 1) {
@@ -60,7 +60,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     }
 
     // Applies every set field from this object onto target, overwriting its values.
-    public function ApplyTo(target : CLightRewriteSourceParams) {
+    public function ApplyTo(target: CLightRewriteSourceParams) {
         if (hasEnabled) {
             target.hasEnabled = true;
             target.enabled = enabled;

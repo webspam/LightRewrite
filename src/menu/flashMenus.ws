@@ -17,16 +17,16 @@
  * Reference code: IngameMenu_AdditionalOptionValueChangeHandling (dropDown) and ShowDeveloperMode
  */
 function LR_ReplaceFlashMenuOptions(
-    optionId : name,
-    optionLabelKey : string,
-    groupId : name,
-    optionKeys : array<name>
+    optionId: name,
+    optionLabelKey: string,
+    groupId: name,
+    optionKeys: array<name>
 ) {
     var groupIndex: int;
-    var newObject, existingObject, parentObject : CScriptedFlashObject;
-    var flashArray, options : CScriptedFlashArray;
+    var newObject, existingObject, parentObject: CScriptedFlashObject;
+    var flashArray, options: CScriptedFlashArray;
     var currentValue: string;
-    var i, count : int;
+    var i, count: int;
     var optionText: string;
 
     var gameConfig: CInGameConfigWrapper = theGame.GetInGameConfigWrapper();

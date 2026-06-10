@@ -6,65 +6,67 @@
  * responsibility after each operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
-    private var attrIndex: int;
+    private var attrIndex  : int;
     private var accelerator: LRDebug_AdjustAccelerator;
 
     public function Init() {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
     }
 
-    public function SetAttributeIndex(index : int) { attrIndex = index; }
+    public function SetAttributeIndex(index: int) {
+        attrIndex = index;
+    }
 
-    public function GetCurrentAttrId() : name {
+    public function GetCurrentAttrId(): name {
         switch (attrIndex) {
-            case 0:  return 'brightness';
-            case 1:  return 'radius';
-            case 2:  return 'attenuation';
-            case 3:  return 'shadowFadeDistance';
-            case 4:  return 'shadowFadeRange';
-            case 5:  return 'shadowBlendFactor';
-            case 6:  return 'useSpotlightColor';
-            case 7:  return 'alignPointLights';
-            case 8:  return 'alignOffsetZ';
-            case 9:  return 'overrideColour';
-            case 10: return 'colourR';
-            case 11: return 'colourG';
-            case 12: return 'colourB';
+            case 0:   return 'brightness';
+            case 1:   return 'radius';
+            case 2:   return 'attenuation';
+            case 3:   return 'shadowFadeDistance';
+            case 4:   return 'shadowFadeRange';
+            case 5:   return 'shadowBlendFactor';
+            case 6:   return 'useSpotlightColor';
+            case 7:   return 'alignPointLights';
+            case 8:   return 'alignOffsetZ';
+            case 9:   return 'overrideColour';
+            case 10:  return 'colourR';
+            case 11:  return 'colourG';
+            case 12:  return 'colourB';
         }
         return 'unknown';
     }
 
-    public function GetCurrentAttrLabel() : string {
+    public function GetCurrentAttrLabel(): string {
         switch (GetCurrentAttrId()) {
-            case 'brightness':         return "brightness";
-            case 'radius':             return "radius";
-            case 'attenuation':        return "attenuation";
-            case 'shadowFadeDistance': return "shadow distance";
-            case 'shadowFadeRange':    return "shadow range";
-            case 'shadowBlendFactor':  return "shadow blend";
-            case 'useSpotlightColor':  return "use spotlight colour";
-            case 'alignPointLights':   return "align point lights";
-            case 'alignOffsetZ':       return "align offset Z";
-            case 'overrideColour':     return "override colour";
-            case 'colourR':            return "colour R";
-            case 'colourG':            return "colour G";
-            case 'colourB':            return "colour B";
+            case 'brightness':          return "brightness";
+            case 'radius':              return "radius";
+            case 'attenuation':         return "attenuation";
+            case 'shadowFadeDistance':  return "shadow distance";
+            case 'shadowFadeRange':     return "shadow range";
+            case 'shadowBlendFactor':   return "shadow blend";
+            case 'useSpotlightColor':   return "use spotlight colour";
+            case 'alignPointLights':    return "align point lights";
+            case 'alignOffsetZ':        return "align offset Z";
+            case 'overrideColour':      return "override colour";
+            case 'colourR':             return "colour R";
+            case 'colourG':             return "colour G";
+            case 'colourB':             return "colour B";
         }
         return "unknown";
     }
 
-    private function GetFloatStep(value : float) : float {
+    private function GetFloatStep(value: float): float {
         if (value >= 50.0) return 5.0;
         if (value >= 25.0) return 2.5;
         if (value >= 15.0) return 1.0;
-        if (value >= 3.5)  return 0.5;
-        if (value >= 1.0)  return 0.25;
-        if (value >= 0.5)  return 0.1;
-        if (value >= 0.1)  return 0.05;
+        if (value >= 3.5) return 0.5;
+        if (value >= 1.0) return 0.25;
+        if (value >= 0.5) return 0.1;
+        if (value >= 0.1) return 0.05;
         return 0.01;
     }
 
-    private function GetFloatStepDirectional(currentValue : float, value : float) : float {
+    private function GetFloatStepDirectional(currentValue: float, value: float): float {
         var floatStep: float = GetFloatStep(currentValue);
 
         if (value > 0.0) return floatStep;
@@ -74,26 +76,26 @@ class LRDebug_AttributeEditor {
     }
 
     // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
-    private function ClampAttributeValue(attr : name, value : float) : float {
+    private function ClampAttributeValue(attr: name, value: float): float {
         var clamped: float;
 
         // alignOffsetZ is the only attribute that can go negative.
         switch (attr) {
-            case 'brightness':         clamped = ClampF(value, 0.0, 100.0); break;
-            case 'radius':             clamped = ClampF(value, 0.0, 50.0);  break;
-            case 'attenuation':        clamped = ClampF(value, 0.0, 1.0);   break;
-            case 'shadowFadeDistance': clamped = ClampF(value, 0.0, 100.0); break;
-            case 'shadowFadeRange':    clamped = ClampF(value, 0.0, 100.0); break;
-            case 'shadowBlendFactor':  clamped = ClampF(value, 0.0, 1.0);   break;
-            case 'alignOffsetZ':       clamped = ClampF(value, -3.0, 3.0);  break;
-            default: return value;
+            case 'brightness':          clamped = ClampF(value, 0.0, 100.0);  break;
+            case 'radius':              clamped = ClampF(value, 0.0, 50.0);   break;
+            case 'attenuation':         clamped = ClampF(value, 0.0, 1.0);    break;
+            case 'shadowFadeDistance':  clamped = ClampF(value, 0.0, 100.0);  break;
+            case 'shadowFadeRange':     clamped = ClampF(value, 0.0, 100.0);  break;
+            case 'shadowBlendFactor':   clamped = ClampF(value, 0.0, 1.0);    break;
+            case 'alignOffsetZ':        clamped = ClampF(value, -3.0, 3.0);   break;
+            default:                    return value;
         }
 
         if (clamped >= 0.0) return (float)FloorF(clamped * 100.0 + 0.5) / 100.0;
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    private function GetDynamicStep(attr : name, currentValue : float, value : float) : float {
+    private function GetDynamicStep(attr: name, currentValue: float, value: float): float {
         switch (attr) {
             case 'alignOffsetZ':
             case 'attenuation':
@@ -104,7 +106,7 @@ class LRDebug_AttributeEditor {
         }
     }
 
-    private function ApplyFloatDelta(attr : name, currentValue : float, delta : float) : float {
+    private function ApplyFloatDelta(attr: name, currentValue: float, delta: float): float {
         var remaining: float;
         var sign: float;
         var step: float;
@@ -138,7 +140,7 @@ class LRDebug_AttributeEditor {
         return currentValue;
     }
 
-    public function CycleAttribute(delta : int) {
+    public function CycleAttribute(delta: int) {
         var count: int = 13;
         if (count <= 0) return;
 
@@ -152,7 +154,7 @@ class LRDebug_AttributeEditor {
      * given entity. Returns true if the adjustment was applied (caller should
      * then call LRDebug_RegenerateText on the entity's oneliner).
      */
-    public function AdjustAttribute(value : float, target : CGameplayEntity) : bool {
+    public function AdjustAttribute(value: float, target: CGameplayEntity): bool {
         var attr: name;
         var step: float;
         var point: CPointLightComponent;

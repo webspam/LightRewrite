@@ -9,16 +9,16 @@
  * via thePlayer.lrDebugLabelManager.showPathLabels without a separate accessor.
  */
 class LRDebug_LabelManager {
-    private var tagSeq: int;
+    private var tagSeq       : int;
     public var showPathLabels: bool;
-    private var target: CGameplayEntity;
-    private var toast: LRDebug_ToastOneLiner;
+    private var target       : CGameplayEntity;
+    private var toast        : LRDebug_ToastOneLiner;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in thePlayer;
     }
 
-    private function ShowToast(text : string) {
+    private function ShowToast(text: string) {
         toast.Init("<font size='14'>" + text + "</font>", 1.0);
         toast.Start();
     }
@@ -26,9 +26,9 @@ class LRDebug_LabelManager {
     public function Scan() {
         var entities: array<CGameplayEntity>;
         var entity: CGameplayEntity;
-        var i, count, pointLights, spotLights : int;
-        var camPos, camDir, entPos, toEnt : Vector;
-        var score, bestScore, dot, visibilityRange : float;
+        var i, count, pointLights, spotLights: int;
+        var camPos, camDir, entPos, toEnt: Vector;
+        var score, bestScore, dot, visibilityRange: float;
         var bestEntity: CGameplayEntity;
 
         FindNearbyLights(entities);
@@ -58,7 +58,9 @@ class LRDebug_LabelManager {
             }
 
             entPos = entity.GetWorldPosition();
-            if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) continue;
+            if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
+                continue;
+            }
 
             toEnt = entPos - camPos;
             if (VecLengthSquared(toEnt) < 0.001) continue;
@@ -94,7 +96,7 @@ class LRDebug_LabelManager {
      */
     public function TogglePathLabels() {
         var entities: array<CGameplayEntity>;
-        var i, count : int;
+        var i, count: int;
 
         showPathLabels = !showPathLabels;
 
@@ -118,7 +120,7 @@ class LRDebug_LabelManager {
      * Applies a signed attribute adjustment to the target entity and refreshes its
      * oneliner if the adjustment took effect.
      */
-    public function ApplyAttributeAdjustment(value : float, editor : LRDebug_AttributeEditor) {
+    public function ApplyAttributeAdjustment(value: float, editor: LRDebug_AttributeEditor) {
         if (!editor.AdjustAttribute(value, target)) return;
 
         RefreshTargetOneliner();
@@ -144,29 +146,32 @@ class LRDebug_LabelManager {
         }
     }
 
-    private function FindNearbyLights(out entities : array<CGameplayEntity>) {
+    private function FindNearbyLights(out entities: array<CGameplayEntity>) {
         var maxRange: float = 10.0;
 
         if (theGame.IsFocusModeActive()) maxRange = 25.0;
         FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
     }
 
-    private function GetCameraPositionAndDirection(out cameraPosition : Vector, out cameraDirection : Vector) {
+    private function GetCameraPositionAndDirection(
+        out cameraPosition: Vector,
+        out cameraDirection: Vector
+    ) {
         var director: CCameraDirector = theGame.GetWorld().GetCameraDirector();
 
         cameraPosition = director.GetCameraPosition();
         cameraDirection = director.GetCameraDirection();
     }
 
-    private function CountComponents(entity : CGameplayEntity, className : name) : int {
+    private function CountComponents(entity: CGameplayEntity, className: name): int {
         var components: array<CComponent> = entity.GetComponentsByClassName(className);
         return components.Size();
     }
 
     private function CreateOnelinerForEntity(
-        entity : CGameplayEntity,
-        pointLights : int,
-        spotLights : int
+        entity: CGameplayEntity,
+        pointLights: int,
+        spotLights: int
     ) {
         var label: LRDebug_LightOneLiner = new LRDebug_LightOneLiner in entity;
 

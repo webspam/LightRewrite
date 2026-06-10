@@ -21,15 +21,14 @@ enum ELightRewriteType {
     LRT_Brazier,
     LRT_Candelabra,
     LRT_Campfire,
-    LRT_Chandelier,
+    LRT_Chandelier
 }
 
 // The Light Rewrite module singleton.
-@addField(CR4Game)
-public var lightRewrite: CLightRewriteManager;
+@addField(CR4Game) public var lightRewrite: CLightRewriteManager;
 
 @wrapMethod(CR4Game)
-function OnGameStarting(restored : bool) {
+function OnGameStarting(restored: bool) {
     wrappedMethod(restored);
 
     lightRewrite = new CLightRewriteManager in this;
@@ -37,21 +36,20 @@ function OnGameStarting(restored : bool) {
 }
 
 @wrapMethod(CR4Game)
-function OnGameStarted(restored : bool) {
+function OnGameStarted(restored: bool) {
     wrappedMethod(restored);
     lightRewrite.ProcessDeferredActions();
 }
 
 // Enable to bypass the mod.  When true, all Light Rewrite logic will quickly return without acting.
 // If this is false, lightSourceRewriter will likely be NULL.
-@addField(CGameplayEntity) public var bypassLightRewrite : bool;
+@addField(CGameplayEntity) public var bypassLightRewrite: bool;
 // Before accessing, confirm that bypassLightRewrite is false.
-@addField(CGameplayEntity) public var lightSourceRewriter : ILightSourceRewriter;
+@addField(CGameplayEntity) public var lightSourceRewriter: ILightSourceRewriter;
 
 @addMethod(CGameplayEntity)
-public function HasRewritableLight() : bool {
-    return
-        GetComponentsCountByClassName('CPointLightComponent') > 0 ||
+public function HasRewritableLight(): bool {
+    return GetComponentsCountByClassName('CPointLightComponent') > 0 ||
         GetComponentsCountByClassName('CSpotLightComponent') > 0;
 }
 
@@ -85,29 +83,32 @@ public function LightRewriteProfileChanged() {
 
 // We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
 @wrapMethod(CGameplayEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
+function OnSpawned(spawnData: SEntitySpawnData) {
     if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
+
 @wrapMethod(CInteractiveEntity)
-function OnSpawned(spawnData : SEntitySpawnData) {
+function OnSpawned(spawnData: SEntitySpawnData) {
     if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
+
 @wrapMethod(W3FireSource)
-function OnSpawned(spawnData : SEntitySpawnData) {
+function OnSpawned(spawnData: SEntitySpawnData) {
     if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
+
 @wrapMethod(W3Campfire)
-function OnSpawned(spawnData : SEntitySpawnData) {
+function OnSpawned(spawnData: SEntitySpawnData) {
     if (!spawnData.restored) InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
 // Ensure lights that are ignited (e.g. by the player) are rewritten.
 @wrapMethod(CGameplayEntity)
-function AddTag(tag : name) {
+function AddTag(tag: name) {
     wrappedMethod(tag);
 
     if (bypassLightRewrite) return;
@@ -123,12 +124,12 @@ function AddTag(tag : name) {
 
 // This entity is a valid light rewrite target.
 @addMethod(CGameplayEntity)
-public function IsLightRewritable() : bool {
+public function IsLightRewritable(): bool {
     return !bypassLightRewrite && lightSourceRewriter.IsEnabled();
 }
 
 @addMethod(CGameplayEntity)
-timer function LightRewriteDisableSpotlights(dt : float, id : int) {
+timer function LightRewriteDisableSpotlights(dt: float, id: int) {
     if (!bypassLightRewrite && lightSourceRewriter) {
         lightSourceRewriter.DisableAllSpotlightComponents();
     }
