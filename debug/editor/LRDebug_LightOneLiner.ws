@@ -11,16 +11,16 @@
  * Requires: mod_sharedutils_oneliners (SU_Oneliner)
  */
 
-@addField(CGameplayEntity) public var lrdebugOneliner : LRDebug_LightOneLiner;
+@addField(CGameplayEntity) public var lrdebugOneliner: LRDebug_LightOneLiner;
 
 statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
-    public var entity: CGameplayEntity;
+    public var entity     : CGameplayEntity;
     public var pointLights: int;
-    public var spotLights: int;
-    public var active: bool;
+    public var spotLights : int;
+    public var active     : bool;
     public var highlighted: bool;
 
-    public function Init(tracked_entity : CGameplayEntity, pointLights_ : int, spotLights_ : int) {
+    public function Init(tracked_entity: CGameplayEntity, pointLights_: int, spotLights_: int) {
         this.entity = tracked_entity;
         this.pointLights = pointLights_;
         this.spotLights = spotLights_;
@@ -40,12 +40,12 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         this.GotoState('FollowEntity');
     }
 
-    public function SetHighlighted(isHighlighted : bool) {
+    public function SetHighlighted(isHighlighted: bool) {
         this.highlighted = isHighlighted;
         this.RegenerateText();
     }
 
-    private function CountToHtml(prefix : string, count : int) : string {
+    private function CountToHtml(prefix: string, count: int): string {
         var html: string = "<font color='";
 
         if (count > 0) html += "#00ff00";
@@ -54,7 +54,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return html + "'>" + prefix + " " + count + "</font>";
     }
 
-    private function GetAttributeValueString(attr : name) : string {
+    private function GetAttributeValueString(attr: name): string {
         var params: CLightRewriteSourceParams;
         var point: CPointLightComponent;
         var valF: float;
@@ -138,7 +138,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return "?";
     }
 
-    private function EscapeHtml(str : string) : string {
+    private function EscapeHtml(str: string): string {
         var r: string;
 
         r = StrReplaceAll(str, "&", "&amp;");
@@ -147,7 +147,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return r;
     }
 
-    private function ToHtmlBlock(size : int, text : string) : string {
+    private function ToHtmlBlock(size: int, text: string): string {
         return "<br/><font size='" + size + "'>" + text + "</font>";
     }
 
@@ -157,10 +157,10 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * CLayer "full\editor\level\path.somext"::full\path\to\entity.w2ent
      * ```
      */
-    private function GenerateText() : string {
+    private function GenerateText(): string {
         var descriptor: string;
-        var layerPart, entityPath, levelPath, fileName, filePath : string;
-        var headerHtml, body, countString, marker : string;
+        var layerPart, entityPath, levelPath, fileName, filePath: string;
+        var headerHtml, body, countString, marker: string;
         var attrId: name;
         var fontSize: int;
         var showPaths: bool;
@@ -220,21 +220,21 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
-    private const var NORMAL_RANGE: float; default NORMAL_RANGE = 10.0;
-    private const var FOCUS_RANGE: float; default FOCUS_RANGE  = 25.0;
+    private const var NORMAL_RANGE: float;  default NORMAL_RANGE = 10.0;
+    private const var FOCUS_RANGE : float;  default FOCUS_RANGE = 25.0;
 
-    event OnEnterState(previous_state_name : name) {
+    event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
         parent.register();
         FollowEntity();
     }
 
-    event OnLeaveState(next_state_name : name) {
+    event OnLeaveState(next_state_name: name) {
         parent.unregister();
         super.OnLeaveState(next_state_name);
     }
 
-    entry function FollowEntity() : void {
+    entry function FollowEntity(): void {
         var maxRange: float = FOCUS_RANGE;
 
         while (

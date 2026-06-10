@@ -2,20 +2,20 @@
 struct SLightRewriteOriginalValues {
     var hasBeenSaved: bool;
 
-    var enabled: bool;
-    var position: Vector;
-    var brightness: float;
-    var radius: float;
-    var attenuation: float;
+    var enabled           : bool;
+    var position          : Vector;
+    var brightness        : float;
+    var radius            : float;
+    var attenuation       : float;
     var shadowFadeDistance: float;
-    var shadowFadeRange: float;
-    var shadowBlendFactor: float;
-    var shadowCastingMode: ELightShadowCastingMode;
-    var color: Color;
+    var shadowFadeRange   : float;
+    var shadowBlendFactor : float;
+    var shadowCastingMode : ELightShadowCastingMode;
+    var color             : Color;
 }
 
 // The original values of the light component.
-@addField(CLightComponent) public var lightRewriteOriginalValues : SLightRewriteOriginalValues;
+@addField(CLightComponent) public var lightRewriteOriginalValues: SLightRewriteOriginalValues;
 
 // Saves the current state of the light component as its original values, unless it has already been saved.
 @addMethod(CLightComponent)
@@ -37,7 +37,7 @@ public function SaveLightRewriteOriginalValues() {
 
 // Restores the light component to its original values.
 @addMethod(CLightComponent)
-public function RestoreLightRewriteOriginalValues(useEnabled : bool, optional enabled : bool) {
+public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional enabled: bool) {
     var wasEnabled: bool;
 
     if (!lightRewriteOriginalValues.hasBeenSaved) return;

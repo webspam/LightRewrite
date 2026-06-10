@@ -8,14 +8,14 @@
 
 // ---- Component helpers ----
 
-function LRDebug_FirstPointLight(entity : CGameplayEntity) : CPointLightComponent {
+function LRDebug_FirstPointLight(entity: CGameplayEntity): CPointLightComponent {
     var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CPointLightComponent');
     if (components.Size() > 0) return (CPointLightComponent)components[0];
     return NULL;
 }
 
-function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent {
+function LRDebug_FirstSpotLight(entity: CGameplayEntity): CSpotLightComponent {
     var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CSpotLightComponent');
     if (components.Size() > 0) return (CSpotLightComponent)components[0];
@@ -24,12 +24,12 @@ function LRDebug_FirstSpotLight(entity : CGameplayEntity) : CSpotLightComponent 
 
 // ---- Entity classification ----
 
-function LRDebug_IsCandle(entity : CGameplayEntity) : bool {
-    return StrFindFirst(entity.ToString(), "candle") != -1
-        && StrFindFirst(entity.ToString(), "candle_holder") == -1;
+function LRDebug_IsCandle(entity: CGameplayEntity): bool {
+    return StrFindFirst(entity.ToString(), "candle") != -1 &&
+        StrFindFirst(entity.ToString(), "candle_holder") == -1;
 }
 
-function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType {
+function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
     if (LRDebug_IsCandle(entity)) return LRT_Candle;
     return LRT_Unknown;
 }
@@ -37,11 +37,11 @@ function LRDebug_GuessRewriterType(entity : CGameplayEntity) : ELightRewriteType
 // ---- CGameplayEntity extensions ----
 
 /** The params used to edit the light source */
-@addField(CGameplayEntity) public var lrDebugParams : CLightRewriteSourceParams;
+@addField(CGameplayEntity) public var lrDebugParams: CLightRewriteSourceParams;
 
 /** Lazy getter. Copies current effective params on first call. */
 @addMethod(CGameplayEntity)
-public function LRDebug_GetParams(rewriter : ILightSourceRewriter) : CLightRewriteSourceParams {
+public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewriteSourceParams {
     if (!lrDebugParams) {
         lrDebugParams = new CLightRewriteSourceParams in this;
 
@@ -55,7 +55,7 @@ public function LRDebug_GetParams(rewriter : ILightSourceRewriter) : CLightRewri
 // ---- ILightSourceRewriter extensions ----
 
 /** Whether the rewriter is in its original state */
-@addField(ILightSourceRewriter) public var inOriginalState : bool;
+@addField(ILightSourceRewriter) public var inOriginalState: bool;
 
 @wrapMethod(CCandleLightRewriter)
 function RewriteLight() {
@@ -76,14 +76,14 @@ function RestoreOriginalState() {
 }
 
 @addMethod(ILightSourceRewriter)
-public function LRDebug_GetEffectiveParams() : CLightRewriteSourceParams {
+public function LRDebug_GetEffectiveParams(): CLightRewriteSourceParams {
     return GetEffectiveParams();
 }
 
 // Override rewriter params
 
 @addMethod(ILightSourceRewriter)
-public function LRDebug_SetMenuOverrideParams(params : CLightRewriteSourceParams) {
+public function LRDebug_SetMenuOverrideParams(params: CLightRewriteSourceParams) {
     this.menuOverrideParams = params;
 }
 
@@ -100,7 +100,7 @@ public function LRDebug_ClearMenuOverrideParams() {
  * debug rewriter.
  */
 @addMethod(CGameplayEntity)
-public function LRDebug_GetOrCreateRewriter() : ILightSourceRewriter {
+public function LRDebug_GetOrCreateRewriter(): ILightSourceRewriter {
     var params: CLightRewriteSourceParams;
 
     if (lightSourceRewriter) return lightSourceRewriter;

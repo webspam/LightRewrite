@@ -3,7 +3,7 @@
  */
 class CLightRewriteManager {
     // Tag to identify entities that have a rewritable light.
-    public const var TAG_HAS_LIGHT: name; default TAG_HAS_LIGHT = "LR_HasLight";
+    public const var TAG_HAS_LIGHT: name;  default TAG_HAS_LIGHT = "LR_HasLight";
 
     // Mod settings, which may be initialised prior to game load.
     public var settings: CLightRewriteSettings;
@@ -12,12 +12,12 @@ class CLightRewriteManager {
     public var gameStarted: bool;
 
     // Lazy constructor
-    public function Init(settings : CLightRewriteSettings) {
+    public function Init(settings: CLightRewriteSettings) {
         this.settings = settings;
     }
 
     public function ProcessDeferredActions() {
-        var i, count : int;
+        var i, count: int;
         var entities: array<CGameplayEntity>;
 
         if (gameStarted) return;
@@ -33,15 +33,15 @@ class CLightRewriteManager {
 
     // Creates a new rewriter for a given light source type.
     public function CreateRewriterFromParams(
-        params : CLightRewriteSourceParams,
-        entity : CGameplayEntity
-    ) : ILightSourceRewriter {
+        params: CLightRewriteSourceParams,
+        entity: CGameplayEntity
+    ): ILightSourceRewriter {
         var rewriter: ILightSourceRewriter;
         var globalOverrides: CLightRewriteSourceParams;
 
         switch (params.rewriterType) {
-            case LRT_Candle:         rewriter = new CCandleLightRewriter in entity;     break;
-            default:                 rewriter = new CGenericLightRewriter in entity;    break;
+            case LRT_Candle:  rewriter = new CCandleLightRewriter in entity;   break;
+            default:          rewriter = new CGenericLightRewriter in entity;  break;
         }
 
         globalOverrides = settings.GetGlobalOverrideParams(GetGlobalOverrideType(entity));
@@ -50,7 +50,7 @@ class CLightRewriteManager {
     }
 
     public function ChangeProfile() {
-        var i, count : int;
+        var i, count: int;
         var entities: array<CEntity>;
         var entity: CGameplayEntity;
 
@@ -66,7 +66,7 @@ class CLightRewriteManager {
 
     // Refreshes Light Rewrite on all light sources.
     public function RewriteAllLightSources() {
-        var i, count : int;
+        var i, count: int;
         var entities: array<CGameplayEntity>;
 
         GetAllLightSourceEntities(entities);
@@ -86,7 +86,7 @@ class CLightRewriteManager {
 
     // Restores all light sources to their original state.
     public function DisableLightRewrite() {
-        var i, count : int;
+        var i, count: int;
         var entities: array<CGameplayEntity>;
 
         GetAllLightSourceEntities(entities);
@@ -99,7 +99,7 @@ class CLightRewriteManager {
         }
     }
 
-    public function SetGlobalOverride(params : CLightRewriteSourceParams) {
+    public function SetGlobalOverride(params: CLightRewriteSourceParams) {
         var entities: array<CEntity>;
         var entity: CGameplayEntity;
         var i: int;
@@ -114,7 +114,7 @@ class CLightRewriteManager {
         }
     }
 
-    private function GetAllLightSourceEntities(out entities : array<CGameplayEntity>) {
+    private function GetAllLightSourceEntities(out entities: array<CGameplayEntity>) {
         var nodes: array<CNode>;
         var entity: CGameplayEntity;
         var i: int;
@@ -132,7 +132,7 @@ class CLightRewriteManager {
     }
 
     // Get the global override type for a given entity. Borderline legacy code at this point.
-    private function GetGlobalOverrideType(entity : CGameplayEntity) : ELightRewriteType {
+    private function GetGlobalOverrideType(entity: CGameplayEntity): ELightRewriteType {
         var fileName: string = StrAfterLast(entity.ToString(), StrChar(92));
 
         if (StrFindFirst(fileName, "candelabra") != -1) return LRT_Candelabra;

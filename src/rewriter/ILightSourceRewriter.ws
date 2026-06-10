@@ -9,16 +9,16 @@ abstract class ILightSourceRewriter {
     public var parentEntity: CGameplayEntity;
 
     // The parameters for this light source
-    protected var params : CLightRewriteSourceParams;
+    protected var params: CLightRewriteSourceParams;
 
     // When set, RewriteLight uses these instead of params.
-    protected var menuOverrideParams : CLightRewriteSourceParams;
+    protected var menuOverrideParams: CLightRewriteSourceParams;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
     public function Init(
-        parentEntity : CGameplayEntity,
-        params : CLightRewriteSourceParams,
-        globalOverrides : CLightRewriteSourceParams
+        parentEntity: CGameplayEntity,
+        params: CLightRewriteSourceParams,
+        globalOverrides: CLightRewriteSourceParams
     ) {
         this.parentEntity = parentEntity;
         this.params = params;
@@ -31,18 +31,18 @@ abstract class ILightSourceRewriter {
     }
 
     // If the params passed in (global params) are enabled, set the menu override params to them.
-    public function SetGlobalOverride(params : CLightRewriteSourceParams) {
+    public function SetGlobalOverride(params: CLightRewriteSourceParams) {
         if (params.enabled) menuOverrideParams = params;
         else menuOverrideParams = NULL;
     }
 
-    protected function GetEffectiveParams() : CLightRewriteSourceParams {
+    protected function GetEffectiveParams(): CLightRewriteSourceParams {
         if (menuOverrideParams) return menuOverrideParams;
         return params;
     }
 
     // If this rewriter is enabled (params group is enabled)
-    public function IsEnabled() : bool {
+    public function IsEnabled(): bool {
         return !params.hasEnabled || params.enabled;
     }
 
@@ -58,7 +58,7 @@ abstract class ILightSourceRewriter {
         var pointLight: CPointLightComponent;
         var i: int;
         var interactionComponent: CGameplayLightComponent;
-        var useEntityState, entityLightState : bool;
+        var useEntityState, entityLightState: bool;
 
         var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count: int = components.Size();
@@ -112,11 +112,13 @@ abstract class ILightSourceRewriter {
 
     // Shared application of ILightRewriteParams onto any light component — avoids duplicating
     // the same property block for both CPointLightComponent and CSpotLightComponent.
-    protected function ApplyLightParams(light : CLightComponent, pamparams : ILightRewriteParams) {
+    protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
         if (pamparams.hasBrightness) light.brightness = pamparams.brightness;
         if (pamparams.hasRadius) light.radius = pamparams.radius;
         if (pamparams.hasAttenuation) light.attenuation = pamparams.attenuation;
-        if (pamparams.hasShadowFadeDistance) light.shadowFadeDistance = pamparams.shadowFadeDistance;
+        if (pamparams.hasShadowFadeDistance) {
+            light.shadowFadeDistance = pamparams.shadowFadeDistance;
+        }
         if (pamparams.hasShadowFadeRange) light.shadowFadeRange = pamparams.shadowFadeRange;
         if (pamparams.hasShadowBlendFactor) light.shadowBlendFactor = pamparams.shadowBlendFactor;
         if (pamparams.hasCastShadows) light.shadowCastingMode = pamparams.castShadows;
@@ -124,7 +126,7 @@ abstract class ILightSourceRewriter {
     }
 
     // Rewrites the spotlight component on the entity with the given params.
-    protected function RewriteSpotlight(spotParams : CLightRewriteSpotlightParams) {
+    protected function RewriteSpotlight(spotParams: CLightRewriteSpotlightParams) {
         var spotLight: CSpotLightComponent;
         var wasEnabled: bool;
 
@@ -152,8 +154,8 @@ abstract class ILightSourceRewriter {
 
     // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
-        pointLight : CPointLightComponent,
-        optional spotLight : CSpotLightComponent
+        pointLight: CPointLightComponent,
+        optional spotLight: CSpotLightComponent
     ) {
         var wasEnabled: bool;
 
@@ -169,14 +171,14 @@ abstract class ILightSourceRewriter {
     }
 
     // Sets basic point light settings
-    protected function SetPointLightSettings(pointLight : CPointLightComponent) {
+    protected function SetPointLightSettings(pointLight: CPointLightComponent) {
         ApplyLightParams(pointLight, GetEffectiveParams());
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour
     protected function SetPointLightColour(
-        pointLight : CPointLightComponent,
-        optional spotLight : CSpotLightComponent
+        pointLight: CPointLightComponent,
+        optional spotLight: CSpotLightComponent
     ) {
         var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
 

@@ -1,8 +1,8 @@
 @wrapMethod(CLightRewriteSettings)
-function FindParamsForEntity(entity : CGameplayEntity) : CLightRewriteSourceParams {
+function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
     var params: CLightRewriteSourceParams;
     var components: array<CComponent>;
-    var pointLights, spotLights : int;
+    var pointLights, spotLights: int;
 
     params = wrappedMethod(entity);
 

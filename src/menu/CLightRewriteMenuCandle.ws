@@ -12,14 +12,27 @@ class CLightRewriteMenuCandle extends CLightRewriteSourceMenu {
     default TAG_BLUE = 'CandleColorB';
     default TAG_ALIGN_POINT_LIGHTS = 'CandleAlignPointLights';
 
-    public function ReadGameConfig(gameConfig : CInGameConfigWrapper, groupTag : name, params : CLightRewriteSourceParams) {
+    public function ReadGameConfig(
+        gameConfig: CInGameConfigWrapper,
+        groupTag: name,
+        params: CLightRewriteSourceParams
+    ) {
         super.ReadGameConfig(gameConfig, groupTag, params);
 
         params.hasAlignPointLights = true;
         params.alignPointLights = gameConfig.GetVarValue(groupTag, TAG_ALIGN_POINT_LIGHTS);
     }
 
-    protected function UpdateSpecialMenuDisabledState(flashValueStorage : CScriptedFlashValueStorage, dataArray : CScriptedFlashArray, params : CLightRewriteSourceParams) {
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ALIGN_POINT_LIGHTS, !params.enabled);
+    protected function UpdateSpecialMenuDisabledState(
+        flashValueStorage: CScriptedFlashValueStorage,
+        dataArray: CScriptedFlashArray,
+        params: CLightRewriteSourceParams
+    ) {
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            TAG_ALIGN_POINT_LIGHTS,
+            !params.enabled
+        );
     }
 }

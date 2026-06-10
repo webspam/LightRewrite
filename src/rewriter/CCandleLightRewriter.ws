@@ -11,9 +11,9 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     private var fireFxSlotNames: array<name>;
 
     public function Init(
-        parentEntity : CGameplayEntity,
-        params : CLightRewriteSourceParams,
-        globalOverrides : CLightRewriteSourceParams
+        parentEntity: CGameplayEntity,
+        params: CLightRewriteSourceParams,
+        globalOverrides: CLightRewriteSourceParams
     ) {
         super.Init(parentEntity, params, globalOverrides);
 
@@ -27,7 +27,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         if (p.spotlight) {
             RewriteSpotlight(p.spotlight);
-        } else {
+        }
+        else {
             DisableAllSpotlightComponents();
         }
     }
@@ -72,7 +73,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         if (count > 0) {
             if (p.spotlight) {
                 RewriteSpotlight(p.spotlight);
-            } else {
+            }
+            else {
                 DisableAllSpotlightComponents();
             }
         }
@@ -82,7 +84,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * Aligns a point light to the fire FX slots on this entity.
      * At time of writing, only testing / working on complex candles.
      */
-    private function AlignPointLight(i : int, pointLight : CPointLightComponent) {
+    private function AlignPointLight(i: int, pointLight: CPointLightComponent) {
         var slotPos: Vector;
         var slotMatrix: Matrix;
 
@@ -142,8 +144,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 fireFxSlotNames.PushBack('fire2');
             }
         }
-        // Single candles - slot name varies
         else if (hasFire) {
+            // Single candles - slot name varies
             fireFxSlotNames.PushBack('fire');
         }
         else if (hasFx) {

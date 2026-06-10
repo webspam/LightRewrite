@@ -7,7 +7,7 @@
 statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
     public var seconds: float;
 
-    public function Init(text : string, seconds : float) {
+    public function Init(text: string, seconds: float) {
         this.text = text;
         this.seconds = seconds;
     }
@@ -20,19 +20,19 @@ statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
 state Idle in LRDebug_ToastOneLiner {}
 
 state FollowPlayer in LRDebug_ToastOneLiner {
-    event OnEnterState(previous_state_name : name) {
+    event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
         parent.register();
         Follow();
     }
 
-    event OnLeaveState(next_state_name : name) {
+    event OnLeaveState(next_state_name: name) {
         parent.unregister();
         super.OnLeaveState(next_state_name);
     }
 
-    entry function Follow() : void {
-        var startTime, now : float;
+    entry function Follow(): void {
+        var startTime, now: float;
 
         startTime = theGame.GetEngineTimeAsSeconds();
         now = startTime;
