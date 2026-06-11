@@ -6,8 +6,9 @@
  * responsibility after each operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
-    private var attrIndex  : int;
-    private var accelerator: LRDebug_AdjustAccelerator;
+    private var attrIndex        : int;
+    private var accelerator      : LRDebug_AdjustAccelerator;
+    private var colourAccumulator: float;
 
     public function Init() {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
@@ -154,8 +155,11 @@ class LRDebug_AttributeEditor {
      * given entity. Returns true if the adjustment was applied (caller should
      * then call LRDebug_RegenerateText on the entity's oneliner).
      */
-    public function AdjustAttribute(value: float, target: CGameplayEntity): bool {
-        var attr: name;
+    public function AdjustAttribute(
+        value: float,
+        target: CGameplayEntity,
+        optional attr: name
+    ): bool {
         var step: float;
         var point: CPointLightComponent;
         var spot: CSpotLightComponent;
@@ -175,9 +179,10 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        attr = GetCurrentAttrId();
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
+
+        if (attr == '') attr = GetCurrentAttrId();
 
         switch (attr) {
             case 'brightness':
@@ -305,6 +310,223 @@ class LRDebug_AttributeEditor {
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
                 params.color.Blue = (byte)Clamp(params.color.Blue + colourStep, 0, 255);
                 break;
+        }
+
+        rewriter.LRDebug_SetMenuOverrideParams(params);
+        rewriter.RestoreOriginalState();
+        rewriter.RewriteLight();
+        return true;
+    }
+
+    /**
+     * Analog hold-to-edit path: adds a raw signed delta to the attribute and
+     * applies it live. Unlike AdjustAttribute this skips the discrete step and
+     * scroll-acceleration logic; the caller has already scaled the mouse delta.
+     */
+    public function AdjustAttributeContinuous(
+        delta: float,
+        target: CGameplayEntity,
+        optional attr: name
+    ): bool {
+        var point: CPointLightComponent;
+        var spot: CSpotLightComponent;
+        var sourceLight: CLightComponent;
+        var params: CLightRewriteSourceParams;
+        var rewriter: ILightSourceRewriter;
+
+        if (delta == 0.0) return false;
+        if (!target) return false;
+        if (!target.lrdebugOneliner) return false;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        point = LRDebug_FirstPointLight(target);
+        spot = LRDebug_FirstSpotLight(target);
+
+        if (attr == '') attr = GetCurrentAttrId();
+
+        // Normalise per attribute so a full swipe covers each one's range (brightness feel).
+        delta *= GetAxisScale(attr);
+
+        if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
+            sourceLight = spot;
+        }
+        else {
+            sourceLight = point;
+        }
+
+        switch (attr) {
+            case 'brightness':
+                if (!params.hasBrightness) {
+                    params.hasBrightness = true;
+                    if (sourceLight) params.brightness = sourceLight.brightness;
+                    if (sourceLight == spot) params.brightness *= 0.5f;
+                }
+                params.brightness = ClampAttributeValue(attr, params.brightness + delta);
+                break;
+
+            case 'radius':
+                if (!params.hasRadius) {
+                    params.hasRadius = true;
+                    if (sourceLight) params.radius = sourceLight.radius;
+                }
+                params.radius = ClampAttributeValue(attr, params.radius + delta);
+                break;
+
+            case 'attenuation':
+                if (!params.hasAttenuation) {
+                    params.hasAttenuation = true;
+                    if (sourceLight) params.attenuation = sourceLight.attenuation;
+                }
+                params.attenuation = ClampAttributeValue(attr, params.attenuation + delta);
+                break;
+
+            case 'shadowFadeDistance':
+                if (!params.hasShadowFadeDistance) {
+                    params.hasShadowFadeDistance = true;
+                    if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                }
+                params.shadowFadeDistance = ClampAttributeValue(attr, params.shadowFadeDistance + delta);
+                break;
+
+            case 'shadowFadeRange':
+                if (!params.hasShadowFadeRange) {
+                    params.hasShadowFadeRange = true;
+                    if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
+                }
+                params.shadowFadeRange = ClampAttributeValue(attr, params.shadowFadeRange + delta);
+                break;
+
+            case 'shadowBlendFactor':
+                if (!params.hasShadowBlendFactor) {
+                    params.hasShadowBlendFactor = true;
+                    if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
+                }
+                params.shadowBlendFactor = ClampAttributeValue(attr, params.shadowBlendFactor + delta);
+                break;
+
+            case 'alignOffsetZ':
+                if (!params.hasAlignPointLights) {
+                    params.hasAlignPointLights = true;
+                    params.alignPointLights = true;
+                }
+                params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
+                break;
+
+            case 'colourR':
+                if (!params.hasColour) {
+                    params.hasColour = true;
+                    if (sourceLight) params.color = sourceLight.color;
+                }
+                params.color.Red = (byte)Clamp(params.color.Red + ConsumeColourSteps(delta), 0, 255);
+                break;
+
+            case 'colourG':
+                if (!params.hasColour) {
+                    params.hasColour = true;
+                    if (sourceLight) params.color = sourceLight.color;
+                }
+                params.color.Green = (byte)Clamp(params.color.Green + ConsumeColourSteps(delta), 0, 255);
+                break;
+
+            case 'colourB':
+                if (!params.hasColour) {
+                    params.hasColour = true;
+                    if (sourceLight) params.color = sourceLight.color;
+                }
+                params.color.Blue = (byte)Clamp(params.color.Blue + ConsumeColourSteps(delta), 0, 255);
+                break;
+
+            default:
+                return false;
+        }
+
+        rewriter.LRDebug_SetMenuOverrideParams(params);
+        rewriter.RestoreOriginalState();
+        rewriter.RewriteLight();
+        return true;
+    }
+
+    public function ResetColourAccumulator() {
+        colourAccumulator = 0.0;
+    }
+
+    // Accumulates the analog mouse delta and returns the whole byte steps to apply this
+    // frame, keeping the fractional remainder so high-DPI / high-FPS movement isn't lost
+    // to per-frame rounding (and large sweeps step more than one byte, no 1/frame cap).
+    private function ConsumeColourSteps(delta: float): int {
+        var sign: float;
+        var magnitude: float;
+
+        colourAccumulator += delta;
+        magnitude = FloorF(AbsF(colourAccumulator));
+        if (magnitude < 1.0) return 0;
+
+        sign = SignF(colourAccumulator);
+        colourAccumulator -= sign * magnitude;
+        return (int)(sign * magnitude);
+    }
+
+    /**
+     * Per-attribute analog scale so a full mouse swipe covers each attribute's whole range
+     * at the same "large swipe" feel as brightness (its 0-100 range is the reference).
+     * alignOffsetZ stays 1.0: unbounded, left as-is for now.
+     */
+    private function GetAxisScale(attr: name): float {
+        switch (attr) {
+            case 'radius':             return 0.5;
+            case 'attenuation':        return 0.01;
+            case 'shadowBlendFactor':  return 0.01;
+            case 'alignOffsetZ':       return 0.1;
+            case 'colourR':
+            case 'colourG':
+            case 'colourB':            return 2.55;
+        }
+        return 1.0; // brightness, shadow fade distance/range,
+    }
+
+    /**
+     * Flips a boolean attribute on the target and applies it live. Bools toggle on a
+     * key-press rather than via analog hold-to-edit.
+     */
+    public function ToggleAttribute(target: CGameplayEntity, optional attr: name): bool {
+        var point: CPointLightComponent;
+        var spot: CSpotLightComponent;
+        var sourceLight: CLightComponent;
+        var params: CLightRewriteSourceParams;
+        var rewriter: ILightSourceRewriter;
+
+        if (!target) return false;
+        if (!target.lrdebugOneliner) return false;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        point = LRDebug_FirstPointLight(target);
+        spot = LRDebug_FirstSpotLight(target);
+
+        if (attr == '') attr = GetCurrentAttrId();
+
+        if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) sourceLight = spot;
+        else sourceLight = point;
+
+        switch (attr) {
+            case 'useSpotlightColor':
+                params.hasUseSpotlightColor = true;
+                params.useSpotlightColor = !params.useSpotlightColor;
+                break;
+
+            case 'alignPointLights':
+                params.hasAlignPointLights = true;
+                params.alignPointLights = !params.alignPointLights;
+                break;
+
+            case 'overrideColour':
+                params.hasColour = !params.hasColour;
+                if (params.hasColour && sourceLight) params.color = sourceLight.color;
+                break;
+
+            default:
+                return false;
         }
 
         rewriter.LRDebug_SetMenuOverrideParams(params);

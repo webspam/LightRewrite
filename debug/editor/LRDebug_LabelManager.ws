@@ -120,8 +120,35 @@ class LRDebug_LabelManager {
      * Applies a signed attribute adjustment to the target entity and refreshes its
      * oneliner if the adjustment took effect.
      */
-    public function ApplyAttributeAdjustment(value: float, editor: LRDebug_AttributeEditor) {
-        if (!editor.AdjustAttribute(value, target)) return;
+    public function ApplyAttributeAdjustment(
+        value: float,
+        editor: LRDebug_AttributeEditor,
+        optional attr: name
+    ) {
+        if (!editor.AdjustAttribute(value, target, attr)) return;
+
+        RefreshTargetOneliner();
+    }
+
+    /**
+     * Applies a continuous (analog) delta to the target's selected attribute and
+     * refreshes its oneliner if the adjustment took effect.
+     */
+    public function ApplyContinuousAdjustment(
+        delta: float,
+        editor: LRDebug_AttributeEditor,
+        optional attr: name
+    ) {
+        if (!editor.AdjustAttributeContinuous(delta, target, attr)) return;
+
+        RefreshTargetOneliner();
+    }
+
+    /**
+     * Toggles a boolean attribute on the target and refreshes its oneliner.
+     */
+    public function ApplyToggle(editor: LRDebug_AttributeEditor, optional attr: name) {
+        if (!editor.ToggleAttribute(target, attr)) return;
 
         RefreshTargetOneliner();
     }
