@@ -440,7 +440,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
 
     if (IsPressed(action)) {
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-        lrDebugAttrEditor.ResetColourAccumulator();
+        lrDebugAttrEditor.ResetAdjustAccumulator();
         lrDebugLabelManager.RefreshTargetOneliner();
         thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;

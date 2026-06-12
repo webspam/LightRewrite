@@ -8,7 +8,7 @@
 class LRDebug_AttributeEditor {
     private var attrIndex        : int;
     private var accelerator      : LRDebug_AdjustAccelerator;
-    private var colourAccumulator: float;
+    private var adjustAccumulator: float;
 
     public function Init() {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
@@ -348,6 +348,10 @@ class LRDebug_AttributeEditor {
         // Normalise per attribute so a full swipe covers each one's range (brightness feel).
         delta *= GetAxisScale(attr);
 
+        // Release the accumulated movement in whole value-resolution steps
+        delta = ConsumeQuantizedDelta(delta, GetAdjustQuantum(attr));
+        if (delta == 0.0) return false;
+
         if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
             sourceLight = spot;
         }
@@ -418,7 +422,7 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Red = (byte)Clamp(params.color.Red + ConsumeColourSteps(delta), 0, 255);
+                params.color.Red = (byte)Clamp(params.color.Red + (int)delta, 0, 255);
                 break;
 
             case 'colourG':
@@ -426,7 +430,7 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Green = (byte)Clamp(params.color.Green + ConsumeColourSteps(delta), 0, 255);
+                params.color.Green = (byte)Clamp(params.color.Green + (int)delta, 0, 255);
                 break;
 
             case 'colourB':
@@ -434,7 +438,7 @@ class LRDebug_AttributeEditor {
                     params.hasColour = true;
                     if (sourceLight) params.color = sourceLight.color;
                 }
-                params.color.Blue = (byte)Clamp(params.color.Blue + ConsumeColourSteps(delta), 0, 255);
+                params.color.Blue = (byte)Clamp(params.color.Blue + (int)delta, 0, 255);
                 break;
 
             default:
@@ -447,24 +451,36 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
-    public function ResetColourAccumulator() {
-        colourAccumulator = 0.0;
+    public function ResetAdjustAccumulator() {
+        adjustAccumulator = 0.0;
     }
 
-    // Accumulates the analog mouse delta and returns the whole byte steps to apply this
-    // frame, keeping the fractional remainder so high-DPI / high-FPS movement isn't lost
-    // to per-frame rounding (and large sweeps step more than one byte, no 1/frame cap).
-    private function ConsumeColourSteps(delta: float): int {
+    /**
+     * Accumulates the analog mouse delta and releases it in whole `quantum` increments,
+     * carrying the sub-quantum remainder so high-DPI / high-FPS movement isn't lost to the
+     * value's per-frame rounding.
+     */
+    private function ConsumeQuantizedDelta(delta: float, quantum: float): float {
         var sign: float;
-        var magnitude: float;
+        var steps: float;
 
-        colourAccumulator += delta;
-        magnitude = FloorF(AbsF(colourAccumulator));
-        if (magnitude < 1.0) return 0;
+        adjustAccumulator += delta;
+        steps = FloorF(AbsF(adjustAccumulator) / quantum);
+        if (steps < 1.0) return 0.0;
 
-        sign = SignF(colourAccumulator);
-        colourAccumulator -= sign * magnitude;
-        return (int)(sign * magnitude);
+        sign = SignF(adjustAccumulator);
+        adjustAccumulator -= sign * steps * quantum;
+        return sign * steps * quantum;
+    }
+
+    /** Minimum input step size: colours are bytes, so must be 1 */
+    private function GetAdjustQuantum(attr: name): float {
+        switch (attr) {
+            case 'colourR':
+            case 'colourG':
+            case 'colourB': return 1.0;
+        }
+        return 0.01;
     }
 
     /**
