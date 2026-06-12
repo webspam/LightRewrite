@@ -7,7 +7,7 @@ private var lightRewriteSettings: CLightRewriteSettings;
 
 // Gets the LightRewrite settings singleton - lazy initialised
 @addMethod(CR4Game)
-public function GetLightRewriteSettings() : CLightRewriteSettings {
+public function GetLightRewriteSettings(): CLightRewriteSettings {
     if (!lightRewriteSettings) {
         lightRewriteSettings = new CLightRewriteSettings in this;
         lightRewriteSettings.Init();
@@ -17,7 +17,7 @@ public function GetLightRewriteSettings() : CLightRewriteSettings {
 
 // Ensure the LightRewrite settings are read before the game starts.
 @wrapMethod(CR4Game)
-function OnGameStarting(restored : bool) {
+function OnGameStarting(restored: bool) {
     wrappedMethod(restored);
 
     GetLightRewriteSettings().ReadGameConfig();
@@ -36,7 +36,7 @@ function OnConfigUI() {
 
 // Configure the LightRewrite settings menu when it is opened.
 @wrapMethod(CR4IngameMenu)
-function OnShowOptionSubmenu(actionType : int, menuTag : int, id : string) {
+function OnShowOptionSubmenu(actionType: int, menuTag: int, id: string) {
     wrappedMethod(actionType, menuTag, id);
 
     if (id == "LightRewrite") {
@@ -47,7 +47,7 @@ function OnShowOptionSubmenu(actionType : int, menuTag : int, id : string) {
 
 // Forward every option-change event to the settings object for filtering.
 @wrapMethod(CR4IngameMenu)
-function OnOptionValueChanged(groupId : int, optionName : name, optionValue : string) {
+function OnOptionValueChanged(groupId: int, optionName: name, optionValue: string) {
     var wrappedReturnValue: bool;
 
     wrappedReturnValue = wrappedMethod(groupId, optionName, optionValue);
