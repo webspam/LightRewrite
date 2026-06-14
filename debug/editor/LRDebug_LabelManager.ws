@@ -116,6 +116,21 @@ class LRDebug_LabelManager {
         target.lrdebugOneliner.RegenerateText();
     }
 
+    public function CycleSelectedLight(editor: LRDebug_AttributeEditor) {
+        if (!target) return;
+
+        editor.CycleLight(target);
+        RefreshTargetOneliner();
+    }
+
+    /** CycleAttribute needs the target, which only the manager holds. */
+    public function CycleSelectedAttribute(editor: LRDebug_AttributeEditor, delta: int) {
+        if (!target) return;
+
+        editor.CycleAttribute(delta, target);
+        RefreshTargetOneliner();
+    }
+
     /**
      * Applies a signed attribute adjustment to the target entity and refreshes its
      * oneliner if the adjustment took effect.

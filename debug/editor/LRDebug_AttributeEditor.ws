@@ -9,6 +9,7 @@ class LRDebug_AttributeEditor {
     private var attrIndex        : int;
     private var accelerator      : LRDebug_AdjustAccelerator;
     private var adjustAccumulator: float;
+    private var selectedLightType: name;  default selectedLightType = 'point';
 
     public function Init() {
         accelerator = new LRDebug_AdjustAccelerator in thePlayer;
@@ -54,6 +55,72 @@ class LRDebug_AttributeEditor {
             case 'colourB':             return "colour B";
         }
         return "unknown";
+    }
+
+    public function GetSelectedLightType(target: CGameplayEntity): name {
+        var hasPoint, hasSpot: bool;
+
+        if (LRDebug_FirstPointLight(target)) hasPoint = true;
+        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
+
+        if (selectedLightType == 'spot' && hasSpot) return 'spot';
+        if (!hasPoint && hasSpot) return 'spot';
+        return 'point';
+    }
+
+    public function CycleLight(target: CGameplayEntity) {
+        var hasPoint, hasSpot: bool;
+
+        if (LRDebug_FirstPointLight(target)) hasPoint = true;
+        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
+
+        if (!hasPoint || !hasSpot) return;
+
+        if (selectedLightType == 'spot') selectedLightType = 'point';
+        else selectedLightType = 'spot';
+
+        if (!IsAttrApplicable(GetCurrentAttrId(), selectedLightType)) {
+            CycleAttribute(1, target);
+        }
+    }
+
+    /** Point-only attributes have no meaning on a spotlight. */
+    private function IsAttrApplicable(attr: name, type: name): bool {
+        if (type != 'spot') return true;
+
+        switch (attr) {
+            case 'useSpotlightColor':
+            case 'alignPointLights':
+            case 'alignOffsetZ':
+                return false;
+        }
+        return true;
+    }
+
+    private function GetSharedParams(
+        params: CLightRewriteSourceParams,
+        target: CGameplayEntity,
+        type: name
+    ): ILightRewriteParams {
+        if (type == 'spot') return EnsureSpotParams(params, target);
+        return params;
+    }
+
+    private function EnsureSpotParams(
+        params: CLightRewriteSourceParams,
+        target: CGameplayEntity
+    ): CLightRewriteSpotlightParams {
+        if (!target.lrDebugSpotOwned) {
+            // Clone so edits don't mutate the profile's shared spotlight (ApplyTo copies it by reference).
+            if (params.spotlight) {
+                params.spotlight = (CLightRewriteSpotlightParams)params.spotlight.Clone(target);
+            }
+            else {
+                params.spotlight = new CLightRewriteSpotlightParams in target;
+            }
+            target.lrDebugSpotOwned = true;
+        }
+        return params.spotlight;
     }
 
     private function GetFloatStep(value: float): float {
@@ -141,13 +208,23 @@ class LRDebug_AttributeEditor {
         return currentValue;
     }
 
-    public function CycleAttribute(delta: int) {
+    public function CycleAttribute(delta: int, target: CGameplayEntity) {
         var count: int = 13;
-        if (count <= 0) return;
+        var type: name;
+        var guard: int;
 
-        attrIndex += delta;
-        while (attrIndex < 0) attrIndex += count;
-        while (attrIndex >= count) attrIndex -= count;
+        if (count <= 0 || delta == 0) return;
+
+        type = GetSelectedLightType(target);
+
+        // Skip attributes inactive for the selected type; guard bounds the loop if none are.
+        for (guard = 0; guard < count; guard += 1) {
+            attrIndex += delta;
+            while (attrIndex < 0) attrIndex += count;
+            while (attrIndex >= count) attrIndex -= count;
+
+            if (IsAttrApplicable(GetCurrentAttrId(), type)) return;
+        }
     }
 
     /**
@@ -165,8 +242,10 @@ class LRDebug_AttributeEditor {
         var spot: CSpotLightComponent;
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
+        var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
         var colourStep: int;
+        var type: name;
 
         var accelMult: float = 1.0;
 
@@ -184,6 +263,9 @@ class LRDebug_AttributeEditor {
 
         if (attr == '') attr = GetCurrentAttrId();
 
+        type = GetSelectedLightType(target);
+        if (!IsAttrApplicable(attr, type)) return false;
+
         switch (attr) {
             case 'brightness':
             case 'radius':
@@ -195,67 +277,70 @@ class LRDebug_AttributeEditor {
                 accelMult = accelerator.GetMultiplier(value);
         }
 
-        if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
-            sourceLight = spot;
-        }
-        else {
-            sourceLight = point;
-        }
+        if (type == 'spot') sourceLight = spot;
+        else sourceLight = point;
 
         switch (attr) {
             case 'brightness':
-                if (!params.hasBrightness) {
-                    params.hasBrightness = true;
-                    if (sourceLight) params.brightness = sourceLight.brightness;
-                    if (sourceLight == spot) params.brightness *= 0.5f;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasBrightness) {
+                    lightParams.hasBrightness = true;
+                    if (sourceLight) lightParams.brightness = sourceLight.brightness;
                 }
-                step = GetDynamicStep(attr, params.brightness, value) * accelMult;
-                params.brightness = ApplyFloatDelta(attr, params.brightness, step * value);
+                step = GetDynamicStep(attr, lightParams.brightness, value) * accelMult;
+                lightParams.brightness = ApplyFloatDelta(attr, lightParams.brightness, step * value);
                 break;
 
             case 'radius':
-                if (!params.hasRadius) {
-                    params.hasRadius = true;
-                    if (sourceLight) params.radius = sourceLight.radius;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasRadius) {
+                    lightParams.hasRadius = true;
+                    if (sourceLight) lightParams.radius = sourceLight.radius;
                 }
-                step = GetDynamicStep(attr, params.radius, value) * accelMult;
-                params.radius = ApplyFloatDelta(attr, params.radius, step * value);
+                step = GetDynamicStep(attr, lightParams.radius, value) * accelMult;
+                lightParams.radius = ApplyFloatDelta(attr, lightParams.radius, step * value);
                 break;
 
             case 'attenuation':
-                if (!params.hasAttenuation) {
-                    params.hasAttenuation = true;
-                    if (sourceLight) params.attenuation = sourceLight.attenuation;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasAttenuation) {
+                    lightParams.hasAttenuation = true;
+                    if (sourceLight) lightParams.attenuation = sourceLight.attenuation;
                 }
-                step = GetDynamicStep(attr, params.attenuation, value) * accelMult;
-                params.attenuation = ApplyFloatDelta(attr, params.attenuation, step * value);
+                step = GetDynamicStep(attr, lightParams.attenuation, value) * accelMult;
+                lightParams.attenuation = ApplyFloatDelta(attr, lightParams.attenuation, step * value);
                 break;
 
             case 'shadowFadeDistance':
-                if (!params.hasShadowFadeDistance) {
-                    params.hasShadowFadeDistance = true;
-                    if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowFadeDistance) {
+                    lightParams.hasShadowFadeDistance = true;
+                    if (sourceLight) {
+                        lightParams.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                    }
                 }
-                step = GetDynamicStep(attr, params.shadowFadeDistance, value) * accelMult;
-                params.shadowFadeDistance = ApplyFloatDelta(attr, params.shadowFadeDistance, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowFadeDistance, value) * accelMult;
+                lightParams.shadowFadeDistance = ApplyFloatDelta(attr, lightParams.shadowFadeDistance, step * value);
                 break;
 
             case 'shadowFadeRange':
-                if (!params.hasShadowFadeRange) {
-                    params.hasShadowFadeRange = true;
-                    if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowFadeRange) {
+                    lightParams.hasShadowFadeRange = true;
+                    if (sourceLight) lightParams.shadowFadeRange = sourceLight.shadowFadeRange;
                 }
-                step = GetDynamicStep(attr, params.shadowFadeRange, value) * accelMult;
-                params.shadowFadeRange = ApplyFloatDelta(attr, params.shadowFadeRange, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowFadeRange, value) * accelMult;
+                lightParams.shadowFadeRange = ApplyFloatDelta(attr, lightParams.shadowFadeRange, step * value);
                 break;
 
             case 'shadowBlendFactor':
-                if (!params.hasShadowBlendFactor) {
-                    params.hasShadowBlendFactor = true;
-                    if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowBlendFactor) {
+                    lightParams.hasShadowBlendFactor = true;
+                    if (sourceLight) lightParams.shadowBlendFactor = sourceLight.shadowBlendFactor;
                 }
-                step = GetDynamicStep(attr, params.shadowBlendFactor, value) * accelMult;
-                params.shadowBlendFactor = ApplyFloatDelta(attr, params.shadowBlendFactor, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowBlendFactor, value) * accelMult;
+                lightParams.shadowBlendFactor = ApplyFloatDelta(attr, lightParams.shadowBlendFactor, step * value);
                 break;
 
             case 'useSpotlightColor':
@@ -278,37 +363,41 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'overrideColour':
-                params.hasColour = (value > 0);
-                if (params.hasColour && sourceLight) {
-                    params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                lightParams.hasColour = (value > 0);
+                if (lightParams.hasColour && sourceLight) {
+                    lightParams.color = sourceLight.color;
                 }
                 break;
 
             case 'colourR':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                params.color.Red = (byte)Clamp(params.color.Red + colourStep, 0, 255);
+                lightParams.color.Red = (byte)Clamp(lightParams.color.Red + colourStep, 0, 255);
                 break;
 
             case 'colourG':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                params.color.Green = (byte)Clamp(params.color.Green + colourStep, 0, 255);
+                lightParams.color.Green = (byte)Clamp(lightParams.color.Green + colourStep, 0, 255);
                 break;
 
             case 'colourB':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                params.color.Blue = (byte)Clamp(params.color.Blue + colourStep, 0, 255);
+                lightParams.color.Blue = (byte)Clamp(lightParams.color.Blue + colourStep, 0, 255);
                 break;
         }
 
@@ -332,7 +421,9 @@ class LRDebug_AttributeEditor {
         var spot: CSpotLightComponent;
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
+        var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
+        var type: name;
 
         if (delta == 0.0) return false;
         if (!target) return false;
@@ -345,6 +436,9 @@ class LRDebug_AttributeEditor {
 
         if (attr == '') attr = GetCurrentAttrId();
 
+        type = GetSelectedLightType(target);
+        if (!IsAttrApplicable(attr, type)) return false;
+
         // Normalise per attribute so a full swipe covers each one's range (brightness feel).
         delta *= GetAxisScale(attr);
 
@@ -352,61 +446,64 @@ class LRDebug_AttributeEditor {
         delta = ConsumeQuantizedDelta(delta, GetAdjustQuantum(attr));
         if (delta == 0.0) return false;
 
-        if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) {
-            sourceLight = spot;
-        }
-        else {
-            sourceLight = point;
-        }
+        if (type == 'spot') sourceLight = spot;
+        else sourceLight = point;
 
         switch (attr) {
             case 'brightness':
-                if (!params.hasBrightness) {
-                    params.hasBrightness = true;
-                    if (sourceLight) params.brightness = sourceLight.brightness;
-                    if (sourceLight == spot) params.brightness *= 0.5f;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasBrightness) {
+                    lightParams.hasBrightness = true;
+                    if (sourceLight) lightParams.brightness = sourceLight.brightness;
                 }
-                params.brightness = ClampAttributeValue(attr, params.brightness + delta);
+                lightParams.brightness = ClampAttributeValue(attr, lightParams.brightness + delta);
                 break;
 
             case 'radius':
-                if (!params.hasRadius) {
-                    params.hasRadius = true;
-                    if (sourceLight) params.radius = sourceLight.radius;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasRadius) {
+                    lightParams.hasRadius = true;
+                    if (sourceLight) lightParams.radius = sourceLight.radius;
                 }
-                params.radius = ClampAttributeValue(attr, params.radius + delta);
+                lightParams.radius = ClampAttributeValue(attr, lightParams.radius + delta);
                 break;
 
             case 'attenuation':
-                if (!params.hasAttenuation) {
-                    params.hasAttenuation = true;
-                    if (sourceLight) params.attenuation = sourceLight.attenuation;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasAttenuation) {
+                    lightParams.hasAttenuation = true;
+                    if (sourceLight) lightParams.attenuation = sourceLight.attenuation;
                 }
-                params.attenuation = ClampAttributeValue(attr, params.attenuation + delta);
+                lightParams.attenuation = ClampAttributeValue(attr, lightParams.attenuation + delta);
                 break;
 
             case 'shadowFadeDistance':
-                if (!params.hasShadowFadeDistance) {
-                    params.hasShadowFadeDistance = true;
-                    if (sourceLight) params.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowFadeDistance) {
+                    lightParams.hasShadowFadeDistance = true;
+                    if (sourceLight) {
+                        lightParams.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                    }
                 }
-                params.shadowFadeDistance = ClampAttributeValue(attr, params.shadowFadeDistance + delta);
+                lightParams.shadowFadeDistance = ClampAttributeValue(attr, lightParams.shadowFadeDistance + delta);
                 break;
 
             case 'shadowFadeRange':
-                if (!params.hasShadowFadeRange) {
-                    params.hasShadowFadeRange = true;
-                    if (sourceLight) params.shadowFadeRange = sourceLight.shadowFadeRange;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowFadeRange) {
+                    lightParams.hasShadowFadeRange = true;
+                    if (sourceLight) lightParams.shadowFadeRange = sourceLight.shadowFadeRange;
                 }
-                params.shadowFadeRange = ClampAttributeValue(attr, params.shadowFadeRange + delta);
+                lightParams.shadowFadeRange = ClampAttributeValue(attr, lightParams.shadowFadeRange + delta);
                 break;
 
             case 'shadowBlendFactor':
-                if (!params.hasShadowBlendFactor) {
-                    params.hasShadowBlendFactor = true;
-                    if (sourceLight) params.shadowBlendFactor = sourceLight.shadowBlendFactor;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasShadowBlendFactor) {
+                    lightParams.hasShadowBlendFactor = true;
+                    if (sourceLight) lightParams.shadowBlendFactor = sourceLight.shadowBlendFactor;
                 }
-                params.shadowBlendFactor = ClampAttributeValue(attr, params.shadowBlendFactor + delta);
+                lightParams.shadowBlendFactor = ClampAttributeValue(attr, lightParams.shadowBlendFactor + delta);
                 break;
 
             case 'alignOffsetZ':
@@ -418,27 +515,30 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'colourR':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
-                params.color.Red = (byte)Clamp(params.color.Red + (int)delta, 0, 255);
+                lightParams.color.Red = (byte)Clamp(lightParams.color.Red + (int)delta, 0, 255);
                 break;
 
             case 'colourG':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
-                params.color.Green = (byte)Clamp(params.color.Green + (int)delta, 0, 255);
+                lightParams.color.Green = (byte)Clamp(lightParams.color.Green + (int)delta, 0, 255);
                 break;
 
             case 'colourB':
-                if (!params.hasColour) {
-                    params.hasColour = true;
-                    if (sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                if (!lightParams.hasColour) {
+                    lightParams.hasColour = true;
+                    if (sourceLight) lightParams.color = sourceLight.color;
                 }
-                params.color.Blue = (byte)Clamp(params.color.Blue + (int)delta, 0, 255);
+                lightParams.color.Blue = (byte)Clamp(lightParams.color.Blue + (int)delta, 0, 255);
                 break;
 
             default:
@@ -510,7 +610,9 @@ class LRDebug_AttributeEditor {
         var spot: CSpotLightComponent;
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
+        var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
+        var type: name;
 
         if (!target) return false;
         if (!target.lrdebugOneliner) return false;
@@ -522,7 +624,10 @@ class LRDebug_AttributeEditor {
 
         if (attr == '') attr = GetCurrentAttrId();
 
-        if (spot && spot.IsEnabled() && LRDebug_IsCandle(target)) sourceLight = spot;
+        type = GetSelectedLightType(target);
+        if (!IsAttrApplicable(attr, type)) return false;
+
+        if (type == 'spot') sourceLight = spot;
         else sourceLight = point;
 
         switch (attr) {
@@ -537,8 +642,9 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'overrideColour':
-                params.hasColour = !params.hasColour;
-                if (params.hasColour && sourceLight) params.color = sourceLight.color;
+                lightParams = GetSharedParams(params, target, type);
+                lightParams.hasColour = !lightParams.hasColour;
+                if (lightParams.hasColour && sourceLight) lightParams.color = sourceLight.color;
                 break;
 
             default:

@@ -11,6 +11,7 @@
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
  * IK_NumPad9=(Action=LRDebug_ExportEdited)
+ * IK_NumPad6=(Action=LRDebug_CycleLight)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  *
@@ -46,6 +47,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
@@ -139,8 +141,7 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugAttrEditor.CycleAttribute(-1);
-    lrDebugLabelManager.RefreshTargetOneliner();
+    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, -1);
     return true;
 }
 
@@ -148,8 +149,15 @@ public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
 public function LRDebug_OnInputCycleAttrNext(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugAttrEditor.CycleAttribute(1);
-    lrDebugLabelManager.RefreshTargetOneliner();
+    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, 1);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    lrDebugLabelManager.CycleSelectedLight(lrDebugAttrEditor);
     return true;
 }
 
@@ -171,8 +179,10 @@ public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
     if (!lrDebugLabels || !action.value || !thePlayer) return false;
 
     if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
-        lrDebugAttrEditor.CycleAttribute((int)SignF(action.value) * -1);
-        lrDebugLabelManager.RefreshTargetOneliner();
+        lrDebugLabelManager.CycleSelectedAttribute(
+            lrDebugAttrEditor,
+            (int)SignF(action.value) * -1
+        );
         return true;
     }
 

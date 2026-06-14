@@ -20,11 +20,11 @@ Creates and reuses `LRDebug_LightOneLiner` instances for nearby entities with po
 
 Extends `SU_Oneliner`; one instance per entity, reused for its lifetime. States: `Idle` (not tracking) and `FollowEntity` (tracks entity position with a small Z offset until labels off or out of range). Markup is regenerated only on highlight change, path toggle, or attribute change - not every frame.
 
-Shows point/spot counts (green/grey), and when highlighted the selected attribute name and value. Optional path lines (filename, path, layer) from `entity.ToString()`. Injects `lrdebugOneliner` on `CGameplayEntity`.
+Shows point/spot counts (green/grey), and when highlighted the selected attribute name and value. The active light gets bracketed (`[P n] / S m`). Optional path lines (filename, path, layer) from `entity.ToString()`. Injects `lrdebugOneliner` on `CGameplayEntity`.
 
 ### `LRDebug_AttributeEditor.ws` - attributes
 
-Owns the selected attribute index, dynamic step sizes (magnitude-based; fine fixed steps for clamped attrs), and sub-stepping on large scroll deltas. Params are lazy-initialised per field from the live source light on first adjustment (`LRDebug_GetParams` seeds the object earlier from effective rewriter params). Candles with an active spotlight use the spot as the source. Booleans (`useSpotlightColor`, `alignPointLights`, `overrideColour`) toggle on scroll sign. Each change applies via `menuOverrideParams` and `RewriteLight()`. Does not refresh the oneliner - callers must call `RefreshTargetOneliner`.
+Owns the selected attribute and step sizing, and the selected light type (point or spot). Shared attributes route to point or spotlight params accordingly; point-only attributes are skipped in spot mode. Applies each change via `menuOverrideParams` and `RewriteLight()`; callers must refresh the oneliner themselves.
 
 ### `LRDebug_AdjustAccelerator.ws` - scroll acceleration
 
