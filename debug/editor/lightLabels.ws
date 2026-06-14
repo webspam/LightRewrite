@@ -157,7 +157,7 @@ public function LRDebug_OnInputCycleAttrNext(action: SInputAction): bool {
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.CycleSelectedLight(lrDebugAttrEditor);
+    lrDebugLabelManager.SwapLightSelection(lrDebugAttrEditor);
     return true;
 }
 

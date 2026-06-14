@@ -68,7 +68,7 @@ class LRDebug_AttributeEditor {
         return 'point';
     }
 
-    public function CycleLight(target: CGameplayEntity) {
+    public function SwapLightSelection(target: CGameplayEntity) {
         var hasPoint, hasSpot: bool;
 
         if (LRDebug_FirstPointLight(target)) hasPoint = true;

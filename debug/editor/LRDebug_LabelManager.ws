@@ -116,10 +116,10 @@ class LRDebug_LabelManager {
         target.lrdebugOneliner.RegenerateText();
     }
 
-    public function CycleSelectedLight(editor: LRDebug_AttributeEditor) {
+    public function SwapLightSelection(editor: LRDebug_AttributeEditor) {
         if (!target) return;
 
-        editor.CycleLight(target);
+        editor.SwapLightSelection(target);
         RefreshTargetOneliner();
     }
 
