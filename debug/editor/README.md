@@ -72,6 +72,8 @@ LRDebug_LightOneLiner.RegenerateText()  ← updates floating label
 - Turn labels on before any other control.
 - Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute.
 - Face the light you want to edit; focus mode extends pick range.
+- Swap between point/spot lights
+- Hold one of the modifier keys (e.g. brightness), moving the mouse up and down to adjust setting
 
 ## Requires
 
