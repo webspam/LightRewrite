@@ -8,6 +8,22 @@
  *   CLayer "levels\skellige\spikeroog\village_buildings.w2w"::levels\skellige\spikeroog\village_buildings\braziers_floor_square_bounce.w2ent
  */
 
+// Returns true if the spotlight override carries at least one real edit.
+function LRDebug_SpotlightHasEdits(spot: CLightRewriteSpotlightParams): bool {
+    if (!spot) return false;
+    return spot.hasBrightness ||
+        spot.hasRadius ||
+        spot.hasAttenuation ||
+        spot.hasShadowFadeDistance ||
+        spot.hasShadowFadeRange ||
+        spot.hasShadowBlendFactor ||
+        spot.hasColour ||
+        spot.hasInnerAngle ||
+        spot.hasOuterAngle ||
+        spot.hasSoftness ||
+        spot.hasOffset;
+}
+
 // Returns true if the entity has at least one real edit beyond the lazy-getter default.
 function LRDebug_HasEdits(params: CLightRewriteSourceParams): bool {
     if (!params) return false;
@@ -19,7 +35,8 @@ function LRDebug_HasEdits(params: CLightRewriteSourceParams): bool {
         params.hasShadowBlendFactor ||
         params.hasColour ||
         params.hasAlignPointLights ||
-        params.hasUseSpotlightColor;
+        params.hasUseSpotlightColor ||
+        LRDebug_SpotlightHasEdits(params.spotlight);
 }
 
 // -> levels\skellige\spikeroog\village_buildings.w2w
@@ -34,6 +51,42 @@ function LRDebug_ParseLayerDir(descriptor: string): string {
 function LRDebug_ParseEntityFileName(descriptor: string): string {
     if (StrFindFirst(descriptor, "::") == -1) return "";
     return StrAfterLast(StrAfterFirst(descriptor, "::"), StrChar(92));
+}
+
+// Builds the spot_-prefixed segment for an edited spotlight; only fields whose has* guard is true.
+function LRDebug_BuildSpotlightSegment(spot: CLightRewriteSpotlightParams): string {
+    var line: string;
+
+    if (spot.hasBrightness) line += " spot_brightness=" + FloatToString(spot.brightness);
+    if (spot.hasRadius) line += " spot_radius=" + FloatToString(spot.radius);
+    if (spot.hasAttenuation) line += " spot_attenuation=" + FloatToString(spot.attenuation);
+    if (spot.hasShadowFadeDistance) {
+        line += " spot_shadowFadeDistance=" + FloatToString(spot.shadowFadeDistance);
+    }
+    if (spot.hasShadowFadeRange) {
+        line += " spot_shadowFadeRange=" + FloatToString(spot.shadowFadeRange);
+    }
+    if (spot.hasShadowBlendFactor) {
+        line += " spot_shadowBlendFactor=" + FloatToString(spot.shadowBlendFactor);
+    }
+
+    if (spot.hasColour) {
+        line += " spot_colorR=" + IntToString((int)spot.color.Red);
+        line += " spot_colorG=" + IntToString((int)spot.color.Green);
+        line += " spot_colorB=" + IntToString((int)spot.color.Blue);
+    }
+
+    if (spot.hasInnerAngle) line += " spot_innerAngle=" + FloatToString(spot.innerAngle);
+    if (spot.hasOuterAngle) line += " spot_outerAngle=" + FloatToString(spot.outerAngle);
+    if (spot.hasSoftness) line += " spot_softness=" + FloatToString(spot.softness);
+
+    if (spot.hasOffset) {
+        line += " spot_offsetX=" + FloatToString(spot.offset.X);
+        line += " spot_offsetY=" + FloatToString(spot.offset.Y);
+        line += " spot_offsetZ=" + FloatToString(spot.offset.Z);
+    }
+
+    return line;
 }
 
 // Assembles the [LREXPORT] log line; only includes fields whose has* guard is true.
@@ -75,6 +128,8 @@ function LRDebug_BuildExportLine(
         if (params.useSpotlightColor) line += " useSpotlightColor=1";
         else line += " useSpotlightColor=0";
     }
+
+    if (params.spotlight) line += LRDebug_BuildSpotlightSegment(params.spotlight);
 
     return line;
 }
