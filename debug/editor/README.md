@@ -1,157 +1,48 @@
-# Debug Editor Subsystem
+# Debug Editor
 
-An in-game light authoring overlay for the Light Rewrite mod. It renders floating labels
-over nearby light-bearing entities, highlights the entity most directly in front of the
-camera, and lets the developer tweak light attributes live with a keyboard and scroll wheel.
+In-game light authoring overlay for Light Rewrite: floating labels on nearby light-bearing entities, a camera-forward highlight for the active target, and live attribute tweaks via keyboard and scroll wheel.
 
-This is debug-only code — it is not part of the distributed mod. To use it, copy the
-files in this directory into any `Mods/MODNAME/content/scripts` folder alongside the main
-mod scripts.
+Debug-only - not part of the distributed mod. Copy this folder into any `Mods/MODNAME/content/scripts` alongside the main mod scripts, or use `debug.ps1` from the repo to deploy it with the rest of the debug bundle.
 
----
+## Files
 
-## File overview
+### `lightLabels.ws` - entry point and input
 
-### `lightLabels.ws` — Entry point and input wiring
+Injects fields into `CR4Player`, defers setup with a one-shot timer (player may not be ready at spawn), then registers input listeners and a repeating timer (~100 ms) that calls `LRDebug_LabelManager.Scan()`.
 
-Injects fields into `CR4Player` and registers all input listeners. Because the player may
-not be fully ready at spawn time, setup is deferred via a one-shot timer. Once active, a
-repeating timer drives the label manager's `Scan()` call roughly every 100 ms.
+All actions must be bound in `input.settings` (example bindings in the file header). `LRDebug_ToggleLabels` gates everything else. Scroll input is normalised (engine sends multiples of ±3 per event). Hold `ShowDeveloperModeAlt` during scroll to cycle the selected attribute instead of adjusting it. Direct-select actions (`LRDebug_SelectBrightness`, etc.) jump to a specific attribute when bound. `LRDebug_ExportEdited` triggers export.
 
-All input actions must be bound in `input.settings`. The file header shows example
-bindings. The master toggle (labels on/off) gates every other input — none of the
-attribute or path controls do anything while labels are off.
+### `LRDebug_LabelManager.ws` - labels and target
 
-The scroll wheel input uses a normalised value (the raw engine value divided by a constant
-to account for the engine sending multiples per event). When `ShowDeveloperModeAlt` is
-held during a scroll event, the scroll cycles the selected attribute rather than adjusting
-its value.
+Creates and reuses `LRDebug_LightOneLiner` instances for nearby entities with point or spot lights (`FindNearbyLights` → `FindGameplayEntitiesInRange`). Restarts idle oneliners; picks the highlighted target as the most in-front entity within range (10 m, 25 m with Witcher Senses). Delegates value changes to `LRDebug_AttributeEditor` and refreshes the target label on success. `ToggleRewriterOnTarget` flips rewritten vs original via `inOriginalState` and shows a toast.
 
-Direct attribute-selection hotkeys (`LRDebug_SelectBrightness`, `LRDebug_SelectRadius`,
-etc.) jump directly to a specific attribute index without cycling.
+### `LRDebug_LightOneLiner.ws` - floating label
 
-### `LRDebug_LabelManager.ws` — Label lifecycle and target selection
+Extends `SU_Oneliner`; one instance per entity, reused for its lifetime. States: `Idle` (not tracking) and `FollowEntity` (tracks entity position with a small Z offset until labels off or out of range). Markup is regenerated only on highlight change, path toggle, or attribute change - not every frame.
 
-Manages the collection of `LRDebug_LightOneLiner` instances and tracks which entity is
-the active editing target.
+Shows point/spot counts (green/grey), and when highlighted the selected attribute name and value. Optional path lines (filename, path, layer) from `entity.ToString()`. Injects `lrdebugOneliner` on `CGameplayEntity`.
 
-**`Scan()`** is called each timer tick and does two things:
+### `LRDebug_AttributeEditor.ws` - attributes
 
-1. Iterates nearby entities (from `FindGameplayEntitiesInRange`). Entities that already
-   have an oneliner have it restarted if it went idle. Entities without one are checked
-   for point or spot light components; if they have at least one, a new oneliner is
-   created.
+Owns the selected attribute index, dynamic step sizes (magnitude-based; fine fixed steps for clamped attrs), and sub-stepping on large scroll deltas. Params are lazy-initialised per field from the live source light on first adjustment (`LRDebug_GetParams` seeds the object earlier from effective rewriter params). Candles with an active spotlight use the spot as the source. Booleans (`useSpotlightColor`, `alignPointLights`, `overrideColour`) toggle on scroll sign. Each change applies via `menuOverrideParams` and `RewriteLight()`. Does not refresh the oneliner - callers must call `RefreshTargetOneliner`.
 
-2. Among entities within the visibility range, selects the one most directly in front of
-   the camera (highest dot product between the camera-forward vector and the vector to the
-   entity) as the highlighted target. The previous target is de-highlighted; the new one
-   is highlighted.
+### `LRDebug_AdjustAccelerator.ws` - scroll acceleration
 
-Visibility range expands when the game's focus mode (Witcher Senses) is active.
+Ramps a step multiplier after a burst of scroll events; direction reversal halves the streak; a pause resets state. Returns 1.0 when not accelerating.
 
-`ApplyAttributeAdjustment` delegates to `LRDebug_AttributeEditor.AdjustAttribute` and
-then calls `RefreshTargetOneliner` if the adjustment succeeded.
+### `LRDebug_EntityUtils.ws` - helpers
 
-`ToggleRewriterOnTarget` uses the `inOriginalState` flag (tracked by
-`LRDebug_EntityUtils`) to toggle between the rewritten and original state, then shows a
-brief confirmation toast.
+Point/spot component lookup, candle name heuristic (excludes holders), debug rewriter creation for entities outside the active profile (`LRDebug_GetOrCreateRewriter`), `inOriginalState` tracking on `ILightSourceRewriter`, and `menuOverrideParams` accessors.
 
-### `LRDebug_LightOneLiner.ws` — Per-entity floating label
+### `LRDebug_ToastOneLiner.ws` - notifications
 
-A state-machine class extending `SU_Oneliner` (from `mod_sharedutils_oneliners`). One
-instance is created per entity and reused for its lifetime rather than being torn down and
-recreated as the player moves.
+Brief text at head height for confirmations (e.g. rewriter on/off).
 
-**States:**
-- `Idle` — registered but not updating position
-- `FollowEntity` — updates position each frame to track the entity's world position, with
-  a small upward offset. Exits to `Idle` when labels are toggled off or the entity moves
-  out of range.
+### `LRDebug_Export.ws` - export
 
-**Markup generation** is done in `GenerateText()` and only runs on explicit events:
-highlight change, path-label toggle, or attribute cycle. The per-frame loop does no markup
-work.
+`LRDebug_ExportEditedLights()` scans tagged light entities and logs `[LRDebug_Export]` lines for anything with session edits, for distillation into XML via `tools/Export-Lights.ps1`.
 
-The label displays:
-- A count of point and spot light components (green if non-zero, grey if zero)
-- When highlighted: the currently selected attribute name and its current value, rendered
-  in a distinct colour
-- When path labels are enabled: the entity's filename, directory path, and level layer
-  path, parsed from the entity's `ToString()` representation
-
-The `lrdebugOneliner` field is injected onto `CGameplayEntity` here so all other files
-can access it.
-
-### `LRDebug_AttributeEditor.ws` — Attribute selection and adjustment
-
-Owns the currently selected attribute index and all logic for reading, stepping, clamping,
-and writing attribute values.
-
-**Attribute stepping** is dynamic: the step size scales with the current value's magnitude
-so that large values change in larger increments and small values in smaller ones. Clamped
-attributes like `attenuation` and `shadowBlendFactor` use a fixed fine step instead.
-Large scroll deltas are applied in sub-steps so that a fast swipe cannot jump across
-step-size thresholds in one event.
-
-**Lazy initialisation of params:** when an attribute is first adjusted on an entity, the
-current live value from the light component is read and stored into `CLightRewriteSourceParams`
-before the delta is applied. Subsequent adjustments work against the stored params.
-
-For candle entities with an active spotlight, the spotlight is treated as the source light
-rather than the point light.
-
-Boolean attributes (`useSpotlightColor`, `alignPointLights`, `overrideColour`) interpret
-a positive scroll value as "enable" and a negative value as "disable" — they cannot be
-changed incrementally.
-
-After every adjustment, `RewriteLight()` is called on the rewriter to apply the change
-immediately to the running game.
-
-**Responsibility boundary:** `AdjustAttribute` and `CycleAttribute` deliberately do not
-refresh the oneliner's display text. The caller (`LRDebug_LabelManager`) is responsible
-for calling `RefreshTargetOneliner` after each operation so the call flow stays explicit.
-
-### `LRDebug_AdjustAccelerator.ws` — Scroll-wheel acceleration
-
-Tracks burst patterns in the scroll event stream to ramp a step multiplier for faster
-adjustments when scrolling quickly.
-
-Acceleration activates after a tight burst of consecutive events. Once active, the
-multiplier increases with streak length and caps at a configured maximum. A direction
-reversal cuts the streak and schedules a brief deceleration window. A pause longer than
-the reset threshold clears all state, supporting the "lift finger and reposition"
-pattern common on physical scroll wheels.
-
-Returns a multiplier of 1.0 while not accelerating so callers need no special-case logic.
-
-### `LRDebug_EntityUtils.ws` — Entity and component utilities
-
-Free functions and class extensions used across the editor subsystem:
-
-- **Component helpers** — retrieve the first point or spot light component on an entity
-  by component class name.
-- **Entity classification** — heuristic candle detection based on the entity's name
-  string; candle holders are excluded. Used to determine which rewriter type to create
-  and which light component to treat as the source.
-- **`LRDebug_GetOrCreateRewriter()`** (injected onto `CGameplayEntity`) — returns the
-  entity's existing rewriter if it has one, otherwise creates a transient debug rewriter
-  so that entities not covered by the active Light Rewrite profile can still be edited.
-- **`inOriginalState` tracking** — injects a boolean onto `ILightSourceRewriter` and
-  wraps `RewriteLight()` and `RestoreOriginalState()` on the concrete rewriter types to
-  keep the flag accurate.
-- **`LRDebug_SetMenuOverrideParams` / `LRDebug_ClearMenuOverrideParams`** (injected onto
-  `ILightSourceRewriter`) — expose the `menuOverrideParams` field that the main mod uses
-  for menu-driven overrides; the editor reuses the same slot.
-
-### `LRDebug_ToastOneLiner.ws` — Transient notification
-
-A brief floating text notification that follows the player at head height for a fixed
-duration, then goes idle. Used to confirm toggle actions. Implemented as a state-machine
-`SU_Oneliner` with `Idle` and `FollowPlayer` states.
-
----
-
-## Data flow summary
+## Data flow
 
 ```
 CR4Player (lightLabels.ws)
@@ -175,11 +66,14 @@ ILightSourceRewriter.RewriteLight()   ← applies change immediately
 LRDebug_LightOneLiner.RegenerateText()  ← updates floating label
 ```
 
----
+## Using it
 
-## Dependencies
+- Bind actions in `input.settings` - see `lightLabels.ws` header (e.g. Numpad 7/8/9: toggle labels, path labels, export).
+- Turn labels on before any other control.
+- Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute.
+- Face the light you want to edit; focus mode extends pick range.
 
-- `mod_sharedutils_oneliners` — provides the `SU_Oneliner` base class used by both
-  `LRDebug_LightOneLiner` and `LRDebug_ToastOneLiner`.
-- The main Light Rewrite mod scripts — `CLightRewriteSourceParams`, `ILightSourceRewriter`,
-  `CLightRewriteSettings`, and related types must be present.
+## Requires
+
+- `mod_sharedutils_oneliners` (`SU_Oneliner` base for label and toast oneliners)
+- Main Light Rewrite mod (`CLightRewriteSourceParams`, `ILightSourceRewriter`, `CLightRewriteSettings`, etc.)
