@@ -1,10 +1,10 @@
 ---
-description: Agent summary for the debug/lightLabels overlay — in-game light authoring tool
+description: Agent summary for the debug/lightLabels overlay - in-game light authoring tool
 globs: "debug/lightLabels.ws,debug/LRDebug_LabelManager.ws,debug/LRDebug_AttributeEditor.ws,debug/LRDebug_AdjustAccelerator.ws,debug/LRDebug_LightOneLiner.ws,debug/LRDebug_ToastOneLiner.ws,debug/LRDebug_EntityUtils.ws"
 alwaysApply: false
 ---
 
-# debug/ — In-Game Light Authoring Overlay
+# debug/ - In-Game Light Authoring Overlay
 
 The `debug/` folder contains a **debug-only authoring tool** (excluded from release builds).
 It provides a floating-label HUD over nearby light entities so a developer can identify,
@@ -34,9 +34,9 @@ Requires `mod_sharedutils_oneliners` (external mod, not in this repo) which prov
 - A repeating timer calls `lrDebugLabelManager.Scan()` each tick.
 - `Scan()` finds nearby `CGameplayEntity` instances that own at least one
   `CPointLightComponent` or `CSpotLightComponent`.
-- Normal range and Focus Mode (Witcher Senses) range differ — see the source.
+- Normal range and Focus Mode (Witcher Senses) range differ - see the source.
 - Each qualifying entity gets one `LRDebug_LightOneLiner` for its lifetime
-  (statemachine; `Idle` ↔ `FollowEntity`). The object is reused — it is never
+  (statemachine; `Idle` ↔ `FollowEntity`). The object is reused - it is never
   destroyed and recreated while the entity stays in range.
 - Markup is generated once at creation and **only** recomputed on explicit events
   (attribute cycle, path-label toggle, highlight change). The timer does no markup
@@ -61,11 +61,11 @@ a time. The previous target's highlight is cleared before the new one is set.
 
 - **Cycle** through attributes via `LRDebug_CycleAttrPrev` / `LRDebug_CycleAttrNext`
   (calls `lrDebugAttrEditor.CycleAttribute(±1)`).
-- **Adjust** the selected attribute via `LRDebug_AdjustDown` — a single bidirectional
+- **Adjust** the selected attribute via `LRDebug_AdjustDown` - a single bidirectional
   binding (scroll wheel or analog axis). Positive `action.value` increments; negative
   decrements.
 - **Step sizing** is dynamic: larger values use larger steps. Some attributes use a
-  fixed fine-grained step regardless of value — see `LRDebug_AttributeEditor`.
+  fixed fine-grained step regardless of value - see `LRDebug_AttributeEditor`.
 - **Acceleration**: holding a direction in a tight burst activates a step multiplier
   that ramps up over time. A direction reversal reduces it; a long pause resets it.
 - Large deltas are applied in sub-steps so they don't skip step-size thresholds.
@@ -84,7 +84,7 @@ a time. The previous target's highlight is cleared before the new one is set.
 ### Capturing values for production config
 
 A log/output mechanism exists to extract the current working params so they can be
-written into the production XML config. Values are not automatically persisted — the
+written into the production XML config. Values are not automatically persisted - the
 developer must trigger this output and transfer them manually.
 
 ## Fields added via @addField
@@ -110,7 +110,7 @@ Additional bindings (`LRDebug_CycleAttrPrev`, `LRDebug_CycleAttrNext`,
 - **Do not recompute markup on the refresh timer.** Markup is only rebuilt on explicit
   state changes to keep the tick path cheap.
 - **`lrDebugTempParams` is the working edit state.** It is not the production
-  `params` object — edits here do not affect the config system directly.
+  `params` object - edits here do not affect the config system directly.
 - **One oneliner per entity, reused.** Do not create a new `LRDebug_LightOneLiner`
   for an entity that already has one in `entity.lrdebugOneliner`.
 - **`LRDebug_IsCandle` determines spotlight vs point light source** when reading the

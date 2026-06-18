@@ -132,14 +132,14 @@ function EntriesIdentical {
 function GroupEntities {
     param([System.Collections.Generic.List[hashtable]] $Records)
 
-    $primary  = [ordered]@{}
+    $primary = [ordered]@{}
     $overflow = [ordered]@{}
 
     foreach ($raw in $Records) {
-        $entry      = CoerceEntry $raw
+        $entry = CoerceEntry $raw
         $entityFile = $entry['entityFile']
-        $layerPath  = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
-        $key        = "$entityFile|$layerPath"
+        $layerPath = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
+        $key = "$entityFile|$layerPath"
 
         if (-not $primary.Contains($key)) {
             $primary[$key] = $entry
@@ -166,7 +166,7 @@ function AssignTagNames {
     )
 
     $seenBases = @{}
-    $tagNames  = @{}
+    $tagNames = @{}
 
     foreach ($dict in $Primary, $Overflow) {
         foreach ($key in $dict.Keys) {
@@ -227,7 +227,7 @@ function BuildOverrideElement {
         $override.AppendChild($matchLayer) | Out-Null
     }
 
-    # <shadows> — only when at least one shadow field is present
+    # <shadows> - only when at least one shadow field is present
     $hasShadows = $Params.ContainsKey('shadowFadeDistance') -or
     $Params.ContainsKey('shadowFadeRange') -or
     $Params.ContainsKey('shadowBlendFactor')
@@ -239,7 +239,7 @@ function BuildOverrideElement {
         $override.AppendChild($shadows) | Out-Null
     }
 
-    # <colour> — only when color fields are present
+    # <colour> - only when color fields are present
     if ($Params.ContainsKey('colorR')) {
         $colour = $Doc.CreateElement('colour')
         $colour.SetAttribute('r', [string]$Params['colorR'])
@@ -248,7 +248,7 @@ function BuildOverrideElement {
         $override.AppendChild($colour) | Out-Null
     }
 
-    # <fire_fx_offset> — only when alignPointLights is present
+    # <fire_fx_offset> - only when alignPointLights is present
     if ($Params.ContainsKey('alignPointLights')) {
         $align = $Doc.CreateElement('fire_fx_offset')
         $align.SetAttribute('x', '0')
@@ -257,7 +257,7 @@ function BuildOverrideElement {
         $override.AppendChild($align) | Out-Null
     }
 
-    # <offset> — only when pointLightOffset is present
+    # <offset> - only when pointLightOffset is present
     if ($Params.ContainsKey('pointLightOffset')) {
         $off = $Doc.CreateElement('offset')
         $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey('pointLightOffsetX') ? $Params['pointLightOffsetX'] : 0.0)))
@@ -348,7 +348,8 @@ function WriteUtf16Xml {
 if ($LogFile -eq '') {
     if ($env:WITCHER_SCRIPTSLOG_PATH) {
         $LogFile = $env:WITCHER_SCRIPTSLOG_PATH
-    } else {
+    }
+    else {
         Write-Error 'No log file specified. Provide -LogFile or set WITCHER_SCRIPTSLOG_PATH.'
         exit 1
     }

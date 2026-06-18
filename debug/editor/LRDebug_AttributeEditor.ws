@@ -2,7 +2,7 @@
  * Owns the currently-selected attribute index and all per-attribute edit logic.
  *
  * CycleAttribute and AdjustAttribute intentionally do not call
- * LRDebug_RegenerateText on the target's oneliner — that is the caller's
+ * LRDebug_RegenerateText on the target's oneliner - that is the caller's
  * responsibility after each operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
