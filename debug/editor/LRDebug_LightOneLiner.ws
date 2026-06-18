@@ -175,21 +175,21 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'overrideColour':
-                if (lightParams && lightParams.hasColour) return "true";
+                if (lightParams && lightParams.color.has) return "true";
                 return "false";
 
             case 'colourR':
-                if (lightParams && lightParams.hasColour) valI = lightParams.color.Red;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Red;
                 else if (light) valI = light.color.Red;
                 return IntToString(valI);
 
             case 'colourG':
-                if (lightParams && lightParams.hasColour) valI = lightParams.color.Green;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Green;
                 else if (light) valI = light.color.Green;
                 return IntToString(valI);
 
             case 'colourB':
-                if (lightParams && lightParams.hasColour) valI = lightParams.color.Blue;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Blue;
                 else if (light) valI = light.color.Blue;
                 return IntToString(valI);
         }

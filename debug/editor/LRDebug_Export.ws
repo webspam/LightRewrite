@@ -20,11 +20,11 @@ function LRDebug_FloatEdited(
 }
 
 function LRDebug_ColourEdited(cur: ILightRewriteParams, base: ILightRewriteParams): bool {
-    if (!cur.hasColour) return false;
-    if (!base.hasColour) return true;
-    return cur.color.Red != base.color.Red ||
-        cur.color.Green != base.color.Green ||
-        cur.color.Blue != base.color.Blue;
+    if (!cur.color.has) return false;
+    if (!base.color.has) return true;
+    return cur.color.value.Red != base.color.value.Red ||
+        cur.color.value.Green != base.color.value.Green ||
+        cur.color.value.Blue != base.color.value.Blue;
 }
 
 /** Changed-field segment shared by point and spot lights (prefix "" or "spot_") */
@@ -55,9 +55,9 @@ function LRDebug_BuildLightFieldSegment(
     }
 
     if (LRDebug_ColourEdited(cur, base)) {
-        line += " " + prefix + "colorR=" + IntToString((int)cur.color.Red);
-        line += " " + prefix + "colorG=" + IntToString((int)cur.color.Green);
-        line += " " + prefix + "colorB=" + IntToString((int)cur.color.Blue);
+        line += " " + prefix + "colorR=" + IntToString((int)cur.color.value.Red);
+        line += " " + prefix + "colorG=" + IntToString((int)cur.color.value.Green);
+        line += " " + prefix + "colorB=" + IntToString((int)cur.color.value.Blue);
     }
 
     return line;

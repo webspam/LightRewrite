@@ -75,10 +75,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             target.hasCastShadows = true;
             target.castShadows = castShadows;
         }
-        if (hasColour) {
-            target.hasColour = true;
-            target.color = color;
-        }
+        if (color.has) target.color = color;
         if (hasAlignPointLights) {
             target.hasAlignPointLights = true;
             target.alignPointLights = alignPointLights;

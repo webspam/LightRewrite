@@ -25,6 +25,5 @@ abstract class ILightRewriteParams {
     public var hasCastShadows: bool;
     public var castShadows   : ELightShadowCastingMode;
 
-    public var hasColour: bool;
-    public var color    : Color;
+    public var color: SLightRewriteOptionalColour;
 }

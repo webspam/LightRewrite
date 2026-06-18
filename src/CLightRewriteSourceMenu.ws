@@ -42,10 +42,10 @@ class CLightRewriteSourceMenu {
         params.shadowBlendFactor.has = true;
         params.shadowBlendFactor.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), params.shadowBlendFactor.value);
 
-        params.hasColour = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
-        params.color.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.Red);
-        params.color.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.Green);
-        params.color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.Blue);
+        params.color.has = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
+        params.color.value.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.value.Red);
+        params.color.value.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.value.Green);
+        params.color.value.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.value.Blue);
     }
 
     // Reacts to menu option changes if the changed option is relevant to this source.
@@ -86,19 +86,19 @@ class CLightRewriteSourceMenu {
             flashValueStorage,
             dataArray,
             TAG_RED,
-            !params.enabled.value || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_GREEN,
-            !params.enabled.value || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_BLUE,
-            !params.enabled.value || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
 
         UpdateSpecialMenuDisabledState(flashValueStorage, dataArray, params);

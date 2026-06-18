@@ -438,40 +438,40 @@ class LRDebug_AttributeEditor {
 
             case 'overrideColour':
                 lightParams = GetSharedParams(params, target, type);
-                lightParams.hasColour = (value > 0);
-                if (lightParams.hasColour && sourceLight) {
-                    lightParams.color = sourceLight.color;
+                lightParams.color.has = (value > 0);
+                if (lightParams.color.has && sourceLight) {
+                    lightParams.color.value = sourceLight.color;
                 }
                 break;
 
             case 'colourR':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.Red = (byte)Clamp(lightParams.color.Red + colourStep, 0, 255);
+                lightParams.color.value.Red = (byte)Clamp(lightParams.color.value.Red + colourStep, 0, 255);
                 break;
 
             case 'colourG':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.Green = (byte)Clamp(lightParams.color.Green + colourStep, 0, 255);
+                lightParams.color.value.Green = (byte)Clamp(lightParams.color.value.Green + colourStep, 0, 255);
                 break;
 
             case 'colourB':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
                 colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.Blue = (byte)Clamp(lightParams.color.Blue + colourStep, 0, 255);
+                lightParams.color.value.Blue = (byte)Clamp(lightParams.color.value.Blue + colourStep, 0, 255);
                 break;
         }
 
@@ -628,29 +628,29 @@ class LRDebug_AttributeEditor {
 
             case 'colourR':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
-                lightParams.color.Red = (byte)Clamp(lightParams.color.Red + (int)delta, 0, 255);
+                lightParams.color.value.Red = (byte)Clamp(lightParams.color.value.Red + (int)delta, 0, 255);
                 break;
 
             case 'colourG':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
-                lightParams.color.Green = (byte)Clamp(lightParams.color.Green + (int)delta, 0, 255);
+                lightParams.color.value.Green = (byte)Clamp(lightParams.color.value.Green + (int)delta, 0, 255);
                 break;
 
             case 'colourB':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasColour) {
-                    lightParams.hasColour = true;
-                    if (sourceLight) lightParams.color = sourceLight.color;
+                if (!lightParams.color.has) {
+                    lightParams.color.has = true;
+                    if (sourceLight) lightParams.color.value = sourceLight.color;
                 }
-                lightParams.color.Blue = (byte)Clamp(lightParams.color.Blue + (int)delta, 0, 255);
+                lightParams.color.value.Blue = (byte)Clamp(lightParams.color.value.Blue + (int)delta, 0, 255);
                 break;
 
             default:
@@ -755,8 +755,8 @@ class LRDebug_AttributeEditor {
 
             case 'overrideColour':
                 lightParams = GetSharedParams(params, target, type);
-                lightParams.hasColour = !lightParams.hasColour;
-                if (lightParams.hasColour && sourceLight) lightParams.color = sourceLight.color;
+                lightParams.color.has = !lightParams.color.has;
+                if (lightParams.color.has && sourceLight) lightParams.color.value = sourceLight.color;
                 break;
 
             default:

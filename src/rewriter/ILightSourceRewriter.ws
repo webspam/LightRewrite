@@ -122,7 +122,7 @@ abstract class ILightSourceRewriter {
         if (pamparams.shadowFadeRange.has) light.shadowFadeRange = pamparams.shadowFadeRange.value;
         if (pamparams.shadowBlendFactor.has) light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
         if (pamparams.hasCastShadows) light.shadowCastingMode = pamparams.castShadows;
-        if (pamparams.hasColour) light.color = pamparams.color;
+        if (pamparams.color.has) light.color = pamparams.color.value;
     }
 
     // Rewrites the spotlight component on the entity with the given params.
@@ -182,8 +182,8 @@ abstract class ILightSourceRewriter {
     ) {
         var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
 
-        if (pamparams.hasColour) {
-            pointLight.color = pamparams.color;
+        if (pamparams.color.has) {
+            pointLight.color = pamparams.color.value;
         }
         else if (spotLight) {
             pointLight.color = spotLight.color;

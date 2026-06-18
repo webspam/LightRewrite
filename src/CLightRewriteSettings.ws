@@ -167,19 +167,19 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candleMenu.TAG_OVERRIDE_COLOUR,
-                candleParams.hasColour
+                candleParams.color.has
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RED, candleParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_GREEN, candleParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_BLUE, candleParams.color.Blue);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RED, candleParams.color.value.Red);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_GREEN, candleParams.color.value.Green);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_BLUE, candleParams.color.value.Blue);
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 torchMenu.TAG_OVERRIDE_COLOUR,
-                torchParams.hasColour
+                torchParams.color.has
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RED, torchParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_GREEN, torchParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_BLUE, torchParams.color.Blue);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RED, torchParams.color.value.Red);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_GREEN, torchParams.color.value.Green);
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_BLUE, torchParams.color.value.Blue);
         }
 
         // v3 → v4: add brazier light source settings.
@@ -202,11 +202,11 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 brazierMenu.TAG_OVERRIDE_COLOUR,
-                brazierParams.hasColour
+                brazierParams.color.has
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RED, brazierParams.color.Red);
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_GREEN, brazierParams.color.Green);
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BLUE, brazierParams.color.Blue);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RED, brazierParams.color.value.Red);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_GREEN, brazierParams.color.value.Green);
+            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_BLUE, brazierParams.color.value.Blue);
         }
 
         // v4 → v5: add candelabra and campfire light source settings.
@@ -229,22 +229,22 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_OVERRIDE_COLOUR,
-                candelabraParams.hasColour
+                candelabraParams.color.has
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_RED,
-                candelabraParams.color.Red
+                candelabraParams.color.value.Red
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_GREEN,
-                candelabraParams.color.Green
+                candelabraParams.color.value.Green
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_BLUE,
-                candelabraParams.color.Blue
+                candelabraParams.color.value.Blue
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
@@ -260,15 +260,15 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 campfireMenu.TAG_OVERRIDE_COLOUR,
-                campfireParams.hasColour
+                campfireParams.color.has
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RED, campfireParams.color.Red);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RED, campfireParams.color.value.Red);
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 campfireMenu.TAG_GREEN,
-                campfireParams.color.Green
+                campfireParams.color.value.Green
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BLUE, campfireParams.color.Blue);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_BLUE, campfireParams.color.value.Blue);
         }
 
         // v5 → v6: promote global shadow settings to per-source keys.
@@ -473,22 +473,22 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_OVERRIDE_COLOUR,
-                chandelierParams.hasColour
+                chandelierParams.color.has
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_RED,
-                chandelierParams.color.Red
+                chandelierParams.color.value.Red
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_GREEN,
-                chandelierParams.color.Green
+                chandelierParams.color.value.Green
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_BLUE,
-                chandelierParams.color.Blue
+                chandelierParams.color.value.Blue
             );
         }
 

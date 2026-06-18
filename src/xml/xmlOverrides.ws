@@ -195,12 +195,12 @@ function ParseLightRewriteBaseParams(
 
     colourNode = dm.GetCustomDefinitionSubNode(node, 'colour');
     if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-        params.hasColour = true;
-        params.color.Red = StringToInt(strVal, params.color.Red);
+        params.color.has = true;
+        params.color.value.Red = StringToInt(strVal, params.color.value.Red);
         dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-        params.color.Green = StringToInt(strVal, params.color.Green);
+        params.color.value.Green = StringToInt(strVal, params.color.value.Green);
         dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-        params.color.Blue = StringToInt(strVal, params.color.Blue);
+        params.color.value.Blue = StringToInt(strVal, params.color.value.Blue);
     }
 }
 
