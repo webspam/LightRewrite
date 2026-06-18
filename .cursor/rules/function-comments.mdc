@@ -45,3 +45,4 @@ public function IsEnabled() : bool { return isEnabled; }
 
 - One line is almost always enough; two lines at most.
 - Write in plain English, imperative or declarative - no full stops required.
+- NEVER end of line comments

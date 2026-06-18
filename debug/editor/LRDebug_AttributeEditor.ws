@@ -711,7 +711,7 @@ class LRDebug_AttributeEditor {
             case 'colourG':
             case 'colourB':            return 2.55;
         }
-        return 1.0; // brightness, shadow fade distance/range, inner/outer angle
+        return 1.0;
     }
 
     /**
