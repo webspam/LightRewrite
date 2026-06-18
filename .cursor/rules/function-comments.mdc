@@ -18,7 +18,7 @@ A comment that rephrases the body in prose adds no value and must not be used.
 public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
 
 // ✅ GOOD — explains the impetus / caller contract
-// Gets the LightRewrite settings singleton - lazy initialised
+/** Gets the LightRewrite settings singleton - lazy initialised */
 public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
 ```
 
@@ -28,7 +28,7 @@ public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
 function OnOptionValueChanged(...) { ... }
 
 // ✅ GOOD — explains why this wrapper exists
-// Forward every option-change event to the settings object for filtering.
+/** Forward every option-change event to the settings object for filtering */
 function OnOptionValueChanged(...) { ... }
 ```
 
