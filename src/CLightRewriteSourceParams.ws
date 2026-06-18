@@ -23,8 +23,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var profileName: name;
 
     // The rewriter implementation to use
-    public var hasRewriterType: bool;
-    public var rewriterType   : ELightRewriteType;
+    public var rewriterType: SLightRewriteOptionalRewriterType;
 
     // Point-light alignment to fire FX slots
     public var hasAlignPointLights: bool;
@@ -60,20 +59,14 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
         if (enabled.has) target.enabled = enabled;
-        if (hasRewriterType) {
-            target.hasRewriterType = true;
-            target.rewriterType = rewriterType;
-        }
+        if (rewriterType.has) target.rewriterType = rewriterType;
         if (brightness.has) target.brightness = brightness;
         if (radius.has) target.radius = radius;
         if (attenuation.has) target.attenuation = attenuation;
         if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
         if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
-        if (hasCastShadows) {
-            target.hasCastShadows = true;
-            target.castShadows = castShadows;
-        }
+        if (castShadows.has) target.castShadows = castShadows;
         if (color.has) target.color = color;
         if (hasAlignPointLights) {
             target.hasAlignPointLights = true;

@@ -22,8 +22,7 @@ abstract class ILightRewriteParams {
 
     public var shadowBlendFactor: SLightRewriteOptionalFloat;
 
-    public var hasCastShadows: bool;
-    public var castShadows   : ELightShadowCastingMode;
+    public var castShadows: SLightRewriteOptionalShadowMode;
 
     public var color: SLightRewriteOptionalColour;
 }

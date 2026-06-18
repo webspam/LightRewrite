@@ -72,8 +72,8 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
-            params.hasRewriterType = true;
-            params.rewriterType = ParseLightRewriteType(strVal);
+            params.rewriterType.has = true;
+            params.rewriterType.value = ParseLightRewriteType(strVal);
         }
 
         shadowsNode = dm.GetCustomDefinitionSubNode(entryNode, 'shadows');

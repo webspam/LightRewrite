@@ -71,8 +71,8 @@ function LoadLightRewriteOverridesGroup(
 
         ParseLightRewriteBaseParams(override, dm, entryNode);
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
-            override.hasRewriterType = true;
-            override.rewriterType = ParseLightRewriteType(strVal);
+            override.rewriterType.has = true;
+            override.rewriterType.value = ParseLightRewriteType(strVal);
         }
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
             override.useSpotlightColor.has = true;
@@ -189,8 +189,8 @@ function ParseLightRewriteBaseParams(
         params.shadowBlendFactor.value = StringToFloat(strVal, 0.f);
     }
     if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'casting_mode', strVal)) {
-        params.hasCastShadows = true;
-        params.castShadows = LR_StringToLightShadowCastingMode(strVal);
+        params.castShadows.has = true;
+        params.castShadows.value = LR_StringToLightShadowCastingMode(strVal);
     }
 
     colourNode = dm.GetCustomDefinitionSubNode(node, 'colour');
