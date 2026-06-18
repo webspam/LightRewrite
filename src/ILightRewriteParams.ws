@@ -14,7 +14,7 @@ abstract class ILightRewriteParams {
     public var hasRadius: bool;
     public var radius   : float;
 
-    // Attenuation — how quickly the light fades out with distance
+    // Attenuation - how quickly the light fades out with distance
     public var hasAttenuation: bool;
     public var attenuation   : float;
 

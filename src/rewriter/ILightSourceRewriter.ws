@@ -110,7 +110,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Shared application of ILightRewriteParams onto any light component — avoids duplicating
+    // Shared application of ILightRewriteParams onto any light component - avoids duplicating
     // the same property block for both CPointLightComponent and CSpotLightComponent.
     protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
         if (pamparams.hasBrightness) light.brightness = pamparams.brightness;

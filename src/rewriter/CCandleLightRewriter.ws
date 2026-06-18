@@ -69,7 +69,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         }
 
         // Remove spotlights from candles that have point lights (should be all candles),
-        // unless a spotlight override is configured — in that case, apply it instead.
+        // unless a spotlight override is configured - in that case, apply it instead.
         if (count > 0) {
             if (p.spotlight) {
                 RewriteSpotlight(p.spotlight);

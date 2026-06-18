@@ -2,7 +2,7 @@
  * Unified params class for per-light-source configuration.
  *
  * Every field except tag/displayName is optional; a has* guard being false
- * means "do not touch this property — leave it as the engine set it".
+ * means "do not touch this property - leave it as the engine set it".
  *
  * When matchRules is non-empty the object acts as an override: it will only
  * be applied to entities that satisfy all of its rules.
@@ -13,13 +13,13 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var displayName: string;
     default displayName = "generic";
 
-    // Override matching — empty means this is a base-params entry, not an override
+    // Override matching - empty means this is a base-params entry, not an override
     public var matchRules: array<CLightRewriteMatchRule>;
 
-    // Weight of the override — higher weights override lower weights
+    // Weight of the override - higher weights override lower weights
     public var weight: int;
 
-    // Profile this override belongs to — empty means no profile assigned
+    // Profile this override belongs to - empty means no profile assigned
     public var profileName: name;
 
     // The rewriter implementation to use
@@ -39,7 +39,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var hasUseSpotlightColor: bool;
     public var useSpotlightColor   : bool;
 
-    // Spotlight-specific override — NULL if no <spotlight> element was present
+    // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
     // Virtual constructor

@@ -10,7 +10,6 @@ alwaysApply: false
 
 - Witcher Script is Red Engine script, **syntax-close to ActionScript 3**, not TypeScript, Java, or C#.
 - Do **not** assume npm types, a TS compiler, or C++ builds for `.ws` changes.
-- Prefer patterns from **nearby vanilla or mod code** over guessed engine APIs.
 - `name` type uses single quotes `'`
   - A `name` becomes a symbol in backend code.
   - `const` vars starting with `TAG_` should always be `name`
@@ -69,7 +68,7 @@ https://deepwiki.com/juanchoix/W3-Scripts/1-overview
 ## Avoid TS-style shortcuts
 
 ```ws
-// BAD (TypeScript optional chaining — not Witcher Script)
+// BAD (TypeScript optional chaining - not Witcher Script)
 // foo?.bar
 
 // GOOD (explicit guard)

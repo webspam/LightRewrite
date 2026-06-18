@@ -59,6 +59,6 @@ struct SCustomNode {
 - `values` and `attributes` coexist on the same node independently.
 - Attribute-only nodes (e.g. self-closing) have `values.Size() = 0`.
 - Backslash paths survive intact as `name` values (no escaping needed).
-- `GetCustomNodeAttributeValueString` returns `false` when the attribute is absent — safe to use as a presence check.
+- `GetCustomNodeAttributeValueString` returns `false` when the attribute is absent - safe to use as a presence check.
 - `GetCustomDefinitionSubNode` returns a node by tag name. To iterate multiple same-named children (e.g. several `<match>` nodes), iterate `subNodes` directly and check `nodeName`.
 - All XML files sharing the same `<custom>` definition name are merged by the engine; `GetCustomDefinition` returns the combined tree.
