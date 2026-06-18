@@ -60,6 +60,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var spotP: CLightRewriteSpotlightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
+        var position: Vector;
         var valF: float;
         var valI: int;
 
@@ -141,8 +142,13 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'alignOffsetZ':
                 if (type == 'spot') {
-                    if (spotP && spotP.hasOffset) valF = spotP.offset.Z;
-                    else if (spotComp) valF = spotComp.GetLocalPosition().Z;
+                    if (spotP && spotP.hasOffset) {
+                        valF = spotP.offset.Z;
+                    }
+                    else if (spotComp) {
+                        position = spotComp.GetLocalPosition();
+                        valF = position.Z;
+                    }
                     return FloatToString(valF);
                 }
                 if (params && params.hasAlignPointLights) valF = params.pointLightOffset.Z;
