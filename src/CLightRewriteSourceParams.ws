@@ -26,9 +26,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var rewriterType: SLightRewriteOptionalRewriterType;
 
     // Point-light alignment to fire FX slots
-    public var hasAlignPointLights: bool;
-    public var alignPointLights   : bool;
-    public var pointLightOffset   : Vector;
+    public var alignPointLights: SLightRewriteOptionalBool;
+    public var pointLightOffset: Vector;
 
     // Direct point-light position offset (non-candle lights)
     public var pointLightOffsetPos: SLightRewriteOptionalVector;
@@ -68,8 +67,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (castShadows.has) target.castShadows = castShadows;
         if (color.has) target.color = color;
-        if (hasAlignPointLights) {
-            target.hasAlignPointLights = true;
+        if (alignPointLights.has) {
             target.alignPointLights = alignPointLights;
             target.pointLightOffset = pointLightOffset;
         }

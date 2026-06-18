@@ -385,8 +385,8 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignPointLights':
-                params.hasAlignPointLights = true;
-                params.alignPointLights = (value > 0);
+                params.alignPointLights.has = true;
+                params.alignPointLights.value = (value > 0);
                 break;
 
             case 'alignOffsetZ':
@@ -397,9 +397,9 @@ class LRDebug_AttributeEditor {
                     spotParams.offset.value.Z += step * value;
                 }
                 else {
-                    if (!params.hasAlignPointLights) {
-                        params.hasAlignPointLights = true;
-                        params.alignPointLights = true;
+                    if (!params.alignPointLights.has) {
+                        params.alignPointLights.has = true;
+                        params.alignPointLights.value = true;
                     }
                     step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
                     params.pointLightOffset.Z += step * value;
@@ -591,9 +591,9 @@ class LRDebug_AttributeEditor {
                     spotParams.offset.value.Z = ClampAttributeValue(attr, spotParams.offset.value.Z + delta);
                 }
                 else {
-                    if (!params.hasAlignPointLights) {
-                        params.hasAlignPointLights = true;
-                        params.alignPointLights = true;
+                    if (!params.alignPointLights.has) {
+                        params.alignPointLights.has = true;
+                        params.alignPointLights.value = true;
                     }
                     params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
                 }
@@ -749,14 +749,16 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignPointLights':
-                params.hasAlignPointLights = true;
-                params.alignPointLights = !params.alignPointLights;
+                params.alignPointLights.has = true;
+                params.alignPointLights.value = !params.alignPointLights.value;
                 break;
 
             case 'overrideColour':
                 lightParams = GetSharedParams(params, target, type);
                 lightParams.color.has = !lightParams.color.has;
-                if (lightParams.color.has && sourceLight) lightParams.color.value = sourceLight.color;
+                if (lightParams.color.has && sourceLight) {
+                    lightParams.color.value = sourceLight.color;
+                }
                 break;
 
             default:

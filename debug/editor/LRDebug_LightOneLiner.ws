@@ -138,8 +138,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'alignPointLights':
                 if (type == 'spot') return "n/a";
-                if (params && params.hasAlignPointLights) {
-                    if (params.alignPointLights) return "true";
+                if (params && params.alignPointLights.has) {
+                    if (params.alignPointLights.value) return "true";
                     return "false";
                 }
                 return "?";
@@ -155,7 +155,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                     }
                     return FloatToString(valF);
                 }
-                if (params && params.hasAlignPointLights) valF = params.pointLightOffset.Z;
+                if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                 else valF = 0.0;
                 return FloatToString(valF);
 

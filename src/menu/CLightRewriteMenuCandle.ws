@@ -19,8 +19,8 @@ class CLightRewriteMenuCandle extends CLightRewriteSourceMenu {
     ) {
         super.ReadGameConfig(gameConfig, groupTag, params);
 
-        params.hasAlignPointLights = true;
-        params.alignPointLights = gameConfig.GetVarValue(groupTag, TAG_ALIGN_POINT_LIGHTS);
+        params.alignPointLights.has = true;
+        params.alignPointLights.value = gameConfig.GetVarValue(groupTag, TAG_ALIGN_POINT_LIGHTS);
     }
 
     protected function UpdateSpecialMenuDisabledState(

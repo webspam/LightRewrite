@@ -61,7 +61,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             SetPointLightSettings(pointLight);
             SetPointLightColour(pointLight, spotLight);
 
-            if (p.hasAlignPointLights && p.alignPointLights) {
+            if (p.alignPointLights.has && p.alignPointLights.value) {
                 AlignPointLight(i, pointLight);
             }
 

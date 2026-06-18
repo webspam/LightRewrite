@@ -118,10 +118,10 @@ function LRDebug_BuildEditedFields(
     line = LRDebug_BuildLightFieldSegment(params, baseline, "");
 
     if (
-        params.hasAlignPointLights &&
-        (!baseline.hasAlignPointLights || params.alignPointLights != baseline.alignPointLights || params.pointLightOffset.Z != baseline.pointLightOffset.Z)
+        params.alignPointLights.has &&
+        (!baseline.alignPointLights.has || params.alignPointLights.value != baseline.alignPointLights.value || params.pointLightOffset.Z != baseline.pointLightOffset.Z)
     ) {
-        if (params.alignPointLights) line += " alignPointLights=1";
+        if (params.alignPointLights.value) line += " alignPointLights=1";
         else line += " alignPointLights=0";
         line += " alignOffsetZ=" + FloatToString(params.pointLightOffset.Z);
     }

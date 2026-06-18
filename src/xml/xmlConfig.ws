@@ -102,8 +102,8 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            params.hasAlignPointLights = true;
-            params.alignPointLights = true;
+            params.alignPointLights.has = true;
+            params.alignPointLights.value = true;
             params.pointLightOffset.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
             params.pointLightOffset.Y = StringToFloat(strVal, 0.f);

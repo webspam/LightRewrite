@@ -83,8 +83,8 @@ function LoadLightRewriteOverridesGroup(
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            override.hasAlignPointLights = true;
-            override.alignPointLights = true;
+            override.alignPointLights.has = true;
+            override.alignPointLights.value = true;
             override.pointLightOffset.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
             override.pointLightOffset.Y = StringToFloat(strVal, 0.f);
