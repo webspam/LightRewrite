@@ -14,7 +14,15 @@ All actions must be bound in `input.settings` (example bindings in the file head
 
 ### `LRDebug_LabelManager.ws` - labels and target
 
-Creates and reuses `LRDebug_LightOneLiner` instances for nearby entities with point or spot lights (`FindNearbyLights` → `FindGameplayEntitiesInRange`). Restarts idle oneliners; picks the highlighted target as the most in-front entity within range (10 m, 25 m with Witcher Senses). Delegates value changes to `LRDebug_AttributeEditor` and refreshes the target label on success. `ToggleRewriterOnTarget` flips rewritten vs original via `inOriginalState` and shows a toast.
+Creates and reuses `LRDebug_LightOneLiner` instances for nearby entities with point or spot lights (`FindNearbyLights` → `FindGameplayEntitiesInRange`). Restarts idle oneliners; picks the highlighted target as the most in-front entity within range (10 m, 25 m with Witcher Senses). On target change, notifies `LRDebug_TargetMarkers`. Delegates value changes to `LRDebug_AttributeEditor` and refreshes the target label on success. `ToggleRewriterOnTarget` flips rewritten vs original via `inOriginalState` and shows a toast.
+
+### `LRDebug_TargetMarkers.ws` - per-light markers
+
+Pool of `LRDebug_WorldMarker` labels, one per light component on the current target.
+
+### `LRDebug_WorldMarker.ws` - single screen marker
+
+A marker pinning one world point on screen.
 
 ### `LRDebug_LightOneLiner.ws` - floating label
 
