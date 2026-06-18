@@ -155,8 +155,17 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                     }
                     return FloatToString(valF);
                 }
-                if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
-                else valF = 0.0;
+                if (LRDebug_IsCandle(entity)) {
+                    if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
+                    else valF = 0.0;
+                }
+                else if (params && params.pointLightOffsetPos.has) {
+                    valF = params.pointLightOffsetPos.value.Z;
+                }
+                else if (light) {
+                    position = light.GetLocalPosition();
+                    valF = position.Z;
+                }
                 return FloatToString(valF);
 
             case 'innerAngle':

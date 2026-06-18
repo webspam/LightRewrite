@@ -149,6 +149,13 @@ class LRDebug_AttributeEditor {
         if (spot) spotParams.offset.value = spot.GetLocalPosition();
     }
 
+    /** Point-light equivalent of SeedSpotOffset: absolute position, seeded from the live light */
+    private function SeedPointOffset(params: CLightRewriteSourceParams, point: CPointLightComponent) {
+        if (params.pointLightOffsetPos.has) return;
+        params.pointLightOffsetPos.has = true;
+        if (point) params.pointLightOffsetPos.value = point.GetLocalPosition();
+    }
+
     private function GetFloatStep(value: float): float {
         if (value >= 50.0) return 5.0;
         if (value >= 25.0) return 2.5;
@@ -396,13 +403,18 @@ class LRDebug_AttributeEditor {
                     step = GetDynamicStep(attr, spotParams.offset.value.Z, value) * accelMult;
                     spotParams.offset.value.Z += step * value;
                 }
-                else {
+                else if (LRDebug_IsCandle(target)) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
                     }
                     step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
                     params.pointLightOffset.Z += step * value;
+                }
+                else {
+                    SeedPointOffset(params, point);
+                    step = GetDynamicStep(attr, params.pointLightOffsetPos.value.Z, value) * accelMult;
+                    params.pointLightOffsetPos.value.Z += step * value;
                 }
                 break;
 
@@ -590,12 +602,16 @@ class LRDebug_AttributeEditor {
                     SeedSpotOffset(spotParams, spot);
                     spotParams.offset.value.Z = ClampAttributeValue(attr, spotParams.offset.value.Z + delta);
                 }
-                else {
+                else if (LRDebug_IsCandle(target)) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
                     }
                     params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
+                }
+                else {
+                    SeedPointOffset(params, point);
+                    params.pointLightOffsetPos.value.Z = ClampAttributeValue(attr, params.pointLightOffsetPos.value.Z + delta);
                 }
                 break;
 
