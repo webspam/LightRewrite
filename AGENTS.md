@@ -1,24 +1,6 @@
 # Agent guidance for Light Rewrite
 
-## Most important rule: read the README before touching a directory
-
-**Before making any change in a directory, read the `README.md` in that directory.**
-README files contain the context essential for making correct changes — design decisions,
-constraints, and behavioural descriptions. They are written for both humans and agents.
-
-Skipping them leads to changes that conflict with existing conventions or break assumptions that are not obvious from the code alone.
-
-This applies at every level: root README, `debug/README.md`, `debug/editor/README.md`, `src/xml/README.md`, and any others. Navigate to the README nearest to the code you are changing and read it first.
-
-### .cursor/rules/
-
-`.cursor/rules/` contains agent rules for this project. The directory is gitignored
-(it mixes project-level and local-only rules), but the rules inside are active and
-should be followed. Do not delete or recreate the directory.
-
-Before starting work, read the `.mdc` files in `.cursor/rules/` whose `description`
-or `globs` fields are relevant to the files you are about to touch. Each file is short
-— when in doubt, read it.
+The context needed to change this project safely lives in the per-directory `README.md` files.
 
 ## Repository overview
 
