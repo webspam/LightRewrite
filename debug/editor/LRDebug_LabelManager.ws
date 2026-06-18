@@ -123,6 +123,13 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
+    /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
+    public function GetTargetLightType(editor: LRDebug_AttributeEditor): name {
+        if (!target) return 'point';
+
+        return editor.GetSelectedLightType(target);
+    }
+
     /** CycleAttribute needs the target, which only the manager holds. */
     public function CycleSelectedAttribute(editor: LRDebug_AttributeEditor, delta: int) {
         if (!target) return;

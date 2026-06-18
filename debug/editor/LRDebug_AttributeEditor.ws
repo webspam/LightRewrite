@@ -19,7 +19,17 @@ class LRDebug_AttributeEditor {
         attrIndex = index;
     }
 
-    public function GetCurrentAttrId(): name {
+    // Slots 6/7 and 13 mean different attributes per light type so the same key
+    // edits the spotlight cone in spot mode; everything else is shared.
+    public function GetCurrentAttrId(type: name): name {
+        if (type == 'spot') {
+            switch (attrIndex) {
+                case 6:   return 'innerAngle';
+                case 7:   return 'outerAngle';
+                case 13:  return 'softness';
+            }
+        }
+
         switch (attrIndex) {
             case 0:   return 'brightness';
             case 1:   return 'radius';
@@ -34,12 +44,13 @@ class LRDebug_AttributeEditor {
             case 10:  return 'colourR';
             case 11:  return 'colourG';
             case 12:  return 'colourB';
+            case 13:  return 'softness';
         }
         return 'unknown';
     }
 
-    public function GetCurrentAttrLabel(): string {
-        switch (GetCurrentAttrId()) {
+    public function GetCurrentAttrLabel(type: name): string {
+        switch (GetCurrentAttrId(type)) {
             case 'brightness':          return "brightness";
             case 'radius':              return "radius";
             case 'attenuation':         return "attenuation";
@@ -49,6 +60,9 @@ class LRDebug_AttributeEditor {
             case 'useSpotlightColor':   return "use spotlight colour";
             case 'alignPointLights':    return "align point lights";
             case 'alignOffsetZ':        return "align offset Z";
+            case 'innerAngle':          return "inner angle";
+            case 'outerAngle':          return "outer angle";
+            case 'softness':            return "softness";
             case 'overrideColour':      return "override colour";
             case 'colourR':             return "colour R";
             case 'colourG':             return "colour G";
@@ -70,6 +84,7 @@ class LRDebug_AttributeEditor {
 
     public function SwapLightSelection(target: CGameplayEntity) {
         var hasPoint, hasSpot: bool;
+        var type: name;
 
         if (LRDebug_FirstPointLight(target)) hasPoint = true;
         if (LRDebug_FirstSpotLight(target)) hasSpot = true;
@@ -79,20 +94,22 @@ class LRDebug_AttributeEditor {
         if (selectedLightType == 'spot') selectedLightType = 'point';
         else selectedLightType = 'spot';
 
-        if (!IsAttrApplicable(GetCurrentAttrId(), selectedLightType)) {
+        type = GetSelectedLightType(target);
+        if (!IsAttrApplicable(GetCurrentAttrId(type), type)) {
             CycleAttribute(1, target);
         }
     }
 
-    /** Point-only attributes have no meaning on a spotlight. */
+    /** Cone attributes only exist on spotlights; the rewriter bools only on point lights. */
     private function IsAttrApplicable(attr: name, type: name): bool {
-        if (type != 'spot') return true;
-
         switch (attr) {
+            case 'innerAngle':
+            case 'outerAngle':
+            case 'softness':
+                return type == 'spot';
             case 'useSpotlightColor':
             case 'alignPointLights':
-            case 'alignOffsetZ':
-                return false;
+                return type != 'spot';
         }
         return true;
     }
@@ -121,6 +138,17 @@ class LRDebug_AttributeEditor {
             target.lrDebugSpotOwned = true;
         }
         return params.spotlight;
+    }
+
+    // Spotlight offset is an absolute local position, so seed it from the live position
+    // on first edit; starting at the origin would teleport the light. See alignOffsetZ.
+    private function SeedSpotOffset(
+        spotParams: CLightRewriteSpotlightParams,
+        spot: CSpotLightComponent
+    ) {
+        if (spotParams.hasOffset) return;
+        spotParams.hasOffset = true;
+        if (spot) spotParams.offset = spot.GetLocalPosition();
     }
 
     private function GetFloatStep(value: float): float {
@@ -156,6 +184,9 @@ class LRDebug_AttributeEditor {
             case 'shadowFadeRange':     clamped = ClampF(value, 0.0, 100.0);  break;
             case 'shadowBlendFactor':   clamped = ClampF(value, 0.0, 1.0);    break;
             case 'alignOffsetZ':        clamped = ClampF(value, -3.0, 3.0);   break;
+            case 'innerAngle':          clamped = ClampF(value, 0.0, 180.0);  break;
+            case 'outerAngle':          clamped = ClampF(value, 0.0, 180.0);  break;
+            case 'softness':            clamped = ClampF(value, 0.0, 255.0);  break;
             default:                    return value;
         }
 
@@ -209,7 +240,7 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleAttribute(delta: int, target: CGameplayEntity) {
-        var count: int = 13;
+        var count: int = 14;
         var type: name;
         var guard: int;
 
@@ -223,7 +254,7 @@ class LRDebug_AttributeEditor {
             while (attrIndex < 0) attrIndex += count;
             while (attrIndex >= count) attrIndex -= count;
 
-            if (IsAttrApplicable(GetCurrentAttrId(), type)) return;
+            if (IsAttrApplicable(GetCurrentAttrId(type), type)) return;
         }
     }
 
@@ -243,6 +274,7 @@ class LRDebug_AttributeEditor {
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
+        var spotParams: CLightRewriteSpotlightParams;
         var rewriter: ILightSourceRewriter;
         var colourStep: int;
         var type: name;
@@ -261,9 +293,8 @@ class LRDebug_AttributeEditor {
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
 
-        if (attr == '') attr = GetCurrentAttrId();
-
         type = GetSelectedLightType(target);
+        if (attr == '') attr = GetCurrentAttrId(type);
         if (!IsAttrApplicable(attr, type)) return false;
 
         switch (attr) {
@@ -274,6 +305,9 @@ class LRDebug_AttributeEditor {
             case 'shadowFadeRange':
             case 'shadowBlendFactor':
             case 'alignOffsetZ':
+            case 'innerAngle':
+            case 'outerAngle':
+            case 'softness':
                 accelMult = accelerator.GetMultiplier(value);
         }
 
@@ -354,12 +388,50 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                if (!params.hasAlignPointLights) {
-                    params.hasAlignPointLights = true;
-                    params.alignPointLights = true;
+                if (type == 'spot') {
+                    spotParams = EnsureSpotParams(params, target);
+                    SeedSpotOffset(spotParams, spot);
+                    step = GetDynamicStep(attr, spotParams.offset.Z, value) * accelMult;
+                    spotParams.offset.Z += step * value;
                 }
-                step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
-                params.pointLightOffset.Z += step * value;
+                else {
+                    if (!params.hasAlignPointLights) {
+                        params.hasAlignPointLights = true;
+                        params.alignPointLights = true;
+                    }
+                    step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
+                    params.pointLightOffset.Z += step * value;
+                }
+                break;
+
+            case 'innerAngle':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasInnerAngle) {
+                    spotParams.hasInnerAngle = true;
+                    if (spot) spotParams.innerAngle = spot.innerAngle;
+                }
+                step = GetDynamicStep(attr, spotParams.innerAngle, value) * accelMult;
+                spotParams.innerAngle = ApplyFloatDelta(attr, spotParams.innerAngle, step * value);
+                break;
+
+            case 'outerAngle':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasOuterAngle) {
+                    spotParams.hasOuterAngle = true;
+                    if (spot) spotParams.outerAngle = spot.outerAngle;
+                }
+                step = GetDynamicStep(attr, spotParams.outerAngle, value) * accelMult;
+                spotParams.outerAngle = ApplyFloatDelta(attr, spotParams.outerAngle, step * value);
+                break;
+
+            case 'softness':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasSoftness) {
+                    spotParams.hasSoftness = true;
+                    if (spot) spotParams.softness = spot.softness;
+                }
+                step = GetDynamicStep(attr, spotParams.softness, value) * accelMult;
+                spotParams.softness = ApplyFloatDelta(attr, spotParams.softness, step * value);
                 break;
 
             case 'overrideColour':
@@ -422,6 +494,7 @@ class LRDebug_AttributeEditor {
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
+        var spotParams: CLightRewriteSpotlightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
 
@@ -434,9 +507,8 @@ class LRDebug_AttributeEditor {
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
 
-        if (attr == '') attr = GetCurrentAttrId();
-
         type = GetSelectedLightType(target);
+        if (attr == '') attr = GetCurrentAttrId(type);
         if (!IsAttrApplicable(attr, type)) return false;
 
         // Normalise per attribute so a full swipe covers each one's range (brightness feel).
@@ -507,11 +579,45 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                if (!params.hasAlignPointLights) {
-                    params.hasAlignPointLights = true;
-                    params.alignPointLights = true;
+                if (type == 'spot') {
+                    spotParams = EnsureSpotParams(params, target);
+                    SeedSpotOffset(spotParams, spot);
+                    spotParams.offset.Z = ClampAttributeValue(attr, spotParams.offset.Z + delta);
                 }
-                params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
+                else {
+                    if (!params.hasAlignPointLights) {
+                        params.hasAlignPointLights = true;
+                        params.alignPointLights = true;
+                    }
+                    params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
+                }
+                break;
+
+            case 'innerAngle':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasInnerAngle) {
+                    spotParams.hasInnerAngle = true;
+                    if (spot) spotParams.innerAngle = spot.innerAngle;
+                }
+                spotParams.innerAngle = ClampAttributeValue(attr, spotParams.innerAngle + delta);
+                break;
+
+            case 'outerAngle':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasOuterAngle) {
+                    spotParams.hasOuterAngle = true;
+                    if (spot) spotParams.outerAngle = spot.outerAngle;
+                }
+                spotParams.outerAngle = ClampAttributeValue(attr, spotParams.outerAngle + delta);
+                break;
+
+            case 'softness':
+                spotParams = EnsureSpotParams(params, target);
+                if (!spotParams.hasSoftness) {
+                    spotParams.hasSoftness = true;
+                    if (spot) spotParams.softness = spot.softness;
+                }
+                spotParams.softness = ClampAttributeValue(attr, spotParams.softness + delta);
                 break;
 
             case 'colourR':
@@ -594,11 +700,12 @@ class LRDebug_AttributeEditor {
             case 'attenuation':        return 0.01;
             case 'shadowBlendFactor':  return 0.01;
             case 'alignOffsetZ':       return 0.1;
+            case 'softness':           return 0.02;
             case 'colourR':
             case 'colourG':
             case 'colourB':            return 2.55;
         }
-        return 1.0; // brightness, shadow fade distance/range,
+        return 1.0; // brightness, shadow fade distance/range, inner/outer angle
     }
 
     /**
@@ -622,9 +729,8 @@ class LRDebug_AttributeEditor {
         point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
 
-        if (attr == '') attr = GetCurrentAttrId();
-
         type = GetSelectedLightType(target);
+        if (attr == '') attr = GetCurrentAttrId(type);
         if (!IsAttrApplicable(attr, type)) return false;
 
         if (type == 'spot') sourceLight = spot;

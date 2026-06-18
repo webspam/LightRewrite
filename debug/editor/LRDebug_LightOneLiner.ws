@@ -57,7 +57,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
+        var spotP: CLightRewriteSpotlightParams;
         var light: CLightComponent;
+        var spotComp: CSpotLightComponent;
         var valF: float;
         var valI: int;
 
@@ -66,8 +68,12 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         params = entity.lrDebugParams;
 
         if (type == 'spot') {
-            if (params) lightParams = params.spotlight;
+            if (params) {
+                lightParams = params.spotlight;
+                spotP = params.spotlight;
+            }
             light = LRDebug_FirstSpotLight(entity);
+            spotComp = LRDebug_FirstSpotLight(entity);
         }
         else {
             lightParams = params;
@@ -134,9 +140,28 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return "?";
 
             case 'alignOffsetZ':
-                if (type == 'spot') return "n/a";
+                if (type == 'spot') {
+                    if (spotP && spotP.hasOffset) valF = spotP.offset.Z;
+                    else if (spotComp) valF = spotComp.GetLocalPosition().Z;
+                    return FloatToString(valF);
+                }
                 if (params && params.hasAlignPointLights) valF = params.pointLightOffset.Z;
                 else valF = 0.0;
+                return FloatToString(valF);
+
+            case 'innerAngle':
+                if (spotP && spotP.hasInnerAngle) valF = spotP.innerAngle;
+                else if (spotComp) valF = spotComp.innerAngle;
+                return FloatToString(valF);
+
+            case 'outerAngle':
+                if (spotP && spotP.hasOuterAngle) valF = spotP.outerAngle;
+                else if (spotComp) valF = spotComp.outerAngle;
+                return FloatToString(valF);
+
+            case 'softness':
+                if (spotP && spotP.hasSoftness) valF = spotP.softness;
+                else if (spotComp) valF = spotComp.softness;
                 return FloatToString(valF);
 
             case 'overrideColour':
@@ -211,9 +236,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             }
             countString = marker + pSeg + " / " + sSeg + " <font color='#dd88ff'>-</font>";
 
-            attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId();
+            attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId(type);
             headerHtml = "<font color='#dd88ff'>"
-                + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel() + ": "
+                + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel(type) + ": "
                 + GetAttributeValueString(attrId, type)
                 + "</font><br/>";
         }

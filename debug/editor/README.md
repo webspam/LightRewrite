@@ -24,7 +24,7 @@ Shows point/spot counts (green/grey), and when highlighted the selected attribut
 
 ### `LRDebug_AttributeEditor.ws` - attributes
 
-Owns the selected attribute and step sizing, and the selected light type (point or spot). Shared attributes route to point or spotlight params accordingly; point-only attributes are skipped in spot mode. Applies each change via `menuOverrideParams` and `RewriteLight()`; callers must refresh the oneliner themselves.
+Owns the selected attribute and step sizing, and the selected light type (point or spot). Applies each change via `menuOverrideParams` and `RewriteLight()`; callers must refresh the oneliner themselves.
 
 ### `LRDebug_AdjustAccelerator.ws` - scroll acceleration
 
