@@ -249,7 +249,7 @@ public function LRDebug_OnShadowBlendFactorModifier(action: SInputAction): bool 
     return LRDebug_EnterAdjust(action, 5);
 }
 
-// Slot 6 is a point-light bool toggle, but the spotlight inner angle in spot mode.
+/** Spot mode hold-edits inner angle; point mode toggles the bool */
 @addMethod(CR4Player)
 public function LRDebug_OnUseSpotlightColorModifier(action: SInputAction): bool {
     if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
@@ -258,7 +258,7 @@ public function LRDebug_OnUseSpotlightColorModifier(action: SInputAction): bool 
     return LRDebug_ToggleAttr(action, 6);
 }
 
-// Slot 7 is a point-light bool toggle, but the spotlight outer angle in spot mode.
+/** Spot mode hold-edits outer angle; point mode toggles the bool */
 @addMethod(CR4Player)
 public function LRDebug_OnAlignPointLightsModifier(action: SInputAction): bool {
     if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
@@ -267,13 +267,11 @@ public function LRDebug_OnAlignPointLightsModifier(action: SInputAction): bool {
     return LRDebug_ToggleAttr(action, 7);
 }
 
-// Slot 8 edits the Z offset of whichever light type is selected (point align offset or spotlight offset).
 @addMethod(CR4Player)
 public function LRDebug_OnAlignOffsetZModifier(action: SInputAction): bool {
     return LRDebug_EnterAdjust(action, 8);
 }
 
-// Slot 13 edits spotlight softness; inapplicable on point lights.
 @addMethod(CR4Player)
 public function LRDebug_OnSoftnessModifier(action: SInputAction): bool {
     return LRDebug_EnterAdjust(action, 13);

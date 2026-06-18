@@ -19,8 +19,7 @@ class LRDebug_AttributeEditor {
         attrIndex = index;
     }
 
-    // Slots 6/7 and 13 mean different attributes per light type so the same key
-    // edits the spotlight cone in spot mode; everything else is shared.
+    /** In spot mode slots 6/7/13 are the spotlight cone; every other slot is shared */
     public function GetCurrentAttrId(type: name): name {
         if (type == 'spot') {
             switch (attrIndex) {
@@ -140,8 +139,7 @@ class LRDebug_AttributeEditor {
         return params.spotlight;
     }
 
-    // Spotlight offset is an absolute local position, so seed it from the live position
-    // on first edit; starting at the origin would teleport the light. See alignOffsetZ.
+    /** Seed offset from the live position; it's absolute, so starting at 0 would teleport the light */
     private function SeedSpotOffset(
         spotParams: CLightRewriteSpotlightParams,
         spot: CSpotLightComponent
