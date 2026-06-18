@@ -5,8 +5,7 @@
  * Effectively maps to CLightComponent fields.
  */
 abstract class ILightRewriteParams {
-    public var hasEnabled: bool;
-    public var enabled   : bool;
+    public var enabled: SLightRewriteOptionalBool;
 
     public var brightness: SLightRewriteOptionalFloat;
 

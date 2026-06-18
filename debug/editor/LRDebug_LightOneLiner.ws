@@ -130,8 +130,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'useSpotlightColor':
                 if (type == 'spot') return "n/a";
-                if (params && params.hasUseSpotlightColor) {
-                    if (params.useSpotlightColor) return "true";
+                if (params && params.useSpotlightColor.has) {
+                    if (params.useSpotlightColor.value) return "true";
                     return "false";
                 }
                 return "?";

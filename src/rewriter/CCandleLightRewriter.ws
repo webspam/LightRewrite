@@ -45,7 +45,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         // Clusters of candles emit most of their light via a single spotlight.
         // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
-        if (p.hasUseSpotlightColor && p.useSpotlightColor) {
+        if (p.useSpotlightColor.has && p.useSpotlightColor.value) {
             spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
         }
 

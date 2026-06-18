@@ -127,10 +127,10 @@ function LRDebug_BuildEditedFields(
     }
 
     if (
-        params.hasUseSpotlightColor &&
-        (!baseline.hasUseSpotlightColor || params.useSpotlightColor != baseline.useSpotlightColor)
+        params.useSpotlightColor.has &&
+        (!baseline.useSpotlightColor.has || params.useSpotlightColor.value != baseline.useSpotlightColor.value)
     ) {
-        if (params.useSpotlightColor) line += " useSpotlightColor=1";
+        if (params.useSpotlightColor.value) line += " useSpotlightColor=1";
         else line += " useSpotlightColor=0";
     }
 

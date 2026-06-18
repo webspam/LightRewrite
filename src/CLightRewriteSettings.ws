@@ -499,7 +499,7 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     lightSourceMenu[i].TAG_ENABLED,
-                    lightSourceParams[i].enabled
+                    lightSourceParams[i].enabled.value
                 );
             }
         }

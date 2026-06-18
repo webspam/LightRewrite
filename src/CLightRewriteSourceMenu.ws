@@ -22,7 +22,7 @@ class CLightRewriteSourceMenu {
         groupTag: name,
         params: CLightRewriteSourceParams
     ) {
-        params.enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
+        params.enabled.value = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
 
         params.brightness.has = true;
         params.brightness.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness.value);
@@ -65,40 +65,40 @@ class CLightRewriteSourceMenu {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled.value);
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_SHADOW_DISTANCE,
-            !params.enabled
+            !params.enabled.value
         );
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled.value);
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_OVERRIDE_COLOUR,
-            !params.enabled
+            !params.enabled.value
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_RED,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.hasColour
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_GREEN,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.hasColour
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_BLUE,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.hasColour
         );
 
         UpdateSpecialMenuDisabledState(flashValueStorage, dataArray, params);

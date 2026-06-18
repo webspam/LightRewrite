@@ -380,8 +380,8 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'useSpotlightColor':
-                params.hasUseSpotlightColor = true;
-                params.useSpotlightColor = (value > 0);
+                params.useSpotlightColor.has = true;
+                params.useSpotlightColor.value = (value > 0);
                 break;
 
             case 'alignPointLights':
@@ -744,8 +744,8 @@ class LRDebug_AttributeEditor {
 
         switch (attr) {
             case 'useSpotlightColor':
-                params.hasUseSpotlightColor = true;
-                params.useSpotlightColor = !params.useSpotlightColor;
+                params.useSpotlightColor.has = true;
+                params.useSpotlightColor.value = !params.useSpotlightColor.value;
                 break;
 
             case 'alignPointLights':

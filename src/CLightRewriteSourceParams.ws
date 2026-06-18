@@ -36,8 +36,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var pointLightOffsetPos: Vector;
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
-    public var hasUseSpotlightColor: bool;
-    public var useSpotlightColor   : bool;
+    public var useSpotlightColor: SLightRewriteOptionalBool;
 
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
@@ -61,10 +60,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
-        if (hasEnabled) {
-            target.hasEnabled = true;
-            target.enabled = enabled;
-        }
+        if (enabled.has) target.enabled = enabled;
         if (hasRewriterType) {
             target.hasRewriterType = true;
             target.rewriterType = rewriterType;
@@ -92,10 +88,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             target.hasPointLightOffset = true;
             target.pointLightOffsetPos = pointLightOffsetPos;
         }
-        if (hasUseSpotlightColor) {
-            target.hasUseSpotlightColor = true;
-            target.useSpotlightColor = useSpotlightColor;
-        }
+        if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
         if (spotlight) {
             target.spotlight = spotlight;
         }

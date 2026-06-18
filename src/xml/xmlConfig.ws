@@ -47,13 +47,13 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
         params.displayName = strVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
-            params.hasEnabled = true;
-            params.enabled = (strVal != "false");
+            params.enabled.has = true;
+            params.enabled.value = (strVal != "false");
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
-            params.hasUseSpotlightColor = true;
-            params.useSpotlightColor = (strVal == "true");
+            params.useSpotlightColor.has = true;
+            params.useSpotlightColor.value = (strVal == "true");
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {

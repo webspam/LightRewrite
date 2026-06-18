@@ -32,7 +32,7 @@ abstract class ILightSourceRewriter {
 
     // If the params passed in (global params) are enabled, set the menu override params to them.
     public function SetGlobalOverride(params: CLightRewriteSourceParams) {
-        if (params.enabled) menuOverrideParams = params;
+        if (params.enabled.value) menuOverrideParams = params;
         else menuOverrideParams = NULL;
     }
 
@@ -43,7 +43,7 @@ abstract class ILightSourceRewriter {
 
     // If this rewriter is enabled (params group is enabled)
     public function IsEnabled(): bool {
-        return !params.hasEnabled || params.enabled;
+        return !params.enabled.has || params.enabled.value;
     }
 
     // Virtual; Called after game has started and components may be disabled.
@@ -135,7 +135,7 @@ abstract class ILightSourceRewriter {
 
         spotLight.SaveLightRewriteOriginalValues();
 
-        if (spotParams.hasEnabled && !spotParams.enabled) {
+        if (spotParams.enabled.has && !spotParams.enabled.value) {
             spotLight.SetEnabled(false);
             return;
         }

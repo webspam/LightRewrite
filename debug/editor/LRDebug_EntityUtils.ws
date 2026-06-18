@@ -62,8 +62,8 @@ public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewrite
             lrDebugBaseline.spotlight = new CLightRewriteSpotlightParams in this;
         }
 
-        lrDebugParams.hasEnabled = true;
-        lrDebugParams.enabled = true;
+        lrDebugParams.enabled.has = true;
+        lrDebugParams.enabled.value = true;
     }
     return lrDebugParams;
 }
@@ -124,8 +124,8 @@ public function LRDebug_GetOrCreateRewriter(): ILightSourceRewriter {
     params = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
     if (!params) {
         params = new CLightRewriteSourceParams in this;
-        params.hasEnabled = true;
-        params.enabled = true;
+        params.enabled.has = true;
+        params.enabled.value = true;
         params.hasRewriterType = true;
         params.rewriterType = LRDebug_GuessRewriterType(this);
         params.tag = 'LR_DebugLight';

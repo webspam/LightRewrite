@@ -16,7 +16,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count: int = components.Size();
 
-        if (p.hasUseSpotlightColor && p.useSpotlightColor) {
+        if (p.useSpotlightColor.has && p.useSpotlightColor.value) {
             spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
         }
 

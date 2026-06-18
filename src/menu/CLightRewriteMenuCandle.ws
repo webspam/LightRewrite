@@ -32,7 +32,7 @@ class CLightRewriteMenuCandle extends CLightRewriteSourceMenu {
             flashValueStorage,
             dataArray,
             TAG_ALIGN_POINT_LIGHTS,
-            !params.enabled
+            !params.enabled.value
         );
     }
 }

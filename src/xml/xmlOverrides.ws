@@ -75,8 +75,8 @@ function LoadLightRewriteOverridesGroup(
             override.rewriterType = ParseLightRewriteType(strVal);
         }
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
-            override.hasUseSpotlightColor = true;
-            override.useSpotlightColor = (strVal == "true");
+            override.useSpotlightColor.has = true;
+            override.useSpotlightColor.value = (strVal == "true");
         }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
@@ -159,8 +159,8 @@ function ParseLightRewriteBaseParams(
     var shadowsNode, colourNode: SCustomNode;
 
     if (dm.GetCustomNodeAttributeValueString(node, 'enabled', strVal)) {
-        params.hasEnabled = true;
-        params.enabled = (strVal != "false");
+        params.enabled.has = true;
+        params.enabled.value = (strVal != "false");
     }
     if (dm.GetCustomNodeAttributeValueString(node, 'brightness', strVal)) {
         params.brightness.has = true;
