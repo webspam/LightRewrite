@@ -113,12 +113,12 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            params.hasPointLightOffset = true;
-            params.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.has = true;
+            params.pointLightOffsetPos.value.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
-            params.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.value.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
-            params.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.value.Z = StringToFloat(strVal, 0.f);
         }
 
         LogLightRewrite("[XmlConfig] Loaded: " + params.displayName + " (tag=" + NameToString(params.tag) + ")");

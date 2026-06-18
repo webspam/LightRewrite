@@ -32,8 +32,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var pointLightOffset   : Vector;
 
     // Direct point-light position offset (non-candle lights)
-    public var hasPointLightOffset: bool;
-    public var pointLightOffsetPos: Vector;
+    public var pointLightOffsetPos: SLightRewriteOptionalVector;
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var useSpotlightColor: SLightRewriteOptionalBool;
@@ -81,10 +80,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             target.alignPointLights = alignPointLights;
             target.pointLightOffset = pointLightOffset;
         }
-        if (hasPointLightOffset) {
-            target.hasPointLightOffset = true;
-            target.pointLightOffsetPos = pointLightOffsetPos;
-        }
+        if (pointLightOffsetPos.has) target.pointLightOffsetPos = pointLightOffsetPos;
         if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
         if (spotlight) {
             target.spotlight = spotlight;

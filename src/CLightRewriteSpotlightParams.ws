@@ -5,6 +5,5 @@ class CLightRewriteSpotlightParams extends ILightRewriteParams {
 
     public var softness: SLightRewriteOptionalFloat;
 
-    public var hasOffset: bool;
-    public var offset   : Vector;
+    public var offset: SLightRewriteOptionalVector;
 }

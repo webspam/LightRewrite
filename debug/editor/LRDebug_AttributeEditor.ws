@@ -144,9 +144,9 @@ class LRDebug_AttributeEditor {
         spotParams: CLightRewriteSpotlightParams,
         spot: CSpotLightComponent
     ) {
-        if (spotParams.hasOffset) return;
-        spotParams.hasOffset = true;
-        if (spot) spotParams.offset = spot.GetLocalPosition();
+        if (spotParams.offset.has) return;
+        spotParams.offset.has = true;
+        if (spot) spotParams.offset.value = spot.GetLocalPosition();
     }
 
     private function GetFloatStep(value: float): float {
@@ -393,8 +393,8 @@ class LRDebug_AttributeEditor {
                 if (type == 'spot') {
                     spotParams = EnsureSpotParams(params, target);
                     SeedSpotOffset(spotParams, spot);
-                    step = GetDynamicStep(attr, spotParams.offset.Z, value) * accelMult;
-                    spotParams.offset.Z += step * value;
+                    step = GetDynamicStep(attr, spotParams.offset.value.Z, value) * accelMult;
+                    spotParams.offset.value.Z += step * value;
                 }
                 else {
                     if (!params.hasAlignPointLights) {
@@ -588,7 +588,7 @@ class LRDebug_AttributeEditor {
                 if (type == 'spot') {
                     spotParams = EnsureSpotParams(params, target);
                     SeedSpotOffset(spotParams, spot);
-                    spotParams.offset.Z = ClampAttributeValue(attr, spotParams.offset.Z + delta);
+                    spotParams.offset.value.Z = ClampAttributeValue(attr, spotParams.offset.value.Z + delta);
                 }
                 else {
                     if (!params.hasAlignPointLights) {

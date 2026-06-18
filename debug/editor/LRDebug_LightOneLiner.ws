@@ -146,8 +146,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'alignOffsetZ':
                 if (type == 'spot') {
-                    if (spotP && spotP.hasOffset) {
-                        valF = spotP.offset.Z;
+                    if (spotP && spotP.offset.has) {
+                        valF = spotP.offset.value.Z;
                     }
                     else if (spotComp) {
                         position = spotComp.GetLocalPosition();

@@ -83,12 +83,12 @@ function LRDebug_BuildSpotlightSegment(
     }
 
     if (
-        cur.hasOffset &&
-        (!base.hasOffset || cur.offset.X != base.offset.X || cur.offset.Y != base.offset.Y || cur.offset.Z != base.offset.Z)
+        cur.offset.has &&
+        (!base.offset.has || cur.offset.value.X != base.offset.value.X || cur.offset.value.Y != base.offset.value.Y || cur.offset.value.Z != base.offset.value.Z)
     ) {
-        line += " spot_offsetX=" + FloatToString(cur.offset.X);
-        line += " spot_offsetY=" + FloatToString(cur.offset.Y);
-        line += " spot_offsetZ=" + FloatToString(cur.offset.Z);
+        line += " spot_offsetX=" + FloatToString(cur.offset.value.X);
+        line += " spot_offsetY=" + FloatToString(cur.offset.value.Y);
+        line += " spot_offsetZ=" + FloatToString(cur.offset.value.Z);
     }
 
     return line;

@@ -94,12 +94,12 @@ function LoadLightRewriteOverridesGroup(
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            override.hasPointLightOffset = true;
-            override.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            override.pointLightOffsetPos.has = true;
+            override.pointLightOffsetPos.value.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
-            override.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            override.pointLightOffsetPos.value.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
-            override.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
+            override.pointLightOffsetPos.value.Z = StringToFloat(strVal, 0.f);
         }
 
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
@@ -232,12 +232,12 @@ function ParseLightRewriteSpotlightParams(
 
     offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
     if (dm.GetCustomNodeAttributeValueString(offsetNode, 'x', strVal)) {
-        spotlight.hasOffset = true;
-        spotlight.offset.X = StringToFloat(strVal, 0.f);
+        spotlight.offset.has = true;
+        spotlight.offset.value.X = StringToFloat(strVal, 0.f);
         dm.GetCustomNodeAttributeValueString(offsetNode, 'y', strVal);
-        spotlight.offset.Y = StringToFloat(strVal, 0.f);
+        spotlight.offset.value.Y = StringToFloat(strVal, 0.f);
         dm.GetCustomNodeAttributeValueString(offsetNode, 'z', strVal);
-        spotlight.offset.Z = StringToFloat(strVal, 0.f);
+        spotlight.offset.value.Z = StringToFloat(strVal, 0.f);
     }
 
     return spotlight;
