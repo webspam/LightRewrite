@@ -83,23 +83,27 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
         switch (attr) {
             case 'brightness':
-                if (lightParams && lightParams.hasBrightness) valF = lightParams.brightness;
+                if (lightParams && lightParams.brightness.has) valF = lightParams.brightness.value;
                 else if (light) valF = light.brightness;
                 return FloatToString(valF);
 
             case 'radius':
-                if (lightParams && lightParams.hasRadius) valF = lightParams.radius;
+                if (lightParams && lightParams.radius.has) valF = lightParams.radius.value;
                 else if (light) valF = light.radius;
                 return FloatToString(valF);
 
             case 'attenuation':
-                if (lightParams && lightParams.hasAttenuation) valF = lightParams.attenuation;
-                else if (light) valF = light.attenuation;
+                if (lightParams && lightParams.attenuation.has) {
+                    valF = lightParams.attenuation.value;
+                }
+                else if (light) {
+                    valF = light.attenuation;
+                }
                 return FloatToString(valF);
 
             case 'shadowFadeDistance':
-                if (lightParams && lightParams.hasShadowFadeDistance) {
-                    valF = lightParams.shadowFadeDistance;
+                if (lightParams && lightParams.shadowFadeDistance.has) {
+                    valF = lightParams.shadowFadeDistance.value;
                 }
                 else if (light) {
                     valF = light.shadowFadeDistance;
@@ -107,8 +111,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'shadowFadeRange':
-                if (lightParams && lightParams.hasShadowFadeRange) {
-                    valF = lightParams.shadowFadeRange;
+                if (lightParams && lightParams.shadowFadeRange.has) {
+                    valF = lightParams.shadowFadeRange.value;
                 }
                 else if (light) {
                     valF = light.shadowFadeRange;
@@ -116,8 +120,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'shadowBlendFactor':
-                if (lightParams && lightParams.hasShadowBlendFactor) {
-                    valF = lightParams.shadowBlendFactor;
+                if (lightParams && lightParams.shadowBlendFactor.has) {
+                    valF = lightParams.shadowBlendFactor.value;
                 }
                 else if (light) {
                     valF = light.shadowBlendFactor;
@@ -156,17 +160,17 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'innerAngle':
-                if (spotP && spotP.hasInnerAngle) valF = spotP.innerAngle;
+                if (spotP && spotP.innerAngle.has) valF = spotP.innerAngle.value;
                 else if (spotComp) valF = spotComp.innerAngle;
                 return FloatToString(valF);
 
             case 'outerAngle':
-                if (spotP && spotP.hasOuterAngle) valF = spotP.outerAngle;
+                if (spotP && spotP.outerAngle.has) valF = spotP.outerAngle.value;
                 else if (spotComp) valF = spotComp.outerAngle;
                 return FloatToString(valF);
 
             case 'softness':
-                if (spotP && spotP.hasSoftness) valF = spotP.softness;
+                if (spotP && spotP.softness.has) valF = spotP.softness.value;
                 else if (spotComp) valF = spotComp.softness;
                 return FloatToString(valF);
 

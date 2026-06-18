@@ -57,18 +57,18 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
-            params.hasBrightness = true;
-            params.brightness = StringToFloat(strVal, 0.f);
+            params.brightness.has = true;
+            params.brightness.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
-            params.hasRadius = true;
-            params.radius = StringToFloat(strVal, 0.f);
+            params.radius.has = true;
+            params.radius.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
-            params.hasAttenuation = true;
-            params.attenuation = StringToFloat(strVal, 0.f);
+            params.attenuation.has = true;
+            params.attenuation.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
@@ -78,16 +78,16 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
 
         shadowsNode = dm.GetCustomDefinitionSubNode(entryNode, 'shadows');
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
-            params.hasShadowFadeDistance = true;
-            params.shadowFadeDistance = StringToFloat(strVal, 0.f);
+            params.shadowFadeDistance.has = true;
+            params.shadowFadeDistance.value = StringToFloat(strVal, 0.f);
         }
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
-            params.hasShadowFadeRange = true;
-            params.shadowFadeRange = StringToFloat(strVal, 0.f);
+            params.shadowFadeRange.has = true;
+            params.shadowFadeRange.value = StringToFloat(strVal, 0.f);
         }
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
-            params.hasShadowBlendFactor = true;
-            params.shadowBlendFactor = StringToFloat(strVal, 0.f);
+            params.shadowBlendFactor.has = true;
+            params.shadowBlendFactor.value = StringToFloat(strVal, 0.f);
         }
 
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');

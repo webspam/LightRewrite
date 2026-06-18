@@ -113,14 +113,14 @@ abstract class ILightSourceRewriter {
     // Shared application of ILightRewriteParams onto any light component - avoids duplicating
     // the same property block for both CPointLightComponent and CSpotLightComponent.
     protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
-        if (pamparams.hasBrightness) light.brightness = pamparams.brightness;
-        if (pamparams.hasRadius) light.radius = pamparams.radius;
-        if (pamparams.hasAttenuation) light.attenuation = pamparams.attenuation;
-        if (pamparams.hasShadowFadeDistance) {
-            light.shadowFadeDistance = pamparams.shadowFadeDistance;
+        if (pamparams.brightness.has) light.brightness = pamparams.brightness.value;
+        if (pamparams.radius.has) light.radius = pamparams.radius.value;
+        if (pamparams.attenuation.has) light.attenuation = pamparams.attenuation.value;
+        if (pamparams.shadowFadeDistance.has) {
+            light.shadowFadeDistance = pamparams.shadowFadeDistance.value;
         }
-        if (pamparams.hasShadowFadeRange) light.shadowFadeRange = pamparams.shadowFadeRange;
-        if (pamparams.hasShadowBlendFactor) light.shadowBlendFactor = pamparams.shadowBlendFactor;
+        if (pamparams.shadowFadeRange.has) light.shadowFadeRange = pamparams.shadowFadeRange.value;
+        if (pamparams.shadowBlendFactor.has) light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
         if (pamparams.hasCastShadows) light.shadowCastingMode = pamparams.castShadows;
         if (pamparams.hasColour) light.color = pamparams.color;
     }
@@ -144,9 +144,9 @@ abstract class ILightSourceRewriter {
         if (wasEnabled) spotLight.SetEnabled(false);
 
         ApplyLightParams(spotLight, spotParams);
-        if (spotParams.hasInnerAngle) spotLight.innerAngle = spotParams.innerAngle;
-        if (spotParams.hasOuterAngle) spotLight.outerAngle = spotParams.outerAngle;
-        if (spotParams.hasSoftness) spotLight.softness = spotParams.softness;
+        if (spotParams.innerAngle.has) spotLight.innerAngle = spotParams.innerAngle.value;
+        if (spotParams.outerAngle.has) spotLight.outerAngle = spotParams.outerAngle.value;
+        if (spotParams.softness.has) spotLight.softness = spotParams.softness.value;
         if (spotParams.hasOffset) spotLight.SetPosition(spotParams.offset);
 
         if (wasEnabled) spotLight.SetEnabled(true);

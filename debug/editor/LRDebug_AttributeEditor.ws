@@ -315,64 +315,68 @@ class LRDebug_AttributeEditor {
         switch (attr) {
             case 'brightness':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasBrightness) {
-                    lightParams.hasBrightness = true;
-                    if (sourceLight) lightParams.brightness = sourceLight.brightness;
+                if (!lightParams.brightness.has) {
+                    lightParams.brightness.has = true;
+                    if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
                 }
-                step = GetDynamicStep(attr, lightParams.brightness, value) * accelMult;
-                lightParams.brightness = ApplyFloatDelta(attr, lightParams.brightness, step * value);
+                step = GetDynamicStep(attr, lightParams.brightness.value, value) * accelMult;
+                lightParams.brightness.value = ApplyFloatDelta(attr, lightParams.brightness.value, step * value);
                 break;
 
             case 'radius':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasRadius) {
-                    lightParams.hasRadius = true;
-                    if (sourceLight) lightParams.radius = sourceLight.radius;
+                if (!lightParams.radius.has) {
+                    lightParams.radius.has = true;
+                    if (sourceLight) lightParams.radius.value = sourceLight.radius;
                 }
-                step = GetDynamicStep(attr, lightParams.radius, value) * accelMult;
-                lightParams.radius = ApplyFloatDelta(attr, lightParams.radius, step * value);
+                step = GetDynamicStep(attr, lightParams.radius.value, value) * accelMult;
+                lightParams.radius.value = ApplyFloatDelta(attr, lightParams.radius.value, step * value);
                 break;
 
             case 'attenuation':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasAttenuation) {
-                    lightParams.hasAttenuation = true;
-                    if (sourceLight) lightParams.attenuation = sourceLight.attenuation;
+                if (!lightParams.attenuation.has) {
+                    lightParams.attenuation.has = true;
+                    if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
                 }
-                step = GetDynamicStep(attr, lightParams.attenuation, value) * accelMult;
-                lightParams.attenuation = ApplyFloatDelta(attr, lightParams.attenuation, step * value);
+                step = GetDynamicStep(attr, lightParams.attenuation.value, value) * accelMult;
+                lightParams.attenuation.value = ApplyFloatDelta(attr, lightParams.attenuation.value, step * value);
                 break;
 
             case 'shadowFadeDistance':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowFadeDistance) {
-                    lightParams.hasShadowFadeDistance = true;
+                if (!lightParams.shadowFadeDistance.has) {
+                    lightParams.shadowFadeDistance.has = true;
                     if (sourceLight) {
-                        lightParams.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                        lightParams.shadowFadeDistance.value = sourceLight.shadowFadeDistance;
                     }
                 }
-                step = GetDynamicStep(attr, lightParams.shadowFadeDistance, value) * accelMult;
-                lightParams.shadowFadeDistance = ApplyFloatDelta(attr, lightParams.shadowFadeDistance, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowFadeDistance.value, value) * accelMult;
+                lightParams.shadowFadeDistance.value = ApplyFloatDelta(attr, lightParams.shadowFadeDistance.value, step * value);
                 break;
 
             case 'shadowFadeRange':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowFadeRange) {
-                    lightParams.hasShadowFadeRange = true;
-                    if (sourceLight) lightParams.shadowFadeRange = sourceLight.shadowFadeRange;
+                if (!lightParams.shadowFadeRange.has) {
+                    lightParams.shadowFadeRange.has = true;
+                    if (sourceLight) {
+                        lightParams.shadowFadeRange.value = sourceLight.shadowFadeRange;
+                    }
                 }
-                step = GetDynamicStep(attr, lightParams.shadowFadeRange, value) * accelMult;
-                lightParams.shadowFadeRange = ApplyFloatDelta(attr, lightParams.shadowFadeRange, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowFadeRange.value, value) * accelMult;
+                lightParams.shadowFadeRange.value = ApplyFloatDelta(attr, lightParams.shadowFadeRange.value, step * value);
                 break;
 
             case 'shadowBlendFactor':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowBlendFactor) {
-                    lightParams.hasShadowBlendFactor = true;
-                    if (sourceLight) lightParams.shadowBlendFactor = sourceLight.shadowBlendFactor;
+                if (!lightParams.shadowBlendFactor.has) {
+                    lightParams.shadowBlendFactor.has = true;
+                    if (sourceLight) {
+                        lightParams.shadowBlendFactor.value = sourceLight.shadowBlendFactor;
+                    }
                 }
-                step = GetDynamicStep(attr, lightParams.shadowBlendFactor, value) * accelMult;
-                lightParams.shadowBlendFactor = ApplyFloatDelta(attr, lightParams.shadowBlendFactor, step * value);
+                step = GetDynamicStep(attr, lightParams.shadowBlendFactor.value, value) * accelMult;
+                lightParams.shadowBlendFactor.value = ApplyFloatDelta(attr, lightParams.shadowBlendFactor.value, step * value);
                 break;
 
             case 'useSpotlightColor':
@@ -404,32 +408,32 @@ class LRDebug_AttributeEditor {
 
             case 'innerAngle':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasInnerAngle) {
-                    spotParams.hasInnerAngle = true;
-                    if (spot) spotParams.innerAngle = spot.innerAngle;
+                if (!spotParams.innerAngle.has) {
+                    spotParams.innerAngle.has = true;
+                    if (spot) spotParams.innerAngle.value = spot.innerAngle;
                 }
-                step = GetDynamicStep(attr, spotParams.innerAngle, value) * accelMult;
-                spotParams.innerAngle = ApplyFloatDelta(attr, spotParams.innerAngle, step * value);
+                step = GetDynamicStep(attr, spotParams.innerAngle.value, value) * accelMult;
+                spotParams.innerAngle.value = ApplyFloatDelta(attr, spotParams.innerAngle.value, step * value);
                 break;
 
             case 'outerAngle':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasOuterAngle) {
-                    spotParams.hasOuterAngle = true;
-                    if (spot) spotParams.outerAngle = spot.outerAngle;
+                if (!spotParams.outerAngle.has) {
+                    spotParams.outerAngle.has = true;
+                    if (spot) spotParams.outerAngle.value = spot.outerAngle;
                 }
-                step = GetDynamicStep(attr, spotParams.outerAngle, value) * accelMult;
-                spotParams.outerAngle = ApplyFloatDelta(attr, spotParams.outerAngle, step * value);
+                step = GetDynamicStep(attr, spotParams.outerAngle.value, value) * accelMult;
+                spotParams.outerAngle.value = ApplyFloatDelta(attr, spotParams.outerAngle.value, step * value);
                 break;
 
             case 'softness':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasSoftness) {
-                    spotParams.hasSoftness = true;
-                    if (spot) spotParams.softness = spot.softness;
+                if (!spotParams.softness.has) {
+                    spotParams.softness.has = true;
+                    if (spot) spotParams.softness.value = spot.softness;
                 }
-                step = GetDynamicStep(attr, spotParams.softness, value) * accelMult;
-                spotParams.softness = ApplyFloatDelta(attr, spotParams.softness, step * value);
+                step = GetDynamicStep(attr, spotParams.softness.value, value) * accelMult;
+                spotParams.softness.value = ApplyFloatDelta(attr, spotParams.softness.value, step * value);
                 break;
 
             case 'overrideColour':
@@ -522,58 +526,62 @@ class LRDebug_AttributeEditor {
         switch (attr) {
             case 'brightness':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasBrightness) {
-                    lightParams.hasBrightness = true;
-                    if (sourceLight) lightParams.brightness = sourceLight.brightness;
+                if (!lightParams.brightness.has) {
+                    lightParams.brightness.has = true;
+                    if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
                 }
-                lightParams.brightness = ClampAttributeValue(attr, lightParams.brightness + delta);
+                lightParams.brightness.value = ClampAttributeValue(attr, lightParams.brightness.value + delta);
                 break;
 
             case 'radius':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasRadius) {
-                    lightParams.hasRadius = true;
-                    if (sourceLight) lightParams.radius = sourceLight.radius;
+                if (!lightParams.radius.has) {
+                    lightParams.radius.has = true;
+                    if (sourceLight) lightParams.radius.value = sourceLight.radius;
                 }
-                lightParams.radius = ClampAttributeValue(attr, lightParams.radius + delta);
+                lightParams.radius.value = ClampAttributeValue(attr, lightParams.radius.value + delta);
                 break;
 
             case 'attenuation':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasAttenuation) {
-                    lightParams.hasAttenuation = true;
-                    if (sourceLight) lightParams.attenuation = sourceLight.attenuation;
+                if (!lightParams.attenuation.has) {
+                    lightParams.attenuation.has = true;
+                    if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
                 }
-                lightParams.attenuation = ClampAttributeValue(attr, lightParams.attenuation + delta);
+                lightParams.attenuation.value = ClampAttributeValue(attr, lightParams.attenuation.value + delta);
                 break;
 
             case 'shadowFadeDistance':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowFadeDistance) {
-                    lightParams.hasShadowFadeDistance = true;
+                if (!lightParams.shadowFadeDistance.has) {
+                    lightParams.shadowFadeDistance.has = true;
                     if (sourceLight) {
-                        lightParams.shadowFadeDistance = sourceLight.shadowFadeDistance;
+                        lightParams.shadowFadeDistance.value = sourceLight.shadowFadeDistance;
                     }
                 }
-                lightParams.shadowFadeDistance = ClampAttributeValue(attr, lightParams.shadowFadeDistance + delta);
+                lightParams.shadowFadeDistance.value = ClampAttributeValue(attr, lightParams.shadowFadeDistance.value + delta);
                 break;
 
             case 'shadowFadeRange':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowFadeRange) {
-                    lightParams.hasShadowFadeRange = true;
-                    if (sourceLight) lightParams.shadowFadeRange = sourceLight.shadowFadeRange;
+                if (!lightParams.shadowFadeRange.has) {
+                    lightParams.shadowFadeRange.has = true;
+                    if (sourceLight) {
+                        lightParams.shadowFadeRange.value = sourceLight.shadowFadeRange;
+                    }
                 }
-                lightParams.shadowFadeRange = ClampAttributeValue(attr, lightParams.shadowFadeRange + delta);
+                lightParams.shadowFadeRange.value = ClampAttributeValue(attr, lightParams.shadowFadeRange.value + delta);
                 break;
 
             case 'shadowBlendFactor':
                 lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.hasShadowBlendFactor) {
-                    lightParams.hasShadowBlendFactor = true;
-                    if (sourceLight) lightParams.shadowBlendFactor = sourceLight.shadowBlendFactor;
+                if (!lightParams.shadowBlendFactor.has) {
+                    lightParams.shadowBlendFactor.has = true;
+                    if (sourceLight) {
+                        lightParams.shadowBlendFactor.value = sourceLight.shadowBlendFactor;
+                    }
                 }
-                lightParams.shadowBlendFactor = ClampAttributeValue(attr, lightParams.shadowBlendFactor + delta);
+                lightParams.shadowBlendFactor.value = ClampAttributeValue(attr, lightParams.shadowBlendFactor.value + delta);
                 break;
 
             case 'alignOffsetZ':
@@ -593,29 +601,29 @@ class LRDebug_AttributeEditor {
 
             case 'innerAngle':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasInnerAngle) {
-                    spotParams.hasInnerAngle = true;
-                    if (spot) spotParams.innerAngle = spot.innerAngle;
+                if (!spotParams.innerAngle.has) {
+                    spotParams.innerAngle.has = true;
+                    if (spot) spotParams.innerAngle.value = spot.innerAngle;
                 }
-                spotParams.innerAngle = ClampAttributeValue(attr, spotParams.innerAngle + delta);
+                spotParams.innerAngle.value = ClampAttributeValue(attr, spotParams.innerAngle.value + delta);
                 break;
 
             case 'outerAngle':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasOuterAngle) {
-                    spotParams.hasOuterAngle = true;
-                    if (spot) spotParams.outerAngle = spot.outerAngle;
+                if (!spotParams.outerAngle.has) {
+                    spotParams.outerAngle.has = true;
+                    if (spot) spotParams.outerAngle.value = spot.outerAngle;
                 }
-                spotParams.outerAngle = ClampAttributeValue(attr, spotParams.outerAngle + delta);
+                spotParams.outerAngle.value = ClampAttributeValue(attr, spotParams.outerAngle.value + delta);
                 break;
 
             case 'softness':
                 spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.hasSoftness) {
-                    spotParams.hasSoftness = true;
-                    if (spot) spotParams.softness = spot.softness;
+                if (!spotParams.softness.has) {
+                    spotParams.softness.has = true;
+                    if (spot) spotParams.softness.value = spot.softness;
                 }
-                spotParams.softness = ClampAttributeValue(attr, spotParams.softness + delta);
+                spotParams.softness.value = ClampAttributeValue(attr, spotParams.softness.value + delta);
                 break;
 
             case 'colourR':

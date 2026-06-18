@@ -129,11 +129,15 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candleMenu.TAG_BRIGHTNESS,
-                candleParams.brightness
+                candleParams.brightness.value
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RADIUS, candleParams.radius);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_BRIGHTNESS, torchParams.brightness);
-            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RADIUS, torchParams.radius);
+            gameConfig.SetVarValue(GENERAL_GROUP, candleMenu.TAG_RADIUS, candleParams.radius.value);
+            gameConfig.SetVarValue(
+                GENERAL_GROUP,
+                torchMenu.TAG_BRIGHTNESS,
+                torchParams.brightness.value
+            );
+            gameConfig.SetVarValue(GENERAL_GROUP, torchMenu.TAG_RADIUS, torchParams.radius.value);
         }
 
         // v1 → v2: promote the old global attenuation value to both per-source keys.
@@ -148,12 +152,12 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candleMenu.TAG_ATTENUATION,
-                    candleParams.attenuation
+                    candleParams.attenuation.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     torchMenu.TAG_ATTENUATION,
-                    torchParams.attenuation
+                    torchParams.attenuation.value
                 );
             }
         }
@@ -183,13 +187,17 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 brazierMenu.TAG_BRIGHTNESS,
-                brazierParams.brightness
+                brazierParams.brightness.value
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, brazierMenu.TAG_RADIUS, brazierParams.radius);
+            gameConfig.SetVarValue(
+                GENERAL_GROUP,
+                brazierMenu.TAG_RADIUS,
+                brazierParams.radius.value
+            );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 brazierMenu.TAG_ATTENUATION,
-                brazierParams.attenuation
+                brazierParams.attenuation.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
@@ -206,17 +214,17 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_BRIGHTNESS,
-                candelabraParams.brightness
+                candelabraParams.brightness.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_RADIUS,
-                candelabraParams.radius
+                candelabraParams.radius.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 candelabraMenu.TAG_ATTENUATION,
-                candelabraParams.attenuation
+                candelabraParams.attenuation.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
@@ -241,13 +249,13 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 campfireMenu.TAG_BRIGHTNESS,
-                campfireParams.brightness
+                campfireParams.brightness.value
             );
-            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RADIUS, campfireParams.radius);
+            gameConfig.SetVarValue(GENERAL_GROUP, campfireMenu.TAG_RADIUS, campfireParams.radius.value);
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 campfireMenu.TAG_ATTENUATION,
-                campfireParams.attenuation
+                campfireParams.attenuation.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
@@ -295,28 +303,28 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candleMenu.TAG_SHADOW_DISTANCE,
-                    candleParams.shadowFadeDistance
+                    candleParams.shadowFadeDistance.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     torchMenu.TAG_SHADOW_DISTANCE,
-                    torchParams.shadowFadeDistance
+                    torchParams.shadowFadeDistance.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candelabraMenu.TAG_SHADOW_DISTANCE,
-                    candelabraParams.shadowFadeDistance
+                    candelabraParams.shadowFadeDistance.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     campfireMenu.TAG_SHADOW_DISTANCE,
-                    campfireParams.shadowFadeDistance
+                    campfireParams.shadowFadeDistance.value
                 );
             }
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 brazierMenu.TAG_SHADOW_DISTANCE,
-                brazierParams.shadowFadeDistance
+                brazierParams.shadowFadeDistance.value
             );
 
             if (StringToFloat(oldShadowFadeRange, -1.f) != -1.f) {
@@ -350,27 +358,27 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candleMenu.TAG_SHADOW_RANGE,
-                    candleParams.shadowFadeRange
+                    candleParams.shadowFadeRange.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     torchMenu.TAG_SHADOW_RANGE,
-                    torchParams.shadowFadeRange
+                    torchParams.shadowFadeRange.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     brazierMenu.TAG_SHADOW_RANGE,
-                    brazierParams.shadowFadeRange
+                    brazierParams.shadowFadeRange.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candelabraMenu.TAG_SHADOW_RANGE,
-                    candelabraParams.shadowFadeRange
+                    candelabraParams.shadowFadeRange.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     campfireMenu.TAG_SHADOW_RANGE,
-                    campfireParams.shadowFadeRange
+                    campfireParams.shadowFadeRange.value
                 );
             }
 
@@ -405,27 +413,27 @@ class CLightRewriteSettings {
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candleMenu.TAG_SHADOW_BLEND,
-                    candleParams.shadowBlendFactor
+                    candleParams.shadowBlendFactor.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     torchMenu.TAG_SHADOW_BLEND,
-                    torchParams.shadowBlendFactor
+                    torchParams.shadowBlendFactor.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     brazierMenu.TAG_SHADOW_BLEND,
-                    brazierParams.shadowBlendFactor
+                    brazierParams.shadowBlendFactor.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     candelabraMenu.TAG_SHADOW_BLEND,
-                    candelabraParams.shadowBlendFactor
+                    candelabraParams.shadowBlendFactor.value
                 );
                 gameConfig.SetVarValue(
                     GENERAL_GROUP,
                     campfireMenu.TAG_SHADOW_BLEND,
-                    campfireParams.shadowBlendFactor
+                    campfireParams.shadowBlendFactor.value
                 );
             }
         }
@@ -435,32 +443,32 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_BRIGHTNESS,
-                chandelierParams.brightness
+                chandelierParams.brightness.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_RADIUS,
-                chandelierParams.radius
+                chandelierParams.radius.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_ATTENUATION,
-                chandelierParams.attenuation
+                chandelierParams.attenuation.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_SHADOW_DISTANCE,
-                chandelierParams.shadowFadeDistance
+                chandelierParams.shadowFadeDistance.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_SHADOW_RANGE,
-                chandelierParams.shadowFadeRange
+                chandelierParams.shadowFadeRange.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,
                 chandelierMenu.TAG_SHADOW_BLEND,
-                chandelierParams.shadowBlendFactor
+                chandelierParams.shadowBlendFactor.value
             );
             gameConfig.SetVarValue(
                 GENERAL_GROUP,

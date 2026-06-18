@@ -69,30 +69,12 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             target.hasRewriterType = true;
             target.rewriterType = rewriterType;
         }
-        if (hasBrightness) {
-            target.hasBrightness = true;
-            target.brightness = brightness;
-        }
-        if (hasRadius) {
-            target.hasRadius = true;
-            target.radius = radius;
-        }
-        if (hasAttenuation) {
-            target.hasAttenuation = true;
-            target.attenuation = attenuation;
-        }
-        if (hasShadowFadeDistance) {
-            target.hasShadowFadeDistance = true;
-            target.shadowFadeDistance = shadowFadeDistance;
-        }
-        if (hasShadowFadeRange) {
-            target.hasShadowFadeRange = true;
-            target.shadowFadeRange = shadowFadeRange;
-        }
-        if (hasShadowBlendFactor) {
-            target.hasShadowBlendFactor = true;
-            target.shadowBlendFactor = shadowBlendFactor;
-        }
+        if (brightness.has) target.brightness = brightness;
+        if (radius.has) target.radius = radius;
+        if (attenuation.has) target.attenuation = attenuation;
+        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
+        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
+        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (hasCastShadows) {
             target.hasCastShadows = true;
             target.castShadows = castShadows;

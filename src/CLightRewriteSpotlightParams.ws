@@ -1,12 +1,9 @@
 class CLightRewriteSpotlightParams extends ILightRewriteParams {
-    public var hasInnerAngle: bool;
-    public var innerAngle   : float;
+    public var innerAngle: SLightRewriteOptionalFloat;
 
-    public var hasOuterAngle: bool;
-    public var outerAngle   : float;
+    public var outerAngle: SLightRewriteOptionalFloat;
 
-    public var hasSoftness: bool;
-    public var softness   : float;
+    public var softness: SLightRewriteOptionalFloat;
 
     public var hasOffset: bool;
     public var offset   : Vector;
