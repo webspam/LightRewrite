@@ -15,7 +15,7 @@ class LRDebug_LabelManager {
     private var toast        : LRDebug_ToastOneLiner;
 
     public function Init() {
-        toast = new LRDebug_ToastOneLiner in thePlayer;
+        toast = new LRDebug_ToastOneLiner in this;
     }
 
     private function ShowToast(text: string) {
@@ -87,6 +87,10 @@ class LRDebug_LabelManager {
 
             if (target && target.lrdebugOneliner) {
                 target.lrdebugOneliner.SetHighlighted(true);
+            }
+
+            if (thePlayer.lrDebugTargetMarkers) {
+                thePlayer.lrDebugTargetMarkers.SetTarget(target);
             }
         }
     }
