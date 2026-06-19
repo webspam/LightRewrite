@@ -1,6 +1,6 @@
 # Agent guidance for Light Rewrite
 
-The context needed to change this project safely lives in the per-directory `README.md` files.
+Read any per-directory README files.
 
 ## Repository overview
 
