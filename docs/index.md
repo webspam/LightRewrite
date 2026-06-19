@@ -14,11 +14,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn — before" />
+                <img src="https://webspam.github.io/images/spikeroog-inn-before-219.jpg" alt="Spikeroog inn - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg" alt="Spikeroog inn — after" />
+                <img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg" alt="Spikeroog inn - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -54,11 +54,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/skellige-inn-before-219.jpg" alt="Skellige inn — before" />
+                <img src="https://webspam.github.io/images/skellige-inn-before-219.jpg" alt="Skellige inn - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/skellige-inn-after-219.jpg" alt="Skellige inn — after" />
+                <img src="https://webspam.github.io/images/skellige-inn-after-219.jpg" alt="Skellige inn - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -74,11 +74,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/holger-haus-before-219.jpg" alt="Holger haus — before" />
+                <img src="https://webspam.github.io/images/holger-haus-before-219.jpg" alt="Holger haus - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/holger-haus-after-219.jpg" alt="Holger haus — after" />
+                <img src="https://webspam.github.io/images/holger-haus-after-219.jpg" alt="Holger haus - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -114,11 +114,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/vizima-welcome-before-219.jpg" alt="Vizima castle — before" />
+                <img src="https://webspam.github.io/images/vizima-welcome-before-219.jpg" alt="Vizima castle - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/vizima-welcome-after-219.jpg" alt="Vizima castle — after" />
+                <img src="https://webspam.github.io/images/vizima-welcome-after-219.jpg" alt="Vizima castle - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -134,11 +134,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/vizima-stairwell-before-219.jpg" alt="Vizima stairwell — before" />
+                <img src="https://webspam.github.io/images/vizima-stairwell-before-219.jpg" alt="Vizima stairwell - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg" alt="Vizima stairwell — after" />
+                <img src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg" alt="Vizima stairwell - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -154,11 +154,11 @@ layout: home
           <div class="slider-wrap">
             <img-comparison-slider>
               <figure slot="first">
-                <img src="https://webspam.github.io/images/novigrad-gate-before-219.jpg" alt="Novigrad gate — before" />
+                <img src="https://webspam.github.io/images/novigrad-gate-before-219.jpg" alt="Novigrad gate - before" />
                 <figcaption>Before</figcaption>
               </figure>
               <figure slot="second">
-                <img src="https://webspam.github.io/images/novigrad-gate-after-219.jpg" alt="Novigrad gate — after" />
+                <img src="https://webspam.github.io/images/novigrad-gate-after-219.jpg" alt="Novigrad gate - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
