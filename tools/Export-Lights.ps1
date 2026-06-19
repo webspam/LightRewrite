@@ -187,6 +187,7 @@ function AssignTagNames {
 
 function FmtFloat {
     param([double] $Value)
+    if ([math]::Abs($Value) -lt 1e-4) { return '0' }
     # 'G' removes trailing zeros; use InvariantCulture to guarantee dot as separator.
     return $Value.ToString('G', [System.Globalization.CultureInfo]::InvariantCulture)
 }
