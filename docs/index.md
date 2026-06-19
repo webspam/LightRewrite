@@ -29,6 +29,26 @@ layout: home
       </div>
 
       <div class="swiper-slide">
+        <div class="slide-title">The Chameleon</div>
+        <div class="slide-image-wrap">
+          <div class="slider-wrap">
+            <img-comparison-slider>
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/chameleon-before-219.jpg" alt="The Chameleon - before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/chameleon-after-219.jpg" alt="The Chameleon - after" />
+                <figcaption>After</figcaption>
+              </figure>
+            </img-comparison-slider>
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+
+      <div class="swiper-slide">
         <div class="slide-title">Skellige inn</div>
         <div class="slide-image-wrap">
           <div class="slider-wrap">
@@ -59,6 +79,26 @@ layout: home
               </figure>
               <figure slot="second">
                 <img src="https://webspam.github.io/images/holger-haus-after-219.jpg" alt="Holger haus — after" />
+                <figcaption>After</figcaption>
+              </figure>
+            </img-comparison-slider>
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+
+      <div class="swiper-slide">
+        <div class="slide-title">Triss's room</div>
+        <div class="slide-image-wrap">
+          <div class="slider-wrap">
+            <img-comparison-slider>
+              <figure slot="first">
+                <img src="https://webspam.github.io/images/triss-room-before-219.jpg" alt="Triss's room - before" />
+                <figcaption>Before</figcaption>
+              </figure>
+              <figure slot="second">
+                <img src="https://webspam.github.io/images/triss-room-after-219.jpg" alt="Triss's room - after" />
                 <figcaption>After</figcaption>
               </figure>
             </img-comparison-slider>
@@ -135,8 +175,10 @@ layout: home
   <div class="swiper swiper-thumbs">
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="https://webspam.github.io/images/spikeroog-inn-after-219.jpg"    alt="Spikeroog inn" /></div>
+      <div class="swiper-slide"><img src="https://webspam.github.io/images/chameleon-after-219.jpg"        alt="The Chameleon" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/skellige-inn-after-219.jpg"     alt="Skellige inn" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/holger-haus-after-219.jpg"      alt="Holger haus" /></div>
+      <div class="swiper-slide"><img src="https://webspam.github.io/images/triss-room-after-219.jpg"       alt="Triss's room" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/vizima-welcome-after-219.jpg"   alt="Vizima castle" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/vizima-stairwell-after-219.jpg" alt="Vizima stairwell" /></div>
       <div class="swiper-slide"><img src="https://webspam.github.io/images/novigrad-gate-after-219.jpg"    alt="Novigrad gate" /></div>
