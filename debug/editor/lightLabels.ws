@@ -13,6 +13,7 @@
  * IK_NumPad9=(Action=LRDebug_ExportEdited)
  * IK_NumPad6=(Action=LRDebug_CycleLight)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
+ * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -32,6 +33,7 @@
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
+@addField(CR4Player) public var lrDebugLightSpacer: LRDebug_LightSpacer;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
 // ---- Lifecycle ----
 
@@ -52,6 +54,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugAttrEditor.Init();
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
+    lrDebugLightSpacer = new LRDebug_LightSpacer in this;
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
@@ -61,6 +64,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
@@ -292,6 +296,19 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ResetTarget();
+    return true;
+}
+
+// ---- Input: solve light spacing ----
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
+    var changed: int;
+
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    changed = lrDebugLightSpacer.Solve();
+    LogChannel('LRDebug', "LRDebug spacing: shrank " + changed + " lights");
     return true;
 }
 
