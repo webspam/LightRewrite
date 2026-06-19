@@ -19,6 +19,10 @@ class LRDebug_AttributeEditor {
         attrIndex = index;
     }
 
+    public function IsEditingOffset(): bool {
+        return GetCurrentAttrId(selectedLightType) == 'alignOffsetZ';
+    }
+
     /** In spot mode slots 6/7/13 are the spotlight cone; every other slot is shared */
     public function GetCurrentAttrId(type: name): name {
         if (type == 'spot') {
@@ -147,13 +151,6 @@ class LRDebug_AttributeEditor {
         if (spotParams.offset.has) return;
         spotParams.offset.has = true;
         if (spot) spotParams.offset.value = spot.GetLocalPosition();
-    }
-
-    /** Point-light equivalent of SeedSpotOffset: absolute position, seeded from the live light */
-    private function SeedPointOffset(params: CLightRewriteSourceParams, point: CPointLightComponent) {
-        if (params.pointLightOffsetPos.has) return;
-        params.pointLightOffsetPos.has = true;
-        if (point) params.pointLightOffsetPos.value = point.GetLocalPosition();
     }
 
     private function GetFloatStep(value: float): float {
@@ -412,7 +409,9 @@ class LRDebug_AttributeEditor {
                     params.pointLightOffset.Z += step * value;
                 }
                 else {
-                    SeedPointOffset(params, point);
+                    if (!params.pointLightOffsetPos.has) {
+                        params.pointLightOffsetPos.has = true;
+                    }
                     step = GetDynamicStep(attr, params.pointLightOffsetPos.value.Z, value) * accelMult;
                     params.pointLightOffsetPos.value.Z += step * value;
                 }
@@ -610,7 +609,9 @@ class LRDebug_AttributeEditor {
                     params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
                 }
                 else {
-                    SeedPointOffset(params, point);
+                    if (!params.pointLightOffsetPos.has) {
+                        params.pointLightOffsetPos.has = true;
+                    }
                     params.pointLightOffsetPos.value.Z = ClampAttributeValue(attr, params.pointLightOffsetPos.value.Z + delta);
                 }
                 break;
@@ -671,6 +672,55 @@ class LRDebug_AttributeEditor {
 
             default:
                 return false;
+        }
+
+        rewriter.LRDebug_SetMenuOverrideParams(params);
+        rewriter.RestoreOriginalState();
+        rewriter.RewriteLight();
+        return true;
+    }
+
+    /** Candles are skipped: their offset auto-aligns to FX slots, and only its Z is exported */
+    public function MoveOffsetXY(dx: float, dy: float, target: CGameplayEntity): bool {
+        var point: CPointLightComponent;
+        var spot: CSpotLightComponent;
+        var params: CLightRewriteSourceParams;
+        var spotParams: CLightRewriteSpotlightParams;
+        var rewriter: ILightSourceRewriter;
+        var type: name;
+        var scale: float;
+
+        if (dx == 0.0 && dy == 0.0) return false;
+        if (!target) return false;
+        if (!target.lrdebugOneliner) return false;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        point = LRDebug_FirstPointLight(target);
+        spot = LRDebug_FirstSpotLight(target);
+
+        type = GetSelectedLightType(target);
+
+        // Normalise using the same value as Z-axis adjustment
+        scale = GetAxisScale('alignOffsetZ');
+        dx *= scale;
+        dy *= scale;
+
+        if (type == 'spot') {
+            spotParams = EnsureSpotParams(params, target);
+            SeedSpotOffset(spotParams, spot);
+            spotParams.offset.value.X += dx;
+            spotParams.offset.value.Y += dy;
+        }
+        else if (LRDebug_IsCandle(target)) {
+            return false;
+        }
+        else {
+            if (!params.pointLightOffsetPos.has) {
+                params.pointLightOffsetPos.has = true;
+            }
+            params.pointLightOffsetPos.value.X += dx;
+            params.pointLightOffsetPos.value.Y += dy;
         }
 
         rewriter.LRDebug_SetMenuOverrideParams(params);
