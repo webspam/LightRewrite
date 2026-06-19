@@ -12,14 +12,14 @@
  * the pass is idempotent and safe to re-run.
  */
 class LRDebug_LightSpacer {
-    // How far from the player to gather lights, in metres.
-    private const var RANGE     : float;  default RANGE = 75.0;
+    // Gather radius from the player, pre-squared for distance checks (75 m).
+    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 5625.0;
     // Floor radius; spheres are never shrunk below this.
-    private const var MIN_RADIUS: float;  default MIN_RADIUS = 0.1;
+    private const var MIN_RADIUS   : float;  default MIN_RADIUS = 0.1;
     // Overlap below this (metres) counts as "not overlapping".
-    private const var EPSILON   : float;  default EPSILON = 0.01;
+    private const var EPSILON      : float;  default EPSILON = 0.01;
     // Safety bound on relaxation passes (coincident centres can never separate).
-    private const var MAX_PASSES: int;    default MAX_PASSES = 64;
+    private const var MAX_PASSES   : int;    default MAX_PASSES = 64;
 
     // Parallel arrays, one entry per gathered entity.
     private var entities : array<CGameplayEntity>;
@@ -37,8 +37,9 @@ class LRDebug_LightSpacer {
     }
 
     private function Gather() {
-        var found: array<CGameplayEntity>;
+        var found: array<CEntity>;
         var entity: CGameplayEntity;
+        var playerPos, entityPos: Vector;
         var i, count: int;
         var radius: float;
 
@@ -47,20 +48,25 @@ class LRDebug_LightSpacer {
         radii.Clear();
         original.Clear();
 
-        FindGameplayEntitiesInRange(found, thePlayer, RANGE, 1024, , FLAG_ExcludePlayer);
+        // Every light the mod tagged, world-wide; FindGameplayEntitiesInRange caps out and
+        // misses lights in dense rooms, so we take the full list and filter to range ourselves.
+        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, found);
+        playerPos = thePlayer.GetWorldPosition();
 
         count = found.Size();
         for (i = 0; i < count; i += 1) {
-            entity = found[i];
+            entity = (CGameplayEntity)found[i];
             if (!entity) continue;
-            if (!entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)) continue;
+
+            entityPos = entity.GetWorldPosition();
+            if (VecDistanceSquared(playerPos, entityPos) > RANGE_SQUARED) continue;
 
             // No point light, or all of them dark - nothing to space.
             radius = GetEntitySphereRadius(entity);
             if (radius <= 0.0) continue;
 
             entities.PushBack(entity);
-            positions.PushBack(entity.GetWorldPosition());
+            positions.PushBack(entityPos);
             radii.PushBack(radius);
             original.PushBack(radius);
         }
@@ -90,7 +96,7 @@ class LRDebug_LightSpacer {
     private function Relax() {
         var reduce: array<float>;
         var pass, i, j, count: int;
-        var dist, overlap, half: float;
+        var distSq, overlap, half, sumRadii: float;
         var changed: bool;
 
         count = radii.Size();
@@ -102,8 +108,14 @@ class LRDebug_LightSpacer {
             changed = false;
             for (i = 0; i < count; i += 1) {
                 for (j = i + 1; j < count; j += 1) {
-                    dist = VecDistance(positions[i], positions[j]);
-                    overlap = radii[i] + radii[j] - dist;
+                    sumRadii = radii[i] + radii[j];
+                    distSq = VecDistanceSquared(positions[i], positions[j]);
+
+                    // Squared test rejects non-touching pairs without a sqrt.
+                    if (distSq >= sumRadii * sumRadii) continue;
+
+                    // Overlapping: one sqrt to size the reduction (rA + rB - distance).
+                    overlap = sumRadii - SqrtF(distSq);
                     if (overlap <= EPSILON) continue;
 
                     half = overlap * 0.5;
