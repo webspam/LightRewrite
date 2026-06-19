@@ -82,24 +82,14 @@ function LoadLightRewriteOverridesGroup(
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
-        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+        if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffset)) {
             override.alignPointLights.has = true;
             override.alignPointLights.value = true;
-            override.pointLightOffset.X = StringToFloat(strVal, 0.f);
-            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
-            override.pointLightOffset.Y = StringToFloat(strVal, 0.f);
-            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
-            override.pointLightOffset.Z = StringToFloat(strVal, 0.f);
         }
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
-        if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
+        if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffsetPos.value)) {
             override.pointLightOffsetPos.has = true;
-            override.pointLightOffsetPos.value.X = StringToFloat(strVal, 0.f);
-            dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
-            override.pointLightOffsetPos.value.Y = StringToFloat(strVal, 0.f);
-            dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
-            override.pointLightOffsetPos.value.Z = StringToFloat(strVal, 0.f);
         }
 
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
@@ -231,16 +221,26 @@ function ParseLightRewriteSpotlightParams(
     }
 
     offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
-    if (dm.GetCustomNodeAttributeValueString(offsetNode, 'x', strVal)) {
+    if (ParseLightRewriteVector(dm, offsetNode, spotlight.offset.value)) {
         spotlight.offset.has = true;
-        spotlight.offset.value.X = StringToFloat(strVal, 0.f);
-        dm.GetCustomNodeAttributeValueString(offsetNode, 'y', strVal);
-        spotlight.offset.value.Y = StringToFloat(strVal, 0.f);
-        dm.GetCustomNodeAttributeValueString(offsetNode, 'z', strVal);
-        spotlight.offset.value.Z = StringToFloat(strVal, 0.f);
     }
 
     return spotlight;
+}
+
+function ParseLightRewriteVector(
+    dm: CDefinitionsManagerAccessor,
+    node: SCustomNode,
+    out vec: Vector
+): bool {
+    var x, y, z: string;
+
+    if (!dm.GetCustomNodeAttributeValueString(node, 'x', x)) return false;
+
+    dm.GetCustomNodeAttributeValueString(node, 'y', y);
+    dm.GetCustomNodeAttributeValueString(node, 'z', z);
+    vec = Vector(StringToFloat(x, 0.f), StringToFloat(y, 0.f), StringToFloat(z, 0.f));
+    return true;
 }
 
 function LR_StringToLightShadowCastingMode(str: string): ELightShadowCastingMode {
