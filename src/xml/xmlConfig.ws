@@ -47,63 +47,63 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
         params.displayName = strVal;
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'enabled', strVal)) {
-            params.hasEnabled = true;
-            params.enabled = (strVal != "false");
+            params.enabled.has = true;
+            params.enabled.value = (strVal != "false");
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
-            params.hasUseSpotlightColor = true;
-            params.useSpotlightColor = (strVal == "true");
+            params.useSpotlightColor.has = true;
+            params.useSpotlightColor.value = (strVal == "true");
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'brightness', strVal)) {
-            params.hasBrightness = true;
-            params.brightness = StringToFloat(strVal, 0.f);
+            params.brightness.has = true;
+            params.brightness.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'radius', strVal)) {
-            params.hasRadius = true;
-            params.radius = StringToFloat(strVal, 0.f);
+            params.radius.has = true;
+            params.radius.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'attenuation', strVal)) {
-            params.hasAttenuation = true;
-            params.attenuation = StringToFloat(strVal, 0.f);
+            params.attenuation.has = true;
+            params.attenuation.value = StringToFloat(strVal, 0.f);
         }
 
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
-            params.hasRewriterType = true;
-            params.rewriterType = ParseLightRewriteType(strVal);
+            params.rewriterType.has = true;
+            params.rewriterType.value = ParseLightRewriteType(strVal);
         }
 
         shadowsNode = dm.GetCustomDefinitionSubNode(entryNode, 'shadows');
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
-            params.hasShadowFadeDistance = true;
-            params.shadowFadeDistance = StringToFloat(strVal, 0.f);
+            params.shadowFadeDistance.has = true;
+            params.shadowFadeDistance.value = StringToFloat(strVal, 0.f);
         }
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
-            params.hasShadowFadeRange = true;
-            params.shadowFadeRange = StringToFloat(strVal, 0.f);
+            params.shadowFadeRange.has = true;
+            params.shadowFadeRange.value = StringToFloat(strVal, 0.f);
         }
         if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
-            params.hasShadowBlendFactor = true;
-            params.shadowBlendFactor = StringToFloat(strVal, 0.f);
+            params.shadowBlendFactor.has = true;
+            params.shadowBlendFactor.value = StringToFloat(strVal, 0.f);
         }
 
         colourNode = dm.GetCustomDefinitionSubNode(entryNode, 'colour');
         if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
-            params.hasColour = true;
-            params.color.Red = StringToInt(strVal, params.color.Red);
+            params.color.has = true;
+            params.color.value.Red = StringToInt(strVal, params.color.value.Red);
             dm.GetCustomNodeAttributeValueString(colourNode, 'g', strVal);
-            params.color.Green = StringToInt(strVal, params.color.Green);
+            params.color.value.Green = StringToInt(strVal, params.color.value.Green);
             dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
-            params.color.Blue = StringToInt(strVal, params.color.Blue);
+            params.color.value.Blue = StringToInt(strVal, params.color.value.Blue);
         }
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            params.hasAlignPointLights = true;
-            params.alignPointLights = true;
+            params.alignPointLights.has = true;
+            params.alignPointLights.value = true;
             params.pointLightOffset.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
             params.pointLightOffset.Y = StringToFloat(strVal, 0.f);
@@ -113,12 +113,12 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
         if (dm.GetCustomNodeAttributeValueString(alignNode, 'x', strVal)) {
-            params.hasPointLightOffset = true;
-            params.pointLightOffsetPos.X = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.has = true;
+            params.pointLightOffsetPos.value.X = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'y', strVal);
-            params.pointLightOffsetPos.Y = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.value.Y = StringToFloat(strVal, 0.f);
             dm.GetCustomNodeAttributeValueString(alignNode, 'z', strVal);
-            params.pointLightOffsetPos.Z = StringToFloat(strVal, 0.f);
+            params.pointLightOffsetPos.value.Z = StringToFloat(strVal, 0.f);
         }
 
         LogLightRewrite("[XmlConfig] Loaded: " + params.displayName + " (tag=" + NameToString(params.tag) + ")");

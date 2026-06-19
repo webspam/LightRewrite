@@ -5,33 +5,24 @@
  * Effectively maps to CLightComponent fields.
  */
 abstract class ILightRewriteParams {
-    public var hasEnabled: bool;
-    public var enabled   : bool;
+    public var enabled: SLightRewriteOptionalBool;
 
-    public var hasBrightness: bool;
-    public var brightness   : float;
+    public var brightness: SLightRewriteOptionalFloat;
 
-    public var hasRadius: bool;
-    public var radius   : float;
+    public var radius: SLightRewriteOptionalFloat;
 
     // Attenuation - how quickly the light fades out with distance
-    public var hasAttenuation: bool;
-    public var attenuation   : float;
+    public var attenuation: SLightRewriteOptionalFloat;
 
     // Distance at which the player shadow starts to fade
-    public var hasShadowFadeDistance: bool;
-    public var shadowFadeDistance   : float;
+    public var shadowFadeDistance: SLightRewriteOptionalFloat;
 
     // Range over which the shadow fades from shadowFadeDistance
-    public var hasShadowFadeRange: bool;
-    public var shadowFadeRange   : float;
+    public var shadowFadeRange: SLightRewriteOptionalFloat;
 
-    public var hasShadowBlendFactor: bool;
-    public var shadowBlendFactor   : float;
+    public var shadowBlendFactor: SLightRewriteOptionalFloat;
 
-    public var hasCastShadows: bool;
-    public var castShadows   : ELightShadowCastingMode;
+    public var castShadows: SLightRewriteOptionalShadowMode;
 
-    public var hasColour: bool;
-    public var color    : Color;
+    public var color: SLightRewriteOptionalColour;
 }

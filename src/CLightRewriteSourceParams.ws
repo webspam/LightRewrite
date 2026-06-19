@@ -23,21 +23,17 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var profileName: name;
 
     // The rewriter implementation to use
-    public var hasRewriterType: bool;
-    public var rewriterType   : ELightRewriteType;
+    public var rewriterType: SLightRewriteOptionalRewriterType;
 
     // Point-light alignment to fire FX slots
-    public var hasAlignPointLights: bool;
-    public var alignPointLights   : bool;
-    public var pointLightOffset   : Vector;
+    public var alignPointLights: SLightRewriteOptionalBool;
+    public var pointLightOffset: Vector;
 
     // Direct point-light position offset (non-candle lights)
-    public var hasPointLightOffset: bool;
-    public var pointLightOffsetPos: Vector;
+    public var pointLightOffsetPos: SLightRewriteOptionalVector;
 
     // Copy the spotlight colour to point lights instead of using an explicit colour
-    public var hasUseSpotlightColor: bool;
-    public var useSpotlightColor   : bool;
+    public var useSpotlightColor: SLightRewriteOptionalBool;
 
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
@@ -61,59 +57,22 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
-        if (hasEnabled) {
-            target.hasEnabled = true;
-            target.enabled = enabled;
-        }
-        if (hasRewriterType) {
-            target.hasRewriterType = true;
-            target.rewriterType = rewriterType;
-        }
-        if (hasBrightness) {
-            target.hasBrightness = true;
-            target.brightness = brightness;
-        }
-        if (hasRadius) {
-            target.hasRadius = true;
-            target.radius = radius;
-        }
-        if (hasAttenuation) {
-            target.hasAttenuation = true;
-            target.attenuation = attenuation;
-        }
-        if (hasShadowFadeDistance) {
-            target.hasShadowFadeDistance = true;
-            target.shadowFadeDistance = shadowFadeDistance;
-        }
-        if (hasShadowFadeRange) {
-            target.hasShadowFadeRange = true;
-            target.shadowFadeRange = shadowFadeRange;
-        }
-        if (hasShadowBlendFactor) {
-            target.hasShadowBlendFactor = true;
-            target.shadowBlendFactor = shadowBlendFactor;
-        }
-        if (hasCastShadows) {
-            target.hasCastShadows = true;
-            target.castShadows = castShadows;
-        }
-        if (hasColour) {
-            target.hasColour = true;
-            target.color = color;
-        }
-        if (hasAlignPointLights) {
-            target.hasAlignPointLights = true;
+        if (enabled.has) target.enabled = enabled;
+        if (rewriterType.has) target.rewriterType = rewriterType;
+        if (brightness.has) target.brightness = brightness;
+        if (radius.has) target.radius = radius;
+        if (attenuation.has) target.attenuation = attenuation;
+        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
+        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
+        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
+        if (castShadows.has) target.castShadows = castShadows;
+        if (color.has) target.color = color;
+        if (alignPointLights.has) {
             target.alignPointLights = alignPointLights;
             target.pointLightOffset = pointLightOffset;
         }
-        if (hasPointLightOffset) {
-            target.hasPointLightOffset = true;
-            target.pointLightOffsetPos = pointLightOffsetPos;
-        }
-        if (hasUseSpotlightColor) {
-            target.hasUseSpotlightColor = true;
-            target.useSpotlightColor = useSpotlightColor;
-        }
+        if (pointLightOffsetPos.has) target.pointLightOffsetPos = pointLightOffsetPos;
+        if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
         if (spotlight) {
             target.spotlight = spotlight;
         }

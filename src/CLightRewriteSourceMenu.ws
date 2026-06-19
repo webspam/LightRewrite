@@ -22,30 +22,30 @@ class CLightRewriteSourceMenu {
         groupTag: name,
         params: CLightRewriteSourceParams
     ) {
-        params.enabled = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
+        params.enabled.value = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
 
-        params.hasBrightness = true;
-        params.brightness = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness);
+        params.brightness.has = true;
+        params.brightness.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness.value);
 
-        params.hasRadius = true;
-        params.radius = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), params.radius);
+        params.radius.has = true;
+        params.radius.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), params.radius.value);
 
-        params.hasAttenuation = true;
-        params.attenuation = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), params.attenuation);
+        params.attenuation.has = true;
+        params.attenuation.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), params.attenuation.value);
 
-        params.hasShadowFadeDistance = true;
-        params.shadowFadeDistance = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE), params.shadowFadeDistance);
+        params.shadowFadeDistance.has = true;
+        params.shadowFadeDistance.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE), params.shadowFadeDistance.value);
 
-        params.hasShadowFadeRange = true;
-        params.shadowFadeRange = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE), params.shadowFadeRange);
+        params.shadowFadeRange.has = true;
+        params.shadowFadeRange.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE), params.shadowFadeRange.value);
 
-        params.hasShadowBlendFactor = true;
-        params.shadowBlendFactor = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), params.shadowBlendFactor);
+        params.shadowBlendFactor.has = true;
+        params.shadowBlendFactor.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), params.shadowBlendFactor.value);
 
-        params.hasColour = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
-        params.color.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.Red);
-        params.color.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.Green);
-        params.color.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.Blue);
+        params.color.has = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
+        params.color.value.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.value.Red);
+        params.color.value.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.value.Green);
+        params.color.value.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.value.Blue);
     }
 
     // Reacts to menu option changes if the changed option is relevant to this source.
@@ -65,40 +65,40 @@ class CLightRewriteSourceMenu {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled.value);
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_SHADOW_DISTANCE,
-            !params.enabled
+            !params.enabled.value
         );
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled.value);
+        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled.value);
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_OVERRIDE_COLOUR,
-            !params.enabled
+            !params.enabled.value
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_RED,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_GREEN,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_BLUE,
-            !params.enabled || !params.hasColour
+            !params.enabled.value || !params.color.has
         );
 
         UpdateSpecialMenuDisabledState(flashValueStorage, dataArray, params);

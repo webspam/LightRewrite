@@ -12,36 +12,35 @@ Add a brief comment above a function when its role isn't immediately obvious fro
 
 A comment that rephrases the body in prose adds no value and must not be used.
 
-```ws
-// ❌ BAD - restates the code
-// Checks if lightRewriteSettings is null, creates it if so, then returns it.
-public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
+<bad-example reason="restates the code">
+  // Checks if lightRewriteSettings is null, creates it if so, then returns it.
+  public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
+</bad-example>
+<good-example reason="explains the impetus / caller contract">
+  /** Gets the LightRewrite settings singleton - lazy initialised */
+  public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
+</good-example>
 
-// ✅ GOOD - explains the impetus / caller contract
-/** Gets the LightRewrite settings singleton - lazy initialised */
-public function GetLightRewriteSettings() : CLightRewriteSettings { ... }
-```
-
-```ws
-// ❌ BAD - restates the code
-// Calls wrappedMethod then calls OptionValueChanged on lightRewriteSettings.
-function OnOptionValueChanged(...) { ... }
-
-// ✅ GOOD - explains why this wrapper exists
-/** Forward every option-change event to the settings object for filtering */
-function OnOptionValueChanged(...) { ... }
-```
+<bad-example reason="restates the code">
+  // Calls wrappedMethod then calls OptionValueChanged on lightRewriteSettings.
+  function OnOptionValueChanged(...) { ... }
+</bad-example>
+<good-example reason="explains why this wrapper exists">
+  /** Forward every option-change event to the settings object for filtering */
+  function OnOptionValueChanged(...) { ... }
+</good-example>
 
 ## When to omit a comment entirely
 
 Omit when the function name + signature make the purpose self-evident:
 
-```ws
-// No comment needed - name is the full explanation
-public function IsEnabled() : bool { return isEnabled; }
-```
+<good-example reason="no comment needed - name is the full explanation">
+  public function IsEnabled() : bool { return isEnabled; }
+</good-example>
 
 ## Style
 
-- One line is almost always enough; two lines at most.
-- Write in plain English, imperative or declarative - no full stops required.
+- One line is almost always enough; two lines at most
+- Write in plain English, imperative or declarative
+- If single sentence, omit trailing full stop
+- NEVER end of line comments

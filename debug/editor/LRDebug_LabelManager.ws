@@ -116,12 +116,61 @@ class LRDebug_LabelManager {
         target.lrdebugOneliner.RegenerateText();
     }
 
+    public function SwapLightSelection(editor: LRDebug_AttributeEditor) {
+        if (!target) return;
+
+        editor.SwapLightSelection(target);
+        RefreshTargetOneliner();
+    }
+
+    /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
+    public function GetTargetLightType(editor: LRDebug_AttributeEditor): name {
+        if (!target) return 'point';
+
+        return editor.GetSelectedLightType(target);
+    }
+
+    /** CycleAttribute needs the target, which only the manager holds. */
+    public function CycleSelectedAttribute(editor: LRDebug_AttributeEditor, delta: int) {
+        if (!target) return;
+
+        editor.CycleAttribute(delta, target);
+        RefreshTargetOneliner();
+    }
+
     /**
      * Applies a signed attribute adjustment to the target entity and refreshes its
      * oneliner if the adjustment took effect.
      */
-    public function ApplyAttributeAdjustment(value: float, editor: LRDebug_AttributeEditor) {
-        if (!editor.AdjustAttribute(value, target)) return;
+    public function ApplyAttributeAdjustment(
+        value: float,
+        editor: LRDebug_AttributeEditor,
+        optional attr: name
+    ) {
+        if (!editor.AdjustAttribute(value, target, attr)) return;
+
+        RefreshTargetOneliner();
+    }
+
+    /**
+     * Applies a continuous (analog) delta to the target's selected attribute and
+     * refreshes its oneliner if the adjustment took effect.
+     */
+    public function ApplyContinuousAdjustment(
+        delta: float,
+        editor: LRDebug_AttributeEditor,
+        optional attr: name
+    ) {
+        if (!editor.AdjustAttributeContinuous(delta, target, attr)) return;
+
+        RefreshTargetOneliner();
+    }
+
+    /**
+     * Toggles a boolean attribute on the target and refreshes its oneliner.
+     */
+    public function ApplyToggle(editor: LRDebug_AttributeEditor, optional attr: name) {
+        if (!editor.ToggleAttribute(target, attr)) return;
 
         RefreshTargetOneliner();
     }

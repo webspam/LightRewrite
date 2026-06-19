@@ -39,15 +39,31 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
 /** The params used to edit the light source */
 @addField(CGameplayEntity) public var lrDebugParams: CLightRewriteSourceParams;
 
-/** Lazy getter. Copies current effective params on first call. */
+/** Pre-edit snapshot the export diffs against, so profile-inherited values aren't re-emitted */
+@addField(CGameplayEntity) public var lrDebugBaseline: CLightRewriteSourceParams;
+
+@addField(CGameplayEntity) public var lrDebugSpotOwned: bool;
+
+/** Lazy getter. Copies current effective params on first call, keeping a baseline for the export */
 @addMethod(CGameplayEntity)
 public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewriteSourceParams {
+    var effective: CLightRewriteSourceParams;
+
     if (!lrDebugParams) {
         lrDebugParams = new CLightRewriteSourceParams in this;
+        lrDebugBaseline = new CLightRewriteSourceParams in this;
 
-        rewriter.LRDebug_GetEffectiveParams().ApplyTo(lrDebugParams);
-        lrDebugParams.hasEnabled = true;
-        lrDebugParams.enabled = true;
+        effective = rewriter.LRDebug_GetEffectiveParams();
+        effective.ApplyTo(lrDebugParams);
+        effective.ApplyTo(lrDebugBaseline);
+
+        // A profile with no spotlight still needs a baseline to diff a mid-session spotlight against
+        if (!lrDebugBaseline.spotlight) {
+            lrDebugBaseline.spotlight = new CLightRewriteSpotlightParams in this;
+        }
+
+        lrDebugParams.enabled.has = true;
+        lrDebugParams.enabled.value = true;
     }
     return lrDebugParams;
 }
@@ -108,10 +124,10 @@ public function LRDebug_GetOrCreateRewriter(): ILightSourceRewriter {
     params = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
     if (!params) {
         params = new CLightRewriteSourceParams in this;
-        params.hasEnabled = true;
-        params.enabled = true;
-        params.hasRewriterType = true;
-        params.rewriterType = LRDebug_GuessRewriterType(this);
+        params.enabled.has = true;
+        params.enabled.value = true;
+        params.rewriterType.has = true;
+        params.rewriterType.value = LRDebug_GuessRewriterType(this);
         params.tag = 'LR_DebugLight';
         params.displayName = "debug";
     }

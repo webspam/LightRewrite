@@ -39,7 +39,7 @@ class CLightRewriteManager {
         var rewriter: ILightSourceRewriter;
         var globalOverrides: CLightRewriteSourceParams;
 
-        switch (params.rewriterType) {
+        switch (params.rewriterType.value) {
             case LRT_Candle:  rewriter = new CCandleLightRewriter in entity;   break;
             default:          rewriter = new CGenericLightRewriter in entity;  break;
         }

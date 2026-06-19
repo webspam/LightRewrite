@@ -6,11 +6,23 @@
  *
  * Requires: mod_sharedutils_oneliners via SU_Oneliner
  *
- * Example input.settings:
+ * Example input.settings (under [LRDebug]):
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
  * IK_NumPad9=(Action=LRDebug_ExportEdited)
+ * IK_NumPad6=(Action=LRDebug_CycleLight)
+ * IK_Q=(Action=LRDebug_BrightnessModifier)
+ * IK_1=(Action=LRDebug_RadiusModifier)
+ * IK_5=(Action=LRDebug_SoftnessModifier)
+ *
+ * Hold-to-edit reads the engine's mouse-Y axis (GI_MouseDampY) directly, so it needs
+ * no extra context or binding: holding a modifier locks the camera and feeds mouse-Y
+ * into the selected attribute.
+ *
+ * In spot mode the point-only modifier keys are reused: UseSpotlightColor edits inner
+ * angle, AlignPointLights edits outer angle, AlignOffsetZ edits the spotlight's offset Z,
+ * and the dedicated SoftnessModifier edits softness.
  */
 
 // ---- CR4Player fields ----
@@ -18,6 +30,7 @@
 @addField(CR4Player) public var lrDebugLabels: bool;
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
+@addField(CR4Player) public var lrDebugAdjusting: bool;
 // ---- Lifecycle ----
 
 @wrapMethod(CR4Player)
@@ -39,36 +52,53 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
-    theInput.RegisterListener(this, 'LRDebug_OnSelectBrightness', 'LRDebug_SelectBrightness');
-    theInput.RegisterListener(this, 'LRDebug_OnSelectRadius', 'LRDebug_SelectRadius');
-    theInput.RegisterListener(this, 'LRDebug_OnSelectAttenuation', 'LRDebug_SelectAttenuation');
-    theInput.RegisterListener(
-        this,
-        'LRDebug_OnSelectShadowFadeDistance',
-        'LRDebug_SelectShadowFadeDistance'
-    );
-    theInput.RegisterListener(
-        this,
-        'LRDebug_OnSelectShadowFadeRange',
-        'LRDebug_SelectShadowFadeRange'
-    );
-    theInput.RegisterListener(
-        this,
-        'LRDebug_OnSelectShadowBlendFactor',
-        'LRDebug_SelectShadowBlendFactor'
-    );
-    theInput.RegisterListener(this, 'LRDebug_OnSelectAlignOffsetZ', 'LRDebug_SelectAlignOffsetZ');
-    theInput.RegisterListener(
-        this,
-        'LRDebug_OnSelectOverrideColour',
-        'LRDebug_SelectOverrideColour'
-    );
-    theInput.RegisterListener(this, 'LRDebug_OnSelectColourR', 'LRDebug_SelectColourR');
-    theInput.RegisterListener(this, 'LRDebug_OnSelectColourG', 'LRDebug_SelectColourG');
-    theInput.RegisterListener(this, 'LRDebug_OnSelectColourB', 'LRDebug_SelectColourB');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
+    theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnShadowFadeDistanceModifier',
+        'LRDebug_ShadowFadeDistanceModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnShadowFadeRangeModifier',
+        'LRDebug_ShadowFadeRangeModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnShadowBlendFactorModifier',
+        'LRDebug_ShadowBlendFactorModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnUseSpotlightColorModifier',
+        'LRDebug_UseSpotlightColorModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnAlignPointLightsModifier',
+        'LRDebug_AlignPointLightsModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnAlignOffsetZModifier',
+        'LRDebug_AlignOffsetZModifier'
+    );
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnOverrideColourModifier',
+        'LRDebug_OverrideColourModifier'
+    );
+    theInput.RegisterListener(this, 'LRDebug_OnColourRModifier', 'LRDebug_ColourRModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnColourGModifier', 'LRDebug_ColourGModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnColourBModifier', 'LRDebug_ColourBModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnSoftnessModifier', 'LRDebug_SoftnessModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnAdjustAxis', 'GI_MouseDampY');
 }
 
 // ---- Refresh timer ----
@@ -91,7 +121,11 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
 
     RemoveTimer('LRDebug_RefreshOnelinersTimer');
     if (lrDebugLabels) {
+        theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
+    }
+    else {
+        theInput.RestoreContext('LRDebug', true);
     }
 
     return true;
@@ -113,8 +147,7 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugAttrEditor.CycleAttribute(-1);
-    lrDebugLabelManager.RefreshTargetOneliner();
+    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, -1);
     return true;
 }
 
@@ -122,9 +155,27 @@ public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
 public function LRDebug_OnInputCycleAttrNext(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugAttrEditor.CycleAttribute(1);
-    lrDebugLabelManager.RefreshTargetOneliner();
+    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, 1);
     return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    lrDebugLabelManager.SwapLightSelection(lrDebugAttrEditor);
+    return true;
+}
+
+@addField(CInputManager) public var lrDebug: LRDebug_Input;
+
+@wrapMethod(CR4IngameMenu)
+function OnConfigUI() {
+    var iManager: CInputManager = theInput;
+
+    wrappedMethod();
+
+    iManager.lrDebug = new LRDebug_Input in iManager;
 }
 
 // ---- Input: adjust attribute value ----
@@ -134,13 +185,15 @@ public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
     if (!lrDebugLabels || !action.value || !thePlayer) return false;
 
     if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
-        lrDebugAttrEditor.CycleAttribute((int)SignF(action.value) * -1);
-        lrDebugLabelManager.RefreshTargetOneliner();
+        lrDebugLabelManager.CycleSelectedAttribute(
+            lrDebugAttrEditor,
+            (int)SignF(action.value) * -1
+        );
         return true;
     }
 
     // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
-    lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333334f, lrDebugAttrEditor);
+    lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333333f, lrDebugAttrEditor);
     return true;
 }
 
@@ -154,140 +207,6 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
     return true;
 }
 
-// ---- Input: select attribute ----
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectBrightness(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectBrightness();
-        lrDebugAttrEditor.SetAttributeIndex(0);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectRadius(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectRadius();
-        lrDebugAttrEditor.SetAttributeIndex(1);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectAttenuation(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectAttenuation();
-        lrDebugAttrEditor.SetAttributeIndex(2);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectShadowFadeDistance(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectShadowFadeDistance();
-        lrDebugAttrEditor.SetAttributeIndex(3);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectShadowFadeRange(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectShadowFadeRange();
-        lrDebugAttrEditor.SetAttributeIndex(4);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectShadowBlendFactor(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectShadowBlendFactor();
-        lrDebugAttrEditor.SetAttributeIndex(5);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectAlignOffsetZ(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectAlignOffsetZ();
-        lrDebugAttrEditor.SetAttributeIndex(8);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectOverrideColour(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectOverrideColour();
-        lrDebugAttrEditor.SetAttributeIndex(9);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectColourR(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectColourR();
-        lrDebugAttrEditor.SetAttributeIndex(10);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectUseSpotlightColor(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectUseSpotlightColor();
-        lrDebugAttrEditor.SetAttributeIndex(11);
-        return true;
-    }
-    return false;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnSelectAlignPointLights(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    if (lrDebugLabels == true) {
-        // lrDebugLabelManager.SelectAlignPointLights();
-        lrDebugAttrEditor.SetAttributeIndex(12);
-        return true;
-    }
-    return false;
-}
-
 // ---- Input: export edited lights ----
 
 @addMethod(CR4Player)
@@ -295,5 +214,137 @@ public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     LRDebug_ExportEditedLights();
+    return true;
+}
+
+// ---- Input: hold-to-edit analog modifiers ----
+
+@addMethod(CR4Player)
+public function LRDebug_OnBrightnessModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 0);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnRadiusModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 1);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnAttenuationModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 2);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnShadowFadeDistanceModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 3);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnShadowFadeRangeModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 4);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnShadowBlendFactorModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 5);
+}
+
+/** Spot mode hold-edits inner angle; point mode toggles the bool */
+@addMethod(CR4Player)
+public function LRDebug_OnUseSpotlightColorModifier(action: SInputAction): bool {
+    if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
+        return LRDebug_EnterAdjust(action, 6);
+    }
+    return LRDebug_ToggleAttr(action, 6);
+}
+
+/** Spot mode hold-edits outer angle; point mode toggles the bool */
+@addMethod(CR4Player)
+public function LRDebug_OnAlignPointLightsModifier(action: SInputAction): bool {
+    if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
+        return LRDebug_EnterAdjust(action, 7);
+    }
+    return LRDebug_ToggleAttr(action, 7);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnAlignOffsetZModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 8);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnSoftnessModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 13);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnOverrideColourModifier(action: SInputAction): bool {
+    return LRDebug_ToggleAttr(action, 9);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnColourRModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 10);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnColourGModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 11);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnColourBModifier(action: SInputAction): bool {
+    return LRDebug_EnterAdjust(action, 12);
+}
+
+/**
+ * On key-press, lock the camera (rotation stops but GI_MouseDamp values keep flowing)
+ * and flag adjust mode so the mouse-Y listener edits the chosen attribute live; the
+ * matching unlock happens on release.
+ */
+@addMethod(CR4Player)
+public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool {
+    if (!lrDebugLabels || !thePlayer) return false;
+
+    if (IsPressed(action)) {
+        lrDebugAttrEditor.SetAttributeIndex(attrIndex);
+        lrDebugAttrEditor.ResetAdjustAccumulator();
+        lrDebugLabelManager.RefreshTargetOneliner();
+        thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
+        lrDebugAdjusting = true;
+        return true;
+    }
+
+    if (IsReleased(action)) {
+        thePlayer.EnableManualCameraControl(true, theInput.lrDebug.CAMERA_LOCK_SOURCE);
+        lrDebugAdjusting = false;
+        return true;
+    }
+
+    return false;
+}
+
+/** Bools toggle on key-press: flip the value and refresh, no camera lock or analog hold. */
+@addMethod(CR4Player)
+public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    lrDebugAttrEditor.SetAttributeIndex(attrIndex);
+    lrDebugLabelManager.ApplyToggle(lrDebugAttrEditor);
+    return true;
+}
+
+/**
+ * Push listener on the engine's mouse-Y axis. Fires whenever the mouse moves, but only
+ * edits while a modifier is held; the camera is locked then, so the deltas are ours.
+ */
+@addMethod(CR4Player)
+public function LRDebug_OnAdjustAxis(action: SInputAction): bool {
+    if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
+
+    lrDebugLabelManager.ApplyContinuousAdjustment(
+        -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+        lrDebugAttrEditor
+    );
     return true;
 }

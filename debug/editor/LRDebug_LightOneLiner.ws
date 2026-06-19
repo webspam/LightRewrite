@@ -54,84 +54,143 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return html + "'>" + prefix + " " + count + "</font>";
     }
 
-    private function GetAttributeValueString(attr: name): string {
+    private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
-        var point: CPointLightComponent;
+        var lightParams: ILightRewriteParams;
+        var spotP: CLightRewriteSpotlightParams;
+        var light: CLightComponent;
+        var spotComp: CSpotLightComponent;
+        var position: Vector;
         var valF: float;
         var valI: int;
 
         if (!entity) return "?";
 
         params = entity.lrDebugParams;
-        point = LRDebug_FirstPointLight(entity);
+
+        if (type == 'spot') {
+            if (params) {
+                lightParams = params.spotlight;
+                spotP = params.spotlight;
+            }
+            light = LRDebug_FirstSpotLight(entity);
+            spotComp = LRDebug_FirstSpotLight(entity);
+        }
+        else {
+            lightParams = params;
+            light = LRDebug_FirstPointLight(entity);
+        }
 
         switch (attr) {
             case 'brightness':
-                if (params && params.hasBrightness) valF = params.brightness;
-                else if (point) valF = point.brightness;
+                if (lightParams && lightParams.brightness.has) valF = lightParams.brightness.value;
+                else if (light) valF = light.brightness;
                 return FloatToString(valF);
 
             case 'radius':
-                if (params && params.hasRadius) valF = params.radius;
-                else if (point) valF = point.radius;
+                if (lightParams && lightParams.radius.has) valF = lightParams.radius.value;
+                else if (light) valF = light.radius;
                 return FloatToString(valF);
 
             case 'attenuation':
-                if (params && params.hasAttenuation) valF = params.attenuation;
-                else if (point) valF = point.attenuation;
+                if (lightParams && lightParams.attenuation.has) {
+                    valF = lightParams.attenuation.value;
+                }
+                else if (light) {
+                    valF = light.attenuation;
+                }
                 return FloatToString(valF);
 
             case 'shadowFadeDistance':
-                if (params && params.hasShadowFadeDistance) valF = params.shadowFadeDistance;
-                else if (point) valF = point.shadowFadeDistance;
+                if (lightParams && lightParams.shadowFadeDistance.has) {
+                    valF = lightParams.shadowFadeDistance.value;
+                }
+                else if (light) {
+                    valF = light.shadowFadeDistance;
+                }
                 return FloatToString(valF);
 
             case 'shadowFadeRange':
-                if (params && params.hasShadowFadeRange) valF = params.shadowFadeRange;
-                else if (point) valF = point.shadowFadeRange;
+                if (lightParams && lightParams.shadowFadeRange.has) {
+                    valF = lightParams.shadowFadeRange.value;
+                }
+                else if (light) {
+                    valF = light.shadowFadeRange;
+                }
                 return FloatToString(valF);
 
             case 'shadowBlendFactor':
-                if (params && params.hasShadowBlendFactor) valF = params.shadowBlendFactor;
-                else if (point) valF = point.shadowBlendFactor;
+                if (lightParams && lightParams.shadowBlendFactor.has) {
+                    valF = lightParams.shadowBlendFactor.value;
+                }
+                else if (light) {
+                    valF = light.shadowBlendFactor;
+                }
                 return FloatToString(valF);
 
             case 'useSpotlightColor':
-                if (params && params.hasUseSpotlightColor) {
-                    if (params.useSpotlightColor) return "true";
+                if (type == 'spot') return "n/a";
+                if (params && params.useSpotlightColor.has) {
+                    if (params.useSpotlightColor.value) return "true";
                     return "false";
                 }
                 return "?";
 
             case 'alignPointLights':
-                if (params && params.hasAlignPointLights) {
-                    if (params.alignPointLights) return "true";
+                if (type == 'spot') return "n/a";
+                if (params && params.alignPointLights.has) {
+                    if (params.alignPointLights.value) return "true";
                     return "false";
                 }
                 return "?";
 
             case 'alignOffsetZ':
-                if (params && params.hasAlignPointLights) valF = params.pointLightOffset.Z;
+                if (type == 'spot') {
+                    if (spotP && spotP.offset.has) {
+                        valF = spotP.offset.value.Z;
+                    }
+                    else if (spotComp) {
+                        position = spotComp.GetLocalPosition();
+                        valF = position.Z;
+                    }
+                    return FloatToString(valF);
+                }
+                if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                 else valF = 0.0;
                 return FloatToString(valF);
 
+            case 'innerAngle':
+                if (spotP && spotP.innerAngle.has) valF = spotP.innerAngle.value;
+                else if (spotComp) valF = spotComp.innerAngle;
+                return FloatToString(valF);
+
+            case 'outerAngle':
+                if (spotP && spotP.outerAngle.has) valF = spotP.outerAngle.value;
+                else if (spotComp) valF = spotComp.outerAngle;
+                return FloatToString(valF);
+
+            case 'softness':
+                if (spotP && spotP.softness.has) valF = spotP.softness.value;
+                else if (spotComp) valF = spotComp.softness;
+                return FloatToString(valF);
+
             case 'overrideColour':
-                if (params && params.hasColour) return "true";
+                if (lightParams && lightParams.color.has) return "true";
                 return "false";
 
             case 'colourR':
-                if (params && params.hasColour) valI = params.color.Red;
-                else if (point) valI = point.color.Red;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Red;
+                else if (light) valI = light.color.Red;
                 return IntToString(valI);
 
             case 'colourG':
-                if (params && params.hasColour) valI = params.color.Green;
-                else if (point) valI = point.color.Green;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Green;
+                else if (light) valI = light.color.Green;
                 return IntToString(valI);
 
             case 'colourB':
-                if (params && params.hasColour) valI = params.color.Blue;
-                else if (point) valI = point.color.Blue;
+                if (lightParams && lightParams.color.has) valI = lightParams.color.value.Blue;
+                else if (light) valI = light.color.Blue;
                 return IntToString(valI);
         }
 
@@ -160,8 +219,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     private function GenerateText(): string {
         var descriptor: string;
         var layerPart, entityPath, levelPath, fileName, filePath: string;
-        var headerHtml, body, countString, marker: string;
+        var headerHtml, body, countString, marker, pSeg, sSeg: string;
         var attrId: name;
+        var type: name;
         var fontSize: int;
         var showPaths: bool;
 
@@ -174,12 +234,22 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         showPaths = thePlayer.lrDebugLabelManager.showPathLabels;
 
         if (this.highlighted) {
-            countString = marker + countString + " <font color='#dd88ff'>-</font>";
+            type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
 
-            attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId();
+            pSeg = CountToHtml("P", pointLights);
+            sSeg = CountToHtml("S", spotLights);
+            if (type == 'spot') {
+                sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
+            }
+            else {
+                pSeg = "<font color='#dd88ff'>[</font>" + pSeg + "<font color='#dd88ff'>]</font>";
+            }
+            countString = marker + pSeg + " / " + sSeg + " <font color='#dd88ff'>-</font>";
+
+            attrId = thePlayer.lrDebugAttrEditor.GetCurrentAttrId(type);
             headerHtml = "<font color='#dd88ff'>"
-                + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel() + ": "
-                + GetAttributeValueString(attrId)
+                + thePlayer.lrDebugAttrEditor.GetCurrentAttrLabel(type) + ": "
+                + GetAttributeValueString(attrId, type)
                 + "</font><br/>";
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
