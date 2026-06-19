@@ -338,7 +338,7 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     return true;
 }
 
-/** Holding Alt while editing the offset swaps mouse-Y Z-editing for both-axes XY movement */
+/** Holding Alt while editing the offset turns vertical mouse movement into XY dragging instead of Z adjustment */
 @addMethod(CR4Player)
 public function LRDebug_MovingOffsetXY(): bool {
     return lrDebugAttrEditor.IsEditingOffset()

@@ -680,7 +680,7 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
-    /** Candles are skipped: their offset auto-aligns to FX slots, and only its Z is exported */
+    /** Candles are excluded because their offset auto-aligns to FX slots and only its Z value can be exported */
     public function MoveOffsetXY(dx: float, dy: float, target: CGameplayEntity): bool {
         var point: CPointLightComponent;
         var spot: CSpotLightComponent;
