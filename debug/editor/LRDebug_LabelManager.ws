@@ -170,6 +170,12 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
+    public function MoveTargetXY(dx: float, dy: float, editor: LRDebug_AttributeEditor) {
+        if (!editor.MoveOffsetXY(dx, dy, target)) return;
+
+        RefreshTargetOneliner();
+    }
+
     /**
      * Toggles a boolean attribute on the target and refreshes its oneliner.
      */

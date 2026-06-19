@@ -101,7 +101,8 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnColourGModifier', 'LRDebug_ColourGModifier');
     theInput.RegisterListener(this, 'LRDebug_OnColourBModifier', 'LRDebug_ColourBModifier');
     theInput.RegisterListener(this, 'LRDebug_OnSoftnessModifier', 'LRDebug_SoftnessModifier');
-    theInput.RegisterListener(this, 'LRDebug_OnAdjustAxis', 'GI_MouseDampY');
+    theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
+    theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
 }
 
 // ---- Refresh timer ----
@@ -337,13 +338,38 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     return true;
 }
 
-/**
- * Push listener on the engine's mouse-Y axis. Fires whenever the mouse moves, but only
- * edits while a modifier is held; the camera is locked then, so the deltas are ours.
- */
+/** Holding Alt while editing the offset turns vertical mouse movement into XY dragging instead of Z adjustment */
 @addMethod(CR4Player)
-public function LRDebug_OnAdjustAxis(action: SInputAction): bool {
+public function LRDebug_MovingOffsetXY(): bool {
+    return lrDebugAttrEditor.IsEditingOffset()
+        && theInput.IsActionPressed('ShowDeveloperModeAlt');
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
+    if (!LRDebug_MovingOffsetXY()) return false;
+
+    lrDebugLabelManager.MoveTargetXY(
+        action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+        0.0,
+        lrDebugAttrEditor
+    );
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
+    if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
+
+    if (LRDebug_MovingOffsetXY()) {
+        lrDebugLabelManager.MoveTargetXY(
+            0.0,
+            -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+            lrDebugAttrEditor
+        );
+        return true;
+    }
 
     lrDebugLabelManager.ApplyContinuousAdjustment(
         -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,

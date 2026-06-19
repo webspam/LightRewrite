@@ -94,6 +94,7 @@ function ParseExportLines {
 # ---- Grouping ----
 
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', 'alignOffsetZ',
+    'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ',
     'spot_brightness', 'spot_radius', 'spot_attenuation', 'spot_shadowFadeDistance', 'spot_shadowFadeRange', 'spot_shadowBlendFactor',
     'spot_innerAngle', 'spot_outerAngle', 'spot_softness', 'spot_offsetX', 'spot_offsetY', 'spot_offsetZ'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', 'spot_colorR', 'spot_colorG', 'spot_colorB'
@@ -186,6 +187,7 @@ function AssignTagNames {
 
 function FmtFloat {
     param([double] $Value)
+    if ([math]::Abs($Value) -lt 1e-4) { return '0' }
     # 'G' removes trailing zeros; use InvariantCulture to guarantee dot as separator.
     return $Value.ToString('G', [System.Globalization.CultureInfo]::InvariantCulture)
 }

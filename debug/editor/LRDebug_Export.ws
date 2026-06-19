@@ -127,6 +127,16 @@ function LRDebug_BuildEditedFields(
     }
 
     if (
+        params.pointLightOffsetPos.has &&
+        (!baseline.pointLightOffsetPos.has || params.pointLightOffsetPos.value.X != baseline.pointLightOffsetPos.value.X || params.pointLightOffsetPos.value.Y != baseline.pointLightOffsetPos.value.Y || params.pointLightOffsetPos.value.Z != baseline.pointLightOffsetPos.value.Z)
+    ) {
+        line += " pointLightOffset=1";
+        line += " pointLightOffsetX=" + FloatToString(params.pointLightOffsetPos.value.X);
+        line += " pointLightOffsetY=" + FloatToString(params.pointLightOffsetPos.value.Y);
+        line += " pointLightOffsetZ=" + FloatToString(params.pointLightOffsetPos.value.Z);
+    }
+
+    if (
         params.useSpotlightColor.has &&
         (!baseline.useSpotlightColor.has || params.useSpotlightColor.value != baseline.useSpotlightColor.value)
     ) {
