@@ -65,17 +65,37 @@ class CLightRewriteSourceMenu {
         flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_BRIGHTNESS, !params.enabled.value);
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            TAG_BRIGHTNESS,
+            !params.enabled.value
+        );
         LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_RADIUS, !params.enabled.value);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_ATTENUATION, !params.enabled.value);
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            TAG_ATTENUATION,
+            !params.enabled.value
+        );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
             TAG_SHADOW_DISTANCE,
             !params.enabled.value
         );
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_RANGE, !params.enabled.value);
-        LR_SetMenuOptionDisabled(flashValueStorage, dataArray, TAG_SHADOW_BLEND, !params.enabled.value);
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            TAG_SHADOW_RANGE,
+            !params.enabled.value
+        );
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            TAG_SHADOW_BLEND,
+            !params.enabled.value
+        );
         LR_SetMenuOptionDisabled(
             flashValueStorage,
             dataArray,
