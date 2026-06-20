@@ -192,17 +192,16 @@ class LRDebug_LightSpacer {
     private function Relax() {
         var target: array<float>;
         var shed: array<int>;
-        var pass, e, i, j, edgeCount, slots, lightCount: int;
+        var pass, e, i, j, edgeCount, lightCount: int;
         var overlap, step, worst, share: float;
         var changed: bool;
 
         edgeCount = pairI.Size();
         lightCount = radii.Size();
-        slots = lightCount * MAX_OVERLAPS;
 
         target.Grow(lightCount);
 
-        SelectKeptNeighbours(edgeCount, lightCount, slots);
+        SelectKeptNeighbours(edgeCount, lightCount);
 
         for (e = 0; e < edgeCount; e += 1) {
             shed.PushBack(ShedKind(pairI[e], pairJ[e]));
@@ -261,9 +260,11 @@ class LRDebug_LightSpacer {
     }
 
     /** Precompute which overlaps each crowded light keeps, so relaxation needn't re-rank each pass */
-    private function SelectKeptNeighbours(edgeCount: int, lightCount: int, slots: int) {
+    private function SelectKeptNeighbours(edgeCount: int, lightCount: int) {
         var e, s, i, j: int;
         var overlap: float;
+
+        var slots: int = lightCount * MAX_OVERLAPS;
 
         kept.Resize(slots);
         slotOverlap.Resize(slots);
