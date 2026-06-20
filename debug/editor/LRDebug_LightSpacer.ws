@@ -303,15 +303,15 @@ class LRDebug_LightSpacer {
 
         base = owner * MAX_OVERLAPS;
         for (s = 0; s < MAX_OVERLAPS; s += 1) {
-            if (overlap > slotOverlap[base + s]) {
-                for (t = MAX_OVERLAPS - 1; t > s; t -= 1) {
-                    slotOverlap[base + t] = slotOverlap[base + t - 1];
-                    kept[base + t] = kept[base + t - 1];
-                }
-                slotOverlap[base + s] = overlap;
-                kept[base + s] = other;
-                return;
+            if (overlap <= slotOverlap[base + s]) continue;
+
+            for (t = MAX_OVERLAPS - 1; t > s; t -= 1) {
+                slotOverlap[base + t] = slotOverlap[base + t - 1];
+                kept[base + t] = kept[base + t - 1];
             }
+            slotOverlap[base + s] = overlap;
+            kept[base + s] = other;
+            return;
         }
     }
 
