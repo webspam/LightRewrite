@@ -36,6 +36,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - **`LRDebug_EntityUtils.ws`** - Shared helpers for finding light components, recognising candles, and creating rewriters.
 - **`LRDebug_LightSpacer.ws`** - One-shot pass that shrinks crowded shadow-casting lights to reduce overlaps.
 - **`LRDebug_Export.ws`** - Exports the session's edits to the log, for distilling into XML.
+- **`LRDebug_LightSpacer.ws`** - Shrinks overlapping shadow-casting point lights to reduce overlap
 
 ## Data flow
 
