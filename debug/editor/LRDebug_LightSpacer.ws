@@ -5,28 +5,28 @@
  * sized to its largest shadow-casting point light. Shadow casting lights are the
  * target of this optimisation, so non-shadow point lights are skipped.
  *
- * A light may overlap at most MAX_OVERLAPS others. Any excess is relaxed away over
- * repeated passes, shrinking the offending radii until every light is within the
- * limit. The result is written back through the entity's rewriter, the same path
- * the attribute editor uses.
+ * A light may overlap at most MAX_OVERLAPS others. Excess overlaps are shed in one
+ * pass, shrinking the offending radii proportionally to their size until every light
+ * is within the limit. The result is written back through the entity's rewriter, the
+ * same path the attribute editor uses.
  *
  * The pass only ever shrinks, so it is idempotent: re-running never grows a light
  * back, and lights that already clear their neighbours are left untouched.
  */
 class LRDebug_LightSpacer {
     // Max range from player to consider lights for spacing
-    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 22500.0;
+    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 160000.0;
     // Floor radius; spheres are never shrunk below this
     private const var MIN_RADIUS   : float;  default MIN_RADIUS = 0.1;
     // Overlap below this (metres) counts as "not overlapping"
     private const var EPSILON      : float;  default EPSILON = 0.01;
-    // Hard cap: lights sharing a centre can never be separated, so the loop would otherwise spin forever
-    private const var MAX_PASSES   : int;    default MAX_PASSES = 256;
-    // How much of each overlap to remove per pass; smaller values overshoot less but need more passes
-    private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.3;
     // Each light may overlap at most this many others (MAX_OVERLAPS + 1 lights may
     // share a space). Deeper overlaps win the slots; shallower excess is cleared
-    private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 6;
+    private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 5;
+    // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
+    private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.5;
+    // Hard cap so a pair that cannot separate (shared centre) can't spin the loop forever
+    private const var MAX_PASSES   : int;    default MAX_PASSES = 64;
 
     // Parallel arrays, one entry per gathered entity
     private var entities : array<CGameplayEntity>;
@@ -40,12 +40,23 @@ class LRDebug_LightSpacer {
     private var pairJ   : array<int>;
     private var pairDist: array<float>;
 
+    private var kept       : array<int>;
+    private var slotOverlap: array<float>;
+    private var degree     : array<int>;
+
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
         Gather();
+        LogChannel('LightSpacer', "Entity count: " + IntToString(entities.Size()));
+        LogChannel('LightSpacer', "Position count: " + IntToString(positions.Size()));
+        LogChannel('LightSpacer', "Radius count: " + IntToString(radii.Size()));
+        LogChannel('LightSpacer', "Original count: " + IntToString(original.Size()));
         if (entities.Size() < 2) return 0;
 
         BuildPairs();
+        LogChannel('LightSpacer', "PairI count: " + IntToString(pairI.Size()));
+        LogChannel('LightSpacer', "PairJ count: " + IntToString(pairJ.Size()));
+        LogChannel('LightSpacer', "PairDist count: " + IntToString(pairDist.Size()));
         Relax();
         return Apply();
     }
@@ -56,6 +67,8 @@ class LRDebug_LightSpacer {
         var playerPos, entityPos, lightPos: Vector;
         var i, count: int;
         var radius: float;
+
+        LogChannel('LightSpacer', "Gathering at " + theGame.GetLocalTimeAsMilliseconds());
 
         entities.Clear();
         positions.Clear();
@@ -107,85 +120,192 @@ class LRDebug_LightSpacer {
         return radius > 0.0;
     }
 
-    /**
-     * Build the candidate-pair edge list once: radii only shrink, so pairs that can't
-     * reach each other at full size never will, and every pass then skips the n^2 misses.
-     */
     private function BuildPairs() {
-        var i, j, count: int;
-        var dist: float;
+        var order: array<int>;
+        var a, b, count, i, j: int;
+        var maxReach, threshold, d2: float;
+
+        LogChannel('LightSpacer', "Building pairs at " + theGame.GetLocalTimeAsMilliseconds());
 
         pairI.Clear();
         pairJ.Clear();
         pairDist.Clear();
 
         count = positions.Size();
-        for (i = 0; i < count; i += 1) {
-            for (j = i + 1; j < count; j += 1) {
-                dist = SqrtF(VecDistanceSquared(positions[i], positions[j]));
-                if (original[i] + original[j] - dist <= EPSILON) continue;
+        if (count < 2) return;
+
+        maxReach = 2.0 * MaxRadius();
+
+        for (a = 0; a < count; a += 1) order.PushBack(a);
+        SortByX(order);
+
+        for (a = 0; a < count; a += 1) {
+            i = order[a];
+            for (b = a + 1; b < count; b += 1) {
+                j = order[b];
+                // Sorted ascending by X, so once the gap clears the reach no later light can touch
+                if (positions[j].X - positions[i].X > maxReach) break;
+
+                threshold = original[i] + original[j] - EPSILON;
+                if (threshold <= 0.0) continue;
+
+                // Compare squared distances so only genuinely overlapping pairs pay the sqrt
+                d2 = VecDistanceSquared(positions[i], positions[j]);
+                if (d2 >= threshold * threshold) continue;
 
                 pairI.PushBack(i);
                 pairJ.PushBack(j);
-                pairDist.PushBack(dist);
+                pairDist.PushBack(SqrtF(d2));
             }
         }
     }
 
-    /**
-     * Gauss-Seidel relaxation: each pass lets every light keep its deepest
-     * MAX_OVERLAPS overlaps, then shrinks both spheres of every excess pair by a
-     * fraction of the overlap, applied at once so later pairs see it, and repeats
-     * until a pass finds no excess overlap. Shrinking only ever removes overlaps,
-     * never creates them, so the pass converges.
-     */
+    /** Largest gathered sphere radius; bounds how far any two lights can overlap */
+    private function MaxRadius(): float {
+        var i, count: int;
+        var m: float;
+
+        m = 0.0;
+        count = original.Size();
+        for (i = 0; i < count; i += 1) {
+            if (original[i] > m) m = original[i];
+        }
+        return m;
+    }
+
+    /** Heapsort `order` ascending by each index's X, so BuildPairs can sweep-and-prune */
+    private function SortByX(out order: array<int>) {
+        var n, start, end, tmp: int;
+
+        n = order.Size();
+        if (n < 2) return;
+
+        start = n / 2 - 1;
+        while (start >= 0) {
+            SiftDown(order, start, n - 1);
+            start -= 1;
+        }
+
+        end = n - 1;
+        while (end > 0) {
+            tmp = order[0];
+            order[0] = order[end];
+            order[end] = tmp;
+            end -= 1;
+            SiftDown(order, 0, end);
+        }
+    }
+
+    private function SiftDown(out order: array<int>, lo: int, hi: int) {
+        var root, child, tmp: int;
+
+        root = lo;
+        while (root * 2 + 1 <= hi) {
+            child = root * 2 + 1;
+            if (child + 1 <= hi && positions[order[child]].X < positions[order[child + 1]].X) {
+                child += 1;
+            }
+
+            if (positions[order[root]].X >= positions[order[child]].X) return;
+
+            tmp = order[root];
+            order[root] = order[child];
+            order[child] = tmp;
+            root = child;
+        }
+    }
+
+    /** Shrink the crowded lights so each one overlaps no more than MAX_OVERLAPS others */
     private function Relax() {
-        var kept: array<int>;
-        var slotOverlap: array<float>;
-        var pass, e, i, j, edgeCount, slots: int;
-        var overlap, step: float;
+        var target: array<float>;
+        var shed: array<int>;
+        var pass, e, i, j, edgeCount, slots, lightCount: int;
+        var overlap, step, worst, share: float;
         var changed: bool;
 
-        edgeCount = pairI.Size();
-        slots = radii.Size() * MAX_OVERLAPS;
+        LogChannel('LightSpacer', "Relaxing at " + theGame.GetLocalTimeAsMilliseconds());
 
-        // Allocate the kept ranking once; SelectKeptNeighbours rebuilds it in place each pass
+        edgeCount = pairI.Size();
+        lightCount = radii.Size();
+        slots = lightCount * MAX_OVERLAPS;
+
+        kept.Clear();
+        slotOverlap.Clear();
+        degree.Clear();
         for (e = 0; e < slots; e += 1) {
             kept.PushBack(-1);
             slotOverlap.PushBack(0.0);
         }
+        for (i = 0; i < lightCount; i += 1) {
+            degree.PushBack(0);
+            target.PushBack(0.0);
+        }
+
+        SelectKeptNeighbours();
+
+        for (e = 0; e < edgeCount; e += 1) {
+            shed.PushBack(ShedKind(pairI[e], pairJ[e]));
+        }
 
         for (pass = 0; pass < MAX_PASSES; pass += 1) {
-            SelectKeptNeighbours(kept, slotOverlap);
+            for (i = 0; i < lightCount; i += 1) target[i] = radii[i];
 
-            changed = false;
+            worst = 0.0;
             for (e = 0; e < edgeCount; e += 1) {
+                if (shed[e] == 0) continue;
                 i = pairI[e];
                 j = pairJ[e];
 
                 overlap = radii[i] + radii[j] - pairDist[e];
                 if (overlap <= EPSILON) continue;
+                if (overlap > worst) worst = overlap;
 
-                // An overlap may stand only if both lights kept the other
-                if (IsKept(kept, i, j) && IsKept(kept, j, i)) continue;
-
-                step = overlap * 0.5 * RELAX_OMEGA;
-                // Pairs already pinned at the floor can't separate; don't keep the pass loop alive for them
-                if (radii[i] > MIN_RADIUS || radii[j] > MIN_RADIUS) changed = true;
-                radii[i] = MaxF(MIN_RADIUS, radii[i] - step);
-                radii[j] = MaxF(MIN_RADIUS, radii[j] - step);
+                step = overlap * RELAX_OMEGA;
+                if (shed[e] == 1) {
+                    // Both crowd each other: split the step by size, so both keep one scale
+                    share = step / (original[i] + original[j]);
+                    target[i] = MinF(target[i], radii[i] - share * original[i]);
+                    target[j] = MinF(target[j], radii[j] - share * original[j]);
+                }
+                // Otherwise only the crowded light gives way, leaving its quiet neighbour alone
+                else if (shed[e] == 2) target[i] = MinF(target[i], radii[i] - step);
+                else target[j] = MinF(target[j], radii[j] - step);
             }
 
+            if (worst <= EPSILON) break;
+
+            changed = false;
+            for (i = 0; i < lightCount; i += 1) {
+                target[i] = MaxF(MIN_RADIUS, target[i]);
+                if (target[i] < radii[i]) {
+                    radii[i] = target[i];
+                    changed = true;
+                }
+            }
             if (!changed) break;
         }
+    }
+
+    /** How a candidate pair must give: 0 both keep it, 1 both shed, 2 only i sheds, 3 only j */
+    private function ShedKind(i: int, j: int): int {
+        var keptI, keptJ: bool;
+
+        keptI = IsKept(i, j);
+        keptJ = IsKept(j, i);
+
+        if (keptI && keptJ) return 0;
+        if (!keptI && !keptJ) return 1;
+        if (!keptI) return 2;
+        return 3;
     }
 
     /**
      * Rebuild each light's deepest-MAX_OVERLAPS overlaps into kept (stride MAX_OVERLAPS
      * per light, neighbour indices descending by overlap, -1 padded) so the relaxation
      * loop tests membership instead of re-ranking. Each edge feeds both its endpoints.
+     * Only over-cap lights are ranked, since an under-cap light keeps every neighbour.
      */
-    private function SelectKeptNeighbours(out kept: array<int>, out slotOverlap: array<float>) {
+    private function SelectKeptNeighbours() {
         var e, s, edgeCount, slots, i, j: int;
         var overlap: float;
 
@@ -204,19 +324,24 @@ class LRDebug_LightSpacer {
             overlap = radii[i] + radii[j] - pairDist[e];
             if (overlap <= EPSILON) continue;
 
-            InsertKept(kept, slotOverlap, i, j, overlap);
-            InsertKept(kept, slotOverlap, j, i, overlap);
+            degree[i] += 1;
+            degree[j] += 1;
+        }
+
+        for (e = 0; e < edgeCount; e += 1) {
+            i = pairI[e];
+            j = pairJ[e];
+
+            overlap = radii[i] + radii[j] - pairDist[e];
+            if (overlap <= EPSILON) continue;
+
+            if (degree[i] > MAX_OVERLAPS) InsertKept(i, j, overlap);
+            if (degree[j] > MAX_OVERLAPS) InsertKept(j, i, overlap);
         }
     }
 
     /** Insert neighbour `other` (depth `overlap`) into `owner`s descending top-MAX_OVERLAPS slots */
-    private function InsertKept(
-        out kept: array<int>,
-        out slotOverlap: array<float>,
-        owner: int,
-        other: int,
-        overlap: float
-    ) {
+    private function InsertKept(owner: int, other: int, overlap: float) {
         var base, s, t: int;
 
         base = owner * MAX_OVERLAPS;
@@ -233,9 +358,11 @@ class LRDebug_LightSpacer {
         }
     }
 
-    /** Whether other sits in owner's kept slots */
-    private function IsKept(out kept: array<int>, owner: int, other: int): bool {
+    /** Whether other sits in owner's kept slots; an under-cap owner keeps everyone */
+    private function IsKept(owner: int, other: int): bool {
         var s, base: int;
+
+        if (degree[owner] <= MAX_OVERLAPS) return true;
 
         base = owner * MAX_OVERLAPS;
         for (s = 0; s < MAX_OVERLAPS; s += 1) {
@@ -250,6 +377,8 @@ class LRDebug_LightSpacer {
         var rewriter: ILightSourceRewriter;
         var params: CLightRewriteSourceParams;
         var entity: CGameplayEntity;
+
+        LogChannel('LightSpacer', "Applying at " + theGame.GetLocalTimeAsMilliseconds());
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
