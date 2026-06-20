@@ -4,86 +4,44 @@ In-game light authoring overlay for Light Rewrite: floating labels on nearby lig
 
 Debug-only - not part of the distributed mod. Copy this folder into any `Mods/MODNAME/content/scripts` alongside the main mod scripts, or use `debug.ps1` from the repo to deploy it with the rest of the debug bundle.
 
-## Files
+## Input bindings
 
-### `lightLabels.ws` - entry point and input
+Every action must be bound in `input.settings` before the editor can be used. Example bindings are listed in the header of `lightLabels.ws` - copy the ones you want and change the keys to taste.
 
-Injects fields into `CR4Player`, defers setup with a one-shot timer (player may not be ready at spawn), then registers input listeners and a repeating timer (~100 ms) that calls `LRDebug_LabelManager.Scan()`.
-
-All actions must be bound in `input.settings` (example bindings in the file header). `LRDebug_ToggleLabels` gates everything else. Scroll input is normalised (engine sends multiples of ±3 per event). Hold `ShowDeveloperModeAlt` during scroll to cycle the selected attribute instead of adjusting it. Direct-select actions (`LRDebug_SelectBrightness`, etc.) jump to a specific attribute when bound. `LRDebug_ExportEdited` triggers export.
-
-### `LRDebug_LabelManager.ws` - labels and target
-
-Creates and reuses `LRDebug_LightOneLiner` instances for nearby entities with point or spot lights (`FindNearbyLights` → `FindGameplayEntitiesInRange`). Restarts idle oneliners; picks the highlighted target as the most in-front entity within range (10 m, 25 m with Witcher Senses). On target change, notifies `LRDebug_TargetMarkers`. Delegates value changes to `LRDebug_AttributeEditor` and refreshes the target label on success. `ToggleRewriterOnTarget` flips rewritten vs original via `inOriginalState` and shows a toast.
-
-### `LRDebug_TargetMarkers.ws` - per-light markers
-
-Pool of `LRDebug_WorldMarker` labels, one per light component on the current target.
-
-### `LRDebug_WorldMarker.ws` - single screen marker
-
-A marker pinning one world point on screen.
-
-### `LRDebug_LightOneLiner.ws` - floating label
-
-Extends `SU_Oneliner`; one instance per entity, reused for its lifetime. States: `Idle` (not tracking) and `FollowEntity` (tracks entity position with a small Z offset until labels off or out of range). Markup is regenerated only on highlight change, path toggle, or attribute change - not every frame.
-
-Shows point/spot counts (green/grey), and when highlighted the selected attribute name and value. The active light gets bracketed (`[P n] / S m`). Optional path lines (filename, path, layer) from `entity.ToString()`. Injects `lrdebugOneliner` on `CGameplayEntity`.
-
-### `LRDebug_AttributeEditor.ws` - attributes
-
-Owns the selected attribute and step sizing, and the selected light type (point or spot). Applies each change via `menuOverrideParams` and `RewriteLight()`; callers must refresh the oneliner themselves.
-
-### `LRDebug_AdjustAccelerator.ws` - scroll acceleration
-
-Ramps a step multiplier after a burst of scroll events; direction reversal halves the streak; a pause resets state. Returns 1.0 when not accelerating.
-
-### `LRDebug_EntityUtils.ws` - helpers
-
-Point/spot component lookup, candle name heuristic (excludes holders), debug rewriter creation for entities outside the active profile (`LRDebug_GetOrCreateRewriter`), `inOriginalState` tracking on `ILightSourceRewriter`, and `menuOverrideParams` accessors.
-
-### `LRDebug_ToastOneLiner.ws` - notifications
-
-Brief text at head height for confirmations (e.g. rewriter on/off).
-
-### `LRDebug_Export.ws` - export
-
-`LRDebug_ExportEditedLights()` scans tagged light entities and logs `[LRDebug_Export]` lines for anything with session edits, for distillation into XML via `tools/Export-Lights.ps1`.
-
-## Data flow
-
-```
-CR4Player (lightLabels.ws)
-  │  input events
-  ▼
-LRDebug_LabelManager          ← Scan() tick, target selection
-  │  target entity
-  ▼
-LRDebug_AttributeEditor       ← AdjustAttribute(), CycleAttribute()
-  │  scroll value
-  ▼
-LRDebug_AdjustAccelerator     ← GetMultiplier()
-  │  multiplied step
-  ▼
-CLightRewriteSourceParams     ← updated on entity
-  │
-  ▼
-ILightSourceRewriter.RewriteLight()   ← applies change immediately
-  │
-  ▼
-LRDebug_LightOneLiner.RegenerateText()  ← updates floating label
-```
+All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You can also bind direct-select actions (e.g. `LRDebug_SelectBrightness`) to jump straight to an attribute.
 
 ## Using it
 
-- Bind actions in `input.settings` - see `lightLabels.ws` header (e.g. Numpad 7/8/9: toggle labels, path labels, export).
-- Turn labels on before any other control.
-- Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute.
-- Face the light you want to edit; focus mode extends pick range.
-- Swap between point/spot lights
-- Hold one of the modifier keys (e.g. brightness), moving the mouse up and down to adjust setting
+- Turn labels on before any other control
+- Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute
+- Face the light you want to edit; focus mode extends pick range
+- Swap between point and spot lights
+- Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting
 
 ## Requires
 
 - `mod_sharedutils_oneliners` (`SU_Oneliner` base for label and toast oneliners)
 - Main Light Rewrite mod (`CLightRewriteSourceParams`, `ILightSourceRewriter`, `CLightRewriteSettings`, etc.)
+
+## Files
+
+- **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights.
+- **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly.
+- **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light.
+- **`LRDebug_AdjustAccelerator.ws`** - Speeds up adjustment when you scroll quickly.
+- **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity.
+- **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity.
+- **`LRDebug_WorldMarker.ws`** - A single label pinned to a point in the world.
+- **`LRDebug_ToastOneLiner.ws`** - Brief on-screen confirmation messages.
+- **`LRDebug_EntityUtils.ws`** - Shared helpers for finding light components, recognising candles, and creating rewriters.
+- **`LRDebug_LightSpacer.ws`** - One-shot pass that shrinks crowded shadow-casting lights to reduce overlaps.
+- **`LRDebug_Export.ws`** - Exports the session's edits to the log, for distilling into XML.
+
+## Data flow
+
+1. `lightLabels.ws` captures player input
+2. `LRDebug_LabelManager` picks the light you are aiming at
+3. `LRDebug_AttributeEditor` turns the input into an attribute change
+4. `LRDebug_AdjustAccelerator` scales the step when scrolling fast
+5. `ILightSourceRewriter` applies the change immediately
+6. `LRDebug_LightOneLiner` refreshes the floating label
