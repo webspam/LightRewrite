@@ -2,6 +2,10 @@
 
 _Edits lights like candles and torches to be next-gen ray trace friendly, by editing the entities at runtime._
 
+## Comparisons
+
+<https://webspam.github.io/LightRewrite/>
+
 ## The problem
 
 Most light sources in the game were designed to only influence a tiny little sphere. Witcher 3 was written for 2015 hardware; a candle was intended to tint and highlight objects sitting right in front of it, not light an entire room. Scene lighting was handled by **much** cheaper lighting tricks.
