@@ -26,7 +26,7 @@ class LRDebug_LightSpacer {
     private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.3;
     // Each light may overlap at most this many others (MAX_OVERLAPS + 1 lights may
     // share a space). Deeper overlaps win the slots; shallower excess is cleared
-    private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 3;
+    private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 6;
 
     // Parallel arrays, one entry per gathered entity
     private var entities : array<CGameplayEntity>;
@@ -53,7 +53,7 @@ class LRDebug_LightSpacer {
     private function Gather() {
         var found: array<CEntity>;
         var entity: CGameplayEntity;
-        var playerPos, entityPos: Vector;
+        var playerPos, entityPos, lightPos: Vector;
         var i, count: int;
         var radius: float;
 
@@ -72,25 +72,26 @@ class LRDebug_LightSpacer {
 
             entityPos = entity.GetWorldPosition();
             if (VecDistanceSquared(playerPos, entityPos) > RANGE_SQUARED) continue;
-
-            // No point light, or all of them dark - nothing to space
-            radius = GetEntitySphereRadius(entity);
-            if (radius <= 0.0) continue;
+            if (!GetEntitySphere(entity, lightPos, radius)) continue;
 
             entities.PushBack(entity);
-            positions.PushBack(entityPos);
+            positions.PushBack(lightPos);
             radii.PushBack(radius);
             original.PushBack(radius);
         }
     }
 
-    /** Largest radius among the entity's shadow-casting point lights, or 0 if it has none */
-    private function GetEntitySphereRadius(entity: CGameplayEntity): float {
+    /** Finds the largest shadow-casting point light, returning false if none */
+    private function GetEntitySphere(
+        entity: CGameplayEntity,
+        out centre: Vector,
+        out radius: float
+    ): bool {
         var components: array<CComponent>;
         var light: CPointLightComponent;
         var i, count: int;
-        var maxRadius: float;
 
+        radius = 0.0;
         components = entity.GetComponentsByClassName('CPointLightComponent');
         count = components.Size();
         for (i = 0; i < count; i += 1) {
@@ -98,9 +99,12 @@ class LRDebug_LightSpacer {
             if (!light) continue;
             if (light.shadowCastingMode == LSCM_None) continue;
 
-            if (light.radius > maxRadius) maxRadius = light.radius;
+            if (light.radius > radius) {
+                radius = light.radius;
+                centre = light.GetWorldPosition();
+            }
         }
-        return maxRadius;
+        return radius > 0.0;
     }
 
     /**
