@@ -21,6 +21,7 @@ class LRDebug_LightSpacer {
     private var positions: array<Vector>;
     private var radii    : array<float>;
     private var original : array<float>;
+    private var modes    : array<ELightShadowCastingMode>;
 
     // Candidate overlap pairs, only those near enough to ever touch; parallel arrays, one per pair
     private var pairI   : array<int>;
@@ -47,11 +48,13 @@ class LRDebug_LightSpacer {
         var lightPos: Vector;
         var i, count: int;
         var radius: float;
+        var mode: ELightShadowCastingMode;
 
         entities.Clear();
         positions.Clear();
         radii.Clear();
         original.Clear();
+        modes.Clear();
 
         theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, found);
 
@@ -60,12 +63,13 @@ class LRDebug_LightSpacer {
             entity = (CGameplayEntity)found[i];
             if (!entity) continue;
 
-            if (!GetEntitySphere(entity, lightPos, radius)) continue;
+            if (!GetEntitySphere(entity, lightPos, radius, mode)) continue;
 
             entities.PushBack(entity);
             positions.PushBack(lightPos);
             radii.PushBack(radius);
             original.PushBack(radius);
+            modes.PushBack(mode);
         }
     }
 
@@ -73,13 +77,15 @@ class LRDebug_LightSpacer {
     private function GetEntitySphere(
         entity: CGameplayEntity,
         out centre: Vector,
-        out radius: float
+        out radius: float,
+        out mode: ELightShadowCastingMode
     ): bool {
         var components: array<CComponent>;
         var light: CPointLightComponent;
         var i, count: int;
 
         radius = 0.0;
+        mode = LSCM_None;
         components = entity.GetComponentsByClassName('CPointLightComponent');
         count = components.Size();
         for (i = 0; i < count; i += 1) {
@@ -90,6 +96,7 @@ class LRDebug_LightSpacer {
             if (light.radius > radius) {
                 radius = light.radius;
                 centre = light.GetWorldPosition();
+                mode = light.shadowCastingMode;
             }
         }
         return radius > 0.0;
@@ -122,6 +129,9 @@ class LRDebug_LightSpacer {
                 threshold = original[i] + original[j] - EPSILON;
                 if (threshold <= 0.0) continue;
 
+                // Dynamic-only and static-only lights shadow different geometry; they never crowd
+                if (!ModesConflict(modes[i], modes[j])) continue;
+
                 // Compare squared distances so only genuinely overlapping pairs pay the sqrt
                 d2 = VecDistanceSquared(positions[i], positions[j]);
                 if (d2 >= threshold * threshold) continue;
@@ -131,6 +141,13 @@ class LRDebug_LightSpacer {
                 pairDist.PushBack(SqrtF(d2));
             }
         }
+    }
+
+    /** Two shadow-casters compete unless one is dynamic-only and the other static-only */
+    private function ModesConflict(a: ELightShadowCastingMode, b: ELightShadowCastingMode): bool {
+        if (a == LSCM_OnlyDynamic && b == LSCM_OnlyStatic) return false;
+        if (a == LSCM_OnlyStatic && b == LSCM_OnlyDynamic) return false;
+        return true;
     }
 
     /** Largest gathered sphere radius; bounds how far any two lights can overlap */
@@ -338,6 +355,11 @@ class LRDebug_LightSpacer {
         for (i = 0; i < count; i += 1) {
             // Shrink-only: skip anything the relaxation left at (or above) its start radius
             if (radii[i] >= original[i] - EPSILON) continue;
+
+            LogChannel(
+                'LRDebug_LightSpacer',
+                "Shrinking " + entity.ToString() + " from " + original[i] + " to " + radii[i]
+            );
 
             entity = entities[i];
             rewriter = entity.LRDebug_GetOrCreateRewriter();
