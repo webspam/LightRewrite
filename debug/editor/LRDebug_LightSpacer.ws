@@ -7,16 +7,14 @@
  * so it is idempotent and leaves uncrowded lights untouched.
  */
 class LRDebug_LightSpacer {
-    // Range from player to consider lights, squared
-    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 160000.0;
-    private const var MIN_RADIUS   : float;  default MIN_RADIUS = 0.1;
+    private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
-    private const var EPSILON      : float;  default EPSILON = 0.01;
+    private const var EPSILON     : float;  default EPSILON = 0.01;
     // Most other lights any one light may overlap
-    private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 5;
+    private const var MAX_OVERLAPS: int;    default MAX_OVERLAPS = 5;
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
-    private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.5;
-    private const var MAX_PASSES   : int;    default MAX_PASSES = 64;
+    private const var RELAX_OMEGA : float;  default RELAX_OMEGA = 0.5;
+    private const var MAX_PASSES  : int;    default MAX_PASSES = 64;
 
     // Parallel arrays, one entry per gathered entity
     private var entities : array<CGameplayEntity>;
@@ -64,7 +62,6 @@ class LRDebug_LightSpacer {
             if (!entity) continue;
 
             entityPos = entity.GetWorldPosition();
-            if (VecDistanceSquared(playerPos, entityPos) > RANGE_SQUARED) continue;
             if (!GetEntitySphere(entity, lightPos, radius)) continue;
 
             entities.PushBack(entity);
