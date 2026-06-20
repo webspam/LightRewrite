@@ -283,9 +283,6 @@ class LRDebug_LightSpacer {
             i = pairI[e];
             j = pairJ[e];
 
-            overlap = radii[i] + radii[j] - pairDist[e];
-            if (overlap <= EPSILON) continue;
-
             degree[i] += 1;
             degree[j] += 1;
         }
@@ -295,7 +292,6 @@ class LRDebug_LightSpacer {
             j = pairJ[e];
 
             overlap = radii[i] + radii[j] - pairDist[e];
-            if (overlap <= EPSILON) continue;
 
             if (degree[i] > MAX_OVERLAPS) InsertKept(i, j, overlap);
             if (degree[j] > MAX_OVERLAPS) InsertKept(j, i, overlap);
