@@ -4,10 +4,8 @@ class LRDebug_RadiusRing {
     private const var pastel  : float;   default pastel = 0.5;
     private const var magenta : string;  default magenta = "#ff00ff";
 
-    private var dots    : array<LRDebug_WorldMarker>;
-    private var offsetsX: array<float>;
-    private var offsetsY: array<float>;
-    private var offsetsZ: array<float>;
+    private var dots   : array<LRDebug_WorldMarker>;
+    private var offsets: array<Vector>;
 
     public function Init(idBase: int) {
         var id: int;
@@ -26,11 +24,9 @@ class LRDebug_RadiusRing {
         var position: Vector;
 
         for (i = 0; i < dots.Size(); i += 1) {
-            // Copy then nudge; Vector +/* would also scale W (heading vectors carry W=1)
-            position = center;
-            position.X = center.X + offsetsX[i] * radius;
-            position.Y = center.Y + offsetsY[i] * radius;
-            position.Z = center.Z + offsetsZ[i] * radius;
+            position = center + offsets[i] * radius;
+            // Reset W to 1 - Vector operators are basic and operate on all props
+            position.W = 1.0;
             dots[i].SetWorldPosition(position);
         }
     }
@@ -81,9 +77,7 @@ class LRDebug_RadiusRing {
         dot = new LRDebug_WorldMarker in this;
         dot.Init("&#8226;", 16, color, id);
         dots.PushBack(dot);
-        offsetsX.PushBack(dx);
-        offsetsY.PushBack(dy);
-        offsetsZ.PushBack(dz);
+        offsets.PushBack(Vector(dx, dy, dz));
     }
 
     /** Blend the axis colours by direction - saturated toward +axis, pastel toward -axis */
