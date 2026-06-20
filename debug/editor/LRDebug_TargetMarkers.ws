@@ -34,7 +34,7 @@ class LRDebug_TargetMarkers {
         BuildPool("#b100ff");
 
         radiusRing = new LRDebug_RadiusRing in this;
-        radiusRing.Init("#00ff52", 0x40005000);
+        radiusRing.Init(0x40005000);
 
         Update();
     }
@@ -56,11 +56,17 @@ class LRDebug_TargetMarkers {
         UpdateRadiusRing();
     }
 
-    /** Ring the first point light with radius dots; hide them while labels are off. */
+    /** Ring the first point light with radius dots, but only while radius is the selected attribute. */
     private function UpdateRadiusRing() {
         var light: CPointLightComponent;
 
-        if (thePlayer.lrDebugLabels) light = (CPointLightComponent)components[0];
+        if (
+            thePlayer.lrDebugLabels &&
+            thePlayer.lrDebugAttrEditor &&
+            thePlayer.lrDebugAttrEditor.IsEditingRadius()
+        ) {
+            light = (CPointLightComponent)components[0];
+        }
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
         else radiusRing.Hide();

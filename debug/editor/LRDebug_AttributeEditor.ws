@@ -23,6 +23,10 @@ class LRDebug_AttributeEditor {
         return GetCurrentAttrId(selectedLightType) == 'alignOffsetZ';
     }
 
+    public function IsEditingRadius(): bool {
+        return GetCurrentAttrId(selectedLightType) == 'radius';
+    }
+
     /** In spot mode slots 6/7/13 are the spotlight cone; every other slot is shared */
     public function GetCurrentAttrId(type: name): name {
         if (type == 'spot') {
