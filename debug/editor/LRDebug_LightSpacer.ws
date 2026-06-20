@@ -44,7 +44,7 @@ class LRDebug_LightSpacer {
     private function Gather() {
         var found: array<CEntity>;
         var entity: CGameplayEntity;
-        var playerPos, entityPos, lightPos: Vector;
+        var lightPos: Vector;
         var i, count: int;
         var radius: float;
 
@@ -54,14 +54,12 @@ class LRDebug_LightSpacer {
         original.Clear();
 
         theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, found);
-        playerPos = thePlayer.GetWorldPosition();
 
         count = found.Size();
         for (i = 0; i < count; i += 1) {
             entity = (CGameplayEntity)found[i];
             if (!entity) continue;
 
-            entityPos = entity.GetWorldPosition();
             if (!GetEntitySphere(entity, lightPos, radius)) continue;
 
             entities.PushBack(entity);
