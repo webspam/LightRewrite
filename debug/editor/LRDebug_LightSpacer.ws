@@ -36,16 +36,9 @@ class LRDebug_LightSpacer {
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
         Gather();
-        LogChannel('LightSpacer', "Entity count: " + IntToString(entities.Size()));
-        LogChannel('LightSpacer', "Position count: " + IntToString(positions.Size()));
-        LogChannel('LightSpacer', "Radius count: " + IntToString(radii.Size()));
-        LogChannel('LightSpacer', "Original count: " + IntToString(original.Size()));
         if (entities.Size() < 2) return 0;
 
         BuildPairs();
-        LogChannel('LightSpacer', "PairI count: " + IntToString(pairI.Size()));
-        LogChannel('LightSpacer', "PairJ count: " + IntToString(pairJ.Size()));
-        LogChannel('LightSpacer', "PairDist count: " + IntToString(pairDist.Size()));
         Relax();
         return Apply();
     }
@@ -56,8 +49,6 @@ class LRDebug_LightSpacer {
         var playerPos, entityPos, lightPos: Vector;
         var i, count: int;
         var radius: float;
-
-        LogChannel('LightSpacer', "Gathering at " + theGame.GetLocalTimeAsMilliseconds());
 
         entities.Clear();
         positions.Clear();
@@ -113,8 +104,6 @@ class LRDebug_LightSpacer {
         var order: array<int>;
         var a, b, count, i, j: int;
         var maxReach, threshold, d2: float;
-
-        LogChannel('LightSpacer', "Building pairs at " + theGame.GetLocalTimeAsMilliseconds());
 
         pairI.Clear();
         pairJ.Clear();
@@ -211,8 +200,6 @@ class LRDebug_LightSpacer {
         var pass, e, i, j, edgeCount, slots, lightCount: int;
         var overlap, step, worst, share: float;
         var changed: bool;
-
-        LogChannel('LightSpacer', "Relaxing at " + theGame.GetLocalTimeAsMilliseconds());
 
         edgeCount = pairI.Size();
         lightCount = radii.Size();
@@ -361,8 +348,6 @@ class LRDebug_LightSpacer {
         var rewriter: ILightSourceRewriter;
         var params: CLightRewriteSourceParams;
         var entity: CGameplayEntity;
-
-        LogChannel('LightSpacer', "Applying at " + theGame.GetLocalTimeAsMilliseconds());
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
