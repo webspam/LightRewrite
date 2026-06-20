@@ -1,31 +1,21 @@
 /**
- * Shrink nearby shadow-casting lights, to reduce the number of overlapping lights.
+ * Eases the cost of dense, overlapping shadow-casting lights under ray tracing by shrinking
+ * some of their radii until each light overlaps only a limited number of its neighbours.
  *
- * Each light-bearing entity is treated as one sphere, centred on the entity and
- * sized to its largest shadow-casting point light. Shadow casting lights are the
- * target of this optimisation, so non-shadow point lights are skipped.
- *
- * A light may overlap at most MAX_OVERLAPS others. Excess overlaps are shed in one
- * pass, shrinking the offending radii proportionally to their size until every light
- * is within the limit. The result is written back through the entity's rewriter, the
- * same path the attribute editor uses.
- *
- * The pass only ever shrinks, so it is idempotent: re-running never grows a light
- * back, and lights that already clear their neighbours are left untouched.
+ * Lights are modelled as spheres, and the crowding is resolved by relaxation: deeper overlaps
+ * are preserved while shallower ones are shrunk away. The pass only ever shrinks, never grows,
+ * so it is idempotent and leaves uncrowded lights untouched.
  */
 class LRDebug_LightSpacer {
-    // Max range from player to consider lights for spacing
+    // Range from player to consider lights, squared
     private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 160000.0;
-    // Floor radius; spheres are never shrunk below this
     private const var MIN_RADIUS   : float;  default MIN_RADIUS = 0.1;
-    // Overlap below this (metres) counts as "not overlapping"
+    // Overlap shallower than this (metres) counts as not overlapping
     private const var EPSILON      : float;  default EPSILON = 0.01;
-    // Each light may overlap at most this many others (MAX_OVERLAPS + 1 lights may
-    // share a space). Deeper overlaps win the slots; shallower excess is cleared
+    // Most other lights any one light may overlap
     private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 5;
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
     private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.5;
-    // Hard cap so a pair that cannot separate (shared centre) can't spin the loop forever
     private const var MAX_PASSES   : int;    default MAX_PASSES = 64;
 
     // Parallel arrays, one entry per gathered entity
@@ -34,8 +24,7 @@ class LRDebug_LightSpacer {
     private var radii    : array<float>;
     private var original : array<float>;
 
-    // Candidate overlap edges: only pairs near enough to ever touch, so the passes
-    // skip the n^2 misses. Parallel arrays, one per edge; pairDist is fixed.
+    // Candidate overlap pairs, only those near enough to ever touch; parallel arrays, one per pair
     private var pairI   : array<int>;
     private var pairJ   : array<int>;
     private var pairDist: array<float>;
@@ -299,12 +288,7 @@ class LRDebug_LightSpacer {
         return 3;
     }
 
-    /**
-     * Rebuild each light's deepest-MAX_OVERLAPS overlaps into kept (stride MAX_OVERLAPS
-     * per light, neighbour indices descending by overlap, -1 padded) so the relaxation
-     * loop tests membership instead of re-ranking. Each edge feeds both its endpoints.
-     * Only over-cap lights are ranked, since an under-cap light keeps every neighbour.
-     */
+    /** Precompute which overlaps each crowded light keeps, so relaxation needn't re-rank each pass */
     private function SelectKeptNeighbours() {
         var e, s, edgeCount, slots, i, j: int;
         var overlap: float;
