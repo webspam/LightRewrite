@@ -2,7 +2,7 @@
  * Shrink nearby shadow-casting lights, to reduce the number of overlapping lights.
  *
  * Each light-bearing entity is treated as one sphere, centred on the entity and
- * sized to its largest shadow-casting point light. Shadow casting lights are the 
+ * sized to its largest shadow-casting point light. Shadow casting lights are the
  * target of this optimisation, so non-shadow point lights are skipped.
  *
  * A light may overlap at most MAX_OVERLAPS others. Any excess is relaxed away over
@@ -14,14 +14,16 @@
  * back, and lights that already clear their neighbours are left untouched.
  */
 class LRDebug_LightSpacer {
-    // Gather radius from the player, pre-squared for distance checks (75 m)
-    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 5625.0;
+    // Max range from player to consider lights for spacing
+    private const var RANGE_SQUARED: float;  default RANGE_SQUARED = 22500.0;
     // Floor radius; spheres are never shrunk below this
     private const var MIN_RADIUS   : float;  default MIN_RADIUS = 0.1;
     // Overlap below this (metres) counts as "not overlapping"
     private const var EPSILON      : float;  default EPSILON = 0.01;
-    // Safety bound on relaxation passes (coincident centres can never separate)
-    private const var MAX_PASSES   : int;    default MAX_PASSES = 64;
+    // Hard cap: lights sharing a centre can never be separated, so the loop would otherwise spin forever
+    private const var MAX_PASSES   : int;    default MAX_PASSES = 256;
+    // How much of each overlap to remove per pass; smaller values overshoot less but need more passes
+    private const var RELAX_OMEGA  : float;  default RELAX_OMEGA = 0.3;
     // Each light may overlap at most this many others (MAX_OVERLAPS + 1 lights may
     // share a space). Deeper overlaps win the slots; shallower excess is cleared
     private const var MAX_OVERLAPS : int;    default MAX_OVERLAPS = 3;
@@ -32,11 +34,18 @@ class LRDebug_LightSpacer {
     private var radii    : array<float>;
     private var original : array<float>;
 
+    // Candidate overlap edges: only pairs near enough to ever touch, so the passes
+    // skip the n^2 misses. Parallel arrays, one per edge; pairDist is fixed.
+    private var pairI   : array<int>;
+    private var pairJ   : array<int>;
+    private var pairDist: array<float>;
+
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
         Gather();
         if (entities.Size() < 2) return 0;
 
+        BuildPairs();
         Relax();
         return Apply();
     }
@@ -53,8 +62,6 @@ class LRDebug_LightSpacer {
         radii.Clear();
         original.Clear();
 
-        // Every light the mod tagged, world-wide; FindGameplayEntitiesInRange caps out and
-        // misses lights in dense rooms, so we take the full list and filter to range ourselves.
         theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, found);
         playerPos = thePlayer.GetWorldPosition();
 
@@ -89,8 +96,6 @@ class LRDebug_LightSpacer {
         for (i = 0; i < count; i += 1) {
             light = (CPointLightComponent)components[i];
             if (!light) continue;
-
-            // Non-shadow-casting lights cost nothing to render, so they never need spacing
             if (light.shadowCastingMode == LSCM_None) continue;
 
             if (light.radius > maxRadius) maxRadius = light.radius;
@@ -99,105 +104,127 @@ class LRDebug_LightSpacer {
     }
 
     /**
-     * Jacobi-style relaxation: each pass lets every light keep its deepest
-     * MAX_OVERLAPS overlaps, then has both spheres of every excess overlapping
-     * pair give up half the overlap, applies the worst reduction each sphere
-     * accrued, and repeats until a pass finds no excess overlap. Shrinking only
-     * ever removes overlaps, never creates them, so the pass converges.
+     * Build the candidate-pair edge list once: radii only shrink, so pairs that can't
+     * reach each other at full size never will, and every pass then skips the n^2 misses.
      */
-    private function Relax() {
-        var kept: array<int>;
-        var reduce: array<float>;
-        var pass, i, j, count: int;
-        var distSq, overlap, half, sumRadii: float;
-        var keptByBoth, changed: bool;
+    private function BuildPairs() {
+        var i, j, count: int;
+        var dist: float;
 
-        count = radii.Size();
+        pairI.Clear();
+        pairJ.Clear();
+        pairDist.Clear();
 
-        for (pass = 0; pass < MAX_PASSES; pass += 1) {
-            SelectKeptNeighbours(kept);
+        count = positions.Size();
+        for (i = 0; i < count; i += 1) {
+            for (j = i + 1; j < count; j += 1) {
+                dist = SqrtF(VecDistanceSquared(positions[i], positions[j]));
+                if (original[i] + original[j] - dist <= EPSILON) continue;
 
-            reduce.Clear();
-            for (i = 0; i < count; i += 1) reduce.PushBack(0.0);
-
-            changed = false;
-            for (i = 0; i < count; i += 1) {
-                for (j = i + 1; j < count; j += 1) {
-                    sumRadii = radii[i] + radii[j];
-                    distSq = VecDistanceSquared(positions[i], positions[j]);
-
-                    // Squared test rejects non-touching pairs without a sqrt
-                    if (distSq >= sumRadii * sumRadii) continue;
-
-                    // Overlapping: one sqrt to size the reduction (rA + rB - distance)
-                    overlap = sumRadii - SqrtF(distSq);
-                    if (overlap <= EPSILON) continue;
-
-                    // An overlap may stand only if both lights kept the other
-                    keptByBoth = IsKept(kept, i, j) && IsKept(kept, j, i);
-                    if (keptByBoth) continue;
-
-                    half = overlap * 0.5;
-                    if (half > reduce[i]) reduce[i] = half;
-                    if (half > reduce[j]) reduce[j] = half;
-                    changed = true;
-                }
-            }
-
-            if (!changed) break;
-
-            for (i = 0; i < count; i += 1) {
-                radii[i] = MaxF(MIN_RADIUS, radii[i] - reduce[i]);
+                pairI.PushBack(i);
+                pairJ.PushBack(j);
+                pairDist.PushBack(dist);
             }
         }
     }
 
     /**
-     * Builds each light's deepest-MAX_OVERLAPS overlaps into kept (stride
-     * MAX_OVERLAPS, neighbour indices descending by overlap, -1 padded) so the
-     * relaxation loop can test membership instead of re-ranking every pair. Ties
-     * keep the lower index, so each light's kept set is stable.
+     * Gauss-Seidel relaxation: each pass lets every light keep its deepest
+     * MAX_OVERLAPS overlaps, then shrinks both spheres of every excess pair by a
+     * fraction of the overlap, applied at once so later pairs see it, and repeats
+     * until a pass finds no excess overlap. Shrinking only ever removes overlaps,
+     * never creates them, so the pass converges.
      */
-    private function SelectKeptNeighbours(out kept: array<int>) {
+    private function Relax() {
+        var kept: array<int>;
         var slotOverlap: array<float>;
-        var i, j, s, t, count, base: int;
-        var distSq, overlap, sumRadii: float;
+        var pass, e, i, j, edgeCount, slots: int;
+        var overlap, step: float;
+        var changed: bool;
 
-        count = radii.Size();
+        edgeCount = pairI.Size();
+        slots = radii.Size() * MAX_OVERLAPS;
 
-        kept.Clear();
-        for (i = 0; i < count * MAX_OVERLAPS; i += 1) kept.PushBack(-1);
-        for (s = 0; s < MAX_OVERLAPS; s += 1) slotOverlap.PushBack(0.0);
+        // Allocate the kept ranking once; SelectKeptNeighbours rebuilds it in place each pass
+        for (e = 0; e < slots; e += 1) {
+            kept.PushBack(-1);
+            slotOverlap.PushBack(0.0);
+        }
 
-        for (i = 0; i < count; i += 1) {
-            base = i * MAX_OVERLAPS;
-            for (s = 0; s < MAX_OVERLAPS; s += 1) {
-                kept[base + s] = -1;
-                slotOverlap[s] = 0.0;
-            }
+        for (pass = 0; pass < MAX_PASSES; pass += 1) {
+            SelectKeptNeighbours(kept, slotOverlap);
 
-            for (j = 0; j < count; j += 1) {
-                if (j == i) continue;
+            changed = false;
+            for (e = 0; e < edgeCount; e += 1) {
+                i = pairI[e];
+                j = pairJ[e];
 
-                sumRadii = radii[i] + radii[j];
-                distSq = VecDistanceSquared(positions[i], positions[j]);
-                if (distSq >= sumRadii * sumRadii) continue;
-
-                overlap = sumRadii - SqrtF(distSq);
+                overlap = radii[i] + radii[j] - pairDist[e];
                 if (overlap <= EPSILON) continue;
 
-                // Insert j into the descending top-MAX_OVERLAPS slots
-                for (s = 0; s < MAX_OVERLAPS; s += 1) {
-                    if (overlap > slotOverlap[s]) {
-                        for (t = MAX_OVERLAPS - 1; t > s; t -= 1) {
-                            slotOverlap[t] = slotOverlap[t - 1];
-                            kept[base + t] = kept[base + t - 1];
-                        }
-                        slotOverlap[s] = overlap;
-                        kept[base + s] = j;
-                        break;
-                    }
+                // An overlap may stand only if both lights kept the other
+                if (IsKept(kept, i, j) && IsKept(kept, j, i)) continue;
+
+                step = overlap * 0.5 * RELAX_OMEGA;
+                // Pairs already pinned at the floor can't separate; don't keep the pass loop alive for them
+                if (radii[i] > MIN_RADIUS || radii[j] > MIN_RADIUS) changed = true;
+                radii[i] = MaxF(MIN_RADIUS, radii[i] - step);
+                radii[j] = MaxF(MIN_RADIUS, radii[j] - step);
+            }
+
+            if (!changed) break;
+        }
+    }
+
+    /**
+     * Rebuild each light's deepest-MAX_OVERLAPS overlaps into kept (stride MAX_OVERLAPS
+     * per light, neighbour indices descending by overlap, -1 padded) so the relaxation
+     * loop tests membership instead of re-ranking. Each edge feeds both its endpoints.
+     */
+    private function SelectKeptNeighbours(out kept: array<int>, out slotOverlap: array<float>) {
+        var e, s, edgeCount, slots, i, j: int;
+        var overlap: float;
+
+        slots = kept.Size();
+        edgeCount = pairI.Size();
+
+        for (s = 0; s < slots; s += 1) {
+            kept[s] = -1;
+            slotOverlap[s] = 0.0;
+        }
+
+        for (e = 0; e < edgeCount; e += 1) {
+            i = pairI[e];
+            j = pairJ[e];
+
+            overlap = radii[i] + radii[j] - pairDist[e];
+            if (overlap <= EPSILON) continue;
+
+            InsertKept(kept, slotOverlap, i, j, overlap);
+            InsertKept(kept, slotOverlap, j, i, overlap);
+        }
+    }
+
+    /** Insert neighbour `other` (depth `overlap`) into `owner`s descending top-MAX_OVERLAPS slots */
+    private function InsertKept(
+        out kept: array<int>,
+        out slotOverlap: array<float>,
+        owner: int,
+        other: int,
+        overlap: float
+    ) {
+        var base, s, t: int;
+
+        base = owner * MAX_OVERLAPS;
+        for (s = 0; s < MAX_OVERLAPS; s += 1) {
+            if (overlap > slotOverlap[base + s]) {
+                for (t = MAX_OVERLAPS - 1; t > s; t -= 1) {
+                    slotOverlap[base + t] = slotOverlap[base + t - 1];
+                    kept[base + t] = kept[base + t - 1];
                 }
+                slotOverlap[base + s] = overlap;
+                kept[base + s] = other;
+                return;
             }
         }
     }
