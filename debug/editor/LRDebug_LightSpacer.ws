@@ -192,12 +192,12 @@ class LRDebug_LightSpacer {
     private function Relax() {
         var target: array<float>;
         var shed: array<int>;
-        var pass, e, i, j, edgeCount, lightCount: int;
+        var pass, e, i, j: int;
         var overlap, step, worst, share: float;
         var changed: bool;
 
-        edgeCount = pairI.Size();
-        lightCount = radii.Size();
+        var edgeCount: int = pairI.Size();
+        var lightCount: int = radii.Size();
 
         target.Grow(lightCount);
 
