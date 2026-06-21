@@ -219,6 +219,9 @@ function ParseLightRewriteSpotlightParams(
         spotlight.softness.has = true;
         spotlight.softness.value = StringToFloat(strVal, 0.f);
     }
+    if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'spawn', strVal)) {
+        spotlight.spawn = (strVal == "true");
+    }
 
     offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
     if (ParseLightRewriteVector(dm, offsetNode, spotlight.offset.value)) {
