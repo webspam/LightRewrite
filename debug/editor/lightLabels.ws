@@ -152,6 +152,15 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     return true;
 }
 
+@wrapMethod(CExplorationStateManager)
+function PostStateChange() {
+    wrappedMethod();
+
+    if (thePlayer.lrDebugLabels && theInput.GetContext() == thePlayer.GetExplorationInputContext()) {
+        theInput.StoreContext('LRDebug');
+    }
+}
+
 // ---- Input: toggle path labels ----
 
 @addMethod(CR4Player)
