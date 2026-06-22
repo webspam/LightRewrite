@@ -7,6 +7,9 @@
  * so it is idempotent and leaves uncrowded lights untouched.
  */
 class LRDebug_LightSpacer {
+    // true: fast per-light distance clamp; false: the relaxation solver
+    private const var USE_DISTANCE_CLAMP: bool;  default USE_DISTANCE_CLAMP = true;
+
     private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
     private const var EPSILON     : float;  default EPSILON = 0.01;
@@ -37,8 +40,13 @@ class LRDebug_LightSpacer {
         Gather();
         if (entities.Size() < 1) return 0;
 
-        // Bypasses the relaxation path below
-        ShrinkToCentres();
+        if (USE_DISTANCE_CLAMP) {
+            ShrinkToCentres();
+        }
+        else {
+            BuildPairs();
+            Relax();
+        }
         return Apply();
     }
 
