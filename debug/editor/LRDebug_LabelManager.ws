@@ -203,6 +203,8 @@ class LRDebug_LabelManager {
             rewriter.RestoreOriginalState();
             ShowToast("LightRewrite: OFF");
         }
+
+        RefreshTargetOneliner();
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {

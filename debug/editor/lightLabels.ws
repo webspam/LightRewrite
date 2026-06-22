@@ -105,6 +105,23 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
 }
 
+/** Update labels when the mod is toggle on/off */
+@wrapMethod(CLightRewriteSettings)
+function OptionValueChanged(groupId: int, optionName: name, optionValue: string) {
+    var wasEnabled: bool = isEnabled;
+
+    wrappedMethod(groupId, optionName, optionValue);
+
+    if (
+        isEnabled != wasEnabled &&
+        thePlayer &&
+        thePlayer.lrDebugLabels &&
+        thePlayer.lrDebugLabelManager
+    ) {
+        thePlayer.lrDebugLabelManager.RefreshTargetOneliner();
+    }
+}
+
 // ---- Refresh timer ----
 
 @addMethod(CR4Player)

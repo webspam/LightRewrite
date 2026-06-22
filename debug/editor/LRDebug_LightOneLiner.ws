@@ -68,6 +68,11 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
         params = entity.lrDebugParams;
 
+        // Toggled off: drop overrides so every branch falls through to the live original values
+        if (params && entity.lightSourceRewriter && entity.lightSourceRewriter.inOriginalState) {
+            params = NULL;
+        }
+
         if (type == 'spot') {
             if (params) {
                 lightParams = params.spotlight;
