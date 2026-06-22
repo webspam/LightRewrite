@@ -42,21 +42,27 @@ class LRDebug_LightSpacer {
         return Apply();
     }
 
-    /** Shrink each light so its sphere stops short of every other shadow-casting light centre */
+    /** Shrink each light so its sphere clears every other light centre but the nearest one */
     private function ShrinkToCentres() {
         var i, k, count: int;
-        var d2, limit2: float;
+        var d2, nearest2, limit2: float;
 
         count = positions.Size();
         for (i = 0; i < count; i += 1) {
             // Stay in squared space; the sole sqrt is the final radius
             limit2 = radii[i] * radii[i];
+            nearest2 = limit2;
 
             for (k = 0; k < count; k += 1) {
                 if (k == i) continue;
 
                 d2 = VecDistanceSquared(positions[i], positions[k]);
-                if (d2 < limit2) limit2 = d2;
+                // Permit overlapping the nearest centre; the second nearest binds the radius
+                if (d2 < nearest2) {
+                    limit2 = nearest2;
+                    nearest2 = d2;
+                }
+                else if (d2 < limit2) limit2 = d2;
             }
 
             if (limit2 < radii[i] * radii[i]) {
