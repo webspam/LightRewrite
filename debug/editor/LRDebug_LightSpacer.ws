@@ -1,3 +1,9 @@
+enum ELRDebugSpaceMode {
+    LRDSM_DistanceClamp = 0,
+    LRDSM_RelaxCount = 1,
+    LRDSM_RelaxVolume = 2
+}
+
 /**
  * Eases the cost of dense, overlapping shadow-casting lights under ray tracing by shrinking
  * some of their radii until each light overlaps only a limited number of its neighbours.
@@ -7,8 +13,7 @@
  * so it is idempotent and leaves uncrowded lights untouched.
  */
 class LRDebug_LightSpacer {
-    // true: fast per-light distance clamp; false: the relaxation solver
-    private const var USE_DISTANCE_CLAMP: bool;  default USE_DISTANCE_CLAMP = false;
+    private const var SPACE_MODE: ELRDebugSpaceMode;  default SPACE_MODE = LRDSM_DistanceClamp;
 
     private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
@@ -40,12 +45,14 @@ class LRDebug_LightSpacer {
         Gather();
         if (entities.Size() < 1) return 0;
 
-        if (USE_DISTANCE_CLAMP) {
-            ShrinkToCentres();
-        }
-        else {
-            BuildPairs();
-            Relax();
+        switch (SPACE_MODE) {
+            case LRDSM_DistanceClamp:
+                ShrinkToCentres();
+                break;
+            default:
+                BuildPairs();
+                Relax();
+                break;
         }
         return Apply();
     }
