@@ -35,11 +35,40 @@ class LRDebug_LightSpacer {
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
         Gather();
-        if (entities.Size() < 2) return 0;
+        if (entities.Size() < 1) return 0;
 
-        BuildPairs();
-        Relax();
+        // Bypasses the relaxation path below
+        ShrinkToCentres();
         return Apply();
+    }
+
+    private function ShrinkToCentres() {
+        var found: array<CEntity>;
+        var ownEntity: CEntity;
+        var i, k, count, foundCount: int;
+        var d2, limit2: float;
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            ownEntity = (CEntity)entities[i];
+            limit2 = radii[i] * radii[i];
+
+            found.Clear();
+            theWorld.SphereOverlapTest(found, positions[i], radii[i]);
+
+            foundCount = found.Size();
+            for (k = 0; k < foundCount; k += 1) {
+                if (!found[k]) continue;
+                if (found[k] == ownEntity) continue;
+
+                d2 = VecDistanceSquared(positions[i], found[k].GetWorldPosition());
+                if (d2 < limit2) limit2 = d2;
+            }
+
+            if (limit2 < radii[i] * radii[i]) {
+                radii[i] = MaxF(MIN_RADIUS, SqrtF(limit2) - EPSILON);
+            }
+        }
     }
 
     private function Gather() {
