@@ -13,7 +13,7 @@ enum ELRDebugSpaceMode {
  * so it is idempotent and leaves uncrowded lights untouched.
  */
 class LRDebug_LightSpacer {
-    private const var SPACE_MODE: ELRDebugSpaceMode;  default SPACE_MODE = LRDSM_DistanceClamp;
+    private const var SPACE_MODE: ELRDebugSpaceMode;  default SPACE_MODE = LRDSM_RelaxVolume;
 
     private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
@@ -23,6 +23,9 @@ class LRDebug_LightSpacer {
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
     private const var RELAX_OMEGA : float;  default RELAX_OMEGA = 0.5;
     private const var MAX_PASSES  : int;    default MAX_PASSES = 64;
+
+    // Total overlap each light may keep, as the volume of a sphere this big
+    private const var OVERLAP_BUDGET_RADIUS: float;  default OVERLAP_BUDGET_RADIUS = 4.0;
 
     // Parallel arrays, one entry per gathered entity
     private var entities : array<CGameplayEntity>;
@@ -48,6 +51,10 @@ class LRDebug_LightSpacer {
         switch (SPACE_MODE) {
             case LRDSM_DistanceClamp:
                 ShrinkToCentres();
+                break;
+            case LRDSM_RelaxVolume:
+                BuildPairs();
+                RelaxByVolume();
                 break;
             default:
                 BuildPairs();
@@ -421,6 +428,64 @@ class LRDebug_LightSpacer {
             if (kept[base + s] == other) return true;
         }
         return false;
+    }
+
+    /** Shrink crowded lights until each one's summed overlap volume fits the budget sphere */
+    private function RelaxByVolume() {
+        var load: array<float>;
+        var pass, e, i, j, lightCount, edgeCount: int;
+        var budget, vol, scale, newR: float;
+        var changed: bool;
+
+        edgeCount = pairI.Size();
+        lightCount = radii.Size();
+        budget = OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS;
+        load.Grow(lightCount);
+
+        for (pass = 0; pass < MAX_PASSES; pass += 1) {
+            for (i = 0; i < lightCount; i += 1) load[i] = 0.0;
+
+            for (e = 0; e < edgeCount; e += 1) {
+                i = pairI[e];
+                j = pairJ[e];
+                vol = OverlapVolume(radii[i], radii[j], pairDist[e]);
+                load[i] += vol;
+                load[j] += vol;
+            }
+
+            changed = false;
+            for (i = 0; i < lightCount; i += 1) {
+                if (load[i] <= budget) continue;
+
+                // Overlap volume scales ~r^3; cube-root the ratio to ease load toward budget, omega damps overshoot
+                scale = PowF(budget / load[i], 1.0 / 3.0);
+                newR = radii[i] - RELAX_OMEGA * radii[i] * (1.0 - scale);
+                newR = MaxF(MIN_RADIUS, newR);
+                if (newR < radii[i]) {
+                    radii[i] = newR;
+                    changed = true;
+                }
+            }
+            if (!changed) break;
+        }
+    }
+
+    /** Sphere-sphere intersection volume in r^3 units (sphere = r^3), matching how the budget is measured */
+    private function OverlapVolume(rA: float, rB: float, d: float): float {
+        var inner: float;
+
+        if (d >= rA + rB) return 0.0;
+
+        // Within the radius gap the smaller sphere sits wholly inside the larger, so it is the whole overlap
+        if (d <= AbsF(rA - rB)) {
+            inner = MinF(rA, rB);
+            return inner * inner * inner;
+        }
+
+        // Lens volume where the two spheres overlap
+        return (rA + rB - d) * (rA + rB - d)
+            * (d * d + 2.0 * d * rA - 3.0 * rA * rA + 2.0 * d * rB + 6.0 * rA * rB - 3.0 * rB * rB)
+            / (16.0 * d);
     }
 
     /** Writes shrunk radii back through each entity's rewriter; returns count changed */
