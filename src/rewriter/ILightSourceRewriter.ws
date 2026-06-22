@@ -14,8 +14,8 @@ abstract class ILightSourceRewriter {
     // When set, RewriteLight uses these instead of params.
     protected var menuOverrideParams: CLightRewriteSourceParams;
 
-    // Spotlight spawned for a spawn="true" override; kept and reused across enable/disable
-    protected var spawnedSpotlight: CSpotLightComponent;
+    // Spotlight spawned for a spawn="true" override
+    protected var spawnedSpotlight: CEntity;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
     public function Init(
@@ -94,7 +94,10 @@ abstract class ILightSourceRewriter {
             }
         }
 
-        if (spawnedSpotlight) spawnedSpotlight.SetEnabled(false);
+        if (spawnedSpotlight) {
+            spotLight = (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
+            if (spotLight) spotLight.SetEnabled(false);
+        }
     }
 
     // Disables all spotlight components on the entity.
@@ -185,24 +188,30 @@ abstract class ILightSourceRewriter {
 
     private function GetOrSpawnSpotlight(): CSpotLightComponent {
         var template: CEntityTemplate;
-        var spawned: CEntity;
 
-        if (spawnedSpotlight) return spawnedSpotlight;
+        if (!spawnedSpotlight) {
+            template = (CEntityTemplate)LoadResource("dlc\lightrewrite\lights\spotlight.w2ent", true);
+            if (!template) {
+                LogLightRewrite("Spawn spotlight: failed to load template for " + parentEntity);
+                return NULL;
+            }
 
-        template = (CEntityTemplate)LoadResource("dlc\lightrewrite\lights\spotlight.w2ent", true);
-        if (!template) {
-            LogLightRewrite("Spawn spotlight: failed to load template for " + parentEntity);
-            return NULL;
+            spawnedSpotlight = theGame.CreateEntity(template, parentEntity.GetWorldPosition(), parentEntity.GetWorldRotation());
+            if (!spawnedSpotlight) {
+                LogLightRewrite("Spawn spotlight: failed to spawn entity for " + parentEntity);
+                return NULL;
+            }
         }
 
-        spawned = theGame.CreateEntity(template, parentEntity.GetWorldPosition(), parentEntity.GetWorldRotation());
-        if (!spawned) {
-            LogLightRewrite("Spawn spotlight: failed to spawn entity for " + parentEntity);
-            return NULL;
-        }
+        return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
+    }
 
-        spawnedSpotlight = (CSpotLightComponent)spawned.GetComponentByClassName('CSpotLightComponent');
-        return spawnedSpotlight;
+    // Destroy the spawned spotlight entity when this rewriter is discarded, rather than orphan it
+    public function DestroySpawnedSpotlight() {
+        if (spawnedSpotlight) {
+            spawnedSpotlight.Destroy();
+            spawnedSpotlight = NULL;
+        }
     }
 
     // Rewrites the specified point light with the rewriter's params.
