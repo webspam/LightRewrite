@@ -11,7 +11,7 @@ class LRDebug_LightSpacer {
     // Overlap shallower than this (metres) counts as not overlapping
     private const var EPSILON     : float;  default EPSILON = 0.01;
     // Most other lights any one light may overlap
-    private const var MAX_OVERLAPS: int;    default MAX_OVERLAPS = 5;
+    private const var MAX_OVERLAPS: int;    default MAX_OVERLAPS = 7;
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
     private const var RELAX_OMEGA : float;  default RELAX_OMEGA = 0.5;
     private const var MAX_PASSES  : int;    default MAX_PASSES = 64;
