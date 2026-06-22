@@ -42,26 +42,20 @@ class LRDebug_LightSpacer {
         return Apply();
     }
 
+    /** Shrink each light so its sphere stops short of every other shadow-casting light centre */
     private function ShrinkToCentres() {
-        var found: array<CEntity>;
-        var ownEntity: CEntity;
-        var i, k, count, foundCount: int;
+        var i, k, count: int;
         var d2, limit2: float;
 
-        count = entities.Size();
+        count = positions.Size();
         for (i = 0; i < count; i += 1) {
-            ownEntity = (CEntity)entities[i];
+            // Stay in squared space; the sole sqrt is the final radius
             limit2 = radii[i] * radii[i];
 
-            found.Clear();
-            theWorld.SphereOverlapTest(found, positions[i], radii[i]);
+            for (k = 0; k < count; k += 1) {
+                if (k == i) continue;
 
-            foundCount = found.Size();
-            for (k = 0; k < foundCount; k += 1) {
-                if (!found[k]) continue;
-                if (found[k] == ownEntity) continue;
-
-                d2 = VecDistanceSquared(positions[i], found[k].GetWorldPosition());
+                d2 = VecDistanceSquared(positions[i], positions[k]);
                 if (d2 < limit2) limit2 = d2;
             }
 
