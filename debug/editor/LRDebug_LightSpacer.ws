@@ -8,7 +8,7 @@
  */
 class LRDebug_LightSpacer {
     // true: fast per-light distance clamp; false: the relaxation solver
-    private const var USE_DISTANCE_CLAMP: bool;  default USE_DISTANCE_CLAMP = true;
+    private const var USE_DISTANCE_CLAMP: bool;  default USE_DISTANCE_CLAMP = false;
 
     private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
@@ -50,20 +50,22 @@ class LRDebug_LightSpacer {
         return Apply();
     }
 
-    /** Shrink each light so its sphere clears every other light centre but the nearest one */
+    /** Shrink each light so its sphere clears every other light centre but the two nearest */
     private function ShrinkToCentres() {
         var order: array<int>;
-        var nearest2, second2: array<float>;
+        var nearest2, second2, third2: array<float>;
         var a, b, i, j, count: int;
         var maxReach, d2, r2: float;
 
         count = positions.Size();
         nearest2.Grow(count);
         second2.Grow(count);
+        third2.Grow(count);
         for (i = 0; i < count; i += 1) {
             r2 = radii[i] * radii[i];
             nearest2[i] = r2;
             second2[i] = r2;
+            third2[i] = r2;
             order.PushBack(i);
         }
 
@@ -81,23 +83,33 @@ class LRDebug_LightSpacer {
                 d2 = VecDistanceSquared(positions[i], positions[j]);
 
                 if (d2 < nearest2[i]) {
+                    third2[i] = second2[i];
                     second2[i] = nearest2[i];
                     nearest2[i] = d2;
                 }
-                else if (d2 < second2[i]) second2[i] = d2;
+                else if (d2 < second2[i]) {
+                    third2[i] = second2[i];
+                    second2[i] = d2;
+                }
+                else if (d2 < third2[i]) third2[i] = d2;
 
                 if (d2 < nearest2[j]) {
+                    third2[j] = second2[j];
                     second2[j] = nearest2[j];
                     nearest2[j] = d2;
                 }
-                else if (d2 < second2[j]) second2[j] = d2;
+                else if (d2 < second2[j]) {
+                    third2[j] = second2[j];
+                    second2[j] = d2;
+                }
+                else if (d2 < third2[j]) third2[j] = d2;
             }
         }
 
         // Squared throughout; the sole sqrt is each final radius
         for (i = 0; i < count; i += 1) {
-            if (second2[i] < radii[i] * radii[i]) {
-                radii[i] = MaxF(MIN_RADIUS, SqrtF(second2[i]) - EPSILON);
+            if (third2[i] < radii[i] * radii[i]) {
+                radii[i] = MaxF(MIN_RADIUS, SqrtF(third2[i]) - EPSILON);
             }
         }
     }
