@@ -23,10 +23,14 @@ class CLightRewriteManager {
         if (gameStarted) return;
         gameStarted = true;
 
+        if (!settings.isEnabled) return;
+
         GetAllLightSourceEntities(entities);
         count = entities.Size();
 
         for (i = 0; i < count; i += 1) {
+            if (!entities[i].IsLightRewritable()) continue;
+
             entities[i].lightSourceRewriter.ProcessDeferredActions();
         }
     }
