@@ -52,29 +52,52 @@ class LRDebug_LightSpacer {
 
     /** Shrink each light so its sphere clears every other light centre but the nearest one */
     private function ShrinkToCentres() {
-        var i, k, count: int;
-        var d2, nearest2, limit2: float;
+        var order: array<int>;
+        var nearest2, second2: array<float>;
+        var a, b, i, j, count: int;
+        var maxReach, d2, r2: float;
 
         count = positions.Size();
+        nearest2.Grow(count);
+        second2.Grow(count);
         for (i = 0; i < count; i += 1) {
-            // Stay in squared space; the sole sqrt is the final radius
-            limit2 = radii[i] * radii[i];
-            nearest2 = limit2;
+            r2 = radii[i] * radii[i];
+            nearest2[i] = r2;
+            second2[i] = r2;
+            order.PushBack(i);
+        }
 
-            for (k = 0; k < count; k += 1) {
-                if (k == i) continue;
+        SortByX(order);
+        // Reach is one radius: a centre sits inside a sphere, not sphere against sphere
+        maxReach = MaxRadius();
 
-                d2 = VecDistanceSquared(positions[i], positions[k]);
-                // Permit overlapping the nearest centre; the second nearest binds the radius
-                if (d2 < nearest2) {
-                    limit2 = nearest2;
-                    nearest2 = d2;
+        for (a = 0; a < count; a += 1) {
+            i = order[a];
+            for (b = a + 1; b < count; b += 1) {
+                j = order[b];
+                // Sorted ascending by X, so once the gap clears the reach no later light can touch
+                if (positions[j].X - positions[i].X > maxReach) break;
+
+                d2 = VecDistanceSquared(positions[i], positions[j]);
+
+                if (d2 < nearest2[i]) {
+                    second2[i] = nearest2[i];
+                    nearest2[i] = d2;
                 }
-                else if (d2 < limit2) limit2 = d2;
-            }
+                else if (d2 < second2[i]) second2[i] = d2;
 
-            if (limit2 < radii[i] * radii[i]) {
-                radii[i] = MaxF(MIN_RADIUS, SqrtF(limit2) - EPSILON);
+                if (d2 < nearest2[j]) {
+                    second2[j] = nearest2[j];
+                    nearest2[j] = d2;
+                }
+                else if (d2 < second2[j]) second2[j] = d2;
+            }
+        }
+
+        // Squared throughout; the sole sqrt is each final radius
+        for (i = 0; i < count; i += 1) {
+            if (second2[i] < radii[i] * radii[i]) {
+                radii[i] = MaxF(MIN_RADIUS, SqrtF(second2[i]) - EPSILON);
             }
         }
     }
