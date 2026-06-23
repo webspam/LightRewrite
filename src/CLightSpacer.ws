@@ -48,9 +48,9 @@ class CLightSpacer {
     private var degree     : array<int>;
 
     /** Apply the menu's spacing type and amount; the amount means overlaps in count mode, budget radius in volume mode */
-    public function Configure(mode: ELightSpaceMode, amount: int) {
+    public function Configure(mode: ELightSpaceMode, amount: float) {
         SPACE_MODE = mode;
-        if (mode == LSM_RelaxCount) MAX_OVERLAPS = amount;
+        if (mode == LSM_RelaxCount) MAX_OVERLAPS = FloorF(amount);
         else if (mode == LSM_RelaxVolume) OVERLAP_BUDGET_RADIUS = amount;
     }
 

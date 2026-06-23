@@ -117,8 +117,6 @@ class CLightRewriteManager {
                 entities[i].lightSourceRewriter.RestoreOriginalState();
             }
         }
-
-        ApplySpacing();
     }
 
     // Restores all light sources to their original state.

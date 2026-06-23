@@ -25,8 +25,8 @@ class CLightRewriteSettings {
     private var currentProfile: name;
 
     // Spacing amount reads as overlap count in count mode, budget radius in volume mode
-    private var spacingMode  : int;  default spacingMode = 0;
-    private var spacingAmount: int;  default spacingAmount = 4;
+    private var spacingMode  : int;    default spacingMode = 0;
+    private var spacingAmount: float;  default spacingAmount = 4.0;
 
     // Runtime params for each light source type
     public var candleParams    : CLightRewriteSourceParams;
@@ -118,7 +118,7 @@ class CLightRewriteSettings {
         }
     }
 
-    public function GetSpacingAmount(): int {
+    public function GetSpacingAmount(): float {
         return spacingAmount;
     }
 
@@ -604,7 +604,7 @@ class CLightRewriteSettings {
         }
 
         spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
-        spacingAmount = StringToInt(
+        spacingAmount = StringToFloat(
             gameConfig.GetVarValue(GENERAL_GROUP, SPACING_AMOUNT),
             spacingAmount
         );
@@ -650,6 +650,7 @@ class CLightRewriteSettings {
     public function ApplyPendingChanges(): void {
         if (!(previousProfile >= 0)) previousProfile = 0;
         if (profileIndex != previousProfile) theGame.lightRewrite.ChangeProfile();
+        else if (isEnabled) theGame.lightRewrite.ApplySpacing();
     }
 
     // Configures the active game settings menu. Should be called after the menu is opened.
