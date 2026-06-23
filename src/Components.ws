@@ -35,6 +35,48 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.color = color;
 }
 
+function LR_CentralPointLight(entity: CGameplayEntity): CPointLightComponent {
+    var components: array<CComponent>;
+    var centroid, pos, posB: Vector;
+    var bestDist, dist: float;
+    var bestIdx, i, count: int;
+
+    components = entity.GetComponentsByClassName('CPointLightComponent');
+    count = components.Size();
+
+    if (count == 0) return NULL;
+    if (count == 1) return (CPointLightComponent)components[0];
+
+    // A pair has no centre, so the raised light reads as the main one
+    if (count == 2) {
+        pos = components[0].GetWorldPosition();
+        posB = components[1].GetWorldPosition();
+        if (posB.Z > pos.Z) return (CPointLightComponent)components[1];
+        return (CPointLightComponent)components[0];
+    }
+
+    for (i = 0; i < count; i += 1) {
+        pos = components[i].GetWorldPosition();
+        centroid.X += pos.X;
+        centroid.Y += pos.Y;
+        centroid.Z += pos.Z;
+    }
+    centroid.X /= count;
+    centroid.Y /= count;
+    centroid.Z /= count;
+
+    bestIdx = 0;
+    bestDist = VecDistanceSquared(components[0].GetWorldPosition(), centroid);
+    for (i = 1; i < count; i += 1) {
+        dist = VecDistanceSquared(components[i].GetWorldPosition(), centroid);
+        if (dist < bestDist) {
+            bestDist = dist;
+            bestIdx = i;
+        }
+    }
+    return (CPointLightComponent)components[bestIdx];
+}
+
 // Restores the light component to its original values.
 @addMethod(CLightComponent)
 public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional enabled: bool) {
