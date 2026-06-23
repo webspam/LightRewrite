@@ -157,6 +157,24 @@
                 <Option id="9"><Entry varId="CurrentProfile" value="9" /></Option>
               </OptionsArray>
             </Var>
+            <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" displayType="OPTIONS">
+              <OptionsArray>
+                <Option id="0" displayName="LightRewrite_None">
+                  <Entry varId="SpacingMode" value="0" />
+                </Option>
+                <Option id="1" displayName="LightRewrite_Spacing_Mode_Distance">
+                  <Entry varId="SpacingMode" value="1" />
+                </Option>
+                <Option id="2" displayName="LightRewrite_Spacing_Mode_Count">
+                  <Entry varId="SpacingMode" value="2" />
+                </Option>
+                <Option id="3" displayName="LightRewrite_Spacing_Mode_Volume">
+                  <Entry varId="SpacingMode" value="3" />
+                </Option>
+              </OptionsArray>
+            </Var>
+            <Var id="SpacingAmount" displayName="LightRewrite_Spacing_Amount"
+                displayType="SLIDER;1;20;19" />
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="CandleEnabled" displayName="LightRewrite_Candle_Enabled"

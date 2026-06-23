@@ -95,6 +95,7 @@ class CLightRewriteManager {
             rewriter.RewriteLight();
         }
 
+        lightSpacer.Configure(settings.GetSpacingMode(), settings.GetSpacingAmount());
         lightSpacer.Solve();
     }
 

@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 10;
+    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 11;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP       : name;    default GENERAL_GROUP = 'LightRewrite_General';
     // Label key constants (must match XML Var id values)
@@ -13,6 +13,8 @@ class CLightRewriteSettings {
     private const var ENABLED             : name;    default ENABLED = 'Enabled';
     private const var INIT_VERSION        : name;    default INIT_VERSION = 'InitVersion';
     private const var CURRENT_PRESET      : name;    default CURRENT_PRESET = 'CurrentProfile';
+    private const var SPACING_MODE        : name;    default SPACING_MODE = 'SpacingMode';
+    private const var SPACING_AMOUNT      : name;    default SPACING_AMOUNT = 'SpacingAmount';
 
     // Internal group IDs resolved at init time
     private var generalGroupId: int;
@@ -21,6 +23,10 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled: bool;  default isEnabled = true;
     private var currentProfile: name;
+
+    // Spacing amount reads as overlap count in count mode, budget radius in volume mode
+    private var spacingMode  : int;  default spacingMode = 0;
+    private var spacingAmount: int;  default spacingAmount = 4;
 
     // Runtime params for each light source type
     public var candleParams    : CLightRewriteSourceParams;
@@ -101,6 +107,19 @@ class CLightRewriteSettings {
 
     public function GetEnabledOptionId(): name {
         return ENABLED;
+    }
+
+    public function GetSpacingMode(): ELightSpaceMode {
+        switch (spacingMode) {
+            case 1:   return LSM_DistanceClamp;
+            case 2:   return LSM_RelaxCount;
+            case 3:   return LSM_RelaxVolume;
+            default:  return LSM_Off;
+        }
+    }
+
+    public function GetSpacingAmount(): int {
+        return spacingAmount;
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
@@ -559,6 +578,12 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_ENABLED, false);
         }
 
+        // v10 → v11: add light spacing type and amount.
+        if (initVersion <= 10) {
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_MODE, spacingMode);
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_AMOUNT, spacingAmount);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -577,6 +602,12 @@ class CLightRewriteSettings {
         else {
             currentProfile = NONE_PRESET_LABEL;
         }
+
+        spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
+        spacingAmount = StringToInt(
+            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_AMOUNT),
+            spacingAmount
+        );
 
         count = lightSourceMenu.Size();
         for (i = 0; i < count; i += 1) {

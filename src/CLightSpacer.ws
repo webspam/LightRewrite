@@ -17,19 +17,19 @@ enum ELightSpaceMode {
  * rewrite to the true profile radii before calling it, or the solve compounds its own output.
  */
 class CLightSpacer {
-    private const var SPACE_MODE: ELightSpaceMode;  default SPACE_MODE = LSM_RelaxVolume;
+    private var SPACE_MODE: ELightSpaceMode;  default SPACE_MODE = LSM_RelaxVolume;
 
-    private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
+    private const var MIN_RADIUS : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
-    private const var EPSILON     : float;  default EPSILON = 0.01;
+    private const var EPSILON    : float;  default EPSILON = 0.01;
     // Most other lights any one light may overlap
-    private const var MAX_OVERLAPS: int;    default MAX_OVERLAPS = 7;
+    private var MAX_OVERLAPS     : int;    default MAX_OVERLAPS = 7;
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
-    private const var RELAX_OMEGA : float;  default RELAX_OMEGA = 0.5;
-    private const var MAX_PASSES  : int;    default MAX_PASSES = 64;
+    private const var RELAX_OMEGA: float;  default RELAX_OMEGA = 0.5;
+    private const var MAX_PASSES : int;    default MAX_PASSES = 64;
 
     // Total overlap each light may keep, as the volume of a sphere this big
-    private const var OVERLAP_BUDGET_RADIUS: float;  default OVERLAP_BUDGET_RADIUS = 4.0;
+    private var OVERLAP_BUDGET_RADIUS: float;  default OVERLAP_BUDGET_RADIUS = 4.0;
 
     // Parallel arrays, one entry per gathered entity
     private var entities : array<CGameplayEntity>;
@@ -46,6 +46,13 @@ class CLightSpacer {
     private var kept       : array<int>;
     private var slotOverlap: array<float>;
     private var degree     : array<int>;
+
+    /** Apply the menu's spacing type and amount; the amount means overlaps in count mode, budget radius in volume mode */
+    public function Configure(mode: ELightSpaceMode, amount: int) {
+        SPACE_MODE = mode;
+        if (mode == LSM_RelaxCount) MAX_OVERLAPS = amount;
+        else if (mode == LSM_RelaxVolume) OVERLAP_BUDGET_RADIUS = amount;
+    }
 
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
