@@ -14,6 +14,9 @@ abstract class ILightSourceRewriter {
     // When set, RewriteLight uses these instead of params.
     protected var menuOverrideParams: CLightRewriteSourceParams;
 
+    // Spotlight spawned for a spawn="true" override
+    protected var spawnedSpotlight: CEntity;
+
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
     public function Init(
         parentEntity: CGameplayEntity,
@@ -90,6 +93,11 @@ abstract class ILightSourceRewriter {
                 }
             }
         }
+
+        if (spawnedSpotlight) {
+            spotLight = (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
+            if (spotLight) spotLight.SetEnabled(false);
+        }
     }
 
     // Disables all spotlight components on the entity.
@@ -132,6 +140,11 @@ abstract class ILightSourceRewriter {
         var spotLight: CSpotLightComponent;
         var wasEnabled: bool;
 
+        if (spotParams.spawn) {
+            RewriteSpawnedSpotlight(spotParams);
+            return;
+        }
+
         spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
         if (!spotLight) return;
 
@@ -145,13 +158,60 @@ abstract class ILightSourceRewriter {
         wasEnabled = spotLight.IsEnabled();
         if (wasEnabled) spotLight.SetEnabled(false);
 
+        ApplySpotlightParams(spotLight, spotParams);
+
+        if (wasEnabled) spotLight.SetEnabled(true);
+    }
+
+    protected function ApplySpotlightParams(
+        spotLight: CSpotLightComponent,
+        spotParams: CLightRewriteSpotlightParams
+    ) {
         ApplyLightParams(spotLight, spotParams);
         if (spotParams.innerAngle.has) spotLight.innerAngle = spotParams.innerAngle.value;
         if (spotParams.outerAngle.has) spotLight.outerAngle = spotParams.outerAngle.value;
         if (spotParams.softness.has) spotLight.softness = spotParams.softness.value;
         if (spotParams.offset.has) spotLight.SetPosition(spotParams.offset.value);
+    }
 
-        if (wasEnabled) spotLight.SetEnabled(true);
+    protected function RewriteSpawnedSpotlight(spotParams: CLightRewriteSpotlightParams) {
+        var spotLight: CSpotLightComponent = GetOrSpawnSpotlight();
+        if (!spotLight) return;
+
+        spotLight.SetEnabled(false);
+
+        if (spotParams.enabled.has && !spotParams.enabled.value) return;
+
+        ApplySpotlightParams(spotLight, spotParams);
+        spotLight.SetEnabled(true);
+    }
+
+    private function GetOrSpawnSpotlight(): CSpotLightComponent {
+        var template: CEntityTemplate;
+
+        if (!spawnedSpotlight) {
+            template = (CEntityTemplate)LoadResource("dlc\lightrewrite\lights\spotlight.w2ent", true);
+            if (!template) {
+                LogLightRewrite("Spawn spotlight: failed to load template for " + parentEntity);
+                return NULL;
+            }
+
+            spawnedSpotlight = theGame.CreateEntity(template, parentEntity.GetWorldPosition(), parentEntity.GetWorldRotation());
+            if (!spawnedSpotlight) {
+                LogLightRewrite("Spawn spotlight: failed to spawn entity for " + parentEntity);
+                return NULL;
+            }
+        }
+
+        return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
+    }
+
+    // Destroy the spawned spotlight entity when this rewriter is discarded, rather than orphan it
+    public function DestroySpawnedSpotlight() {
+        if (spawnedSpotlight) {
+            spawnedSpotlight.Destroy();
+            spawnedSpotlight = NULL;
+        }
     }
 
     // Rewrites the specified point light with the rewriter's params.
