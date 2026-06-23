@@ -78,3 +78,8 @@
 2122144075||LightRewrite_Candle_AlignPointLights|Alinear luces puntuales de las velas
 2122144076||LightRewrite_CurrentProfile|Preajuste actual
 2122144077||LightRewrite_None|Ninguno
+2122144078||LightRewrite_Spacing_Mode|Modo de espaciado de luces
+2122144079||LightRewrite_Spacing_Mode_Distance|Límite por distancia
+2122144080||LightRewrite_Spacing_Mode_Count|Conteo de superposición
+2122144081||LightRewrite_Spacing_Mode_Volume|Volumen de superposición
+2122144082||LightRewrite_Spacing_Amount|Cantidad de espaciado de luces

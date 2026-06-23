@@ -78,3 +78,8 @@
 2122144075||LightRewrite_Candle_AlignPointLights|Aligner les lumières ponctuelles des bougies
 2122144076||LightRewrite_CurrentProfile|Préréglage actuel
 2122144077||LightRewrite_None|Aucun
+2122144078||LightRewrite_Spacing_Mode|Mode d'espacement des lumières
+2122144079||LightRewrite_Spacing_Mode_Distance|Limite par distance
+2122144080||LightRewrite_Spacing_Mode_Count|Nombre de chevauchements
+2122144081||LightRewrite_Spacing_Mode_Volume|Volume de chevauchement
+2122144082||LightRewrite_Spacing_Amount|Niveau d'espacement des lumières

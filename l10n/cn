@@ -78,3 +78,8 @@
 2122144075||LightRewrite_Candle_AlignPointLights|对齐蜡烛点光源
 2122144076||LightRewrite_CurrentProfile|当前预设
 2122144077||LightRewrite_None|无
+2122144078||LightRewrite_Spacing_Mode|灯光间隔模式
+2122144079||LightRewrite_Spacing_Mode_Distance|距离钳制
+2122144080||LightRewrite_Spacing_Mode_Count|重叠数量
+2122144081||LightRewrite_Spacing_Mode_Volume|重叠体积
+2122144082||LightRewrite_Spacing_Amount|灯光间隔程度

@@ -78,3 +78,8 @@
 2122144075||LightRewrite_Candle_AlignPointLights|Выравнивать точечные источники света свечей
 2122144076||LightRewrite_CurrentProfile|Текущий пресет
 2122144077||LightRewrite_None|Нет
+2122144078||LightRewrite_Spacing_Mode|Режим разреживания света
+2122144079||LightRewrite_Spacing_Mode_Distance|Ограничение по расстоянию
+2122144080||LightRewrite_Spacing_Mode_Count|Количество пересечений
+2122144081||LightRewrite_Spacing_Mode_Volume|Объём пересечения
+2122144082||LightRewrite_Spacing_Amount|Степень разреживания света
