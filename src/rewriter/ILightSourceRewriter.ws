@@ -196,7 +196,11 @@ abstract class ILightSourceRewriter {
                 return NULL;
             }
 
-            spawnedSpotlight = theGame.CreateEntity(template, parentEntity.GetWorldPosition(), parentEntity.GetWorldRotation());
+            spawnedSpotlight = theGame.CreateEntity(
+                template,
+                parentEntity.GetWorldPosition(),
+                parentEntity.GetWorldRotation()
+            );
             if (!spawnedSpotlight) {
                 LogLightRewrite("Spawn spotlight: failed to spawn entity for " + parentEntity);
                 return NULL;
