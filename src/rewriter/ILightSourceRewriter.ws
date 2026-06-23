@@ -14,6 +14,9 @@ abstract class ILightSourceRewriter {
     // Spotlight spawned for a spawn="true" override
     protected var spawnedSpotlight: CEntity;
 
+    // Upper bound on point-light radius from the spacing pass; 0 means unbounded
+    protected var maxSafeRadius: float;
+
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
     public function Init(
         parentEntity: CGameplayEntity,
@@ -28,6 +31,15 @@ abstract class ILightSourceRewriter {
             parentEntity.AddTag(globalOverrides.tag);
             SetGlobalOverride(globalOverrides);
         }
+    }
+
+    // Set the spacing pass's radius bound; re-applied on every RewriteLight
+    public function SetMaxSafeRadius(r: float) {
+        maxSafeRadius = r;
+    }
+
+    public function HasSpacingCap(): bool {
+        return maxSafeRadius > 0.0;
     }
 
     // If the params passed in (global params) are enabled, set the menu override params to them.
@@ -252,6 +264,11 @@ abstract class ILightSourceRewriter {
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight: CPointLightComponent) {
         ApplyLightParams(pointLight, GetEffectiveParams());
+
+        // Spacing caps the radius last, so it bounds whatever the profile resolved to
+        if (maxSafeRadius > 0.0 && pointLight.radius > maxSafeRadius) {
+            pointLight.radius = maxSafeRadius;
+        }
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour

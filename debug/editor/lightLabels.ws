@@ -33,7 +33,6 @@
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
-@addField(CR4Player) public var lrDebugLightSpacer: LRDebug_LightSpacer;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
 // ---- Lifecycle ----
 
@@ -54,7 +53,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugAttrEditor.Init();
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
-    lrDebugLightSpacer = new LRDebug_LightSpacer in this;
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
@@ -303,12 +301,10 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
-    var changed: int;
-
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    changed = lrDebugLightSpacer.Solve();
-    LogChannel('LRDebug', "LRDebug spacing: shrank " + changed + " lights");
+    theGame.lightRewrite.ApplySpacing();
+    LogChannel('LRDebug', "LRDebug spacing: re-spaced all lights");
     return true;
 }
 

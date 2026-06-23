@@ -11,9 +11,13 @@ class CLightRewriteManager {
     // Whether the game has finished starting
     public var gameStarted: bool;
 
+    // Shrinks crowded shadow-casting lights once their profile radii are settled
+    public var lightSpacer: CLightSpacer;
+
     // Lazy constructor
     public function Init(settings: CLightRewriteSettings) {
         this.settings = settings;
+        lightSpacer = new CLightSpacer in this;
     }
 
     public function ProcessDeferredActions() {
@@ -66,6 +70,32 @@ class CLightRewriteManager {
             entity = (CGameplayEntity)entities[i];
             if (entity) entity.LightRewriteProfileChanged();
         }
+
+        ApplySpacing();
+    }
+
+    // Recompute light spacing: drop stale caps to expose true radii, then shrink crowded lights
+    public function ApplySpacing() {
+        var i, count: int;
+        var entities: array<CGameplayEntity>;
+        var rewriter: ILightSourceRewriter;
+
+        if (!settings.isEnabled) return;
+
+        GetAllLightSourceEntities(entities);
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            if (!entities[i].IsLightRewritable()) continue;
+
+            rewriter = entities[i].lightSourceRewriter;
+            if (!rewriter.HasSpacingCap()) continue;
+
+            // A leftover cap hides the true radius the solve must measure against
+            rewriter.SetMaxSafeRadius(0.0);
+            rewriter.RewriteLight();
+        }
+
+        lightSpacer.Solve();
     }
 
     // Refreshes Light Rewrite on all light sources.
@@ -86,6 +116,8 @@ class CLightRewriteManager {
                 entities[i].lightSourceRewriter.RestoreOriginalState();
             }
         }
+
+        ApplySpacing();
     }
 
     // Restores all light sources to their original state.

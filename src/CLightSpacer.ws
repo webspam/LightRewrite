@@ -1,7 +1,8 @@
-enum ELRDebugSpaceMode {
-    LRDSM_DistanceClamp = 0,
-    LRDSM_RelaxCount = 1,
-    LRDSM_RelaxVolume = 2
+enum ELightSpaceMode {
+    LSM_Off = 0,
+    LSM_DistanceClamp = 1,
+    LSM_RelaxCount = 2,
+    LSM_RelaxVolume = 3
 }
 
 /**
@@ -11,9 +12,12 @@ enum ELRDebugSpaceMode {
  * Lights are modelled as spheres, and the crowding is resolved by relaxation: deeper overlaps
  * are preserved while shallower ones are shrunk away. The pass only ever shrinks, never grows,
  * so it is idempotent and leaves uncrowded lights untouched.
+ *
+ * Solve() measures each light's live radius, so callers must clear any prior spacing caps and
+ * rewrite to the true profile radii before calling it, or the solve compounds its own output.
  */
-class LRDebug_LightSpacer {
-    private const var SPACE_MODE: ELRDebugSpaceMode;  default SPACE_MODE = LRDSM_RelaxVolume;
+class CLightSpacer {
+    private const var SPACE_MODE: ELightSpaceMode;  default SPACE_MODE = LSM_RelaxVolume;
 
     private const var MIN_RADIUS  : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
@@ -45,14 +49,16 @@ class LRDebug_LightSpacer {
 
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
+        if (SPACE_MODE == LSM_Off) return 0;
+
         Gather();
         if (entities.Size() < 1) return 0;
 
         switch (SPACE_MODE) {
-            case LRDSM_DistanceClamp:
+            case LSM_DistanceClamp:
                 ShrinkToCentres();
                 break;
-            case LRDSM_RelaxVolume:
+            case LSM_RelaxVolume:
                 BuildPairs();
                 RelaxByVolume();
                 break;
@@ -488,32 +494,23 @@ class LRDebug_LightSpacer {
             / (16.0 * d);
     }
 
-    /** Writes shrunk radii back through each entity's rewriter; returns count changed */
+    /** Caps each shrunk light's radius through its rewriter; returns count changed */
     private function Apply(): int {
         var i, count, changedCount: int;
         var rewriter: ILightSourceRewriter;
-        var params: CLightRewriteSourceParams;
-        var entity: CGameplayEntity;
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
-            // Shrink-only: skip anything the relaxation left at (or above) its start radius
+            // Shrink-only: the solve never pulls a light below its start radius, so skip the rest
             if (radii[i] >= original[i] - EPSILON) continue;
 
-            LogChannel(
-                'LRDebug_LightSpacer',
-                "Shrinking " + entity.ToString() + " from " + original[i] + " to " + radii[i]
-            );
+            // Production only spaces lights the mod already rewrites; skip anything uncovered
+            rewriter = entities[i].lightSourceRewriter;
+            if (!rewriter) continue;
 
-            entity = entities[i];
-            rewriter = entity.LRDebug_GetOrCreateRewriter();
-            params = entity.LRDebug_GetParams(rewriter);
+            LogLightRewrite("Spacing " + entities[i] + " from " + original[i] + " to " + radii[i]);
 
-            params.radius.has = true;
-            params.radius.value = radii[i];
-
-            rewriter.LRDebug_SetMenuOverrideParams(params);
-            rewriter.RestoreOriginalState();
+            rewriter.SetMaxSafeRadius(radii[i]);
             rewriter.RewriteLight();
 
             changedCount += 1;
