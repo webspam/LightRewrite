@@ -1,0 +1,72 @@
+/* The custom theme renders no default chrome, so it paints the page itself. */
+html {
+  background: var(--cs-page);
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+}
+
+:root {
+  /* Surfaces, darkest first */
+  --cs-page: #08080c;
+  --cs-bg: #0c0c12;
+
+  /* Text, brightest to faintest */
+  --cs-text: #f0f0f4;
+  --cs-text-dim: #c2c2c6;
+  --cs-text-muted: #9494a4;
+  --cs-faint: #5b5b68;
+
+  /* Accent ramp, base to lightest */
+  --cs-accent: #6359be;
+  --cs-accent-bright: #8b84d8;
+  --cs-accent-pale: #b3aee6;
+  --cs-accent-soft: rgba(99, 89, 190, 0.16);
+  --cs-glow: rgba(99, 89, 190, 0.6);
+
+  /* Hairlines over dark, faint to strong */
+  --cs-line-faint: rgba(255, 255, 255, 0.055);
+  --cs-line: rgba(255, 255, 255, 0.1);
+  --cs-line-strong: rgba(255, 255, 255, 0.18);
+  /* The before/after comparison seam */
+  --cs-divider: rgba(255, 255, 255, 0.3);
+
+  /* Type families */
+  --cs-display: "Poppins", system-ui, sans-serif;
+  --cs-body: "Questrial", system-ui, sans-serif;
+  --cs-mono: "Montserrat", ui-monospace, monospace;
+
+  /* Type scale */
+  --cs-text-2xs: 0.625rem;
+  --cs-text-xs: 0.6875rem;
+  --cs-text-sm: 0.75rem;
+  --cs-text-md: 0.8125rem;
+  --cs-text-lg: 1.125rem;
+  --cs-text-h2: clamp(1.5rem, 3vw, 2.125rem);
+  --cs-text-display: clamp(2.625rem, 7.5vw, 5.25rem);
+
+  /* Radii */
+  --cs-radius-sm: 4px;
+  --cs-radius-md: 6px;
+  --cs-radius-lg: 8px;
+
+  /* Layout */
+  --cs-content-width: 1340px;
+}
+
+/* Shared fade for the teleported overlays (lightbox, shortcuts). */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: none;
+  }
+}

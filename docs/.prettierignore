@@ -1,0 +1,17 @@
+# Default: Deny
+*
+
+!/.vitepress/
+!/.vitepress/theme/
+!/.vitepress/theme/components/
+!/.vitepress/theme/*
+!/.vitepress/theme/components/*
+
+# Root config
+!/*.json
+!/*.ts
+!/*.mjs
+!/*.cjs
+
+# Lockfiles
+package-lock.json

@@ -1,0 +1,22 @@
+{
+  "name": "lightrewrite-docs",
+  "version": "0.1.0",
+  "description": "Documentation for the Light Rewrite Witcher 3 lighting mod",
+  "license": "MIT",
+  "author": "webspam",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "simple-icons": "^16.24.0",
+    "vitepress": "^2.0.0-alpha.17"
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.3.0"
+  }
+}
