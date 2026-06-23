@@ -25,27 +25,54 @@ class CLightRewriteSourceMenu {
         params.enabled.value = gameConfig.GetVarValue(groupTag, TAG_ENABLED);
 
         params.brightness.has = true;
-        params.brightness.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS), params.brightness.value);
+        params.brightness.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_BRIGHTNESS),
+            params.brightness.value
+        );
 
         params.radius.has = true;
-        params.radius.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_RADIUS), params.radius.value);
+        params.radius.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_RADIUS),
+            params.radius.value
+        );
 
         params.attenuation.has = true;
-        params.attenuation.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_ATTENUATION), params.attenuation.value);
+        params.attenuation.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_ATTENUATION),
+            params.attenuation.value
+        );
 
         params.shadowFadeDistance.has = true;
-        params.shadowFadeDistance.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE), params.shadowFadeDistance.value);
+        params.shadowFadeDistance.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_SHADOW_DISTANCE),
+            params.shadowFadeDistance.value
+        );
 
         params.shadowFadeRange.has = true;
-        params.shadowFadeRange.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE), params.shadowFadeRange.value);
+        params.shadowFadeRange.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_SHADOW_RANGE),
+            params.shadowFadeRange.value
+        );
 
         params.shadowBlendFactor.has = true;
-        params.shadowBlendFactor.value = StringToFloat(gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND), params.shadowBlendFactor.value);
+        params.shadowBlendFactor.value = StringToFloat(
+            gameConfig.GetVarValue(groupTag, TAG_SHADOW_BLEND),
+            params.shadowBlendFactor.value
+        );
 
         params.color.has = gameConfig.GetVarValue(groupTag, TAG_OVERRIDE_COLOUR);
-        params.color.value.Red = StringToInt(gameConfig.GetVarValue(groupTag, TAG_RED), params.color.value.Red);
-        params.color.value.Green = StringToInt(gameConfig.GetVarValue(groupTag, TAG_GREEN), params.color.value.Green);
-        params.color.value.Blue = StringToInt(gameConfig.GetVarValue(groupTag, TAG_BLUE), params.color.value.Blue);
+        params.color.value.Red = StringToInt(
+            gameConfig.GetVarValue(groupTag, TAG_RED),
+            params.color.value.Red
+        );
+        params.color.value.Green = StringToInt(
+            gameConfig.GetVarValue(groupTag, TAG_GREEN),
+            params.color.value.Green
+        );
+        params.color.value.Blue = StringToInt(
+            gameConfig.GetVarValue(groupTag, TAG_BLUE),
+            params.color.value.Blue
+        );
     }
 
     // Reacts to menu option changes if the changed option is relevant to this source.

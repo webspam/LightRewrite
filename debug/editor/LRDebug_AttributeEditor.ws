@@ -324,7 +324,11 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
                 }
                 step = GetDynamicStep(attr, lightParams.brightness.value, value) * accelMult;
-                lightParams.brightness.value = ApplyFloatDelta(attr, lightParams.brightness.value, step * value);
+                lightParams.brightness.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.brightness.value,
+                    step * value
+                );
                 break;
 
             case 'radius':
@@ -334,7 +338,11 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) lightParams.radius.value = sourceLight.radius;
                 }
                 step = GetDynamicStep(attr, lightParams.radius.value, value) * accelMult;
-                lightParams.radius.value = ApplyFloatDelta(attr, lightParams.radius.value, step * value);
+                lightParams.radius.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.radius.value,
+                    step * value
+                );
                 break;
 
             case 'attenuation':
@@ -344,7 +352,11 @@ class LRDebug_AttributeEditor {
                     if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
                 }
                 step = GetDynamicStep(attr, lightParams.attenuation.value, value) * accelMult;
-                lightParams.attenuation.value = ApplyFloatDelta(attr, lightParams.attenuation.value, step * value);
+                lightParams.attenuation.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.attenuation.value,
+                    step * value
+                );
                 break;
 
             case 'shadowFadeDistance':
@@ -356,7 +368,11 @@ class LRDebug_AttributeEditor {
                     }
                 }
                 step = GetDynamicStep(attr, lightParams.shadowFadeDistance.value, value) * accelMult;
-                lightParams.shadowFadeDistance.value = ApplyFloatDelta(attr, lightParams.shadowFadeDistance.value, step * value);
+                lightParams.shadowFadeDistance.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.shadowFadeDistance.value,
+                    step * value
+                );
                 break;
 
             case 'shadowFadeRange':
@@ -368,7 +384,11 @@ class LRDebug_AttributeEditor {
                     }
                 }
                 step = GetDynamicStep(attr, lightParams.shadowFadeRange.value, value) * accelMult;
-                lightParams.shadowFadeRange.value = ApplyFloatDelta(attr, lightParams.shadowFadeRange.value, step * value);
+                lightParams.shadowFadeRange.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.shadowFadeRange.value,
+                    step * value
+                );
                 break;
 
             case 'shadowBlendFactor':
@@ -380,7 +400,11 @@ class LRDebug_AttributeEditor {
                     }
                 }
                 step = GetDynamicStep(attr, lightParams.shadowBlendFactor.value, value) * accelMult;
-                lightParams.shadowBlendFactor.value = ApplyFloatDelta(attr, lightParams.shadowBlendFactor.value, step * value);
+                lightParams.shadowBlendFactor.value = ApplyFloatDelta(
+                    attr,
+                    lightParams.shadowBlendFactor.value,
+                    step * value
+                );
                 break;
 
             case 'useSpotlightColor':
@@ -424,7 +448,11 @@ class LRDebug_AttributeEditor {
                     if (spot) spotParams.innerAngle.value = spot.innerAngle;
                 }
                 step = GetDynamicStep(attr, spotParams.innerAngle.value, value) * accelMult;
-                spotParams.innerAngle.value = ApplyFloatDelta(attr, spotParams.innerAngle.value, step * value);
+                spotParams.innerAngle.value = ApplyFloatDelta(
+                    attr,
+                    spotParams.innerAngle.value,
+                    step * value
+                );
                 break;
 
             case 'outerAngle':
@@ -434,7 +462,11 @@ class LRDebug_AttributeEditor {
                     if (spot) spotParams.outerAngle.value = spot.outerAngle;
                 }
                 step = GetDynamicStep(attr, spotParams.outerAngle.value, value) * accelMult;
-                spotParams.outerAngle.value = ApplyFloatDelta(attr, spotParams.outerAngle.value, step * value);
+                spotParams.outerAngle.value = ApplyFloatDelta(
+                    attr,
+                    spotParams.outerAngle.value,
+                    step * value
+                );
                 break;
 
             case 'softness':
@@ -444,7 +476,11 @@ class LRDebug_AttributeEditor {
                     if (spot) spotParams.softness.value = spot.softness;
                 }
                 step = GetDynamicStep(attr, spotParams.softness.value, value) * accelMult;
-                spotParams.softness.value = ApplyFloatDelta(attr, spotParams.softness.value, step * value);
+                spotParams.softness.value = ApplyFloatDelta(
+                    attr,
+                    spotParams.softness.value,
+                    step * value
+                );
                 break;
 
             case 'overrideColour':
@@ -541,7 +577,10 @@ class LRDebug_AttributeEditor {
                     lightParams.brightness.has = true;
                     if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
                 }
-                lightParams.brightness.value = ClampAttributeValue(attr, lightParams.brightness.value + delta);
+                lightParams.brightness.value = ClampAttributeValue(
+                    attr,
+                    lightParams.brightness.value + delta
+                );
                 break;
 
             case 'radius':
@@ -550,7 +589,10 @@ class LRDebug_AttributeEditor {
                     lightParams.radius.has = true;
                     if (sourceLight) lightParams.radius.value = sourceLight.radius;
                 }
-                lightParams.radius.value = ClampAttributeValue(attr, lightParams.radius.value + delta);
+                lightParams.radius.value = ClampAttributeValue(
+                    attr,
+                    lightParams.radius.value + delta
+                );
                 break;
 
             case 'attenuation':
@@ -559,7 +601,10 @@ class LRDebug_AttributeEditor {
                     lightParams.attenuation.has = true;
                     if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
                 }
-                lightParams.attenuation.value = ClampAttributeValue(attr, lightParams.attenuation.value + delta);
+                lightParams.attenuation.value = ClampAttributeValue(
+                    attr,
+                    lightParams.attenuation.value + delta
+                );
                 break;
 
             case 'shadowFadeDistance':
@@ -570,7 +615,10 @@ class LRDebug_AttributeEditor {
                         lightParams.shadowFadeDistance.value = sourceLight.shadowFadeDistance;
                     }
                 }
-                lightParams.shadowFadeDistance.value = ClampAttributeValue(attr, lightParams.shadowFadeDistance.value + delta);
+                lightParams.shadowFadeDistance.value = ClampAttributeValue(
+                    attr,
+                    lightParams.shadowFadeDistance.value + delta
+                );
                 break;
 
             case 'shadowFadeRange':
@@ -581,7 +629,10 @@ class LRDebug_AttributeEditor {
                         lightParams.shadowFadeRange.value = sourceLight.shadowFadeRange;
                     }
                 }
-                lightParams.shadowFadeRange.value = ClampAttributeValue(attr, lightParams.shadowFadeRange.value + delta);
+                lightParams.shadowFadeRange.value = ClampAttributeValue(
+                    attr,
+                    lightParams.shadowFadeRange.value + delta
+                );
                 break;
 
             case 'shadowBlendFactor':
@@ -592,27 +643,39 @@ class LRDebug_AttributeEditor {
                         lightParams.shadowBlendFactor.value = sourceLight.shadowBlendFactor;
                     }
                 }
-                lightParams.shadowBlendFactor.value = ClampAttributeValue(attr, lightParams.shadowBlendFactor.value + delta);
+                lightParams.shadowBlendFactor.value = ClampAttributeValue(
+                    attr,
+                    lightParams.shadowBlendFactor.value + delta
+                );
                 break;
 
             case 'alignOffsetZ':
                 if (type == 'spot') {
                     spotParams = EnsureSpotParams(params, target);
                     SeedSpotOffset(spotParams, spot);
-                    spotParams.offset.value.Z = ClampAttributeValue(attr, spotParams.offset.value.Z + delta);
+                    spotParams.offset.value.Z = ClampAttributeValue(
+                        attr,
+                        spotParams.offset.value.Z + delta
+                    );
                 }
                 else if (LRDebug_IsCandle(target)) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
                     }
-                    params.pointLightOffset.Z = ClampAttributeValue(attr, params.pointLightOffset.Z + delta);
+                    params.pointLightOffset.Z = ClampAttributeValue(
+                        attr,
+                        params.pointLightOffset.Z + delta
+                    );
                 }
                 else {
                     if (!params.pointLightOffsetPos.has) {
                         params.pointLightOffsetPos.has = true;
                     }
-                    params.pointLightOffsetPos.value.Z = ClampAttributeValue(attr, params.pointLightOffsetPos.value.Z + delta);
+                    params.pointLightOffsetPos.value.Z = ClampAttributeValue(
+                        attr,
+                        params.pointLightOffsetPos.value.Z + delta
+                    );
                 }
                 break;
 
@@ -622,7 +685,10 @@ class LRDebug_AttributeEditor {
                     spotParams.innerAngle.has = true;
                     if (spot) spotParams.innerAngle.value = spot.innerAngle;
                 }
-                spotParams.innerAngle.value = ClampAttributeValue(attr, spotParams.innerAngle.value + delta);
+                spotParams.innerAngle.value = ClampAttributeValue(
+                    attr,
+                    spotParams.innerAngle.value + delta
+                );
                 break;
 
             case 'outerAngle':
@@ -631,7 +697,10 @@ class LRDebug_AttributeEditor {
                     spotParams.outerAngle.has = true;
                     if (spot) spotParams.outerAngle.value = spot.outerAngle;
                 }
-                spotParams.outerAngle.value = ClampAttributeValue(attr, spotParams.outerAngle.value + delta);
+                spotParams.outerAngle.value = ClampAttributeValue(
+                    attr,
+                    spotParams.outerAngle.value + delta
+                );
                 break;
 
             case 'softness':
@@ -640,7 +709,10 @@ class LRDebug_AttributeEditor {
                     spotParams.softness.has = true;
                     if (spot) spotParams.softness.value = spot.softness;
                 }
-                spotParams.softness.value = ClampAttributeValue(attr, spotParams.softness.value + delta);
+                spotParams.softness.value = ClampAttributeValue(
+                    attr,
+                    spotParams.softness.value + delta
+                );
                 break;
 
             case 'colourR':
