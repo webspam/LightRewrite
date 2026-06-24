@@ -21,6 +21,13 @@ export const GALLERY: GalleryItem[] = [
     after: IMG + "spikeroog-inn-after-219.jpg",
   },
   {
+    id: "sturgeon",
+    title: "Golden Sturgeon",
+    tag: "Main bar",
+    before: IMG + "sturgeon-before-219.jpg",
+    after: IMG + "sturgeon-after-219.jpg",
+  },
+  {
     id: "chameleon",
     title: "The Chameleon",
     tag: "Interior",
@@ -49,6 +56,13 @@ export const GALLERY: GalleryItem[] = [
     after: IMG + "triss-room-after-219.jpg",
   },
   {
+    id: "sturgeon-upstairs",
+    title: "Golden Sturgeon",
+    tag: "Upstairs",
+    before: IMG + "sturgeon-upstairs-before-219.jpg",
+    after: IMG + "sturgeon-upstairs-after-219.jpg",
+  },
+  {
     id: "vizima-castle",
     title: "Vizima castle",
     tag: "Interior",
@@ -68,5 +82,12 @@ export const GALLERY: GalleryItem[] = [
     tag: "Exterior",
     before: IMG + "novigrad-gate-before-219.jpg",
     after: IMG + "novigrad-gate-after-219.jpg",
+  },
+  {
+    id: "novigrad-bits",
+    title: "Novigrad bits",
+    tag: "Candlelit interior",
+    before: IMG + "novigrad-bits-before-219.jpg",
+    after: IMG + "novigrad-bits-after-219.jpg",
   },
 ];
