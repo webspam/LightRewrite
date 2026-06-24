@@ -143,14 +143,15 @@ defineEmits<{
 .tag {
   position: absolute;
   top: 100%;
-  right: -0.5rem;
+  right: -1.5rem;
   margin-top: 0.5rem;
   white-space: nowrap;
   font-family: var(--cs-mono);
-  font-size: var(--cs-text-xs);
+  font-size: var(--cs-text-sm);
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--cs-faint);
+  color: var(--cs-text-faint);
 }
 @media (max-width: 1340px) {
   .entry {

@@ -70,7 +70,7 @@ function onTrackWheel(e: WheelEvent) {
   font-size: var(--cs-text-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--cs-faint);
+  color: var(--cs-text-faint);
   white-space: nowrap;
 }
 .quicknav-track {
