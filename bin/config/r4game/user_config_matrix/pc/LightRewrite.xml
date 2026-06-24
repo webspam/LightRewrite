@@ -174,7 +174,7 @@
               </OptionsArray>
             </Var>
             <Var id="SpacingAmount" displayName="LightRewrite_Spacing_Amount"
-                displayType="SLIDER;1;20;380" />
+                displayType="SLIDER;1;20;19" />
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
             <Var id="CandleEnabled" displayName="LightRewrite_Candle_Enabled"
