@@ -79,7 +79,7 @@ defineEmits<{ "toggle-help": [] }>();
   font-family: var(--cs-mono);
   font-size: var(--cs-text-md);
   letter-spacing: 0.06em;
-  color: var(--cs-faint);
+  color: var(--cs-text-faint);
   text-decoration: none;
   transition: color 0.2s;
 }

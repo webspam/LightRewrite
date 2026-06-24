@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
   padding: 0 32px;
   border-top: 1px solid var(--cs-line);
 }
-@media (max-width: 860px) {
+@media (max-width: 1340px) {
   .entries {
     padding: 0;
   }

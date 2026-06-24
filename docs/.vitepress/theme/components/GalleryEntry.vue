@@ -48,7 +48,10 @@ defineEmits<{
       </div>
     </div>
     <div class="info">
-      <h2 class="heading">{{ item.title }}</h2>
+      <div class="label">
+        <h2 class="heading">{{ item.title }}</h2>
+        <span v-if="item.tag" class="tag">{{ item.tag }}</span>
+      </div>
     </div>
   </article>
 </template>
@@ -123,16 +126,34 @@ defineEmits<{
 .entry.active .info::before {
   opacity: 1;
 }
+.label {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
 .heading {
   font-family: var(--cs-display);
   font-weight: 300;
   font-size: var(--cs-text-h2);
-  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin: 0;
   color: var(--cs-text-dim);
   text-wrap: balance;
 }
-@media (max-width: 860px) {
+.tag {
+  position: absolute;
+  top: 100%;
+  right: -1.5rem;
+  margin-top: 0.5rem;
+  white-space: nowrap;
+  font-family: var(--cs-mono);
+  font-size: var(--cs-text-sm);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-text-faint);
+}
+@media (max-width: 1340px) {
   .entry {
     grid-template-columns: 1fr;
   }
@@ -145,6 +166,15 @@ defineEmits<{
   }
   .info::before {
     display: none;
+  }
+  .label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+  }
+  .tag {
+    position: static;
+    margin-top: 0;
   }
 }
 </style>

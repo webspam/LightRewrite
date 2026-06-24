@@ -16,6 +16,7 @@ body {
   --cs-text: #f0f0f4;
   --cs-text-dim: #c2c2c6;
   --cs-text-muted: #9494a4;
+  --cs-text-faint: #737381;
   --cs-faint: #5b5b68;
 
   /* Accent ramp, base to lightest */
@@ -52,7 +53,7 @@ body {
   --cs-radius-lg: 8px;
 
   /* Layout */
-  --cs-content-width: 1340px;
+  --cs-content-width: 1860px;
 }
 
 /* Shared fade for the teleported overlays (lightbox, shortcuts). */

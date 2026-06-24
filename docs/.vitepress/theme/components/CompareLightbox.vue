@@ -260,7 +260,7 @@ function onKeydown(e: KeyboardEvent) {
   font-size: var(--cs-text-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--cs-faint);
+  color: var(--cs-text-faint);
   margin-left: 12px;
 }
 .actions {
@@ -310,7 +310,7 @@ function onKeydown(e: KeyboardEvent) {
   font-family: var(--cs-mono);
   font-size: var(--cs-text-xs);
   letter-spacing: 0.08em;
-  color: var(--cs-faint);
+  color: var(--cs-text-faint);
   margin: 0;
 }
 </style>
