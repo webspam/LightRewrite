@@ -127,6 +127,7 @@ defineEmits<{
   opacity: 1;
 }
 .label {
+  position: relative;
   width: fit-content;
   max-width: 100%;
 }
@@ -140,10 +141,11 @@ defineEmits<{
   text-wrap: balance;
 }
 .tag {
-  display: block;
+  position: absolute;
+  top: 100%;
+  right: -0.5rem;
   margin-top: 0.5rem;
-  margin-right: -0.5rem;
-  text-align: right;
+  white-space: nowrap;
   font-family: var(--cs-mono);
   font-size: var(--cs-text-xs);
   letter-spacing: 0.1em;
@@ -163,6 +165,15 @@ defineEmits<{
   }
   .info::before {
     display: none;
+  }
+  .label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+  }
+  .tag {
+    position: static;
+    margin-top: 0;
   }
 }
 </style>
