@@ -48,7 +48,10 @@ defineEmits<{
       </div>
     </div>
     <div class="info">
-      <h2 class="heading">{{ item.title }}</h2>
+      <div class="label">
+        <h2 class="heading">{{ item.title }}</h2>
+        <span v-if="item.tag" class="tag">{{ item.tag }}</span>
+      </div>
     </div>
   </article>
 </template>
@@ -123,6 +126,10 @@ defineEmits<{
 .entry.active .info::before {
   opacity: 1;
 }
+.label {
+  width: fit-content;
+  max-width: 100%;
+}
 .heading {
   font-family: var(--cs-display);
   font-weight: 300;
@@ -131,6 +138,17 @@ defineEmits<{
   margin: 0;
   color: var(--cs-text-dim);
   text-wrap: balance;
+}
+.tag {
+  display: block;
+  margin-top: 0.5rem;
+  margin-right: -0.5rem;
+  text-align: right;
+  font-family: var(--cs-mono);
+  font-size: var(--cs-text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-faint);
 }
 @media (max-width: 1340px) {
   .entry {
