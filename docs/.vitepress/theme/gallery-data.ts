@@ -30,7 +30,7 @@ export const GALLERY: GalleryItem[] = [
   {
     id: "chameleon",
     title: "The Chameleon",
-    tag: "Interior",
+    tag: "Suite",
     before: IMG + "chameleon-before-219.jpg",
     after: IMG + "chameleon-after-219.jpg",
   },
@@ -50,8 +50,8 @@ export const GALLERY: GalleryItem[] = [
   },
   {
     id: "triss-room",
-    title: "Triss's room",
-    tag: "Interior",
+    title: "The Chameleon",
+    tag: "Triss's room",
     before: IMG + "triss-room-before-219.jpg",
     after: IMG + "triss-room-after-219.jpg",
   },
@@ -65,14 +65,14 @@ export const GALLERY: GalleryItem[] = [
   {
     id: "vizima-castle",
     title: "Vizima castle",
-    tag: "Interior",
+    tag: "Dressing room",
     before: IMG + "vizima-welcome-before-219.jpg",
     after: IMG + "vizima-welcome-after-219.jpg",
   },
   {
     id: "vizima-stairwell",
-    title: "Vizima stairwell",
-    tag: "Interior",
+    title: "Vizima castle",
+    tag: "Stairwell",
     before: IMG + "vizima-stairwell-before-219.jpg",
     after: IMG + "vizima-stairwell-after-219.jpg",
   },
@@ -86,7 +86,7 @@ export const GALLERY: GalleryItem[] = [
   {
     id: "novigrad-bits",
     title: "Novigrad bits",
-    tag: "Candlelit interior",
+    tag: "Candlelit townhouse",
     before: IMG + "novigrad-bits-before-219.jpg",
     after: IMG + "novigrad-bits-after-219.jpg",
   },
