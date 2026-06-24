@@ -52,7 +52,7 @@ body {
   --cs-radius-lg: 8px;
 
   /* Layout */
-  --cs-content-width: 1340px;
+  --cs-content-width: 1860px;
 }
 
 /* Shared fade for the teleported overlays (lightbox, shortcuts). */

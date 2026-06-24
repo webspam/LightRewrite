@@ -132,7 +132,7 @@ defineEmits<{
   color: var(--cs-text-dim);
   text-wrap: balance;
 }
-@media (max-width: 860px) {
+@media (max-width: 1340px) {
   .entry {
     grid-template-columns: 1fr;
   }
