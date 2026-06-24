@@ -127,7 +127,7 @@ defineEmits<{
   font-family: var(--cs-display);
   font-weight: 300;
   font-size: var(--cs-text-h2);
-  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin: 0;
   color: var(--cs-text-dim);
   text-wrap: balance;
