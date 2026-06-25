@@ -1,15 +1,15 @@
-enum ELightSpaceMode {
-    LSM_Off = 0,
-    LSM_DistanceClamp = 1,
-    LSM_RelaxCount = 2,
-    LSM_RelaxVolume = 3
+enum LR_ELightSpaceMode {
+    LR_LSM_Off = 0,
+    LR_LSM_DistanceClamp = 1,
+    LR_LSM_RelaxCount = 2,
+    LR_LSM_RelaxVolume = 3
 }
 
-enum EShedKind {
-    SK_None = 0,
-    SK_Both = 1,
-    SK_OnlyI = 2,
-    SK_OnlyJ = 3
+enum LR_EShedKind {
+    LR_SK_None = 0,
+    LR_SK_Both = 1,
+    LR_SK_OnlyI = 2,
+    LR_SK_OnlyJ = 3
 }
 
 /**
@@ -24,7 +24,7 @@ enum EShedKind {
  * rewrite to the true profile radii before calling it, or the solve compounds its own output.
  */
 class CLightSpacer {
-    private var SPACE_MODE: ELightSpaceMode;  default SPACE_MODE = LSM_RelaxVolume;
+    private var SPACE_MODE: LR_ELightSpaceMode;  default SPACE_MODE = LR_LSM_RelaxVolume;
 
     private const var MIN_RADIUS : float;  default MIN_RADIUS = 0.1;
     // Overlap shallower than this (metres) counts as not overlapping
@@ -57,25 +57,25 @@ class CLightSpacer {
     private var degree     : array<int>;
 
     /** Apply the menu's spacing type and amount; the overlap count drives both centre and count modes, budget radius drives volume mode */
-    public function Configure(mode: ELightSpaceMode, amount: float) {
+    public function Configure(mode: LR_ELightSpaceMode, amount: float) {
         SPACE_MODE = mode;
-        if (mode == LSM_DistanceClamp) MAX_CENTRES = FloorF(amount);
-        else if (mode == LSM_RelaxCount) MAX_OVERLAPS = FloorF(amount);
-        else if (mode == LSM_RelaxVolume) OVERLAP_BUDGET_RADIUS = amount;
+        if (mode == LR_LSM_DistanceClamp) MAX_CENTRES = FloorF(amount);
+        else if (mode == LR_LSM_RelaxCount) MAX_OVERLAPS = FloorF(amount);
+        else if (mode == LR_LSM_RelaxVolume) OVERLAP_BUDGET_RADIUS = amount;
     }
 
     /** Runs the full pass; returns how many entities were shrunk. */
     public function Solve(): int {
-        if (SPACE_MODE == LSM_Off) return 0;
+        if (SPACE_MODE == LR_LSM_Off) return 0;
 
         Gather();
         if (entities.Size() < 1) return 0;
 
         switch (SPACE_MODE) {
-            case LSM_DistanceClamp:
+            case LR_LSM_DistanceClamp:
                 ShrinkToCentres();
                 break;
-            case LSM_RelaxVolume:
+            case LR_LSM_RelaxVolume:
                 BuildPairs();
                 RelaxByVolume();
                 break;
@@ -309,7 +309,7 @@ class CLightSpacer {
     /** Shrink the crowded lights so each one overlaps no more than MAX_OVERLAPS others */
     private function Relax() {
         var target: array<float>;
-        var shed: array<EShedKind>;
+        var shed: array<LR_EShedKind>;
         var pass, e, i, j: int;
         var overlap, step, worst, share: float;
         var changed: bool;
@@ -330,7 +330,7 @@ class CLightSpacer {
 
             worst = 0.0;
             for (e = 0; e < edgeCount; e += 1) {
-                if (shed[e] == SK_None) continue;
+                if (shed[e] == LR_SK_None) continue;
                 i = pairI[e];
                 j = pairJ[e];
 
@@ -339,14 +339,14 @@ class CLightSpacer {
                 if (overlap > worst) worst = overlap;
 
                 step = overlap * RELAX_OMEGA;
-                if (shed[e] == SK_Both) {
+                if (shed[e] == LR_SK_Both) {
                     // Both crowd each other: split the step by size, so both keep one scale
                     share = step / (original[i] + original[j]);
                     target[i] = MinF(target[i], radii[i] - share * original[i]);
                     target[j] = MinF(target[j], radii[j] - share * original[j]);
                 }
                 // Otherwise only the crowded light gives way, leaving its quiet neighbour alone
-                else if (shed[e] == SK_OnlyI) target[i] = MinF(target[i], radii[i] - step);
+                else if (shed[e] == LR_SK_OnlyI) target[i] = MinF(target[i], radii[i] - step);
                 else target[j] = MinF(target[j], radii[j] - step);
             }
 
@@ -364,16 +364,16 @@ class CLightSpacer {
         }
     }
 
-    private function ShedKind(i: int, j: int): EShedKind {
+    private function ShedKind(i: int, j: int): LR_EShedKind {
         var keptI, keptJ: bool;
 
         keptI = IsKept(i, j);
         keptJ = IsKept(j, i);
 
-        if (keptI && keptJ) return SK_None;
-        if (!keptI && !keptJ) return SK_Both;
-        if (!keptI) return SK_OnlyI;
-        return SK_OnlyJ;
+        if (keptI && keptJ) return LR_SK_None;
+        if (!keptI && !keptJ) return LR_SK_Both;
+        if (!keptI) return LR_SK_OnlyI;
+        return LR_SK_OnlyJ;
     }
 
     /** Precompute which overlaps each crowded light keeps, so relaxation needn't re-rank each pass */

@@ -111,12 +111,12 @@ class CLightRewriteSettings {
         return ENABLED;
     }
 
-    public function GetSpacingMode(): ELightSpaceMode {
+    public function GetSpacingMode(): LR_ELightSpaceMode {
         switch (spacingMode) {
-            case 1:   return LSM_DistanceClamp;
-            case 2:   return LSM_RelaxCount;
-            case 3:   return LSM_RelaxVolume;
-            default:  return LSM_Off;
+            case 1:   return LR_LSM_DistanceClamp;
+            case 2:   return LR_LSM_RelaxCount;
+            case 3:   return LR_LSM_RelaxVolume;
+            default:  return LR_LSM_Off;
         }
     }
 
@@ -129,10 +129,10 @@ class CLightRewriteSettings {
     private function GetActiveSpacingAmountVar(): name {
         switch (GetSpacingMode()) {
             // Both count the overlaps a light may keep, so they share the one slider
-            case LSM_DistanceClamp:
-            case LSM_RelaxCount:   return SPACING_COUNT;
-            case LSM_RelaxVolume:  return SPACING_BUDGET;
-            default:               return '';
+            case LR_LSM_DistanceClamp:
+            case LR_LSM_RelaxCount:   return SPACING_COUNT;
+            case LR_LSM_RelaxVolume:  return SPACING_BUDGET;
+            default:                  return '';
         }
     }
 
