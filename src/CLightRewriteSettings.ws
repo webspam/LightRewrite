@@ -128,9 +128,10 @@ class CLightRewriteSettings {
     // The amount slider that backs the current spacing mode; '' when the mode takes no amount
     private function GetActiveSpacingAmountVar(): name {
         switch (GetSpacingMode()) {
-            case LSM_DistanceClamp:
             case LSM_RelaxCount:   return SPACING_COUNT;
             case LSM_RelaxVolume:  return SPACING_BUDGET;
+            // Distance-clamp's overlap count is hard-coded, so it has no slider yet
+            case LSM_DistanceClamp:
             default:               return '';
         }
     }
