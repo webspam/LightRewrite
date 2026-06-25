@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|Ограничение по расстоянию
 2122144080||LightRewrite_Spacing_Mode_Count|Количество пересечений
 2122144081||LightRewrite_Spacing_Mode_Volume|Объём пересечения
-2122144082||LightRewrite_Spacing_Amount|Степень разреживания света
+2122144082||LightRewrite_Spacing_Count|Макс. пересечений
+2122144083||LightRewrite_Spacing_Budget|Макс. площадь пересечения

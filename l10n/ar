@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|تقييد بالمسافة
 2122144080||LightRewrite_Spacing_Mode_Count|عدد التداخلات
 2122144081||LightRewrite_Spacing_Mode_Volume|حجم التداخل
-2122144082||LightRewrite_Spacing_Amount|مقدار تباعد الإضاءة
+2122144082||LightRewrite_Spacing_Count|أقصى عدد للتداخلات
+2122144083||LightRewrite_Spacing_Budget|أقصى مساحة للتداخل

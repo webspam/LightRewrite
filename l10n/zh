@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|距離鉗制
 2122144080||LightRewrite_Spacing_Mode_Count|重疊數量
 2122144081||LightRewrite_Spacing_Mode_Volume|重疊體積
-2122144082||LightRewrite_Spacing_Amount|燈光間隔程度
+2122144082||LightRewrite_Spacing_Count|最大重疊數
+2122144083||LightRewrite_Spacing_Budget|最大重疊面積

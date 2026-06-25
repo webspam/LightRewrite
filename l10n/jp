@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|距離クランプ
 2122144080||LightRewrite_Spacing_Mode_Count|重なりの数
 2122144081||LightRewrite_Spacing_Mode_Volume|重なりの体積
-2122144082||LightRewrite_Spacing_Amount|ライト間隔の量
+2122144082||LightRewrite_Spacing_Count|最大重なり数
+2122144083||LightRewrite_Spacing_Budget|最大重なり面積

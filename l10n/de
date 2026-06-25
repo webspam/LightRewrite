@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|Distanzbegrenzung
 2122144080||LightRewrite_Spacing_Mode_Count|Überlappungsanzahl
 2122144081||LightRewrite_Spacing_Mode_Volume|Überlappungsvolumen
-2122144082||LightRewrite_Spacing_Amount|Lichtabstandsstärke
+2122144082||LightRewrite_Spacing_Count|Max. Überlappungen
+2122144083||LightRewrite_Spacing_Budget|Max. Überlappungsfläche

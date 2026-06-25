@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|Ograniczenie odległością
 2122144080||LightRewrite_Spacing_Mode_Count|Liczba nakładań
 2122144081||LightRewrite_Spacing_Mode_Volume|Objętość nakładania
-2122144082||LightRewrite_Spacing_Amount|Stopień rozmieszczania świateł
+2122144082||LightRewrite_Spacing_Count|Maks. nakładań
+2122144083||LightRewrite_Spacing_Budget|Maks. pole nakładania

@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|Limite per distanza
 2122144080||LightRewrite_Spacing_Mode_Count|Conteggio sovrapposizioni
 2122144081||LightRewrite_Spacing_Mode_Volume|Volume sovrapposizione
-2122144082||LightRewrite_Spacing_Amount|Quantità spaziatura luci
+2122144082||LightRewrite_Spacing_Count|Max sovrapposizioni
+2122144083||LightRewrite_Spacing_Budget|Area max sovrapposizione

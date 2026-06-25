@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|Limite par distance
 2122144080||LightRewrite_Spacing_Mode_Count|Nombre de chevauchements
 2122144081||LightRewrite_Spacing_Mode_Volume|Volume de chevauchement
-2122144082||LightRewrite_Spacing_Amount|Niveau d'espacement des lumières
+2122144082||LightRewrite_Spacing_Count|Max. de chevauchements
+2122144083||LightRewrite_Spacing_Budget|Surface max. de chevauchement

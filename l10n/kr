@@ -82,4 +82,5 @@
 2122144079||LightRewrite_Spacing_Mode_Distance|거리 제한
 2122144080||LightRewrite_Spacing_Mode_Count|겹침 개수
 2122144081||LightRewrite_Spacing_Mode_Volume|겹침 부피
-2122144082||LightRewrite_Spacing_Amount|조명 간격 양
+2122144082||LightRewrite_Spacing_Count|최대 겹침 수
+2122144083||LightRewrite_Spacing_Budget|최대 겹침 면적
