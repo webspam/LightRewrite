@@ -27,7 +27,7 @@ class CLightRewriteSettings {
 
     // Each spacing mode draws its amount from its own slider; see GetActiveSpacingAmountVar
     private var spacingMode  : int;    default spacingMode = 0;
-    private var spacingCount : float;  default spacingCount = 7.0;
+    private var spacingCount : float;  default spacingCount = 2.0;
     private var spacingBudget: float;  default spacingBudget = 4.0;
 
     // Runtime params for each light source type
@@ -128,10 +128,10 @@ class CLightRewriteSettings {
     // The amount slider that backs the current spacing mode; '' when the mode takes no amount
     private function GetActiveSpacingAmountVar(): name {
         switch (GetSpacingMode()) {
+            // Both count the overlaps a light may keep, so they share the one slider
+            case LSM_DistanceClamp:
             case LSM_RelaxCount:   return SPACING_COUNT;
             case LSM_RelaxVolume:  return SPACING_BUDGET;
-            // Distance-clamp's overlap count is hard-coded, so it has no slider yet
-            case LSM_DistanceClamp:
             default:               return '';
         }
     }

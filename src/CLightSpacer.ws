@@ -49,10 +49,11 @@ class CLightSpacer {
     private var slotOverlap: array<float>;
     private var degree     : array<int>;
 
-    /** Apply the menu's spacing type and amount; the amount means overlaps in count mode, budget radius in volume mode */
+    /** Apply the menu's spacing type and amount; the overlap count drives both centre and count modes, budget radius drives volume mode */
     public function Configure(mode: ELightSpaceMode, amount: float) {
         SPACE_MODE = mode;
-        if (mode == LSM_RelaxCount) MAX_OVERLAPS = FloorF(amount);
+        if (mode == LSM_DistanceClamp) MAX_CENTRES = FloorF(amount);
+        else if (mode == LSM_RelaxCount) MAX_OVERLAPS = FloorF(amount);
         else if (mode == LSM_RelaxVolume) OVERLAP_BUDGET_RADIUS = amount;
     }
 
@@ -82,7 +83,6 @@ class CLightSpacer {
     /** Shrink each light so its sphere clears every other light centre but the MAX_CENTRES nearest */
     private function ShrinkToCentres() {
         var order: array<int>;
-        // Flat per light: its (MAX_CENTRES + 1) nearest squared distances, kept ascending
         var nearest: array<float>;
         var a, b, i, j, s, count, span: int;
         var maxReach, d2, r2, clamp: float;
@@ -115,7 +115,6 @@ class CLightSpacer {
 
         // Squared throughout; the sole sqrt is each final radius
         for (i = 0; i < count; i += 1) {
-            // Clamp to the (MAX_CENTRES + 1)th nearest, leaving only MAX_CENTRES centres inside
             clamp = nearest[i * span + span - 1];
             if (clamp < radii[i] * radii[i]) {
                 radii[i] = MaxF(MIN_RADIUS, SqrtF(clamp) - EPSILON);
