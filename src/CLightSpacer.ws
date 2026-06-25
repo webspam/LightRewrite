@@ -24,6 +24,8 @@ class CLightSpacer {
     private const var EPSILON    : float;  default EPSILON = 0.01;
     // Most other lights any one light may overlap
     private var MAX_OVERLAPS     : int;    default MAX_OVERLAPS = 7;
+    // Most other light centres a distance-clamped sphere may keep within its radius
+    private var MAX_CENTRES      : int;    default MAX_CENTRES = 2;
     // Fraction of each overlap removed per pass; lower overshoots less but needs more passes
     private const var RELAX_OMEGA: float;  default RELAX_OMEGA = 0.5;
     private const var MAX_PASSES : int;    default MAX_PASSES = 64;
@@ -77,22 +79,20 @@ class CLightSpacer {
         return Apply();
     }
 
-    /** Shrink each light so its sphere clears every other light centre but the two nearest */
+    /** Shrink each light so its sphere clears every other light centre but the MAX_CENTRES nearest */
     private function ShrinkToCentres() {
         var order: array<int>;
-        var nearest2, second2, third2: array<float>;
-        var a, b, i, j, count: int;
-        var maxReach, d2, r2: float;
+        // Flat per light: its (MAX_CENTRES + 1) nearest squared distances, kept ascending
+        var nearest: array<float>;
+        var a, b, i, j, s, count, span: int;
+        var maxReach, d2, r2, clamp: float;
 
         count = positions.Size();
-        nearest2.Grow(count);
-        second2.Grow(count);
-        third2.Grow(count);
+        span = MAX_CENTRES + 1;
+        nearest.Grow(count * span);
         for (i = 0; i < count; i += 1) {
             r2 = radii[i] * radii[i];
-            nearest2[i] = r2;
-            second2[i] = r2;
-            third2[i] = r2;
+            for (s = 0; s < span; s += 1) nearest[i * span + s] = r2;
             order.PushBack(i);
         }
 
@@ -108,36 +108,32 @@ class CLightSpacer {
                 if (positions[j].X - positions[i].X > maxReach) break;
 
                 d2 = VecDistanceSquared(positions[i], positions[j]);
-
-                if (d2 < nearest2[i]) {
-                    third2[i] = second2[i];
-                    second2[i] = nearest2[i];
-                    nearest2[i] = d2;
-                }
-                else if (d2 < second2[i]) {
-                    third2[i] = second2[i];
-                    second2[i] = d2;
-                }
-                else if (d2 < third2[i]) third2[i] = d2;
-
-                if (d2 < nearest2[j]) {
-                    third2[j] = second2[j];
-                    second2[j] = nearest2[j];
-                    nearest2[j] = d2;
-                }
-                else if (d2 < second2[j]) {
-                    third2[j] = second2[j];
-                    second2[j] = d2;
-                }
-                else if (d2 < third2[j]) third2[j] = d2;
+                InsertNearest(nearest, i * span, span, d2);
+                InsertNearest(nearest, j * span, span, d2);
             }
         }
 
         // Squared throughout; the sole sqrt is each final radius
         for (i = 0; i < count; i += 1) {
-            if (third2[i] < radii[i] * radii[i]) {
-                radii[i] = MaxF(MIN_RADIUS, SqrtF(third2[i]) - EPSILON);
+            // Clamp to the (MAX_CENTRES + 1)th nearest, leaving only MAX_CENTRES centres inside
+            clamp = nearest[i * span + span - 1];
+            if (clamp < radii[i] * radii[i]) {
+                radii[i] = MaxF(MIN_RADIUS, SqrtF(clamp) - EPSILON);
             }
+        }
+    }
+
+    /** Insert squared distance d2 into a light's ascending nearest-slots, dropping the farthest */
+    private function InsertNearest(out nearest: array<float>, base: int, span: int, d2: float) {
+        var s, t: int;
+
+        if (d2 >= nearest[base + span - 1]) return;
+
+        for (s = 0; s < span; s += 1) {
+            if (d2 >= nearest[base + s]) continue;
+            for (t = span - 1; t > s; t -= 1) nearest[base + t] = nearest[base + t - 1];
+            nearest[base + s] = d2;
+            return;
         }
     }
 
