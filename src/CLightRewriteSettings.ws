@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 11;
+    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 12;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP       : name;    default GENERAL_GROUP = 'LightRewrite_General';
     // Label key constants (must match XML Var id values)
@@ -14,7 +14,8 @@ class CLightRewriteSettings {
     private const var INIT_VERSION        : name;    default INIT_VERSION = 'InitVersion';
     private const var CURRENT_PRESET      : name;    default CURRENT_PRESET = 'CurrentProfile';
     private const var SPACING_MODE        : name;    default SPACING_MODE = 'SpacingMode';
-    private const var SPACING_AMOUNT      : name;    default SPACING_AMOUNT = 'SpacingAmount';
+    private const var SPACING_COUNT       : name;    default SPACING_COUNT = 'SpacingCount';
+    private const var SPACING_BUDGET      : name;    default SPACING_BUDGET = 'SpacingBudget';
 
     // Internal group IDs resolved at init time
     private var generalGroupId: int;
@@ -24,9 +25,10 @@ class CLightRewriteSettings {
     public var isEnabled: bool;  default isEnabled = true;
     private var currentProfile: name;
 
-    // Spacing amount reads as overlap count in count mode, budget radius in volume mode
+    // Each spacing mode draws its amount from its own slider; see GetActiveSpacingAmountVar
     private var spacingMode  : int;    default spacingMode = 0;
-    private var spacingAmount: float;  default spacingAmount = 4.0;
+    private var spacingCount : float;  default spacingCount = 7.0;
+    private var spacingBudget: float;  default spacingBudget = 4.0;
 
     // Runtime params for each light source type
     public var candleParams    : CLightRewriteSourceParams;
@@ -119,7 +121,18 @@ class CLightRewriteSettings {
     }
 
     public function GetSpacingAmount(): float {
-        return spacingAmount;
+        if (GetActiveSpacingAmountVar() == SPACING_BUDGET) return spacingBudget;
+        return spacingCount;
+    }
+
+    // The amount slider that backs the current spacing mode; '' when the mode takes no amount
+    private function GetActiveSpacingAmountVar(): name {
+        switch (GetSpacingMode()) {
+            case LSM_DistanceClamp:
+            case LSM_RelaxCount:   return SPACING_COUNT;
+            case LSM_RelaxVolume:  return SPACING_BUDGET;
+            default:               return '';
+        }
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
@@ -578,10 +591,15 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_ENABLED, false);
         }
 
-        // v10 → v11: add light spacing type and amount.
+        // v10 → v11: add light spacing mode.
         if (initVersion <= 10) {
             gameConfig.SetVarValue(GENERAL_GROUP, SPACING_MODE, spacingMode);
-            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_AMOUNT, spacingAmount);
+        }
+
+        // v11 → v12: split the spacing amount into a per-mode overlap count and budget.
+        if (initVersion <= 11) {
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_COUNT, spacingCount);
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_BUDGET, spacingBudget);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -604,9 +622,13 @@ class CLightRewriteSettings {
         }
 
         spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
-        spacingAmount = StringToFloat(
-            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_AMOUNT),
-            spacingAmount
+        spacingCount = StringToFloat(
+            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_COUNT),
+            spacingCount
+        );
+        spacingBudget = StringToFloat(
+            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_BUDGET),
+            spacingBudget
         );
 
         count = lightSourceMenu.Size();
