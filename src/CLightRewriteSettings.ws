@@ -651,6 +651,8 @@ class CLightRewriteSettings {
                 lightSourceMenu[i].OptionValueChanged(optionName, lightSourceParams[i]);
             }
 
+            if (optionName == SPACING_MODE) UpdateSpacingMenuDisabledState();
+
             // ForceProcessFlashStorage() inside UpdateMenuDisabledState resets dynamic
             // option lists back to XML defaults, so we must restore them afterwards.
             if (ShouldRefreshProfileMenu(optionName)) {
@@ -681,11 +683,13 @@ class CLightRewriteSettings {
         previousProfile = profileIndex;
 
         UpdateAllGroupsDisabledState();
+        UpdateSpacingMenuDisabledState();
         ReplacePresetMenuOptions();
     }
 
     private function ShouldRefreshProfileMenu(optionName: name): bool {
         switch (optionName) {
+            case SPACING_MODE:
             case candleMenu.TAG_ENABLED:
             case torchMenu.TAG_ENABLED:
             case brazierMenu.TAG_ENABLED:
@@ -711,6 +715,32 @@ class CLightRewriteSettings {
         FindLightRewriteProfileNames(optionKeys);
 
         LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
+    }
+
+    // Ensures only the active mode's slider is enabled.
+    private function UpdateSpacingMenuDisabledState() {
+        var flashValueStorage: CScriptedFlashValueStorage;
+        var dataArray: CScriptedFlashArray;
+        var activeVar: name = GetActiveSpacingAmountVar();
+
+        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        dataArray = flashValueStorage.CreateTempFlashArray();
+
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            SPACING_COUNT,
+            activeVar != SPACING_COUNT
+        );
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            SPACING_BUDGET,
+            activeVar != SPACING_BUDGET
+        );
+
+        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
+        theGame.GetGuiManager().ForceProcessFlashStorage();
     }
 
     private function UpdateAllGroupsDisabledState() {
