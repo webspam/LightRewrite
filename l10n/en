@@ -79,7 +79,7 @@
 2122144076||LightRewrite_CurrentProfile|Current preset
 2122144077||LightRewrite_None|None
 2122144078||LightRewrite_Spacing_Mode|Light spacing mode
-2122144079||LightRewrite_Spacing_Mode_Distance|Distance clamp
+2122144079||LightRewrite_Spacing_Mode_Centres|Centre overlaps
 2122144080||LightRewrite_Spacing_Mode_Count|Overlap count
 2122144081||LightRewrite_Spacing_Mode_Volume|Overlap volume
 2122144082||LightRewrite_Spacing_Count|Max overlaps

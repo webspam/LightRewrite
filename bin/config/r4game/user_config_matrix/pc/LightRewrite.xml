@@ -162,7 +162,7 @@
                 <Option id="0" displayName="LightRewrite_None">
                   <Entry varId="SpacingMode" value="0" />
                 </Option>
-                <Option id="1" displayName="LightRewrite_Spacing_Mode_Distance">
+                <Option id="1" displayName="LightRewrite_Spacing_Mode_Centres">
                   <Entry varId="SpacingMode" value="1" />
                 </Option>
                 <Option id="2" displayName="LightRewrite_Spacing_Mode_Count">
