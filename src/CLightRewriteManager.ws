@@ -12,12 +12,12 @@ class CLightRewriteManager {
     public var gameStarted: bool;
 
     // Shrinks crowded shadow-casting lights once their profile radii are settled
-    public var lightSpacer: CLightSpacer;
+    public var lightSpacer: CLightRewriteSpacer;
 
     // Lazy constructor
     public function Init(settings: CLightRewriteSettings) {
         this.settings = settings;
-        lightSpacer = new CLightSpacer in this;
+        lightSpacer = new CLightRewriteSpacer in this;
     }
 
     public function ProcessDeferredActions() {

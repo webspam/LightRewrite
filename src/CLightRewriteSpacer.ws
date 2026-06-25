@@ -23,7 +23,7 @@ enum LR_EShedKind {
  * Solve() measures each light's live radius, so callers must clear any prior spacing caps and
  * rewrite to the true profile radii before calling it, or the solve compounds its own output.
  */
-class CLightSpacer {
+class CLightRewriteSpacer {
     private var SPACE_MODE: LR_ELightSpaceMode;  default SPACE_MODE = LR_LSM_RelaxVolume;
 
     private const var MIN_RADIUS : float;  default MIN_RADIUS = 0.1;
