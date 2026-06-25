@@ -5,6 +5,13 @@ enum ELightSpaceMode {
     LSM_RelaxVolume = 3
 }
 
+enum EShedKind {
+    SK_None = 0,
+    SK_Both = 1,
+    SK_OnlyI = 2,
+    SK_OnlyJ = 3
+}
+
 /**
  * Eases the cost of dense, overlapping shadow-casting lights under ray tracing by shrinking
  * some of their radii until each light overlaps only a limited number of its neighbours.
@@ -302,7 +309,7 @@ class CLightSpacer {
     /** Shrink the crowded lights so each one overlaps no more than MAX_OVERLAPS others */
     private function Relax() {
         var target: array<float>;
-        var shed: array<int>;
+        var shed: array<EShedKind>;
         var pass, e, i, j: int;
         var overlap, step, worst, share: float;
         var changed: bool;
@@ -323,7 +330,7 @@ class CLightSpacer {
 
             worst = 0.0;
             for (e = 0; e < edgeCount; e += 1) {
-                if (shed[e] == 0) continue;
+                if (shed[e] == SK_None) continue;
                 i = pairI[e];
                 j = pairJ[e];
 
@@ -332,14 +339,14 @@ class CLightSpacer {
                 if (overlap > worst) worst = overlap;
 
                 step = overlap * RELAX_OMEGA;
-                if (shed[e] == 1) {
+                if (shed[e] == SK_Both) {
                     // Both crowd each other: split the step by size, so both keep one scale
                     share = step / (original[i] + original[j]);
                     target[i] = MinF(target[i], radii[i] - share * original[i]);
                     target[j] = MinF(target[j], radii[j] - share * original[j]);
                 }
                 // Otherwise only the crowded light gives way, leaving its quiet neighbour alone
-                else if (shed[e] == 2) target[i] = MinF(target[i], radii[i] - step);
+                else if (shed[e] == SK_OnlyI) target[i] = MinF(target[i], radii[i] - step);
                 else target[j] = MinF(target[j], radii[j] - step);
             }
 
@@ -357,17 +364,16 @@ class CLightSpacer {
         }
     }
 
-    /** How a candidate pair must give: 0 both keep it, 1 both shed, 2 only i sheds, 3 only j */
-    private function ShedKind(i: int, j: int): int {
+    private function ShedKind(i: int, j: int): EShedKind {
         var keptI, keptJ: bool;
 
         keptI = IsKept(i, j);
         keptJ = IsKept(j, i);
 
-        if (keptI && keptJ) return 0;
-        if (!keptI && !keptJ) return 1;
-        if (!keptI) return 2;
-        return 3;
+        if (keptI && keptJ) return SK_None;
+        if (!keptI && !keptJ) return SK_Both;
+        if (!keptI) return SK_OnlyI;
+        return SK_OnlyJ;
     }
 
     /** Precompute which overlaps each crowded light keeps, so relaxation needn't re-rank each pass */
