@@ -513,12 +513,18 @@ class CLightRewriteSpacer {
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
-            // Shrink-only: the solve never pulls a light below its start radius, so skip the rest
-            if (radii[i] >= original[i] - EPSILON) continue;
-
             // Production only spaces lights the mod already rewrites; skip anything uncovered
             rewriter = entities[i].lightSourceRewriter;
             if (!rewriter) continue;
+
+            if (radii[i] >= original[i] - EPSILON) {
+                // Crowding eased since the last solve, so drop the stale cap and let it grow back
+                if (rewriter.HasSpacingCap()) {
+                    rewriter.SetMaxSafeRadius(0.0);
+                    rewriter.RewriteLight();
+                }
+                continue;
+            }
 
             LogLightRewrite("Spacing " + entities[i] + " from " + original[i] + " to " + radii[i]);
 
