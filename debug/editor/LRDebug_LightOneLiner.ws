@@ -256,6 +256,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             html += ShadowLineHtml(fontSize, "P" + (i + 1), (CLightComponent)components[i]);
         }
 
+        components.Clear();
         components = entity.GetComponentsByClassName('CSpotLightComponent');
         for (i = 0; i < components.Size(); i += 1) {
             html += ShadowLineHtml(fontSize, "S" + (i + 1), (CLightComponent)components[i]);
