@@ -36,7 +36,7 @@ function Invoke-WccLite {
   $stderr = $p.StandardError.ReadToEnd().Trim()
   $null = $p.WaitForExit()
 
-  if (-not [string]::IsNullOrWhiteSpace($stderr)) {
+  if (![string]::IsNullOrWhiteSpace($stderr)) {
     throw $stderr
   }
   elseif ($stdout.EndsWith("Wcc operation failed")) {
@@ -55,7 +55,7 @@ $RepoRoot = (Resolve-Path -Path $RepoRoot).Path
 & $RepoRoot\Import-Dotenv.ps1
 
 $wccLiteExe = $env:WCC_LITE_PATH
-if (-not (Test-Path -Path $wccLiteExe)) {
+if (!(Test-Path -Path $wccLiteExe)) {
   throw "wcc_lite.exe not found. Set WCC_LITE_PATH or WCC_LITE_DIR. Looked for: $wccLiteExe"
 }
 
