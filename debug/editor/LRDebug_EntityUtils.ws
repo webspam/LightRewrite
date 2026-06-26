@@ -68,6 +68,13 @@ public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewrite
     return lrDebugParams;
 }
 
+@addMethod(CGameplayEntity)
+public function LRDebug_ClearDebugParams() {
+    lrDebugParams = NULL;
+    lrDebugBaseline = NULL;
+    lrDebugSpotOwned = false;
+}
+
 // ---- ILightSourceRewriter extensions ----
 
 /** Whether the rewriter is in its original state */

@@ -212,6 +212,20 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
+    public function ResetTarget() {
+        var rewriter: ILightSourceRewriter;
+
+        if (!target) return;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        rewriter.LRDebug_ClearMenuOverrideParams();
+        target.LRDebug_ClearDebugParams();
+        rewriter.RestoreOriginalState();
+        rewriter.RewriteLight();
+
+        RefreshTargetOneliner();
+    }
+
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
         var maxRange: float = 10.0;
 
