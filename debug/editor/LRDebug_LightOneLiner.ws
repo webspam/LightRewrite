@@ -220,8 +220,49 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return r;
     }
 
-    private function ToHtmlBlock(size: int, text: string): string {
-        return "<br/><font size='" + size + "'>" + text + "</font>";
+    private function ToHtmlBlock(text: string, size: int, optional colour: string): string {
+        var colourAttr: string;
+
+        if (colour != "") colourAttr = " color='" + colour + "'";
+        return "<br/><font size='" + size + "'" + colourAttr + ">" + text + "</font>";
+    }
+
+    private function ShadowModeLabel(mode: ELightShadowCastingMode): string {
+        switch (mode) {
+            case LSCM_None:         return "None";
+            case LSCM_Normal:       return "Normal";
+            case LSCM_OnlyDynamic:  return "OnlyDynamic";
+            case LSCM_OnlyStatic:   return "OnlyStatic";
+        }
+        return "?";
+    }
+
+    private function ShadowLineHtml(prefix: string, light: CLightComponent, fontSize: int): string {
+        var text: string = prefix + ": " + ShadowModeLabel(light.shadowCastingMode);
+
+        if (light.shadowCastingMode == LSCM_None) {
+            return ToHtmlBlock(text, fontSize, "#999999");
+        }
+        return ToHtmlBlock(text, fontSize);
+    }
+
+    private function ShadowStatusHtml(fontSize: int): string {
+        var html: string;
+        var components: array<CComponent>;
+        var i: int;
+
+        components = entity.GetComponentsByClassName('CPointLightComponent');
+        for (i = 0; i < components.Size(); i += 1) {
+            html += ShadowLineHtml("P" + (i + 1), (CLightComponent)components[i], fontSize);
+        }
+
+        components.Clear();
+        components = entity.GetComponentsByClassName('CSpotLightComponent');
+        for (i = 0; i < components.Size(); i += 1) {
+            html += ShadowLineHtml("S" + (i + 1), (CLightComponent)components[i], fontSize);
+        }
+
+        return html;
     }
 
     /**
@@ -231,22 +272,18 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function GenerateText(): string {
-        var descriptor: string;
         var layerPart, entityPath, levelPath, fileName, filePath: string;
         var headerHtml, body, countString, marker, pSeg, sSeg: string;
         var attrId: name;
         var type: name;
-        var fontSize: int;
-        var showPaths: bool;
 
-        descriptor = entity.ToString();
-        fontSize = 13;
+        var fontSize: int = 13;
+        var descriptor: string = entity.ToString();
+
         countString = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
         marker = "<font color='#dd88ff'>-</font> ";
 
         // Read display state from the player's manager objects.
-        showPaths = thePlayer.lrDebugLabelManager.showPathLabels;
-
         if (this.highlighted) {
             type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
 
@@ -268,7 +305,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
 
-        if (showPaths) {
+        if (thePlayer.lrDebugLabelManager.showPathLabels) {
             if (StrFindFirst(descriptor, "::") != -1) {
                 layerPart = StrBeforeFirst(descriptor, "::");
                 entityPath = StrAfterFirst(descriptor, "::");
@@ -287,14 +324,18 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             }
 
             if (fileName != "") {
-                body += ToHtmlBlock(fontSize + 3, EscapeHtml(fileName));
+                body += ToHtmlBlock(EscapeHtml(fileName), fontSize + 3);
             }
             if (filePath != "") {
-                body += ToHtmlBlock(fontSize - 1, EscapeHtml(filePath));
+                body += ToHtmlBlock(EscapeHtml(filePath), fontSize - 1);
             }
             if (levelPath != "") {
-                body += ToHtmlBlock(fontSize + 2, EscapeHtml(levelPath));
+                body += ToHtmlBlock(EscapeHtml(levelPath), fontSize + 2);
             }
+        }
+
+        if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
+            body += ShadowStatusHtml(fontSize);
         }
 
         return body;
@@ -305,7 +346,7 @@ state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
     private const var NORMAL_RANGE: float;  default NORMAL_RANGE = 10.0;
-    private const var FOCUS_RANGE : float;  default FOCUS_RANGE = 25.0;
+    private const var MULTIPLIER  : float;  default MULTIPLIER = 3.0;
 
     event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
@@ -319,7 +360,7 @@ state FollowEntity in LRDebug_LightOneLiner {
     }
 
     entry function FollowEntity(): void {
-        var maxRange: float = FOCUS_RANGE;
+        var maxRange: float = NORMAL_RANGE * MULTIPLIER * MULTIPLIER;
 
         while (
             thePlayer.lrDebugLabels &&
@@ -328,8 +369,10 @@ state FollowEntity in LRDebug_LightOneLiner {
             parent.position = parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f);
             SleepOneFrame();
 
-            if (theGame.IsFocusModeActive()) maxRange = FOCUS_RANGE;
-            else maxRange = NORMAL_RANGE;
+            maxRange = NORMAL_RANGE;
+
+            if (theGame.IsFocusModeActive()) maxRange *= MULTIPLIER;
+            if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= MULTIPLIER;
         }
 
         parent.active = false;
