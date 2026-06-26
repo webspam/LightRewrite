@@ -99,10 +99,13 @@ class LRDebug_LabelManager {
      * Toggles path-label visibility and regenerates markup on all nearby oneliners.
      */
     public function TogglePathLabels() {
+        showPathLabels = !showPathLabels;
+        RegenerateNearbyOneliners();
+    }
+
+    public function RegenerateNearbyOneliners() {
         var entities: array<CGameplayEntity>;
         var i, count: int;
-
-        showPathLabels = !showPathLabels;
 
         FindNearbyLights(entities);
 
