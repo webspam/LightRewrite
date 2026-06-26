@@ -74,26 +74,8 @@ class CLightRewriteManager {
         ApplySpacing();
     }
 
-    // Recompute light spacing: drop stale caps to expose true radii, then shrink crowded lights
     public function ApplySpacing() {
-        var i, count: int;
-        var entities: array<CGameplayEntity>;
-        var rewriter: ILightSourceRewriter;
-
         if (!settings.isEnabled) return;
-
-        GetAllLightSourceEntities(entities);
-        count = entities.Size();
-        for (i = 0; i < count; i += 1) {
-            if (!entities[i].IsLightRewritable()) continue;
-
-            rewriter = entities[i].lightSourceRewriter;
-            if (!rewriter.HasSpacingCap()) continue;
-
-            // A leftover cap hides the true radius the solve must measure against
-            rewriter.SetMaxSafeRadius(0.0);
-            rewriter.RewriteLight();
-        }
 
         lightSpacer.Configure(settings.GetSpacingMode(), settings.GetSpacingAmount());
         lightSpacer.Solve();

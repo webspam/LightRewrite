@@ -20,8 +20,8 @@ enum LR_EShedKind {
  * are preserved while shallower ones are shrunk away. The pass only ever shrinks, never grows,
  * so it is idempotent and leaves uncrowded lights untouched.
  *
- * Solve() measures each light's live radius, so callers must clear any prior spacing caps and
- * rewrite to the true profile radii before calling it, or the solve compounds its own output.
+ * Solve() measures each light's last uncapped resolved radius, so it is self-contained: callers
+ * need not clear prior spacing caps, and re-solving never compounds its own output.
  */
 class CLightRewriteSpacer {
     private var SPACE_MODE: LR_ELightSpaceMode;  default SPACE_MODE = LR_LSM_RelaxVolume;
