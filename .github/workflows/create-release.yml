@@ -95,7 +95,7 @@ jobs:
           $zipPath = "modLightRewrite-${{ inputs.tag }}.zip"
           Copy-Item -Recurse -Force bin build\bin
           Push-Location build
-          Compress-Archive -Path mods, bin -DestinationPath $zipPath -Force
+          Compress-Archive -Path dlc, mods, bin -DestinationPath $zipPath -Force
           Pop-Location
 
       - name: Create Draft Release
