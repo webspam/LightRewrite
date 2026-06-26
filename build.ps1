@@ -64,14 +64,20 @@ $modsRoot = Join-Path $buildRoot "mods"
 $modContentDir = Join-Path $modsRoot "modLightRewrite/content"
 $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
 
+$dlcRoot = Join-Path $buildRoot "dlc"
+$dlcBundleDir = Join-Path $dlcRoot "lightrewrite/content"
+$dlcSourceDir = Join-Path $RepoRoot "dlc"
+
 # Main execution
 
 # Clean build dirs
 Remove-DirectoryIfExists $bundleDir
 Remove-DirectoryIfExists $modsRoot
+Remove-DirectoryIfExists $dlcRoot
 
 New-Directory $bundleDir
 New-Directory $scriptsDir
+# New-Directory $dlcBundleDir
 
 # Stage XML files into the in-bundle path
 $xmlSource = Join-Path $RepoRoot "data/*.xml"
@@ -106,6 +112,21 @@ else {
 
   try {
     Invoke-WccLite -Arguments "metadatastore -path=`"$modContentDir`""
+  }
+  catch {
+    throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
+  }
+
+  # DLC (entities)
+  try {
+    Invoke-WccLite -Arguments "pack -dir=`"$dlcSourceDir`" -outdir=`"$dlcBundleDir`""
+  }
+  catch {
+    throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
+  }
+
+  try {
+    Invoke-WccLite -Arguments "metadatastore -path=`"$dlcBundleDir`""
   }
   catch {
     throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
