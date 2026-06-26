@@ -237,7 +237,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return "?";
     }
 
-    private function ShadowLineHtml(fontSize: int, prefix: string, light: CLightComponent): string {
+    private function ShadowLineHtml(prefix: string, light: CLightComponent, fontSize: int): string {
         var text: string = prefix + ": " + ShadowModeLabel(light.shadowCastingMode);
 
         if (light.shadowCastingMode == LSCM_None) {
@@ -253,13 +253,13 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
         components = entity.GetComponentsByClassName('CPointLightComponent');
         for (i = 0; i < components.Size(); i += 1) {
-            html += ShadowLineHtml(fontSize, "P" + (i + 1), (CLightComponent)components[i]);
+            html += ShadowLineHtml("P" + (i + 1), (CLightComponent)components[i], fontSize);
         }
 
         components.Clear();
         components = entity.GetComponentsByClassName('CSpotLightComponent');
         for (i = 0; i < components.Size(); i += 1) {
-            html += ShadowLineHtml(fontSize, "S" + (i + 1), (CLightComponent)components[i]);
+            html += ShadowLineHtml("S" + (i + 1), (CLightComponent)components[i], fontSize);
         }
 
         return html;
