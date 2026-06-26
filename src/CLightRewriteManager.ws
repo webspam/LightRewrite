@@ -11,13 +11,9 @@ class CLightRewriteManager {
     // Whether the game has finished starting
     public var gameStarted: bool;
 
-    // Shrinks crowded shadow-casting lights once their profile radii are settled
-    public var lightSpacer: CLightRewriteSpacer;
-
     // Lazy constructor
     public function Init(settings: CLightRewriteSettings) {
         this.settings = settings;
-        lightSpacer = new CLightRewriteSpacer in this;
     }
 
     public function ProcessDeferredActions() {
@@ -75,10 +71,14 @@ class CLightRewriteManager {
     }
 
     public function ApplySpacing() {
+        var spacer: CLightRewriteSpacer;
+
         if (!settings.isEnabled) return;
 
-        lightSpacer.Configure(settings.GetSpacingMode(), settings.GetSpacingAmount());
-        lightSpacer.Solve();
+        spacer = new CLightRewriteSpacer in this;
+        spacer.Configure(settings.GetSpacingMode(), settings.GetSpacingAmount());
+        spacer.Solve();
+        delete spacer;
     }
 
     // Refreshes Light Rewrite on all light sources.
