@@ -1,7 +1,8 @@
 param(
   [Parameter(Mandatory = $false)]
   [string]$RepoRoot = $PSScriptRoot,
-  [switch]$SkipWcc
+  [switch]$SkipWcc,
+  [switch]$SkipDlc
 )
 
 $ErrorActionPreference = "Stop"
@@ -75,7 +76,9 @@ if (!$SkipWcc) {
   Remove-DirectoryIfExists $bundleDir
   New-Directory $bundleDir
 }
-Remove-DirectoryIfExists $dlcRoot
+if (!$SkipDlc) {
+  Remove-DirectoryIfExists $dlcRoot
+}
 
 Remove-DirectoryIfExists $modsRoot
 New-Directory $scriptsDir
@@ -117,7 +120,9 @@ else {
   catch {
     throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
   }
+}
 
+if (!$SkipDlc) {
   # DLC (entities)
   try {
     Invoke-WccLite -Arguments "pack -dir=`"$dlcSourceDir`" -outdir=`"$dlcBundleDir`""
