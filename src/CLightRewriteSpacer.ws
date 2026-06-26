@@ -198,8 +198,8 @@ class CLightRewriteSpacer {
             if (light.shadowCastingMode == LSCM_None) continue;
             if (!lightHasSchedule && !light.IsEnabled()) continue;
 
-            if (light.radius > radius) {
-                radius = light.radius;
+            if (light.lightRewriteResolvedRadius > radius) {
+                radius = light.lightRewriteResolvedRadius;
                 centre = light.GetWorldPosition();
                 mode = light.shadowCastingMode;
             }
