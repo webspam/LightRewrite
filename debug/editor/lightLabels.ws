@@ -14,6 +14,7 @@
  * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
+ * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -64,6 +65,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
+    theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
