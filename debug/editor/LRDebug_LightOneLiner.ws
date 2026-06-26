@@ -272,22 +272,18 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
      * ```
      */
     private function GenerateText(): string {
-        var descriptor: string;
         var layerPart, entityPath, levelPath, fileName, filePath: string;
         var headerHtml, body, countString, marker, pSeg, sSeg: string;
         var attrId: name;
         var type: name;
-        var fontSize: int;
-        var showPaths: bool;
 
-        descriptor = entity.ToString();
-        fontSize = 13;
+        var fontSize: int = 13;
+        var descriptor: string = entity.ToString();
+
         countString = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
         marker = "<font color='#dd88ff'>-</font> ";
 
         // Read display state from the player's manager objects.
-        showPaths = thePlayer.lrDebugLabelManager.showPathLabels;
-
         if (this.highlighted) {
             type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
 
@@ -309,7 +305,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
 
-        if (showPaths) {
+        if (thePlayer.lrDebugLabelManager.showPathLabels) {
             if (StrFindFirst(descriptor, "::") != -1) {
                 layerPart = StrBeforeFirst(descriptor, "::");
                 entityPath = StrAfterFirst(descriptor, "::");
