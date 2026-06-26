@@ -797,7 +797,6 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
         var params: CLightRewriteSourceParams = NULL;
-        var matched: CLightRewriteSourceParams = NULL;
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
