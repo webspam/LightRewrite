@@ -59,6 +59,10 @@ class CLightRewriteSettings {
     // Index of the profile that was selected when the menu was opened
     private var previousProfile: int;
 
+    // Spacing mode and amount that were selected when the menu was opened
+    private var previousSpacingMode  : int;
+    private var previousSpacingAmount: float;
+
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
         var loadedParams: array<CLightRewriteSourceParams>;
@@ -675,13 +679,20 @@ class CLightRewriteSettings {
     public function ApplyPendingChanges(): void {
         if (!(previousProfile >= 0)) previousProfile = 0;
         if (profileIndex != previousProfile) theGame.lightRewrite.ChangeProfile();
-        else if (isEnabled) theGame.lightRewrite.ApplySpacing();
+        else if (isEnabled && SpacingChanged()) theGame.lightRewrite.ApplySpacing();
+    }
+
+    private function SpacingChanged(): bool {
+        return spacingMode != previousSpacingMode
+            || GetSpacingAmount() != previousSpacingAmount;
     }
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
-        // Change detection: record the selected profile when the menu is opened
+        // Change detection: record the profile and spacing settings when the menu is opened
         previousProfile = profileIndex;
+        previousSpacingMode = spacingMode;
+        previousSpacingAmount = GetSpacingAmount();
 
         UpdateAllGroupsDisabledState();
         UpdateSpacingMenuDisabledState();
