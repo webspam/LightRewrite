@@ -13,7 +13,7 @@ function New-Directory([string]$Path) {
 
 function Remove-DirectoryIfExists([string]$LiteralPath) {
   if (Test-Path -LiteralPath $LiteralPath) {
-    Remove-Item -Recurse -Force -LiteralPath $LiteralPath
+    Remove-Item -Recurse -LiteralPath $LiteralPath
   }
 }
 
@@ -101,11 +101,11 @@ ForEach-Object {
 }
 
 # Copy mod scripts
-Copy-Item -Force -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
+Copy-Item -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
 
 # Copy prebuilt localisation binaries (generated out-of-band)
 New-Directory $modContentDir
-Copy-Item -Force -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
+Copy-Item -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
 
 # Execute wcc_lite to pack the content into a new bundle
 if ($SkipWcc) {
