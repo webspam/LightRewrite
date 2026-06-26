@@ -241,7 +241,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var text: string = prefix + ": " + ShadowModeLabel(light.shadowCastingMode);
 
         if (light.shadowCastingMode == LSCM_None) {
-            return ToHtmlBlock(text, fontSize, "#aaaaaa");
+            return ToHtmlBlock(text, fontSize, "#999999");
         }
         return ToHtmlBlock(text, fontSize);
     }
