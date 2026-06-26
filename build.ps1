@@ -84,15 +84,20 @@ Remove-DirectoryIfExists $modsRoot
 New-Directory $scriptsDir
 
 # Stage XML files into the in-bundle path
-$xmlSource = Join-Path $RepoRoot "data/*.xml"
+$xmlSourceDir = Join-Path $RepoRoot "data"
 $xmlDestDir = Join-Path $bundleDir "gameplay/abilities"
 
 New-Directory $xmlDestDir
-Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
 
 # Prefix all XML files with "lightrewrite_"
-Get-ChildItem -Path $xmlDestDir -Filter "*.xml" | ForEach-Object {
-  Rename-Item -Path $_.FullName -NewName "lightrewrite_$($_.Name)"
+Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse |
+Sort-Object { ($_.FullName.Substring($xmlSourceDir.Length) -split '[\\/]').Count }, FullName |
+ForEach-Object {
+  $relDir = $_.Directory.FullName.Substring($xmlSourceDir.Length).Trim('\', '/')
+  $dirName = ($relDir -replace '[\\/]', '_').ToLowerInvariant()
+  # Top level files `_` prefix so subdirs can't clash
+  $target = if (!$DirName) { "_lightrewrite_$($_.Name)" } else { "lightrewrite_${DirName}_$($_.Name)" }
+  Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $xmlDestDir $target)
 }
 
 # Copy mod scripts
