@@ -265,6 +265,8 @@ abstract class ILightSourceRewriter {
     protected function SetPointLightSettings(pointLight: CPointLightComponent) {
         ApplyLightParams(pointLight, GetEffectiveParams());
 
+        pointLight.lightRewriteResolvedRadius = pointLight.radius;
+
         // Spacing caps the radius last, so it bounds whatever the profile resolved to
         if (maxSafeRadius > 0.0 && pointLight.radius > maxSafeRadius) {
             pointLight.radius = maxSafeRadius;
