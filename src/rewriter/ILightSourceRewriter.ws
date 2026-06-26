@@ -42,6 +42,17 @@ abstract class ILightSourceRewriter {
         return maxSafeRadius > 0.0;
     }
 
+    // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
+    public function GetUncappedRadius(pointLight: CPointLightComponent): float {
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (p.radius.has) return p.radius.value;
+        if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
+            return pointLight.lightRewriteOriginalValues.radius;
+        }
+        return pointLight.radius;
+    }
+
     // If the params passed in (global params) are enabled, set the menu override params to them.
     public function SetGlobalOverride(params: CLightRewriteSourceParams) {
         if (params.enabled.value) menuOverrideParams = params;
