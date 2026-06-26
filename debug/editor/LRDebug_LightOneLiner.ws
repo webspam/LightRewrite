@@ -332,7 +332,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             if (levelPath != "") {
                 body += ToHtmlBlock(EscapeHtml(levelPath), fontSize + 2);
             }
+        }
 
+        if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
             body += ShadowStatusHtml(fontSize);
         }
 
