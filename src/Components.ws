@@ -44,9 +44,6 @@ struct SLightRewriteOriginalValues {
 // The original values of the light component.
 @addField(CLightComponent) public var lightRewriteOriginalValues: SLightRewriteOriginalValues;
 
-// Radius the last rewrite resolved to before any spacing cap; the spacer measures against this
-@addField(CLightComponent) public var lightRewriteResolvedRadius: float;
-
 // Saves the current state of the light component as its original values, unless it has already been saved.
 @addMethod(CLightComponent)
 public function SaveLightRewriteOriginalValues() {
