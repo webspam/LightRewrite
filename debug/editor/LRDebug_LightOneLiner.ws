@@ -220,7 +220,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return r;
     }
 
-    private function ToHtmlBlock(size: int, text: string, optional colour: string): string {
+    private function ToHtmlBlock(text: string, size: int, optional colour: string): string {
         var colourAttr: string;
 
         if (colour != "") colourAttr = " color='" + colour + "'";
@@ -241,9 +241,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var text: string = prefix + ": " + ShadowModeLabel(light.shadowCastingMode);
 
         if (light.shadowCastingMode == LSCM_None) {
-            return ToHtmlBlock(fontSize, text, "#aaaaaa");
+            return ToHtmlBlock(text, fontSize, "#aaaaaa");
         }
-        return ToHtmlBlock(fontSize, text);
+        return ToHtmlBlock(text, fontSize);
     }
 
     private function ShadowStatusHtml(fontSize: int): string {
@@ -328,13 +328,13 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             }
 
             if (fileName != "") {
-                body += ToHtmlBlock(fontSize + 3, EscapeHtml(fileName));
+                body += ToHtmlBlock(EscapeHtml(fileName), fontSize + 3);
             }
             if (filePath != "") {
-                body += ToHtmlBlock(fontSize - 1, EscapeHtml(filePath));
+                body += ToHtmlBlock(EscapeHtml(filePath), fontSize - 1);
             }
             if (levelPath != "") {
-                body += ToHtmlBlock(fontSize + 2, EscapeHtml(levelPath));
+                body += ToHtmlBlock(EscapeHtml(levelPath), fontSize + 2);
             }
 
             body += ShadowStatusHtml(fontSize);
