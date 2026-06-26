@@ -220,8 +220,48 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return r;
     }
 
-    private function ToHtmlBlock(size: int, text: string): string {
-        return "<br/><font size='" + size + "'>" + text + "</font>";
+    private function ToHtmlBlock(size: int, text: string, optional colour: string): string {
+        var colourAttr: string;
+
+        if (colour != "") colourAttr = " color='" + colour + "'";
+        return "<br/><font size='" + size + "'" + colourAttr + ">" + text + "</font>";
+    }
+
+    private function ShadowModeLabel(mode: ELightShadowCastingMode): string {
+        switch (mode) {
+            case LSCM_None:         return "None";
+            case LSCM_Normal:       return "Normal";
+            case LSCM_OnlyDynamic:  return "OnlyDynamic";
+            case LSCM_OnlyStatic:   return "OnlyStatic";
+        }
+        return "?";
+    }
+
+    private function ShadowLineHtml(fontSize: int, prefix: string, light: CLightComponent): string {
+        var text: string = prefix + ": " + ShadowModeLabel(light.shadowCastingMode);
+
+        if (light.shadowCastingMode == LSCM_None) {
+            return ToHtmlBlock(fontSize, text, "#aaaaaa");
+        }
+        return ToHtmlBlock(fontSize, text);
+    }
+
+    private function ShadowStatusHtml(fontSize: int): string {
+        var html: string;
+        var components: array<CComponent>;
+        var i: int;
+
+        components = entity.GetComponentsByClassName('CPointLightComponent');
+        for (i = 0; i < components.Size(); i += 1) {
+            html += ShadowLineHtml(fontSize, "P" + (i + 1), (CLightComponent)components[i]);
+        }
+
+        components = entity.GetComponentsByClassName('CSpotLightComponent');
+        for (i = 0; i < components.Size(); i += 1) {
+            html += ShadowLineHtml(fontSize, "S" + (i + 1), (CLightComponent)components[i]);
+        }
+
+        return html;
     }
 
     /**
@@ -295,6 +335,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             if (levelPath != "") {
                 body += ToHtmlBlock(fontSize + 2, EscapeHtml(levelPath));
             }
+
+            body += ShadowStatusHtml(fontSize);
         }
 
         return body;
