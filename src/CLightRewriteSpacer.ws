@@ -184,15 +184,19 @@ class CLightRewriteSpacer {
         var components: array<CComponent>;
         var light: CPointLightComponent;
         var i, count: int;
+        var lightHasSchedule: bool;
 
         radius = 0.0;
         mode = LSCM_None;
+        lightHasSchedule = entity.IsCityScheduledLight();
         components = entity.GetComponentsByClassName('CPointLightComponent');
+
         count = components.Size();
         for (i = 0; i < count; i += 1) {
             light = (CPointLightComponent)components[i];
             if (!light) continue;
             if (light.shadowCastingMode == LSCM_None) continue;
+            if (!lightHasSchedule && !light.IsEnabled()) continue;
 
             if (light.radius > radius) {
                 radius = light.radius;
