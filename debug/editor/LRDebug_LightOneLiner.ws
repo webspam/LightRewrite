@@ -346,7 +346,7 @@ state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
     private const var NORMAL_RANGE: float;  default NORMAL_RANGE = 10.0;
-    private const var FOCUS_RANGE : float;  default FOCUS_RANGE = 25.0;
+    private const var MULTIPLIER  : float;  default MULTIPLIER = 3.0;
 
     event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
@@ -360,7 +360,7 @@ state FollowEntity in LRDebug_LightOneLiner {
     }
 
     entry function FollowEntity(): void {
-        var maxRange: float = FOCUS_RANGE;
+        var maxRange: float = NORMAL_RANGE * MULTIPLIER * MULTIPLIER;
 
         while (
             thePlayer.lrDebugLabels &&
@@ -369,8 +369,10 @@ state FollowEntity in LRDebug_LightOneLiner {
             parent.position = parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f);
             SleepOneFrame();
 
-            if (theGame.IsFocusModeActive()) maxRange = FOCUS_RANGE;
-            else maxRange = NORMAL_RANGE;
+            maxRange = NORMAL_RANGE;
+
+            if (theGame.IsFocusModeActive()) maxRange *= MULTIPLIER;
+            if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= MULTIPLIER;
         }
 
         parent.active = false;

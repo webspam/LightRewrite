@@ -38,8 +38,10 @@ class LRDebug_LabelManager {
         GetCameraPositionAndDirection(camPos, camDir);
         camDir = VecNormalize(camDir);
 
-        if (theGame.IsFocusModeActive()) visibilityRange = 25.0;
-        else visibilityRange = 10.0;
+        visibilityRange = 10.0;
+
+        if (theInput.IsActionPressed('LRDebug_ModifierKey')) visibilityRange *= 3.0;
+        if (theGame.IsFocusModeActive()) visibilityRange *= 3.0;
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
@@ -213,8 +215,25 @@ class LRDebug_LabelManager {
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
         var maxRange: float = 10.0;
 
-        if (theGame.IsFocusModeActive()) maxRange = 25.0;
-        FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
+        if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= 3.0;
+        if (theGame.IsFocusModeActive()) maxRange *= 3.0;
+
+        // Find in a large radius can exceed 1024 entities
+        if (maxRange > 10.0) {
+            FindGameplayEntitiesInRange(
+                entities,
+                thePlayer,
+                maxRange,
+                1024,
+                theGame.lightRewrite.TAG_HAS_LIGHT,
+                FLAG_ExcludePlayer
+            );
+        }
+        // OnSpawned is overriden by many subclasses, some do not call super.OnSpawned
+        // By omitting the tag filter, we can still see them.
+        else {
+            FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
+        }
     }
 
     private function GetCameraPositionAndDirection(

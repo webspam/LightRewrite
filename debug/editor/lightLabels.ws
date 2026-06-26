@@ -104,6 +104,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
     theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
 
+    theInput.RegisterListener(this, 'LRDebug_OnModifierKeyPressed', 'LRDebug_ModifierKey');
     theInput.RegisterListener(this, 'LRDebug_OnAltPressed', 'ShowDeveloperModeAlt');
 }
 
@@ -161,6 +162,19 @@ function PostStateChange() {
     if (thePlayer.lrDebugLabels && theInput.GetContext() == thePlayer.GetExplorationInputContext()) {
         theInput.StoreContext('LRDebug');
     }
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnModifierKeyPressed(action: SInputAction): bool {
+    if (
+        lrDebugLabels &&
+        (IsPressed(action) || IsReleased(action))
+    ) {
+        LogChannel('LRDebug', "LRDebug_ModifierKeyPressed");
+        lrDebugLabelManager.RegenerateNearbyOneliners();
+    }
+
+    return false;
 }
 
 @addMethod(CR4Player)
