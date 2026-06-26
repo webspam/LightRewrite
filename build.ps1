@@ -71,13 +71,14 @@ $dlcSourceDir = Join-Path $RepoRoot "dlc"
 # Main execution
 
 # Clean build dirs
-Remove-DirectoryIfExists $bundleDir
-Remove-DirectoryIfExists $modsRoot
+if (!$SkipWcc) {
+  Remove-DirectoryIfExists $bundleDir
+  New-Directory $bundleDir
+}
 Remove-DirectoryIfExists $dlcRoot
 
-New-Directory $bundleDir
+Remove-DirectoryIfExists $modsRoot
 New-Directory $scriptsDir
-# New-Directory $dlcBundleDir
 
 # Stage XML files into the in-bundle path
 $xmlSource = Join-Path $RepoRoot "data/*.xml"
