@@ -36,7 +36,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     public function RewriteLight() {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight: CSpotLightComponent;
-        var pointLight, central: CPointLightComponent;
+        var pointLight, mainLight: CPointLightComponent;
         var i: int;
         var wasEnabled, forceSingle: bool;
 
@@ -50,7 +50,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         }
 
         forceSingle = p.forceSingleLight.has && p.forceSingleLight.value && count > 1;
-        if (forceSingle) central = LR_CentralPointLight(parentEntity);
+        if (forceSingle) mainLight = LR_MainPointLight(parentEntity);
 
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
@@ -58,7 +58,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
             pointLight.SaveLightRewriteOriginalValues();
 
-            if (forceSingle && pointLight != central) {
+            if (forceSingle && pointLight != mainLight) {
                 pointLight.SetEnabled(false);
                 continue;
             }
