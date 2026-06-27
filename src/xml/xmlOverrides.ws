@@ -78,6 +78,10 @@ function LoadLightRewriteOverridesGroup(
             override.useSpotlightColor.has = true;
             override.useSpotlightColor.value = (strVal == "true");
         }
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'force_single_light', strVal)) {
+            override.forceSingleLight.has = true;
+            override.forceSingleLight.value = (strVal == "true");
+        }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
 

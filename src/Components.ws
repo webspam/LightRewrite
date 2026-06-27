@@ -35,6 +35,85 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.color = color;
 }
 
+function LR_ShadowCastWeight(mode: ELightShadowCastingMode): int {
+    switch (mode) {
+        case LSCM_Normal:       return 3;
+        case LSCM_OnlyStatic:   return 2;
+        case LSCM_OnlyDynamic:  return 1;
+        default:                return 0;
+    }
+}
+
+// Strongest shadow caster, or most central
+function LR_MainPointLight(entity: CGameplayEntity): CPointLightComponent {
+    var components: array<CComponent>;
+    var candidates: array<CPointLightComponent>;
+    var light: CPointLightComponent;
+    var bestWeight, weight, i, count: int;
+
+    components = entity.GetComponentsByClassName('CPointLightComponent');
+    count = components.Size();
+
+    if (count == 0) return NULL;
+    if (count == 1) return (CPointLightComponent)components[0];
+
+    bestWeight = -1;
+    for (i = 0; i < count; i += 1) {
+        light = (CPointLightComponent)components[i];
+        if (!light) continue;
+        weight = LR_ShadowCastWeight(light.shadowCastingMode);
+        if (weight > bestWeight) bestWeight = weight;
+    }
+
+    for (i = 0; i < count; i += 1) {
+        light = (CPointLightComponent)components[i];
+        if (!light) continue;
+        if (LR_ShadowCastWeight(light.shadowCastingMode) == bestWeight) candidates.PushBack(light);
+    }
+
+    return LR_CentralPointLight(candidates);
+}
+
+function LR_CentralPointLight(lights: array<CPointLightComponent>): CPointLightComponent {
+    var centroid, pos, posB: Vector;
+    var bestDist, dist: float;
+    var bestIdx, i, count: int;
+
+    count = lights.Size();
+
+    if (count == 0) return NULL;
+    if (count == 1) return lights[0];
+
+    // A pair has no centre, so the raised light reads as the main one
+    if (count == 2) {
+        pos = lights[0].GetWorldPosition();
+        posB = lights[1].GetWorldPosition();
+        if (posB.Z > pos.Z) return lights[1];
+        return lights[0];
+    }
+
+    for (i = 0; i < count; i += 1) {
+        pos = lights[i].GetWorldPosition();
+        centroid.X += pos.X;
+        centroid.Y += pos.Y;
+        centroid.Z += pos.Z;
+    }
+    centroid.X /= count;
+    centroid.Y /= count;
+    centroid.Z /= count;
+
+    bestIdx = 0;
+    bestDist = VecDistanceSquared(lights[0].GetWorldPosition(), centroid);
+    for (i = 1; i < count; i += 1) {
+        dist = VecDistanceSquared(lights[i].GetWorldPosition(), centroid);
+        if (dist < bestDist) {
+            bestDist = dist;
+            bestIdx = i;
+        }
+    }
+    return lights[bestIdx];
+}
+
 // Restores the light component to its original values.
 @addMethod(CLightComponent)
 public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional enabled: bool) {

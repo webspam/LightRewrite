@@ -35,6 +35,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var useSpotlightColor: SLightRewriteOptionalBool;
 
+    public var forceSingleLight: SLightRewriteOptionalBool;
+
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
@@ -73,6 +75,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         }
         if (pointLightOffsetPos.has) target.pointLightOffsetPos = pointLightOffsetPos;
         if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
+        if (forceSingleLight.has) target.forceSingleLight = forceSingleLight;
         if (spotlight) {
             target.spotlight = spotlight;
         }
