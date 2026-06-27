@@ -1,12 +1,15 @@
-// Live, camera-aware shadow thinning: each frame, shrink casters by the on-screen volume their
-// shadow spheres waste overlapping each other, easing back as the view changes. The moving-shot
-// counterpart to the static spacer; run with that spacer off or they fight over the live radius.
+// Live, camera-aware shadow thinning: each frame, shrink casters to cap the total on-screen shadow
+// volume (overlap penalised), easing back as the view changes. The moving-shot counterpart to the
+// static spacer; run with that spacer off or they fight over the live radius.
 class CLightRewriteShadowReducer {
     // Gather radius and frustum far plane; entities past this never reach the shot
     var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
 
-    // Total in-view overlap the whole frame may keep, as the volume of a sphere this big
-    var TOTAL_OVERLAP_RADIUS: float;  default TOTAL_OVERLAP_RADIUS = 8.0;
+    // Total in-view shadow volume the whole frame may keep, as the volume of a sphere this big
+    var TOTAL_SHADOW_RADIUS: float;  default TOTAL_SHADOW_RADIUS = 12.0;
+
+    // Extra cost an overlap adds on top of the two shadows that already cover it; higher culls overlap harder
+    var OVERLAP_PENALTY: float;  default OVERLAP_PENALTY = 2.0;
 
     // Lights this close to the camera are never shrunk; their on-screen footprint is too large to touch
     var PROTECT_DIST    : float;  default PROTECT_DIST = 8.0;
@@ -42,6 +45,7 @@ class CLightRewriteShadowReducer {
     private var authored: array<float>;
     private var modes   : array<ELightShadowCastingMode>;
     private var gShrink : array<float>;
+    private var shadowW : array<float>;
 
     // Candidate in-view overlap pairs; parallel arrays, one entry per pair
     private var pairI     : array<int>;
@@ -75,6 +79,7 @@ class CLightRewriteShadowReducer {
         authored.Clear();
         modes.Clear();
         gShrink.Clear();
+        shadowW.Clear();
 
         FindGameplayEntitiesInRange(
             found,
@@ -106,6 +111,7 @@ class CLightRewriteShadowReducer {
             radii.PushBack(auth);
             modes.PushBack(light.shadowCastingMode);
             gShrink.PushBack(ShrinkWeight(VecLength(center - camPos), proj));
+            shadowW.PushBack(ShadowFraction(proj, auth));
         }
 
         BuildPairs();
@@ -271,6 +277,11 @@ class CLightRewriteShadowReducer {
         return far * view;
     }
 
+    /** Fraction of a sphere of radius r inside the frustum, from its centre's plane depth */
+    private function ShadowFraction(proj, r: float): float {
+        return ClampF((proj + r) / (2.0 * r), 0.0, 1.0);
+    }
+
     /** Two shadow-casters compete unless one is dynamic-only and the other static-only */
     private function ModesConflict(a: ELightShadowCastingMode, b: ELightShadowCastingMode): bool {
         if (a == LSCM_OnlyDynamic && b == LSCM_OnlyStatic) return false;
@@ -278,7 +289,7 @@ class CLightRewriteShadowReducer {
         return true;
     }
 
-    /** Shrink the most expendable lights until the frame's total in-view overlap fits the budget */
+    /** Shrink the most expendable lights until the frame's total in-view shadow cost fits the budget */
     private function Relax() {
         var load: array<float>;
         var pass, e, i, j, lightCount, edgeCount: int;
@@ -286,20 +297,26 @@ class CLightRewriteShadowReducer {
         var changed: bool;
 
         edgeCount = pairI.Size();
-        if (edgeCount < 1) return;
-
         lightCount = radii.Size();
-        budget = TOTAL_OVERLAP_RADIUS * TOTAL_OVERLAP_RADIUS * TOTAL_OVERLAP_RADIUS;
+        if (lightCount < 1) return;
+
+        budget = TOTAL_SHADOW_RADIUS * TOTAL_SHADOW_RADIUS * TOTAL_SHADOW_RADIUS;
         load.Grow(lightCount);
 
         for (pass = 0; pass < MAX_PASSES; pass += 1) {
-            for (i = 0; i < lightCount; i += 1) load[i] = 0.0;
-
             total = 0.0;
+
+            // Every in-view shadow costs its own volume, so even a lone light counts toward the budget
+            for (i = 0; i < lightCount; i += 1) {
+                load[i] = shadowW[i] * radii[i] * radii[i] * radii[i];
+                total += load[i];
+            }
+
+            // An overlap costs extra on top of the two shadows that already cover it
             for (e = 0; e < edgeCount; e += 1) {
                 i = pairI[e];
                 j = pairJ[e];
-                vol = pairWeight[e] * OverlapVolume(radii[i], radii[j], pairDist[e]);
+                vol = OVERLAP_PENALTY * pairWeight[e] * OverlapVolume(radii[i], radii[j], pairDist[e]);
                 load[i] += vol;
                 load[j] += vol;
                 total += vol;
@@ -308,7 +325,7 @@ class CLightRewriteShadowReducer {
             if (total <= budget) break;
             excess = total - budget;
 
-            // Split the excess across lights by willingness times their overlap, so protected lights take none
+            // Split the excess across lights by willingness times their cost, so protected lights take none
             denom = 0.0;
             for (i = 0; i < lightCount; i += 1) denom += gShrink[i] * load[i];
             if (denom < EPSILON) break;
@@ -318,7 +335,7 @@ class CLightRewriteShadowReducer {
                 if (gShrink[i] * load[i] < EPSILON) continue;
 
                 shed = excess * (gShrink[i] * load[i]) / denom;
-                // Overlap scales ~r^3, so cube-root the surviving fraction into a radius scale; omega damps overshoot
+                // Cost scales ~r^3, so cube-root the surviving fraction into a radius scale; omega damps overshoot
                 frac = ClampF(1.0 - shed / load[i], 0.0, 1.0);
                 scale = PowF(frac, 1.0 / 3.0);
                 newR = radii[i] - RELAX_OMEGA * radii[i] * (1.0 - scale);
