@@ -37,6 +37,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight: CSpotLightComponent;
         var pointLight, mainLight: CPointLightComponent;
+        var centralSlot: name;
         var i: int;
         var wasEnabled, forceSingle: bool;
 
@@ -50,7 +51,10 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         }
 
         forceSingle = p.forceSingleLight.has && p.forceSingleLight.value && count > 1;
-        if (forceSingle) mainLight = LR_MainPointLight(parentEntity);
+        if (forceSingle) {
+            mainLight = LR_MainPointLight(parentEntity);
+            centralSlot = CentralFireFxSlot();
+        }
 
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
@@ -69,8 +73,13 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             SetPointLightSettings(pointLight);
             SetPointLightColour(pointLight, spotLight);
 
-            if (!forceSingle && p.alignPointLights.has && p.alignPointLights.value) {
-                AlignPointLight(i, pointLight);
+            if (p.alignPointLights.has && p.alignPointLights.value) {
+                if (forceSingle) {
+                    if (centralSlot != '') AlignPointLightToSlot(centralSlot, pointLight);
+                }
+                else {
+                    AlignPointLight(i, pointLight);
+                }
             }
 
             if (wasEnabled) pointLight.SetEnabled(true);
@@ -115,6 +124,41 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         slotPos += GetEffectiveParams().pointLightOffset * scale;
 
         pointLight.SetPosition(slotPos);
+    }
+
+    private function CentralFireFxSlot(): name {
+        var slotMatrix: Matrix;
+        var centroid, pos: Vector;
+        var positions: array<Vector>;
+        var bestDist, dist: float;
+        var bestIdx, i, count: int;
+
+        count = fireFxSlotNames.Size();
+        if (count == 0) return '';
+        if (count == 1) return fireFxSlotNames[0];
+
+        for (i = 0; i < count; i += 1) {
+            parentEntity.CalcEntitySlotMatrix(fireFxSlotNames[i], slotMatrix);
+            pos = MatrixGetTranslation(slotMatrix);
+            positions.PushBack(pos);
+            centroid.X += pos.X;
+            centroid.Y += pos.Y;
+            centroid.Z += pos.Z;
+        }
+        centroid.X /= count;
+        centroid.Y /= count;
+        centroid.Z /= count;
+
+        bestIdx = 0;
+        bestDist = VecDistanceSquared(positions[0], centroid);
+        for (i = 1; i < count; i += 1) {
+            dist = VecDistanceSquared(positions[i], centroid);
+            if (dist < bestDist) {
+                bestDist = dist;
+                bestIdx = i;
+            }
+        }
+        return fireFxSlotNames[bestIdx];
     }
 
     /*
