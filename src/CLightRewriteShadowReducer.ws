@@ -1,44 +1,51 @@
-// PoC: shrink casters by real screen-space overlap depth, recomputed per frame.
+// PoC: shrink casters by real screen-space overlap area, recomputed per frame.
 // Run with the static spacer off, or the two fight over the live radius.
 class CLightRewriteShadowReducer {
     var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
 
-    var TARGET_DEPTH: int;  default TARGET_DEPTH = 3;
+    var OVERLAP_BUDGET: float;  default OVERLAP_BUDGET = 0.15;
 
     var MIN_SCALE: float;  default MIN_SCALE = 0.35;
 
-    var GRID: int;  default GRID = 64;
+    // tan(22 deg): half of the 44 vertical FOV
+    var TAN_HALF_V: float;  default TAN_HALF_V = 0.4040;
 
-    // flip to 0 / 1 if WorldVectorToViewRatio is UV-based, not NDC
-    var RATIO_MIN: float;  default RATIO_MIN = -1.0;
-    var RATIO_MAX: float;  default RATIO_MAX = 1.0;
+    // 32:9
+    var ASPECT: float;  default ASPECT = 3.5556;
+
+    var GRID_W: int;  default GRID_W = 128;
+    var GRID_H: int;  default GRID_H = 36;
 
     // per-frame scratch, index-aligned across the light arrays
     private var lights  : array<CPointLightComponent>;
-    private var sx      : array<float>;
-    private var sy      : array<float>;
-    private var sr      : array<float>;
+    private var cx      : array<float>;
+    private var cy      : array<float>;
+    private var cr      : array<float>;
     private var authored: array<float>;
     private var grid    : array<int>;
 
     public function Tick() {
         var director: CCameraDirector;
-        var camRight, pos, edge: Vector;
+        var camPos, fwd, right, up, v, pos: Vector;
         var found: array<CGameplayEntity>;
         var entity: CGameplayEntity;
         var light: CPointLightComponent;
-        var auth, rx, ry, ex, ey, scale: float;
-        var i, n, count, peak: int;
+        var auth, z, xN, yN, rN, scale, excessFrac: float;
+        var i, n, count: int;
 
         if (!theGame.lightRewrite || !theGame.GetWorld()) return;
         director = theGame.GetWorld().GetCameraDirector();
         if (!director) return;
-        camRight = director.GetCameraRight();
+
+        camPos = director.GetCameraPosition();
+        fwd = director.GetCameraForward();
+        right = director.GetCameraRight();
+        up = director.GetCameraUp();
 
         lights.Clear();
-        sx.Clear();
-        sy.Clear();
-        sr.Clear();
+        cx.Clear();
+        cy.Clear();
+        cr.Clear();
         authored.Clear();
 
         FindGameplayEntitiesInRange(
@@ -57,19 +64,27 @@ class CLightRewriteShadowReducer {
             if (!PickCaster(entity, light, auth)) continue;
 
             pos = light.GetWorldPosition();
-            // Off-screen casters add no on-screen shadow volume, so restore them
-            if (!director.WorldVectorToViewRatio(pos, rx, ry)) {
+            v = pos - camPos;
+            z = VecDot(v, fwd);
+            if (z < 0.05) {
                 SetRadius(light, auth);
                 continue;
             }
 
-            edge = pos + camRight * auth;
-            director.WorldVectorToViewRatio(edge, ex, ey);
+            xN = (VecDot(v, right) / z) / (TAN_HALF_V * ASPECT);
+            yN = (VecDot(v, up) / z) / TAN_HALF_V;
+            rN = (auth / z) / TAN_HALF_V;
+
+            // Casters whose disk misses the screen add no on-screen overlap, so restore
+            if (AbsF(xN) - rN / ASPECT > 1.0 || AbsF(yN) - rN > 1.0) {
+                SetRadius(light, auth);
+                continue;
+            }
 
             lights.PushBack(light);
-            sx.PushBack(rx);
-            sy.PushBack(ry);
-            sr.PushBack(VecLength(Vector(ex - rx, ey - ry, 0.0)));
+            cx.PushBack((xN + 1.0) * 0.5 * (float)GRID_W);
+            cy.PushBack((yN + 1.0) * 0.5 * (float)GRID_H);
+            cr.PushBack(rN * 0.5 * (float)GRID_H);
             authored.PushBack(auth);
         }
 
@@ -78,14 +93,14 @@ class CLightRewriteShadowReducer {
         ZeroGrid();
 
         // Splat authored footprints so the metric is stable against our own shrinking
-        for (i = 0; i < n; i += 1) Splat(sx[i], sy[i], sr[i]);
+        for (i = 0; i < n; i += 1) Splat(cx[i], cy[i], cr[i]);
 
         for (i = 0; i < n; i += 1) {
-            peak = PeakUnder(sx[i], sy[i], sr[i]);
+            excessFrac = OverlapExcessUnder(cx[i], cy[i], cr[i]) / (float)(GRID_W * GRID_H);
 
             scale = 1.0;
-            if (peak > TARGET_DEPTH) {
-                scale = ClampF((float)TARGET_DEPTH / (float)peak, MIN_SCALE, 1.0);
+            if (excessFrac > OVERLAP_BUDGET) {
+                scale = ClampF(SqrtF(OVERLAP_BUDGET / excessFrac), MIN_SCALE, 1.0);
             }
 
             SetRadius(lights[i], authored[i] * scale);
@@ -130,61 +145,44 @@ class CLightRewriteShadowReducer {
         return best > 0.0;
     }
 
-    private function Splat(cxR, cyR, rR: float) {
-        var cfx, cfy, radC, dx, dy: float;
+    private function Splat(ccx, ccy, ccr: float) {
+        var dx, dy: float;
         var x0, x1, y0, y1, x, y: int;
 
-        radC = ClampF(CellLen(rR), 0.0, (float)GRID);
-        cfx = CellPos(cxR);
-        cfy = CellPos(cyR);
-        x0 = Lo(cfx - radC);
-        x1 = Hi(cfx + radC);
-        y0 = Lo(cfy - radC);
-        y1 = Hi(cfy + radC);
+        x0 = Lo(ccx - ccr);
+        x1 = Hi(ccx + ccr, GRID_W - 1);
+        y0 = Lo(ccy - ccr);
+        y1 = Hi(ccy + ccr, GRID_H - 1);
 
         for (y = y0; y <= y1; y += 1) {
             for (x = x0; x <= x1; x += 1) {
-                dx = ((float)x + 0.5) - cfx;
-                dy = ((float)y + 0.5) - cfy;
-                if (dx * dx + dy * dy <= radC * radC) grid[y * GRID + x] += 1;
+                dx = ((float)x + 0.5) - ccx;
+                dy = ((float)y + 0.5) - ccy;
+                if (dx * dx + dy * dy <= ccr * ccr) grid[y * GRID_W + x] += 1;
             }
         }
     }
 
-    /** Highest stack of casters over any cell this light covers */
-    private function PeakUnder(cxR, cyR, rR: float): int {
-        var cfx, cfy, radC, dx, dy: float;
-        var x0, x1, y0, y1, x, y, peak, d: int;
+    /** Overlap area under this light, counted once per overlapping caster */
+    private function OverlapExcessUnder(ccx, ccy, ccr: float): float {
+        var dx, dy, excess: float;
+        var x0, x1, y0, y1, x, y: int;
 
-        radC = ClampF(CellLen(rR), 0.0, (float)GRID);
-        cfx = CellPos(cxR);
-        cfy = CellPos(cyR);
-        x0 = Lo(cfx - radC);
-        x1 = Hi(cfx + radC);
-        y0 = Lo(cfy - radC);
-        y1 = Hi(cfy + radC);
-        peak = 0;
+        x0 = Lo(ccx - ccr);
+        x1 = Hi(ccx + ccr, GRID_W - 1);
+        y0 = Lo(ccy - ccr);
+        y1 = Hi(ccy + ccr, GRID_H - 1);
+        excess = 0.0;
 
         for (y = y0; y <= y1; y += 1) {
             for (x = x0; x <= x1; x += 1) {
-                dx = ((float)x + 0.5) - cfx;
-                dy = ((float)y + 0.5) - cfy;
-                if (dx * dx + dy * dy <= radC * radC) {
-                    d = grid[y * GRID + x];
-                    if (d > peak) peak = d;
-                }
+                dx = ((float)x + 0.5) - ccx;
+                dy = ((float)y + 0.5) - ccy;
+                if (dx * dx + dy * dy <= ccr * ccr) excess += (float)(grid[y * GRID_W + x] - 1);
             }
         }
 
-        return peak;
-    }
-
-    private function CellPos(r: float): float {
-        return (r - RATIO_MIN) / (RATIO_MAX - RATIO_MIN) * (float)GRID;
-    }
-
-    private function CellLen(r: float): float {
-        return r / (RATIO_MAX - RATIO_MIN) * (float)GRID;
+        return excess;
     }
 
     private function Lo(v: float): int {
@@ -193,20 +191,20 @@ class CLightRewriteShadowReducer {
         return c;
     }
 
-    private function Hi(v: float): int {
+    private function Hi(v: float, hiMax: int): int {
         var c: int = (int)CeilF(v);
-        if (c > GRID - 1) return GRID - 1;
+        if (c > hiMax) return hiMax;
         return c;
     }
 
     private function EnsureGrid() {
-        var need: int = GRID * GRID;
+        var need: int = GRID_W * GRID_H;
         while (grid.Size() < need) grid.PushBack(0);
     }
 
     private function ZeroGrid() {
         var i, need: int;
-        need = GRID * GRID;
+        need = GRID_W * GRID_H;
         for (i = 0; i < need; i += 1) grid[i] = 0;
     }
 
