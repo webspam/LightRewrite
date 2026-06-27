@@ -1,37 +1,52 @@
-// PoC: shrink casters by real screen-space overlap area, recomputed per frame.
-// Run with the static spacer off, or the two fight over the live radius.
+// Live, camera-aware shadow thinning: each frame, shrink casters by the on-screen volume their
+// shadow spheres waste overlapping each other, easing back as the view changes. The moving-shot
+// counterpart to the static spacer; run with that spacer off or they fight over the live radius.
 class CLightRewriteShadowReducer {
+    // Gather radius and frustum far plane; entities past this never reach the shot
     var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
 
-    var OVERLAP_BUDGET: float;  default OVERLAP_BUDGET = 0.15;
+    // In-view overlap each light may keep, as the volume of a sphere this big
+    var OVERLAP_BUDGET_RADIUS: float;  default OVERLAP_BUDGET_RADIUS = 4.0;
 
-    var MIN_SCALE: float;  default MIN_SCALE = 0.35;
+    // Fraction of the gap to the relaxed radius closed per frame; lower is smoother but lags
+    var EASE: float;  default EASE = 0.25;
 
+    private const var NEAR      : float;  default NEAR = 0.05;
     // tan(22 deg): half of the 44 vertical FOV
-    var TAN_HALF_V: float;  default TAN_HALF_V = 0.4040;
-
+    private const var TAN_HALF_V: float;  default TAN_HALF_V = 0.4040;
     // 32:9
-    var ASPECT: float;  default ASPECT = 3.5556;
+    private const var ASPECT    : float;  default ASPECT = 3.5556;
 
-    var GRID_W: int;  default GRID_W = 128;
-    var GRID_H: int;  default GRID_H = 36;
+    private const var MIN_RADIUS : float;  default MIN_RADIUS = 0.1;
+    private const var RELAX_OMEGA: float;  default RELAX_OMEGA = 0.5;
+    private const var MAX_PASSES : int;    default MAX_PASSES = 16;
+    private const var EPSILON    : float;  default EPSILON = 0.001;
 
-    // per-frame scratch, index-aligned across the light arrays
+    // View frustum as six inward half-spaces; signedDist(X) = VecDot(planeN[k], X) - planeD[k]
+    private var planeN: array<Vector>;
+    private var planeD: array<float>;
+
+    // Per-frame scratch, index-aligned across the light arrays
     private var lights  : array<CPointLightComponent>;
-    private var cx      : array<float>;
-    private var cy      : array<float>;
-    private var cr      : array<float>;
+    private var centers : array<Vector>;
+    private var radii   : array<float>;
     private var authored: array<float>;
-    private var grid    : array<int>;
+    private var modes   : array<ELightShadowCastingMode>;
+
+    // Candidate in-view overlap pairs; parallel arrays, one entry per pair
+    private var pairI     : array<int>;
+    private var pairJ     : array<int>;
+    private var pairDist  : array<float>;
+    private var pairWeight: array<float>;
 
     public function Tick() {
         var director: CCameraDirector;
-        var camPos, fwd, right, up, v, pos: Vector;
+        var camPos, fwd, right, up, center: Vector;
         var found: array<CGameplayEntity>;
         var entity: CGameplayEntity;
         var light: CPointLightComponent;
-        var auth, z, xN, yN, rN, scale, excessFrac: float;
-        var i, n, count: int;
+        var auth: float;
+        var i, count: int;
 
         if (!theGame.lightRewrite || !theGame.GetWorld()) return;
         director = theGame.GetWorld().GetCameraDirector();
@@ -42,11 +57,13 @@ class CLightRewriteShadowReducer {
         right = director.GetCameraRight();
         up = director.GetCameraUp();
 
+        BuildFrustum(camPos, fwd, right, up);
+
         lights.Clear();
-        cx.Clear();
-        cy.Clear();
-        cr.Clear();
+        centers.Clear();
+        radii.Clear();
         authored.Clear();
+        modes.Clear();
 
         FindGameplayEntitiesInRange(
             found,
@@ -63,48 +80,63 @@ class CLightRewriteShadowReducer {
             if (!entity) continue;
             if (!PickCaster(entity, light, auth)) continue;
 
-            pos = light.GetWorldPosition();
-            v = pos - camPos;
-            z = VecDot(v, fwd);
-            if (z < 0.05) {
-                SetRadius(light, auth);
-                continue;
-            }
+            center = light.GetWorldPosition();
 
-            xN = (VecDot(v, right) / z) / (TAN_HALF_V * ASPECT);
-            yN = (VecDot(v, up) / z) / TAN_HALF_V;
-            rN = (auth / z) / TAN_HALF_V;
-
-            // Casters whose disk misses the screen add no on-screen overlap, so restore
-            if (AbsF(xN) - rN / ASPECT > 1.0 || AbsF(yN) - rN > 1.0) {
+            // A sphere wholly beyond a plane cannot touch the shot, so leave it at full size
+            if (SignedDistMin(center) < -auth) {
                 SetRadius(light, auth);
                 continue;
             }
 
             lights.PushBack(light);
-            cx.PushBack((xN + 1.0) * 0.5 * (float)GRID_W);
-            cy.PushBack((yN + 1.0) * 0.5 * (float)GRID_H);
-            cr.PushBack(rN * 0.5 * (float)GRID_H);
+            centers.PushBack(center);
             authored.PushBack(auth);
+            radii.PushBack(auth);
+            modes.PushBack(light.shadowCastingMode);
         }
 
-        n = lights.Size();
-        EnsureGrid();
-        ZeroGrid();
+        BuildPairs();
+        Relax();
+        Apply();
+    }
 
-        // Splat authored footprints so the metric is stable against our own shrinking
-        for (i = 0; i < n; i += 1) Splat(cx[i], cy[i], cr[i]);
+    private function BuildFrustum(camPos, fwd, right, up: Vector) {
+        var tanH: float;
 
-        for (i = 0; i < n; i += 1) {
-            excessFrac = OverlapExcessUnder(cx[i], cy[i], cr[i]) / (float)(GRID_W * GRID_H);
+        tanH = TAN_HALF_V * ASPECT;
 
-            scale = 1.0;
-            if (excessFrac > OVERLAP_BUDGET) {
-                scale = ClampF(SqrtF(OVERLAP_BUDGET / excessFrac), MIN_SCALE, 1.0);
-            }
+        planeN.Clear();
+        planeD.Clear();
 
-            SetRadius(lights[i], authored[i] * scale);
+        // Four side planes through the apex, then near and far
+        AddPlane(fwd * tanH - right, camPos);
+        AddPlane(fwd * tanH + right, camPos);
+        AddPlane(fwd * TAN_HALF_V - up, camPos);
+        AddPlane(fwd * TAN_HALF_V + up, camPos);
+        AddPlane(fwd, camPos + fwd * NEAR);
+        AddPlane(fwd * -1.0, camPos + fwd * QUERY_RANGE);
+    }
+
+    private function AddPlane(n: Vector, point: Vector) {
+        var unit: Vector;
+
+        unit = VecNormalize(n);
+        planeN.PushBack(unit);
+        planeD.PushBack(VecDot(unit, point));
+    }
+
+    /** Depth of a point inside the frustum: the tightest plane's signed distance, negative if outside */
+    private function SignedDistMin(p: Vector): float {
+        var i, count: int;
+        var d, m: float;
+
+        m = 100000.0;
+        count = planeN.Size();
+        for (i = 0; i < count; i += 1) {
+            d = VecDot(planeN[i], p) - planeD[i];
+            if (d < m) m = d;
         }
+        return m;
     }
 
     /** Largest enabled shadow-casting point light on the entity, plus its authored radius */
@@ -145,67 +177,211 @@ class CLightRewriteShadowReducer {
         return best > 0.0;
     }
 
-    private function Splat(ccx, ccy, ccr: float) {
-        var dx, dy: float;
-        var x0, x1, y0, y1, x, y: int;
+    /** Find every overlapping caster pair whose overlap is at least partly on screen */
+    private function BuildPairs() {
+        var order: array<int>;
+        var a, b, count, i, j: int;
+        var maxReach, threshold, d2, d, w: float;
 
-        x0 = Lo(ccx - ccr);
-        x1 = Hi(ccx + ccr, GRID_W - 1);
-        y0 = Lo(ccy - ccr);
-        y1 = Hi(ccy + ccr, GRID_H - 1);
+        pairI.Clear();
+        pairJ.Clear();
+        pairDist.Clear();
+        pairWeight.Clear();
 
-        for (y = y0; y <= y1; y += 1) {
-            for (x = x0; x <= x1; x += 1) {
-                dx = ((float)x + 0.5) - ccx;
-                dy = ((float)y + 0.5) - ccy;
-                if (dx * dx + dy * dy <= ccr * ccr) grid[y * GRID_W + x] += 1;
+        count = centers.Size();
+        if (count < 2) return;
+
+        maxReach = 2.0 * MaxAuthored();
+
+        for (a = 0; a < count; a += 1) order.PushBack(a);
+        SortByX(order);
+
+        for (a = 0; a < count; a += 1) {
+            i = order[a];
+            for (b = a + 1; b < count; b += 1) {
+                j = order[b];
+                // Sorted ascending by X, so once the gap clears the reach no later light can touch
+                if (centers[j].X - centers[i].X > maxReach) break;
+
+                // Dynamic-only and static-only casters shadow different geometry; they never crowd
+                if (!ModesConflict(modes[i], modes[j])) continue;
+
+                threshold = authored[i] + authored[j];
+                d2 = VecDistanceSquared(centers[i], centers[j]);
+                if (d2 >= threshold * threshold) continue;
+
+                d = SqrtF(d2);
+                w = FrustumWeight(i, j, d);
+                if (w < EPSILON) continue;
+
+                pairI.PushBack(i);
+                pairJ.PushBack(j);
+                pairDist.PushBack(d);
+                pairWeight.PushBack(w);
             }
         }
     }
 
-    /** Overlap area under this light, counted once per overlapping caster */
-    private function OverlapExcessUnder(ccx, ccy, ccr: float): float {
-        var dx, dy, excess: float;
-        var x0, x1, y0, y1, x, y: int;
+    /** Fraction of an overlap lens that lies inside the frustum, so off-screen crowding is ignored */
+    private function FrustumWeight(i, j: int, d: float): float {
+        var u, c: Vector;
+        var a, rho, m, ri, rj: float;
 
-        x0 = Lo(ccx - ccr);
-        x1 = Hi(ccx + ccr, GRID_W - 1);
-        y0 = Lo(ccy - ccr);
-        y1 = Hi(ccy + ccr, GRID_H - 1);
-        excess = 0.0;
+        ri = authored[i];
+        rj = authored[j];
 
-        for (y = y0; y <= y1; y += 1) {
-            for (x = x0; x <= x1; x += 1) {
-                dx = ((float)x + 0.5) - ccx;
-                dy = ((float)y + 0.5) - ccy;
-                if (dx * dx + dy * dy <= ccr * ccr) excess += (float)(grid[y * GRID_W + x] - 1);
-            }
+        if (d <= AbsF(ri - rj)) {
+            // One sphere contains the other, so the smaller sphere is the whole overlap
+            rho = MinF(ri, rj);
+            if (ri <= rj) c = centers[i];
+            else c = centers[j];
+        }
+        else {
+            // Plane of the intersection circle, measured from centre i along the axis to j
+            a = (d * d + ri * ri - rj * rj) / (2.0 * d);
+            u = (centers[j] - centers[i]) * (1.0 / d);
+            c = centers[i] + u * a;
+            rho = SqrtF(MaxF(0.0, ri * ri - a * a));
         }
 
-        return excess;
+        // Linear share of the lens disk (radius rho, centred at c) inside its tightest plane
+        m = SignedDistMin(c);
+        return ClampF((m + rho) / (2.0 * MaxF(rho, EPSILON)), 0.0, 1.0);
     }
 
-    private function Lo(v: float): int {
-        var c: int = (int)FloorF(v);
-        if (c < 0) return 0;
-        return c;
+    /** Two shadow-casters compete unless one is dynamic-only and the other static-only */
+    private function ModesConflict(a: ELightShadowCastingMode, b: ELightShadowCastingMode): bool {
+        if (a == LSCM_OnlyDynamic && b == LSCM_OnlyStatic) return false;
+        if (a == LSCM_OnlyStatic && b == LSCM_OnlyDynamic) return false;
+        return true;
     }
 
-    private function Hi(v: float, hiMax: int): int {
-        var c: int = (int)CeilF(v);
-        if (c > hiMax) return hiMax;
-        return c;
+    /** Shrink each light until its in-view overlap volume fits the budget sphere */
+    private function Relax() {
+        var load: array<float>;
+        var pass, e, i, j, lightCount, edgeCount: int;
+        var budget, vol, scale, newR: float;
+        var changed: bool;
+
+        edgeCount = pairI.Size();
+        if (edgeCount < 1) return;
+
+        lightCount = radii.Size();
+        budget = OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS;
+        load.Grow(lightCount);
+
+        for (pass = 0; pass < MAX_PASSES; pass += 1) {
+            for (i = 0; i < lightCount; i += 1) load[i] = 0.0;
+
+            for (e = 0; e < edgeCount; e += 1) {
+                i = pairI[e];
+                j = pairJ[e];
+                vol = pairWeight[e] * OverlapVolume(radii[i], radii[j], pairDist[e]);
+                load[i] += vol;
+                load[j] += vol;
+            }
+
+            changed = false;
+            for (i = 0; i < lightCount; i += 1) {
+                if (load[i] <= budget) continue;
+
+                // Overlap volume scales ~r^3; cube-root the ratio to ease load toward budget, omega damps overshoot
+                scale = PowF(budget / load[i], 1.0 / 3.0);
+                newR = radii[i] - RELAX_OMEGA * radii[i] * (1.0 - scale);
+                newR = MaxF(MIN_RADIUS, newR);
+                if (newR < radii[i]) {
+                    radii[i] = newR;
+                    changed = true;
+                }
+            }
+            if (!changed) break;
+        }
     }
 
-    private function EnsureGrid() {
-        var need: int = GRID_W * GRID_H;
-        while (grid.Size() < need) grid.PushBack(0);
+    /** Sphere-sphere intersection volume in r^3 units (sphere = r^3), matching how the budget is measured */
+    private function OverlapVolume(rA: float, rB: float, d: float): float {
+        var inner: float;
+
+        if (d >= rA + rB) return 0.0;
+
+        // Within the radius gap the smaller sphere sits wholly inside the larger, so it is the whole overlap
+        if (d <= AbsF(rA - rB)) {
+            inner = MinF(rA, rB);
+            return inner * inner * inner;
+        }
+
+        // Lens volume where the two spheres overlap
+        return (rA + rB - d) * (rA + rB - d)
+            * (d * d + 2.0 * d * rA - 3.0 * rA * rA + 2.0 * d * rB + 6.0 * rA * rB - 3.0 * rB * rB)
+            / (16.0 * d);
     }
 
-    private function ZeroGrid() {
-        var i, need: int;
-        need = GRID_W * GRID_H;
-        for (i = 0; i < need; i += 1) grid[i] = 0;
+    /** Ease each live radius toward this frame's relaxed target; uncrowded lights drift back to authored */
+    private function Apply() {
+        var i, count: int;
+        var live, eased: float;
+
+        count = lights.Size();
+        for (i = 0; i < count; i += 1) {
+            live = lights[i].radius;
+            eased = live + (radii[i] - live) * EASE;
+            SetRadius(lights[i], eased);
+        }
+    }
+
+    /** Largest gathered sphere radius; bounds how far any two lights can overlap */
+    private function MaxAuthored(): float {
+        var i, count: int;
+        var m: float;
+
+        m = 0.0;
+        count = authored.Size();
+        for (i = 0; i < count; i += 1) {
+            if (authored[i] > m) m = authored[i];
+        }
+        return m;
+    }
+
+    /** Heapsort `order` ascending by each index's X, so BuildPairs can sweep-and-prune */
+    private function SortByX(out order: array<int>) {
+        var n, start, end, tmp: int;
+
+        n = order.Size();
+        if (n < 2) return;
+
+        start = n / 2 - 1;
+        while (start >= 0) {
+            SiftDown(order, start, n - 1);
+            start -= 1;
+        }
+
+        end = n - 1;
+        while (end > 0) {
+            tmp = order[0];
+            order[0] = order[end];
+            order[end] = tmp;
+            end -= 1;
+            SiftDown(order, 0, end);
+        }
+    }
+
+    private function SiftDown(out order: array<int>, lo: int, hi: int) {
+        var root, child, tmp: int;
+
+        root = lo;
+        while (root * 2 + 1 <= hi) {
+            child = root * 2 + 1;
+            if (child + 1 <= hi && centers[order[child]].X < centers[order[child + 1]].X) {
+                child += 1;
+            }
+
+            if (centers[order[root]].X >= centers[order[child]].X) return;
+
+            tmp = order[root];
+            order[root] = order[child];
+            order[child] = tmp;
+            root = child;
+        }
     }
 
     /** Toggle enable so the radius change takes visual effect; skip no-op writes */
