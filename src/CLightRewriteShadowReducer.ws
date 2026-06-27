@@ -94,9 +94,9 @@ class CLightRewriteShadowReducer {
             center = light.GetWorldPosition();
             proj = SignedDistMin(center);
 
-            // A sphere wholly beyond a plane cannot touch the shot, so leave it at full size
+            // Our own cull: a sphere that never reaches the view is switched off entirely
             if (proj < -auth) {
-                SetRadius(light, auth);
+                SetRadius(light, 0.0);
                 continue;
             }
 
