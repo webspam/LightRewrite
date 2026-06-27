@@ -63,7 +63,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             pointLight.SaveLightRewriteOriginalValues();
 
             if (forceSingle && pointLight != mainLight) {
-                pointLight.SetEnabled(false);
+                pointLight.radius = 0;
                 continue;
             }
 
