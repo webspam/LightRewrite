@@ -93,6 +93,10 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * At time of writing, only testing / working on complex candles.
      */
     private function AlignPointLight(i: int, pointLight: CPointLightComponent) {
+        if (i < fireFxSlotNames.Size()) AlignPointLightToSlot(fireFxSlotNames[i], pointLight);
+    }
+
+    private function AlignPointLightToSlot(slotName: name, pointLight: CPointLightComponent) {
         var slotPos: Vector;
         var slotMatrix: Matrix;
 
@@ -100,19 +104,17 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var slotWorldPos: Vector;
         var scale: Vector;
 
-        if (fireFxSlotNames.Size()) {
-            parentEntity.CalcEntitySlotMatrix(fireFxSlotNames[i], slotMatrix);
-            slotWorldPos = MatrixGetTranslation(slotMatrix);
+        parentEntity.CalcEntitySlotMatrix(slotName, slotMatrix);
+        slotWorldPos = MatrixGetTranslation(slotMatrix);
 
-            worldToLocal = MatrixGetInverted(parentEntity.GetLocalToWorld());
-            scale = parentEntity.GetLocalScale();
-            slotPos = VecTransform(worldToLocal, slotWorldPos) / scale / scale;
+        worldToLocal = MatrixGetInverted(parentEntity.GetLocalToWorld());
+        scale = parentEntity.GetLocalScale();
+        slotPos = VecTransform(worldToLocal, slotWorldPos) / scale / scale;
 
-            // Arbitrary fire FX offset: centre of candle flame (ish)
-            slotPos += GetEffectiveParams().pointLightOffset * scale;
+        // Arbitrary fire FX offset: centre of candle flame (ish)
+        slotPos += GetEffectiveParams().pointLightOffset * scale;
 
-            pointLight.SetPosition(slotPos);
-        }
+        pointLight.SetPosition(slotPos);
     }
 
     /*
