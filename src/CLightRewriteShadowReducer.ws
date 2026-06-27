@@ -21,7 +21,7 @@ class CLightRewriteShadowReducer {
     var OUTSIDE_MARGIN  : float;  default OUTSIDE_MARGIN = 4.0;
 
     // Fraction of the gap to the relaxed radius closed per frame; lower is smoother but lags
-    var EASE: float;  default EASE = 0.25;
+    var EASE: float;  default EASE = 1;
 
     private const var NEAR      : float;  default NEAR = 0.05;
     // tan(22 deg): half of the 44 vertical FOV
