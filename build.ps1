@@ -66,7 +66,8 @@ $modContentDir = Join-Path $modsRoot "modLightRewrite/content"
 $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
 
 $dlcRoot = Join-Path $buildRoot "dlc"
-$dlcBundleDir = Join-Path $dlcRoot "lightrewrite/content"
+$dlcBundleDir = Join-Path $buildRoot "dlcBundle"
+$dlcOutDir = Join-Path $dlcRoot "lightrewrite/content"
 $dlcSourceDir = Join-Path $RepoRoot "dlc"
 
 # Main execution
@@ -78,6 +79,9 @@ if (!$SkipWcc) {
 }
 if (!$SkipDlc) {
   Remove-DirectoryIfExists $dlcRoot
+  Remove-DirectoryIfExists $dlcBundleDir
+  New-Directory $dlcBundleDir
+  Copy-Item -Recurse -LiteralPath $dlcSourceDir -Destination $dlcBundleDir
 }
 
 Remove-DirectoryIfExists $modsRoot
@@ -130,14 +134,14 @@ else {
 if (!$SkipDlc) {
   # DLC (entities)
   try {
-    Invoke-WccLite -Arguments "pack -dir=`"$dlcSourceDir`" -outdir=`"$dlcBundleDir`""
+    Invoke-WccLite -Arguments "pack -dir=`"$dlcBundleDir`" -outdir=`"$dlcOutDir`""
   }
   catch {
     throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
   }
 
   try {
-    Invoke-WccLite -Arguments "metadatastore -path=`"$dlcBundleDir`""
+    Invoke-WccLite -Arguments "metadatastore -path=`"$dlcOutDir`""
   }
   catch {
     throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
