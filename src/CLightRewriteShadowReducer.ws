@@ -5,8 +5,17 @@ class CLightRewriteShadowReducer {
     // Gather radius and frustum far plane; entities past this never reach the shot
     var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
 
-    // In-view overlap each light may keep, as the volume of a sphere this big
-    var OVERLAP_BUDGET_RADIUS: float;  default OVERLAP_BUDGET_RADIUS = 4.0;
+    // Total in-view overlap the whole frame may keep, as the volume of a sphere this big
+    var TOTAL_OVERLAP_RADIUS: float;  default TOTAL_OVERLAP_RADIUS = 8.0;
+
+    // Lights this close to the camera are never shrunk; their on-screen footprint is too large to touch
+    var PROTECT_DIST    : float;  default PROTECT_DIST = 8.0;
+    // At or past this camera distance a light is fully shrinkable
+    var FULL_SHRINK_DIST: float;  default FULL_SHRINK_DIST = 30.0;
+    // How much an in-frustum light may still give way; 0 protects every visible light
+    var INSIDE_WEIGHT   : float;  default INSIDE_WEIGHT = 0.4;
+    // Metres outside the frustum over which a light's willingness to shrink ramps to full
+    var OUTSIDE_MARGIN  : float;  default OUTSIDE_MARGIN = 4.0;
 
     // Fraction of the gap to the relaxed radius closed per frame; lower is smoother but lags
     var EASE: float;  default EASE = 0.25;
@@ -32,6 +41,7 @@ class CLightRewriteShadowReducer {
     private var radii   : array<float>;
     private var authored: array<float>;
     private var modes   : array<ELightShadowCastingMode>;
+    private var gShrink : array<float>;
 
     // Candidate in-view overlap pairs; parallel arrays, one entry per pair
     private var pairI     : array<int>;
@@ -45,7 +55,7 @@ class CLightRewriteShadowReducer {
         var found: array<CGameplayEntity>;
         var entity: CGameplayEntity;
         var light: CPointLightComponent;
-        var auth: float;
+        var auth, proj: float;
         var i, count: int;
 
         if (!theGame.lightRewrite || !theGame.GetWorld()) return;
@@ -64,6 +74,7 @@ class CLightRewriteShadowReducer {
         radii.Clear();
         authored.Clear();
         modes.Clear();
+        gShrink.Clear();
 
         FindGameplayEntitiesInRange(
             found,
@@ -81,9 +92,10 @@ class CLightRewriteShadowReducer {
             if (!PickCaster(entity, light, auth)) continue;
 
             center = light.GetWorldPosition();
+            proj = SignedDistMin(center);
 
             // A sphere wholly beyond a plane cannot touch the shot, so leave it at full size
-            if (SignedDistMin(center) < -auth) {
+            if (proj < -auth) {
                 SetRadius(light, auth);
                 continue;
             }
@@ -93,6 +105,7 @@ class CLightRewriteShadowReducer {
             authored.PushBack(auth);
             radii.PushBack(auth);
             modes.PushBack(light.shadowCastingMode);
+            gShrink.PushBack(ShrinkWeight(VecLength(center - camPos), proj));
         }
 
         BuildPairs();
@@ -249,6 +262,15 @@ class CLightRewriteShadowReducer {
         return ClampF((m + rho) / (2.0 * MaxF(rho, EPSILON)), 0.0, 1.0);
     }
 
+    /** Willingness to shrink a light: high far-and-outside view, zero up close so near lights never pop */
+    private function ShrinkWeight(dist, proj: float): float {
+        var far, view: float;
+
+        far = ClampF((dist - PROTECT_DIST) / (FULL_SHRINK_DIST - PROTECT_DIST), 0.0, 1.0);
+        view = INSIDE_WEIGHT + (1.0 - INSIDE_WEIGHT) * ClampF(-proj / OUTSIDE_MARGIN, 0.0, 1.0);
+        return far * view;
+    }
+
     /** Two shadow-casters compete unless one is dynamic-only and the other static-only */
     private function ModesConflict(a: ELightShadowCastingMode, b: ELightShadowCastingMode): bool {
         if (a == LSCM_OnlyDynamic && b == LSCM_OnlyStatic) return false;
@@ -256,37 +278,49 @@ class CLightRewriteShadowReducer {
         return true;
     }
 
-    /** Shrink each light until its in-view overlap volume fits the budget sphere */
+    /** Shrink the most expendable lights until the frame's total in-view overlap fits the budget */
     private function Relax() {
         var load: array<float>;
         var pass, e, i, j, lightCount, edgeCount: int;
-        var budget, vol, scale, newR: float;
+        var budget, total, excess, denom, vol, shed, frac, scale, newR: float;
         var changed: bool;
 
         edgeCount = pairI.Size();
         if (edgeCount < 1) return;
 
         lightCount = radii.Size();
-        budget = OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS * OVERLAP_BUDGET_RADIUS;
+        budget = TOTAL_OVERLAP_RADIUS * TOTAL_OVERLAP_RADIUS * TOTAL_OVERLAP_RADIUS;
         load.Grow(lightCount);
 
         for (pass = 0; pass < MAX_PASSES; pass += 1) {
             for (i = 0; i < lightCount; i += 1) load[i] = 0.0;
 
+            total = 0.0;
             for (e = 0; e < edgeCount; e += 1) {
                 i = pairI[e];
                 j = pairJ[e];
                 vol = pairWeight[e] * OverlapVolume(radii[i], radii[j], pairDist[e]);
                 load[i] += vol;
                 load[j] += vol;
+                total += vol;
             }
+
+            if (total <= budget) break;
+            excess = total - budget;
+
+            // Split the excess across lights by willingness times their overlap, so protected lights take none
+            denom = 0.0;
+            for (i = 0; i < lightCount; i += 1) denom += gShrink[i] * load[i];
+            if (denom < EPSILON) break;
 
             changed = false;
             for (i = 0; i < lightCount; i += 1) {
-                if (load[i] <= budget) continue;
+                if (gShrink[i] * load[i] < EPSILON) continue;
 
-                // Overlap volume scales ~r^3; cube-root the ratio to ease load toward budget, omega damps overshoot
-                scale = PowF(budget / load[i], 1.0 / 3.0);
+                shed = excess * (gShrink[i] * load[i]) / denom;
+                // Overlap scales ~r^3, so cube-root the surviving fraction into a radius scale; omega damps overshoot
+                frac = ClampF(1.0 - shed / load[i], 0.0, 1.0);
+                scale = PowF(frac, 1.0 / 3.0);
                 newR = radii[i] - RELAX_OMEGA * radii[i] * (1.0 - scale);
                 newR = MaxF(MIN_RADIUS, newR);
                 if (newR < radii[i]) {
