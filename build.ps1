@@ -1,7 +1,8 @@
 param(
   [Parameter(Mandatory = $false)]
   [string]$RepoRoot = $PSScriptRoot,
-  [switch]$SkipWcc
+  [switch]$SkipWcc,
+  [switch]$SkipDlc
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,7 +13,7 @@ function New-Directory([string]$Path) {
 
 function Remove-DirectoryIfExists([string]$LiteralPath) {
   if (Test-Path -LiteralPath $LiteralPath) {
-    Remove-Item -Recurse -Force -LiteralPath $LiteralPath
+    Remove-Item -Recurse -LiteralPath $LiteralPath
   }
 }
 
@@ -35,7 +36,7 @@ function Invoke-WccLite {
   $stderr = $p.StandardError.ReadToEnd().Trim()
   $null = $p.WaitForExit()
 
-  if (-not [string]::IsNullOrWhiteSpace($stderr)) {
+  if (![string]::IsNullOrWhiteSpace($stderr)) {
     throw $stderr
   }
   elseif ($stdout.EndsWith("Wcc operation failed")) {
@@ -54,7 +55,7 @@ $RepoRoot = (Resolve-Path -Path $RepoRoot).Path
 & $RepoRoot\Import-Dotenv.ps1
 
 $wccLiteExe = $env:WCC_LITE_PATH
-if (-not (Test-Path -Path $wccLiteExe)) {
+if (!(Test-Path -Path $wccLiteExe)) {
   throw "wcc_lite.exe not found. Set WCC_LITE_PATH or WCC_LITE_DIR. Looked for: $wccLiteExe"
 }
 
@@ -71,32 +72,40 @@ $dlcSourceDir = Join-Path $RepoRoot "dlc"
 # Main execution
 
 # Clean build dirs
-Remove-DirectoryIfExists $bundleDir
-Remove-DirectoryIfExists $modsRoot
-Remove-DirectoryIfExists $dlcRoot
+if (!$SkipWcc) {
+  Remove-DirectoryIfExists $bundleDir
+  New-Directory $bundleDir
+}
+if (!$SkipDlc) {
+  Remove-DirectoryIfExists $dlcRoot
+}
 
-New-Directory $bundleDir
+Remove-DirectoryIfExists $modsRoot
 New-Directory $scriptsDir
-# New-Directory $dlcBundleDir
 
 # Stage XML files into the in-bundle path
-$xmlSource = Join-Path $RepoRoot "data/*.xml"
+$xmlSourceDir = Join-Path $RepoRoot "data"
 $xmlDestDir = Join-Path $bundleDir "gameplay/abilities"
 
 New-Directory $xmlDestDir
-Copy-Item -Force -Path $xmlSource -Destination $xmlDestDir
 
 # Prefix all XML files with "lightrewrite_"
-Get-ChildItem -Path $xmlDestDir -Filter "*.xml" | ForEach-Object {
-  Rename-Item -Path $_.FullName -NewName "lightrewrite_$($_.Name)"
+Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse |
+Sort-Object { ($_.FullName.Substring($xmlSourceDir.Length) -split '[\\/]').Count }, FullName |
+ForEach-Object {
+  $relDir = $_.Directory.FullName.Substring($xmlSourceDir.Length).Trim('\', '/')
+  $dirName = ($relDir -replace '[\\/]', '_').ToLowerInvariant()
+  # Top level files `_` prefix so subdirs can't clash
+  $target = if (!$DirName) { "_lightrewrite_$($_.Name)" } else { "lightrewrite_${DirName}_$($_.Name)" }
+  Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $xmlDestDir $target)
 }
 
 # Copy mod scripts
-Copy-Item -Force -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
+Copy-Item -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
 
 # Copy prebuilt localisation binaries (generated out-of-band)
 New-Directory $modContentDir
-Copy-Item -Force -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
+Copy-Item -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
 
 # Execute wcc_lite to pack the content into a new bundle
 if ($SkipWcc) {
@@ -116,7 +125,9 @@ else {
   catch {
     throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
   }
+}
 
+if (!$SkipDlc) {
   # DLC (entities)
   try {
     Invoke-WccLite -Arguments "pack -dir=`"$dlcSourceDir`" -outdir=`"$dlcBundleDir`""
