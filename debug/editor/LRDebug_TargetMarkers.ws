@@ -27,10 +27,15 @@ class LRDebug_TargetMarkers {
     private var markerIdSeq: int;  default markerIdSeq = 0x40004000;
     private var labels    : array<LRDebug_WorldMarker>;
     private var components: array<CComponent>;
+    private var radiusRing: LRDebug_RadiusRing;
 
     public function Init() {
         BuildPool("#00ff52");
         BuildPool("#b100ff");
+
+        radiusRing = new LRDebug_RadiusRing in this;
+        radiusRing.Init(0x40005000);
+
         Update();
     }
 
@@ -47,6 +52,24 @@ class LRDebug_TargetMarkers {
                 labels[i].Hide();
             }
         }
+
+        UpdateRadiusRing();
+    }
+
+    /** Ring the first point light with radius dots, but only while radius is the selected attribute. */
+    private function UpdateRadiusRing() {
+        var light: CPointLightComponent;
+
+        if (
+            thePlayer.lrDebugLabels &&
+            thePlayer.lrDebugAttrEditor &&
+            thePlayer.lrDebugAttrEditor.IsEditingRadius()
+        ) {
+            light = (CPointLightComponent)components[0];
+        }
+
+        if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
+        else radiusRing.Hide();
     }
 
     /** Bind the marker pool to the new target's light components (point then spot). */
@@ -76,6 +99,8 @@ class LRDebug_TargetMarkers {
             components[i] = NULL;
             labels[i].Hide();
         }
+
+        radiusRing.Hide();
     }
 
     private function BuildPool(color: string) {
