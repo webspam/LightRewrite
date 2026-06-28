@@ -1,6 +1,8 @@
-// Live, camera-aware shadow thinning: each frame, shrink casters to cap the total on-screen shadow
-// volume (overlap penalised), easing back as the view changes. The moving-shot counterpart to the
-// static spacer; run with that spacer off or they fight over the live radius.
+/*
+ * Live, camera-aware shadow thinning: each frame, shrink casters to cap the total on-screen shadow
+ * volume (overlap penalised), easing back as the view changes. The moving-shot counterpart to the
+ * static spacer; run with that spacer off or they fight over the live radius.
+ */
 class CLightRewriteShadowReducer {
     // Gather radius and frustum far plane; entities past this never reach the shot
     var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
@@ -435,7 +437,6 @@ class CLightRewriteShadowReducer {
         }
     }
 
-    /** Toggle enable so the radius change takes visual effect; skip no-op writes */
     private function SetRadius(light: CPointLightComponent, desired: float) {
         var wasEnabled: bool;
 
