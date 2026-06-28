@@ -132,8 +132,8 @@ public function IsLightRewritable(): bool {
 }
 
 @addMethod(CGameplayEntity)
-timer function LightRewriteDisableSpotlights(dt: float, id: int) {
+timer function ProcessLightRewriteActions(dt: float, id: int) {
     if (!bypassLightRewrite && lightSourceRewriter) {
-        lightSourceRewriter.DisableAllSpotlightComponents();
+        lightSourceRewriter.ProcessFirstFrameActions();
     }
 }

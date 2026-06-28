@@ -51,6 +51,11 @@ abstract class ILightSourceRewriter {
 
     // Virtual; Called after game has started and components may be disabled.
     public function ProcessDeferredActions() {
+        parentEntity.AddTimer('ProcessLightRewriteActions', 0.01f, false);
+    }
+
+    /** Process actions that must occur after drawable components have loaded */
+    public function ProcessFirstFrameActions() {
         ApplyForceCastShadows();
     }
 
