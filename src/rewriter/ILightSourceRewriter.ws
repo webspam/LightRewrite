@@ -2,9 +2,6 @@
  * Abstract base class for all light rewriters.
  */
 abstract class ILightSourceRewriter {
-    // The type of light source this rewriter is for. Implementors must set.
-    public var type: ELightRewriteType;
-
     // The entity that this rewriter is owned by
     public var parentEntity: CGameplayEntity;
 
