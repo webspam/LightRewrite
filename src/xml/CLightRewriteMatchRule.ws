@@ -13,7 +13,7 @@ enum ELightRewriteMatchMode {
 }
 
 /** A single match rule */
-class CLightRewriteMatchRule {
+class CLightRewriteMatchRule extends ILightRewriteMatchRule {
     public var matchType : ELightRewriteMatchType;
     public var matchMode : ELightRewriteMatchMode;
     public var matchValue: string;
