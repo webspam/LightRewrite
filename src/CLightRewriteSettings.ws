@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 10;
+    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 12;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP       : name;    default GENERAL_GROUP = 'LightRewrite_General';
     // Label key constants (must match XML Var id values)
@@ -13,6 +13,9 @@ class CLightRewriteSettings {
     private const var ENABLED             : name;    default ENABLED = 'Enabled';
     private const var INIT_VERSION        : name;    default INIT_VERSION = 'InitVersion';
     private const var CURRENT_PRESET      : name;    default CURRENT_PRESET = 'CurrentProfile';
+    private const var SPACING_MODE        : name;    default SPACING_MODE = 'SpacingMode';
+    private const var SPACING_COUNT       : name;    default SPACING_COUNT = 'SpacingCount';
+    private const var SPACING_BUDGET      : name;    default SPACING_BUDGET = 'SpacingBudget';
 
     // Internal group IDs resolved at init time
     private var generalGroupId: int;
@@ -21,6 +24,11 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled: bool;  default isEnabled = true;
     private var currentProfile: name;
+
+    // Each spacing mode draws its amount from its own slider; see GetActiveSpacingAmountVar
+    private var spacingMode  : int;    default spacingMode = 0;
+    private var spacingCount : float;  default spacingCount = 2.0;
+    private var spacingBudget: float;  default spacingBudget = 4.0;
 
     // Runtime params for each light source type
     public var candleParams    : CLightRewriteSourceParams;
@@ -50,6 +58,10 @@ class CLightRewriteSettings {
 
     // Index of the profile that was selected when the menu was opened
     private var previousProfile: int;
+
+    // Spacing mode and amount that were selected when the menu was opened
+    private var previousSpacingMode  : int;
+    private var previousSpacingAmount: float;
 
     // Lazy constructor. Resolves group IDs from the config wrapper.
     public function Init() {
@@ -101,6 +113,31 @@ class CLightRewriteSettings {
 
     public function GetEnabledOptionId(): name {
         return ENABLED;
+    }
+
+    public function GetSpacingMode(): LR_ELightSpaceMode {
+        switch (spacingMode) {
+            case 1:   return LR_LSM_DistanceClamp;
+            case 2:   return LR_LSM_RelaxCount;
+            case 3:   return LR_LSM_RelaxVolume;
+            default:  return LR_LSM_Off;
+        }
+    }
+
+    public function GetSpacingAmount(): float {
+        if (GetActiveSpacingAmountVar() == SPACING_BUDGET) return spacingBudget;
+        return spacingCount;
+    }
+
+    // The amount slider that backs the current spacing mode; '' when the mode takes no amount
+    private function GetActiveSpacingAmountVar(): name {
+        switch (GetSpacingMode()) {
+            // Both count the overlaps a light may keep, so they share the one slider
+            case LR_LSM_DistanceClamp:
+            case LR_LSM_RelaxCount:   return SPACING_COUNT;
+            case LR_LSM_RelaxVolume:  return SPACING_BUDGET;
+            default:                  return '';
+        }
     }
 
     // Returns true if groupId belongs to one of this mod's settings groups.
@@ -559,6 +596,17 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, chandelierMenu.TAG_ENABLED, false);
         }
 
+        // v10 → v11: add light spacing mode.
+        if (initVersion <= 10) {
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_MODE, spacingMode);
+        }
+
+        // v11 → v12: split the spacing amount into a per-mode overlap count and budget.
+        if (initVersion <= 11) {
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_COUNT, spacingCount);
+            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_BUDGET, spacingBudget);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -577,6 +625,16 @@ class CLightRewriteSettings {
         else {
             currentProfile = NONE_PRESET_LABEL;
         }
+
+        spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
+        spacingCount = StringToFloat(
+            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_COUNT),
+            spacingCount
+        );
+        spacingBudget = StringToFloat(
+            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_BUDGET),
+            spacingBudget
+        );
 
         count = lightSourceMenu.Size();
         for (i = 0; i < count; i += 1) {
@@ -597,6 +655,8 @@ class CLightRewriteSettings {
             for (i = 0; i < count; i += 1) {
                 lightSourceMenu[i].OptionValueChanged(optionName, lightSourceParams[i]);
             }
+
+            if (optionName == SPACING_MODE) UpdateSpacingMenuDisabledState();
 
             // ForceProcessFlashStorage() inside UpdateMenuDisabledState resets dynamic
             // option lists back to XML defaults, so we must restore them afterwards.
@@ -619,19 +679,29 @@ class CLightRewriteSettings {
     public function ApplyPendingChanges(): void {
         if (!(previousProfile >= 0)) previousProfile = 0;
         if (profileIndex != previousProfile) theGame.lightRewrite.ChangeProfile();
+        else if (isEnabled && SpacingChanged()) theGame.lightRewrite.ApplySpacing();
+    }
+
+    private function SpacingChanged(): bool {
+        return spacingMode != previousSpacingMode
+            || GetSpacingAmount() != previousSpacingAmount;
     }
 
     // Configures the active game settings menu. Should be called after the menu is opened.
     public function ConfigureModMenu() {
-        // Change detection: record the selected profile when the menu is opened
+        // Change detection: record the profile and spacing settings when the menu is opened
         previousProfile = profileIndex;
+        previousSpacingMode = spacingMode;
+        previousSpacingAmount = GetSpacingAmount();
 
         UpdateAllGroupsDisabledState();
+        UpdateSpacingMenuDisabledState();
         ReplacePresetMenuOptions();
     }
 
     private function ShouldRefreshProfileMenu(optionName: name): bool {
         switch (optionName) {
+            case SPACING_MODE:
             case candleMenu.TAG_ENABLED:
             case torchMenu.TAG_ENABLED:
             case brazierMenu.TAG_ENABLED:
@@ -657,6 +727,32 @@ class CLightRewriteSettings {
         FindLightRewriteProfileNames(optionKeys);
 
         LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
+    }
+
+    // Ensures only the active mode's slider is enabled.
+    private function UpdateSpacingMenuDisabledState() {
+        var flashValueStorage: CScriptedFlashValueStorage;
+        var dataArray: CScriptedFlashArray;
+        var activeVar: name = GetActiveSpacingAmountVar();
+
+        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        dataArray = flashValueStorage.CreateTempFlashArray();
+
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            SPACING_COUNT,
+            activeVar != SPACING_COUNT
+        );
+        LR_SetMenuOptionDisabled(
+            flashValueStorage,
+            dataArray,
+            SPACING_BUDGET,
+            activeVar != SPACING_BUDGET
+        );
+
+        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
+        theGame.GetGuiManager().ForceProcessFlashStorage();
     }
 
     private function UpdateAllGroupsDisabledState() {
@@ -701,7 +797,6 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
         var params: CLightRewriteSourceParams = NULL;
-        var matched: CLightRewriteSourceParams = NULL;
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile

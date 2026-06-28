@@ -66,6 +66,19 @@ class CLightRewriteManager {
             entity = (CGameplayEntity)entities[i];
             if (entity) entity.LightRewriteProfileChanged();
         }
+
+        ApplySpacing();
+    }
+
+    public function ApplySpacing() {
+        var spacer: CLightRewriteSpacer;
+
+        if (!settings.isEnabled) return;
+
+        spacer = new CLightRewriteSpacer in this;
+        spacer.Configure(settings.GetSpacingMode(), settings.GetSpacingAmount());
+        spacer.Solve();
+        delete spacer;
     }
 
     // Refreshes Light Rewrite on all light sources.

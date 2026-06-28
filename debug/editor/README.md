@@ -25,17 +25,16 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 
 ## Files
 
-- **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights.
-- **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly.
-- **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light.
-- **`LRDebug_AdjustAccelerator.ws`** - Speeds up adjustment when you scroll quickly.
-- **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity.
-- **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity.
-- **`LRDebug_WorldMarker.ws`** - A single label pinned to a point in the world.
-- **`LRDebug_ToastOneLiner.ws`** - Brief on-screen confirmation messages.
-- **`LRDebug_EntityUtils.ws`** - Shared helpers for finding light components, recognising candles, and creating rewriters.
-- **`LRDebug_LightSpacer.ws`** - One-shot pass that shrinks crowded shadow-casting lights to reduce overlaps.
-- **`LRDebug_Export.ws`** - Exports the session's edits to the log, for distilling into XML.
+- **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights
+- **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly
+- **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light
+- **`LRDebug_AdjustAccelerator.ws`** - Speeds up adjustment when you scroll quickly
+- **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity
+- **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity
+- **`LRDebug_WorldMarker.ws`** - A single label pinned to a point in the world
+- **`LRDebug_ToastOneLiner.ws`** - Brief on-screen confirmation messages
+- **`LRDebug_EntityUtils.ws`** - Shared helpers for finding light components, recognising candles, and creating rewriters
+- **`LRDebug_Export.ws`** - Exports the session's edits to the log, for distilling into XML
 
 ## Data flow
 

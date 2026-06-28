@@ -14,6 +14,9 @@ abstract class ILightSourceRewriter {
     // Spotlight spawned for a spawn="true" override
     protected var spawnedSpotlight: CEntity;
 
+    // Upper bound on point-light radius from the spacing pass; 0 means unbounded
+    protected var maxSafeRadius: float;
+
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
     public function Init(
         parentEntity: CGameplayEntity,
@@ -28,6 +31,26 @@ abstract class ILightSourceRewriter {
             parentEntity.AddTag(globalOverrides.tag);
             SetGlobalOverride(globalOverrides);
         }
+    }
+
+    // Set the spacing pass's radius bound; re-applied on every RewriteLight
+    public function SetMaxSafeRadius(r: float) {
+        maxSafeRadius = r;
+    }
+
+    public function HasSpacingCap(): bool {
+        return maxSafeRadius > 0.0;
+    }
+
+    // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
+    public function GetUncappedRadius(pointLight: CPointLightComponent): float {
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (p.radius.has) return p.radius.value;
+        if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
+            return pointLight.lightRewriteOriginalValues.radius;
+        }
+        return pointLight.radius;
     }
 
     // If the params passed in (global params) are enabled, set the menu override params to them.
@@ -251,7 +274,14 @@ abstract class ILightSourceRewriter {
 
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight: CPointLightComponent) {
+        var uncapped: float;
+
         ApplyLightParams(pointLight, GetEffectiveParams());
+
+        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
+        uncapped = GetUncappedRadius(pointLight);
+        pointLight.radius = uncapped;
+        if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) pointLight.radius = maxSafeRadius;
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour

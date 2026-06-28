@@ -53,6 +53,15 @@ public function HasRewritableLight(): bool {
         GetComponentsCountByClassName('CSpotLightComponent') > 0;
 }
 
+/** True when the engine schedules this entity's light by time of day (city/streetlamp) */
+@addMethod(CGameplayEntity)
+public function IsCityScheduledLight(): bool {
+    var gameplayLight: CGameplayLightComponent;
+    gameplayLight = (CGameplayLightComponent)GetComponentByClassName('CGameplayLightComponent');
+
+    return gameplayLight && gameplayLight.IsCityLight();
+}
+
 // Identify light sources, and rewrite matched entities to work properly with RT.
 @addMethod(CGameplayEntity)
 protected function InitialiseLightRewrite() {

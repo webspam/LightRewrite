@@ -78,3 +78,9 @@
 2122144075||LightRewrite_Candle_AlignPointLights|양초 포인트 라이트 정렬
 2122144076||LightRewrite_CurrentProfile|현재 프리셋
 2122144077||LightRewrite_None|없음
+2122144078||LightRewrite_Spacing_Mode|조명 간격 모드
+2122144079||LightRewrite_Spacing_Mode_Centres|중심 겹침
+2122144080||LightRewrite_Spacing_Mode_Count|겹침 개수
+2122144081||LightRewrite_Spacing_Mode_Volume|겹침 부피
+2122144082||LightRewrite_Spacing_Count|최대 겹침 수
+2122144083||LightRewrite_Spacing_Budget|최대 겹침 면적

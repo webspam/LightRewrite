@@ -78,3 +78,9 @@
 2122144075||LightRewrite_Candle_AlignPointLights|Wyrównaj światła punktowe świec
 2122144076||LightRewrite_CurrentProfile|Aktualne ustawienie wstępne
 2122144077||LightRewrite_None|Brak
+2122144078||LightRewrite_Spacing_Mode|Tryb rozmieszczania świateł
+2122144079||LightRewrite_Spacing_Mode_Centres|Nakładanie środków
+2122144080||LightRewrite_Spacing_Mode_Count|Liczba nakładań
+2122144081||LightRewrite_Spacing_Mode_Volume|Objętość nakładania
+2122144082||LightRewrite_Spacing_Count|Maks. nakładań
+2122144083||LightRewrite_Spacing_Budget|Maks. pole nakładania
