@@ -14,7 +14,7 @@ class CLightRewriteShadowReducer {
     var OVERLAP_PENALTY: float;  default OVERLAP_PENALTY = 2.0;
 
     // Lights this close to the camera are never shrunk; their on-screen footprint is too large to touch
-    var PROTECT_DIST    : float;  default PROTECT_DIST = 8.0;
+    var PROTECT_DIST    : float;  default PROTECT_DIST = 0;
     // At or past this camera distance a light is fully shrinkable
     var FULL_SHRINK_DIST: float;  default FULL_SHRINK_DIST = 30.0;
     // How much an in-frustum light may still give way; 0 protects every visible light
