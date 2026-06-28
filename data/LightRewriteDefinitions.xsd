@@ -94,6 +94,13 @@
           <xs:documentation>By default, matches the start of the entity file name (e.g. candle_small.w2ent).</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="any"
+                  type="anyMatchType">
+        <xs:annotation>
+          <xs:documentation>A group of match filters where any one matching is enough (logical OR).</xs:documentation>
+          <xs:documentation>The group as a whole is ANDed with the entry's other match filters and groups, so the override applies when every top-level match and every group is satisfied.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="shadows"
                   type="shadowsType">
         <xs:annotation>
@@ -228,6 +235,21 @@
         </xs:attribute>
       </xs:extension>
     </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="anyMatchType">
+    <xs:annotation>
+      <xs:documentation>A disjunction of match filters; satisfied when at least one child match succeeds.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="match"
+                  type="matchType"
+                  maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>One alternative in the group. Has the same attributes and behaviour as a top-level match.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:simpleType name="nonEmptyString">
