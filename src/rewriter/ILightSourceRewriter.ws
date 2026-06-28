@@ -63,8 +63,8 @@ abstract class ILightSourceRewriter {
         var interactionComponent: CGameplayLightComponent;
         var useEntityState, entityLightState: bool;
 
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count: int = components.Size();
+        var components: array<CComponent>;
+        var count: int;
 
         interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
         if (interactionComponent) {
@@ -72,6 +72,8 @@ abstract class ILightSourceRewriter {
             entityLightState = interactionComponent.IsLightOn();
         }
 
+        components = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        count = components.Size();
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
 
