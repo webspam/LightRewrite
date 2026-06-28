@@ -3,7 +3,7 @@
  */
 abstract class ILightSourceRewriter {
     // The entity that this rewriter is owned by
-    public var parentEntity: CGameplayEntity;
+    protected var parentEntity: CGameplayEntity;
 
     // The parameters for this light source
     protected var params: CLightRewriteSourceParams;
