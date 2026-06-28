@@ -11,7 +11,7 @@
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
  * IK_NumPad9=(Action=LRDebug_ExportEdited)
- * IK_NumPad6=(Action=LRDebug_CycleLight)
+ * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
@@ -55,6 +55,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugTargetMarkers.Init();
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
+    theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
@@ -144,6 +145,7 @@ function GetAllLightSourceTags(): array<name> {
 @addMethod(CR4Player)
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
+    if (theInput.IsActionPressed('LRDebug_CtrlModifier')) return;
 
     lrDebugLabelManager.Scan();
 }
@@ -176,6 +178,14 @@ function PostStateChange() {
     if (thePlayer.lrDebugLabels && theInput.GetContext() == thePlayer.GetExplorationInputContext()) {
         theInput.StoreContext('LRDebug');
     }
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputLock(action: SInputAction): bool {
+    if (!IsPressed(action) || !thePlayer) return false;
+
+    lrDebugLabelManager.ToggleLock();
+    return true;
 }
 
 @addMethod(CR4Player)

@@ -13,6 +13,7 @@ class LRDebug_LabelManager {
     public var showPathLabels: bool;
     private var target       : CGameplayEntity;
     private var toast        : LRDebug_ToastOneLiner;
+    private var locked       : bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
@@ -23,6 +24,10 @@ class LRDebug_LabelManager {
         toast.Start();
     }
 
+    public function ToggleLock() {
+        locked = !locked;
+    }
+
     public function Scan() {
         var entities: array<CGameplayEntity>;
         var entity: CGameplayEntity;
@@ -30,6 +35,8 @@ class LRDebug_LabelManager {
         var camPos, camDir, entPos, toEnt: Vector;
         var score, bestScore, dot, visibilityRange: float;
         var bestEntity: CGameplayEntity;
+
+        if (locked) return;
 
         FindNearbyLights(entities);
 
