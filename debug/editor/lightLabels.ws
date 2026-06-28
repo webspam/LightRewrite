@@ -127,6 +127,16 @@ function OptionValueChanged(groupId: int, optionName: name, optionValue: string)
     }
 }
 
+/** Track lights that were edited */
+@wrapMethod(CLightRewriteSettings)
+function GetAllLightSourceTags(): array<name> {
+    var tags: array<name>;
+
+    tags = wrappedMethod();
+    tags.PushBack('LR_DebugLight');
+    return tags;
+}
+
 // ---- Refresh timer ----
 
 @addMethod(CR4Player)
