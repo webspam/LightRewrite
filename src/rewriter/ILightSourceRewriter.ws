@@ -81,6 +81,7 @@ abstract class ILightSourceRewriter {
 
         // Restore the original state of any spotlights.
         if (count > 0) {
+            components.Clear();
             components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
             count = components.Size();
 
