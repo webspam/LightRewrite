@@ -116,35 +116,73 @@ function ParseLightRewriteMatchRules(
     dm: CDefinitionsManagerAccessor,
     entryNode: SCustomNode
 ) {
-    var matchNode: SCustomNode;
+    var childNode: SCustomNode;
     var rule: CLightRewriteMatchRule;
+    var group: CLightRewriteMatchAny;
     var i, count: int;
-    var strVal: string;
 
     count = entryNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
-        matchNode = entryNode.subNodes[i];
+        childNode = entryNode.subNodes[i];
 
-        if (matchNode.nodeName != 'match') continue;
-        if (matchNode.values.Size() == 0) continue;
-
-        rule = new CLightRewriteMatchRule in override;
-        rule.matchValue = matchNode.values[0];
-
-        if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-            if (strVal == "layer") rule.matchType = LR_Match_Layer;
+        if (childNode.nodeName == 'match') {
+            rule = ParseLightRewriteMatchRule(override, dm, childNode);
+            if (rule) override.matchRules.PushBack(rule);
         }
-
-        if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
-            switch (strVal) {
-                case "endsWith":  rule.matchMode = LR_Match_EndsWith;  break;
-                case "contains":  rule.matchMode = LR_Match_Contains;  break;
-                case "exact":     rule.matchMode = LR_Match_Exact;     break;
-            }
+        else if (childNode.nodeName == 'any') {
+            group = ParseLightRewriteMatchGroup(override, dm, childNode);
+            if (group.rules.Size() > 0) override.matchRules.PushBack(group);
         }
-
-        override.matchRules.PushBack(rule);
     }
+}
+
+function ParseLightRewriteMatchGroup(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    groupNode: SCustomNode
+): CLightRewriteMatchAny {
+    var group: CLightRewriteMatchAny;
+    var rule: CLightRewriteMatchRule;
+    var i, count: int;
+
+    group = new CLightRewriteMatchAny in owner;
+
+    count = groupNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        if (groupNode.subNodes[i].nodeName != 'match') continue;
+        rule = ParseLightRewriteMatchRule(owner, dm, groupNode.subNodes[i]);
+        if (rule) group.rules.PushBack(rule);
+    }
+
+    return group;
+}
+
+function ParseLightRewriteMatchRule(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    matchNode: SCustomNode
+): CLightRewriteMatchRule {
+    var rule: CLightRewriteMatchRule;
+    var strVal: string;
+
+    if (matchNode.values.Size() == 0) return NULL;
+
+    rule = new CLightRewriteMatchRule in owner;
+    rule.matchValue = matchNode.values[0];
+
+    if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
+        if (strVal == "layer") rule.matchType = LR_Match_Layer;
+    }
+
+    if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
+        switch (strVal) {
+            case "endsWith":  rule.matchMode = LR_Match_EndsWith;  break;
+            case "contains":  rule.matchMode = LR_Match_Contains;  break;
+            case "exact":     rule.matchMode = LR_Match_Exact;     break;
+        }
+    }
+
+    return rule;
 }
 
 // Populates ILightRewriteParams fields shared by both override entries and spotlight nodes.

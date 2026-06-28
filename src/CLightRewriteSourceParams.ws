@@ -14,7 +14,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     default displayName = "generic";
 
     // Override matching - empty means this is a base-params entry, not an override
-    public var matchRules: array<CLightRewriteMatchRule>;
+    public var matchRules: array<ILightRewriteMatchRule>;
 
     // Weight of the override - higher weights override lower weights
     public var weight: int;
