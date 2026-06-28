@@ -275,6 +275,10 @@ abstract class ILightSourceRewriter {
         var components: array<CComponent>;
         var i, count: int;
 
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (!p.forceCastShadows.has || !p.forceCastShadows.value) return;
+
         components = parentEntity.GetComponentsByClassName('CDrawableComponent');
         count = components.Size();
         for (i = 0; i < count; i += 1) {
