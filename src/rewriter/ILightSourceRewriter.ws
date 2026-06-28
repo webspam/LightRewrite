@@ -47,7 +47,14 @@ abstract class ILightSourceRewriter {
     }
 
     // Virtual; Called after game has started and components may be disabled.
-    public function ProcessDeferredActions() {}
+    public function ProcessDeferredActions() {
+        parentEntity.AddTimer('ProcessLightRewriteActions', 0.01f, false);
+    }
+
+    /** Process actions that must occur after drawable components have loaded */
+    public function ProcessFirstFrameActions() {
+        ApplyForceCastShadows();
+    }
 
     // Rewrites the light source with the configured parameters.
     public function RewriteLight();
@@ -56,6 +63,7 @@ abstract class ILightSourceRewriter {
     public function RestoreOriginalState() {
         var spotLight: CSpotLightComponent;
         var pointLight: CPointLightComponent;
+        var drawable: CDrawableComponent;
         var i: int;
         var interactionComponent: CGameplayLightComponent;
         var useEntityState, entityLightState: bool;
@@ -94,6 +102,14 @@ abstract class ILightSourceRewriter {
         if (spawnedSpotlight) {
             spotLight = (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
             if (spotLight) spotLight.SetEnabled(false);
+        }
+
+        components.Clear();
+        components = parentEntity.GetComponentsByClassName('CDrawableComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            drawable = (CDrawableComponent)components[i];
+            if (drawable) drawable.RestoreDrawableRewriteOriginalValues();
         }
     }
 
@@ -254,6 +270,27 @@ abstract class ILightSourceRewriter {
         else {
             // No spotlight, and we're not overriding the colour, so use the original colour.
             pointLight.color = pointLight.lightRewriteOriginalValues.color;
+        }
+    }
+
+    // Enables shadow casting on all drawable (mesh) components - for noshadow entities.
+    protected function ApplyForceCastShadows() {
+        var drawable: CDrawableComponent;
+        var components: array<CComponent>;
+        var i, count: int;
+
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (!p.forceCastShadows.has || !p.forceCastShadows.value) return;
+
+        components = parentEntity.GetComponentsByClassName('CDrawableComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            drawable = (CDrawableComponent)components[i];
+            if (drawable) {
+                drawable.SaveDrawableRewriteOriginalValues();
+                drawable.SetCastingShadows(true);
+            }
         }
     }
 }

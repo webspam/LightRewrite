@@ -191,6 +191,15 @@
         <xs:documentation>When true, a matched fixture keeps only its most central point light; the others are disabled rather than rewritten. Applies to the `LRT_Candle` rewriter. Default: `false`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="force_cast_shadows"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When true, enables shadow casting on all drawable (mesh) components of the entity. Useful for light sources that were optimised to not cast shadows (e.g. noshadow chandeliers) but look uncanny under ray-traced lighting.</xs:documentation>
+        <xs:documentation>WARNING: When disabled (swapping profile, toggle mod in-game), this will disable shadow casting on all drawable child components, even if they were originally set to cast shadows. No API exists to check the original state, so the mod assumes you enabled this because they were disabled.</xs:documentation>
+        <xs:documentation>Extremely specific match rules are recommended.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="matchType">

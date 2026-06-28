@@ -95,6 +95,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 DisableAllSpotlightComponents();
             }
         }
+
+        ApplyForceCastShadows();
     }
 
     /*
