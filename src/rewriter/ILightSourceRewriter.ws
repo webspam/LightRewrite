@@ -50,7 +50,9 @@ abstract class ILightSourceRewriter {
     }
 
     // Virtual; Called after game has started and components may be disabled.
-    public function ProcessDeferredActions() {}
+    public function ProcessDeferredActions() {
+        ApplyForceCastShadows();
+    }
 
     // Rewrites the light source with the configured parameters.
     public function RewriteLight();
