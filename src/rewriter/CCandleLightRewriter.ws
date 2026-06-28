@@ -96,7 +96,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             }
         }
 
-        if (p.hasForceCastShadows && p.forceCastShadows) EnableDrawableShadows();
+        if (p.forceCastShadows.has && p.forceCastShadows.value) EnableDrawableShadows();
     }
 
     /*

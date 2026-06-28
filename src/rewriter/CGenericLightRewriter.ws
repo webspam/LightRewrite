@@ -30,6 +30,6 @@ class CGenericLightRewriter extends ILightSourceRewriter {
 
         if (p.spotlight) RewriteSpotlight(p.spotlight);
 
-        if (p.hasForceCastShadows && p.forceCastShadows) EnableDrawableShadows();
+        if (p.forceCastShadows.has && p.forceCastShadows.value) EnableDrawableShadows();
     }
 }

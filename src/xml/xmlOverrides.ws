@@ -83,8 +83,8 @@ function LoadLightRewriteOverridesGroup(
             override.forceSingleLight.value = (strVal == "true");
         }
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'force_cast_shadows', strVal)) {
-            override.hasForceCastShadows = true;
-            override.forceCastShadows = (strVal == "true");
+            override.forceCastShadows.has = true;
+            override.forceCastShadows.value = (strVal == "true");
         }
 
         ParseLightRewriteMatchRules(override, dm, entryNode);
