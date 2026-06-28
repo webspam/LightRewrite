@@ -338,9 +338,14 @@ function BuildXml {
     $decl = $doc.CreateXmlDeclaration('1.0', 'UTF-16', $null)
     $doc.AppendChild($decl) | Out-Null
 
+    $schemaLocation = 'LightRewriteDefinitions.xsd'
+    if ((Split-Path (Split-Path $OutputFile -Parent) -Leaf) -eq 'data') {
+        $schemaLocation = "../$schemaLocation"
+    }
+
     $root = $doc.CreateElement('redxml')
     $root.SetAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-    $root.SetAttribute('noNamespaceSchemaLocation', 'http://www.w3.org/2001/XMLSchema-instance', 'LightRewriteDefinitions.xsd') | Out-Null
+    $root.SetAttribute('noNamespaceSchemaLocation', 'http://www.w3.org/2001/XMLSchema-instance', $schemaLocation) | Out-Null
     $doc.AppendChild($root) | Out-Null
 
     $custom = $doc.CreateElement('custom')

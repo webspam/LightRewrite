@@ -132,7 +132,7 @@ abstract class ILightSourceRewriter {
         count = components.Size();
         for (i = 0; i < count; i += 1) {
             drawable = (CDrawableComponent)components[i];
-            if (drawable) drawable.RestoreDrawableRewriteOriginalValues();
+            if (drawable) drawable.RestoreLightRewriteOriginalValues();
         }
     }
 
@@ -318,7 +318,7 @@ abstract class ILightSourceRewriter {
         for (i = 0; i < count; i += 1) {
             drawable = (CDrawableComponent)components[i];
             if (drawable) {
-                drawable.SaveDrawableRewriteOriginalValues();
+                drawable.SaveLightRewriteOriginalValues();
                 drawable.SetCastingShadows(true);
             }
         }

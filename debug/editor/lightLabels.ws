@@ -14,6 +14,7 @@
  * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
+ * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -27,14 +28,15 @@
  * and the dedicated SoftnessModifier edits softness.
  */
 
-// ---- CR4Player fields ----
-
 @addField(CR4Player) public var lrDebugLabels: bool;
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
-// ---- Lifecycle ----
+
+/*
+ * Lifecycle
+ */
 
 @wrapMethod(CR4Player)
 function OnSpawned(spawnData: SEntitySpawnData) {
@@ -64,6 +66,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
+    theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
@@ -140,8 +143,6 @@ function GetAllLightSourceTags(): array<name> {
     return tags;
 }
 
-// ---- Refresh timer ----
-
 @addMethod(CR4Player)
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
@@ -150,7 +151,9 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     lrDebugLabelManager.Scan();
 }
 
-// ---- Input: toggle labels ----
+/*
+ * Input handlers
+ */
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
@@ -213,8 +216,6 @@ public function LRDebug_OnAltPressed(action: SInputAction): bool {
     return false;
 }
 
-// ---- Input: toggle path labels ----
-
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
@@ -223,7 +224,9 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
     return true;
 }
 
-// ---- Input: cycle attribute ----
+/*
+ * Input: Attributes
+ */
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
@@ -260,8 +263,6 @@ function OnConfigUI() {
     iManager.lrDebug = new LRDebug_Input in iManager;
 }
 
-// ---- Input: adjust attribute value ----
-
 @addMethod(CR4Player)
 public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
     if (!lrDebugLabels || !action.value || !thePlayer) return false;
@@ -279,8 +280,6 @@ public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
     return true;
 }
 
-// ---- Input: toggle rewriter on/off ----
-
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
@@ -288,8 +287,6 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
     lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
 }
-
-// ---- Input: export edited lights ----
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
@@ -307,8 +304,6 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
     return true;
 }
 
-// ---- Input: solve light spacing ----
-
 @addMethod(CR4Player)
 public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
@@ -318,7 +313,9 @@ public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
     return true;
 }
 
-// ---- Input: hold-to-edit analog modifiers ----
+/*
+ * Analogue input handlers
+ */
 
 @addMethod(CR4Player)
 public function LRDebug_OnBrightnessModifier(action: SInputAction): bool {
@@ -425,7 +422,6 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     return false;
 }
 
-/** Bools toggle on key-press: flip the value and refresh, no camera lock or analog hold. */
 @addMethod(CR4Player)
 public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
