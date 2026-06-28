@@ -80,17 +80,14 @@ abstract class ILightSourceRewriter {
         }
 
         // Restore the original state of any spotlights.
-        if (count > 0) {
-            components.Clear();
-            components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-            count = components.Size();
+        components.Clear();
+        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            spotLight = (CSpotLightComponent)components[i];
 
-            for (i = 0; i < count; i += 1) {
-                spotLight = (CSpotLightComponent)components[i];
-
-                if (spotLight) {
-                    spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
-                }
+            if (spotLight) {
+                spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
             }
         }
 
