@@ -75,7 +75,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
-                    if (centralSlot != '') AlignPointLightToSlot(centralSlot, pointLight);
+                    if (centralSlot != '') AlignLightToSlot(centralSlot, pointLight);
                 }
                 else {
                     AlignPointLight(i, pointLight);
@@ -102,10 +102,10 @@ class CCandleLightRewriter extends ILightSourceRewriter {
      * At time of writing, only testing / working on complex candles.
      */
     private function AlignPointLight(i: int, pointLight: CPointLightComponent) {
-        if (i < fireFxSlotNames.Size()) AlignPointLightToSlot(fireFxSlotNames[i], pointLight);
+        if (i < fireFxSlotNames.Size()) AlignLightToSlot(fireFxSlotNames[i], pointLight);
     }
 
-    private function AlignPointLightToSlot(slotName: name, pointLight: CPointLightComponent) {
+    private function AlignLightToSlot(slotName: name, light: CLightComponent) {
         var slotPos: Vector;
         var slotMatrix: Matrix;
 
@@ -123,7 +123,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         // Arbitrary fire FX offset: centre of candle flame (ish)
         slotPos += GetEffectiveParams().pointLightOffset * scale;
 
-        pointLight.SetPosition(slotPos);
+        light.SetPosition(slotPos);
     }
 
     private function CentralFireFxSlot(): name {
