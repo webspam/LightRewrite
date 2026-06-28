@@ -5,18 +5,18 @@
  */
 class CLightRewriteShadowReducer {
     // Gather radius and frustum far plane; entities past this never reach the shot
-    var QUERY_RANGE: float;  default QUERY_RANGE = 45.0;
+    var QUERY_RANGE: float;  default QUERY_RANGE = 60.0;
 
     // Total in-view shadow volume the whole frame may keep, as the volume of a sphere this big
     var TOTAL_SHADOW_RADIUS: float;  default TOTAL_SHADOW_RADIUS = 12.0;
 
     // Extra cost an overlap adds on top of the two shadows that already cover it; higher culls overlap harder
-    var OVERLAP_PENALTY: float;  default OVERLAP_PENALTY = 2.0;
+    var OVERLAP_PENALTY: float;  default OVERLAP_PENALTY = 3.0;
 
     // Lights this close to the camera are never shrunk; their on-screen footprint is too large to touch
     var PROTECT_DIST    : float;  default PROTECT_DIST = 0;
     // At or past this camera distance a light is fully shrinkable
-    var FULL_SHRINK_DIST: float;  default FULL_SHRINK_DIST = 30.0;
+    var FULL_SHRINK_DIST: float;  default FULL_SHRINK_DIST = 90.0;
     // How much an in-frustum light may still give way; 0 protects every visible light
     var INSIDE_WEIGHT   : float;  default INSIDE_WEIGHT = 0.4;
     // Metres outside the frustum over which a light's willingness to shrink ramps to full
