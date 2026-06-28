@@ -100,6 +100,7 @@ abstract class ILightSourceRewriter {
             if (spotLight) spotLight.SetEnabled(false);
         }
 
+        components.Clear();
         components = parentEntity.GetComponentsByClassName('CDrawableComponent');
         count = components.Size();
         for (i = 0; i < count; i += 1) {
