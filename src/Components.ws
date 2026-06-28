@@ -1,9 +1,9 @@
-struct SDrawableRewriteOriginalValues {
+struct SLightRewriteDrawableState {
     var hasBeenSaved: bool;
     var castShadows : bool;
 }
 
-@addField(CDrawableComponent) public var drawableRewriteOriginalValues: SDrawableRewriteOriginalValues;
+@addField(CDrawableComponent) public var lightRewriteOriginalValues: SLightRewriteDrawableState;
 
 /*
  * Stores the original shadow-casting state of a drawable component before it is rewritten.
@@ -11,18 +11,18 @@ struct SDrawableRewriteOriginalValues {
  * assumed false; this feature is intended for noshadow entities only.
  */
 @addMethod(CDrawableComponent)
-public function SaveDrawableRewriteOriginalValues() {
-    if (drawableRewriteOriginalValues.hasBeenSaved) return;
+public function SaveLightRewriteOriginalValues() {
+    if (lightRewriteOriginalValues.hasBeenSaved) return;
 
-    drawableRewriteOriginalValues.hasBeenSaved = true;
-    drawableRewriteOriginalValues.castShadows = false;
+    lightRewriteOriginalValues.hasBeenSaved = true;
+    lightRewriteOriginalValues.castShadows = false;
 }
 
 @addMethod(CDrawableComponent)
-public function RestoreDrawableRewriteOriginalValues() {
-    if (!drawableRewriteOriginalValues.hasBeenSaved) return;
+public function RestoreLightRewriteOriginalValues() {
+    if (!lightRewriteOriginalValues.hasBeenSaved) return;
 
-    SetCastingShadows(drawableRewriteOriginalValues.castShadows);
+    SetCastingShadows(lightRewriteOriginalValues.castShadows);
 }
 
 // Stores the original values of a light component before it is rewritten.
