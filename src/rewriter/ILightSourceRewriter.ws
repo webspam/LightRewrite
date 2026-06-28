@@ -2,11 +2,8 @@
  * Abstract base class for all light rewriters.
  */
 abstract class ILightSourceRewriter {
-    // The type of light source this rewriter is for. Implementors must set.
-    public var type: ELightRewriteType;
-
     // The entity that this rewriter is owned by
-    public var parentEntity: CGameplayEntity;
+    protected var parentEntity: CGameplayEntity;
 
     // The parameters for this light source
     protected var params: CLightRewriteSourceParams;
@@ -63,8 +60,8 @@ abstract class ILightSourceRewriter {
         var interactionComponent: CGameplayLightComponent;
         var useEntityState, entityLightState: bool;
 
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
-        var count: int = components.Size();
+        var components: array<CComponent>;
+        var count: int;
 
         interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
         if (interactionComponent) {
@@ -72,6 +69,8 @@ abstract class ILightSourceRewriter {
             entityLightState = interactionComponent.IsLightOn();
         }
 
+        components = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        count = components.Size();
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
 
@@ -81,16 +80,14 @@ abstract class ILightSourceRewriter {
         }
 
         // Restore the original state of any spotlights.
-        if (count > 0) {
-            components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-            count = components.Size();
+        components.Clear();
+        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            spotLight = (CSpotLightComponent)components[i];
 
-            for (i = 0; i < count; i += 1) {
-                spotLight = (CSpotLightComponent)components[i];
-
-                if (spotLight) {
-                    spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
-                }
+            if (spotLight) {
+                spotLight.RestoreLightRewriteOriginalValues(useEntityState, entityLightState);
             }
         }
 
