@@ -74,7 +74,7 @@ function LoadLightRewriteOverridesGroup(
             override.rewriterType.has = true;
             override.rewriterType.value = ParseLightRewriteType(strVal);
         }
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_colour', strVal)) {
             override.useSpotlightColor.has = true;
             override.useSpotlightColor.value = (strVal == "true");
         }

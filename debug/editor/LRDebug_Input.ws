@@ -5,7 +5,7 @@ class LRDebug_Input {
     public const var SHADOW_FADE_DISTANCE_MODIFIER: name;  default SHADOW_FADE_DISTANCE_MODIFIER = 'LRDebug_ShadowFadeDistanceModifier';
     public const var SHADOW_FADE_RANGE_MODIFIER   : name;  default SHADOW_FADE_RANGE_MODIFIER = 'LRDebug_ShadowFadeRangeModifier';
     public const var SHADOW_BLEND_FACTOR_MODIFIER : name;  default SHADOW_BLEND_FACTOR_MODIFIER = 'LRDebug_ShadowBlendFactorModifier';
-    public const var USE_SPOTLIGHT_COLOR_MODIFIER : name;  default USE_SPOTLIGHT_COLOR_MODIFIER = 'LRDebug_UseSpotlightColorModifier';
+    public const var USE_SPOTLIGHT_COLOUR_MODIFIER: name;  default USE_SPOTLIGHT_COLOUR_MODIFIER = 'LRDebug_UseSpotlightColorModifier';
     public const var ALIGN_POINT_LIGHTS_MODIFIER  : name;  default ALIGN_POINT_LIGHTS_MODIFIER = 'LRDebug_AlignPointLightsModifier';
     public const var ALIGN_OFFSET_Z_MODIFIER      : name;  default ALIGN_OFFSET_Z_MODIFIER = 'LRDebug_AlignOffsetZModifier';
     public const var OVERRIDE_COLOUR_MODIFIER     : name;  default OVERRIDE_COLOUR_MODIFIER = 'LRDebug_OverrideColourModifier';

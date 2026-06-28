@@ -259,7 +259,7 @@ function BuildOverrideElement {
     if ($Params.ContainsKey('attenuation')) { $override.SetAttribute('attenuation', (FmtFloat $Params['attenuation'])) }
     if ($Params.ContainsKey('useSpotlightColor')) {
         $val = if ($Params['useSpotlightColor'] -eq 1) { 'true' } else { 'false' }
-        $override.SetAttribute('use_spotlight_color', $val)
+        $override.SetAttribute('use_spotlight_colour', $val)
     }
 
     # <match mode="exact"> for entity file stem

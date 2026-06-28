@@ -184,7 +184,7 @@
         <xs:documentation>Light attenuation - how quickly the light fades out with distance.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="use_spotlight_color"
+    <xs:attribute name="use_spotlight_colour"
                   type="xs:boolean"
                   use="optional">
       <xs:annotation>
