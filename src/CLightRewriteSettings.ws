@@ -49,8 +49,8 @@ class CLightRewriteSettings {
     private var lightSourceParams: array<CLightRewriteSourceParams>;
     private var lightSourceMenu  : array<CLightRewriteSourceMenu>;
 
-    // All overrides loaded from XML files, sorted by weight
-    private var loadedOverrides: array<CLightRewriteSourceParams>;
+    // All override groups loaded from XML files, sorted by weight
+    private var loadedGroups: array<CLightRewriteOverrideGroup>;
 
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions: array<name>;
@@ -72,7 +72,7 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
         loadedParams = LoadLightRewriteParams(this);
-        loadedOverrides = LoadLightRewriteOverrides(this);
+        loadedGroups = LoadLightRewriteOverrides(this);
 
         profileOptions.PushBack(NONE_PRESET_LABEL);
         FindLightRewriteProfileNames(profileOptions);
@@ -767,16 +767,21 @@ class CLightRewriteSettings {
     // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
     public function GetAllLightSourceTags(): array<name> {
         var tags: array<name>;
-        var i, count: int;
+        var overrides: array<CLightRewriteSourceParams>;
+        var i, j, count, overrideCount: int;
 
         count = lightSourceParams.Size();
         for (i = 0; i < count; i += 1) {
             tags.PushBack(lightSourceParams[i].tag);
         }
 
-        count = loadedOverrides.Size();
+        count = loadedGroups.Size();
         for (i = 0; i < count; i += 1) {
-            tags.PushBack(loadedOverrides[i].tag);
+            overrides = loadedGroups[i].overrides;
+            overrideCount = overrides.Size();
+            for (j = 0; j < overrideCount; j += 1) {
+                tags.PushBack(overrides[j].tag);
+            }
         }
 
         return tags;
@@ -802,18 +807,11 @@ class CLightRewriteSettings {
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PRESET_LABEL) return NULL;
 
-        count = loadedOverrides.Size();
+        count = loadedGroups.Size();
         for (i = 0; i < count; i += 1) {
-            if (loadedOverrides[i].profileName != currentProfile) continue;
+            if (loadedGroups[i].profileName != currentProfile) continue;
 
-            if (loadedOverrides[i].MatchesEntity(entity)) {
-                if (!params) params = new CLightRewriteSourceParams in entity;
-                loadedOverrides[i].ApplyTo(params);
-
-                // TODO: Determine if we want tags from all merged overrides
-                params.tag = loadedOverrides[i].tag;
-                params.displayName = loadedOverrides[i].displayName;
-            }
+            loadedGroups[i].ApplyMatching(entity, params);
         }
 
         return params;

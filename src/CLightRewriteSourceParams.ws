@@ -16,12 +16,6 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Override match condition - NULL means this is a base-params entry, not an override
     public var condition: CLightRewriteMatchAll;
 
-    // Weight of the override - higher weights override lower weights
-    public var weight: int;
-
-    // Profile this override belongs to - empty means no profile assigned
-    public var profileName: name;
-
     // The rewriter implementation to use
     public var rewriterType: SLightRewriteOptionalRewriterType;
 

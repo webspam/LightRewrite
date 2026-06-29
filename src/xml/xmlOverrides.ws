@@ -2,9 +2,9 @@ function LogLightRewriteXml(message: string) {
     LogChannel('LightRewriteXml', message);
 }
 
-/** Loads all overrides from all XML files */
-function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteSourceParams> {
-    var overrides: array<CLightRewriteSourceParams>;
+/** Loads all override groups from all XML files */
+function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideGroup> {
+    var groups: array<CLightRewriteOverrideGroup>;
     var dm: CDefinitionsManagerAccessor;
     var lrNode, overridesNode: SCustomNode;
     var i, count, weight: int;
@@ -26,22 +26,22 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteSourcePar
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
         LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
 
-        LoadLightRewriteOverridesGroup(owner, dm, overridesNode, overrides, weight, profileName);
+        groups.PushBack(LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName));
     }
 
-    ArraySortOverridesByWeight(overrides);
+    ArraySortGroupsByWeight(groups);
 
-    return overrides;
+    return groups;
 }
 
-function LoadLightRewriteOverridesGroup(
+function LoadLightRewriteOverrideGroup(
     owner: CObject,
     dm: CDefinitionsManagerAccessor,
     overridesNode: SCustomNode,
-    out overrides: array<CLightRewriteSourceParams>,
     weight: int,
     profileName: name
-) {
+): CLightRewriteOverrideGroup {
+    var group: CLightRewriteOverrideGroup;
     var entryNode: SCustomNode;
     var alignNode: SCustomNode;
     var override: CLightRewriteSourceParams;
@@ -51,7 +51,15 @@ function LoadLightRewriteOverridesGroup(
     var spotlightNode: SCustomNode;
     var matchesNode: SCustomNode;
 
+    group = new CLightRewriteOverrideGroup in owner;
+    group.weight = weight;
+    group.profileName = profileName;
+    group.gate = new CLightRewriteMatchAll in owner;
+
     matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
+    if (matchesNode.nodeName == 'matches') {
+        ParseLightRewriteMatchRules(owner, dm, matchesNode, group.gate);
+    }
 
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
@@ -59,8 +67,6 @@ function LoadLightRewriteOverridesGroup(
         if (entryNode.nodeName != 'override') continue;
 
         override = new CLightRewriteSourceParams in owner;
-        override.weight = weight;
-        override.profileName = profileName;
         override.condition = new CLightRewriteMatchAll in owner;
 
         if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
@@ -93,9 +99,6 @@ function LoadLightRewriteOverridesGroup(
             override.forceCastShadows.value = (strVal == "true");
         }
 
-        if (matchesNode.nodeName == 'matches') {
-            ParseLightRewriteMatchRules(owner, dm, matchesNode, override.condition);
-        }
         ParseLightRewriteMatchRules(owner, dm, entryNode, override.condition);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
@@ -115,8 +118,10 @@ function LoadLightRewriteOverridesGroup(
         }
 
         LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.condition.rules.Size() + ")");
-        overrides.PushBack(override);
+        group.overrides.PushBack(override);
     }
+
+    return group;
 }
 
 function ParseLightRewriteMatchRules(
@@ -311,22 +316,22 @@ function LR_StringToLightShadowCastingMode(str: string): ELightShadowCastingMode
     }
 }
 
-/** Sorts overrides ascending by weight using insertion sort (stable, O(n²)). */
-function ArraySortOverridesByWeight(out overrides: array<CLightRewriteSourceParams>) {
+/** Sorts override groups ascending by weight using insertion sort (stable, O(n²)). */
+function ArraySortGroupsByWeight(out groups: array<CLightRewriteOverrideGroup>) {
     var i, j, keyWeight, count: int;
-    var keyOverride: CLightRewriteSourceParams;
+    var keyGroup: CLightRewriteOverrideGroup;
 
-    count = overrides.Size();
+    count = groups.Size();
     for (i = 1; i < count; i += 1) {
-        keyOverride = overrides[i];
-        keyWeight = keyOverride.weight;
+        keyGroup = groups[i];
+        keyWeight = keyGroup.weight;
         j = i - 1;
 
-        while (j >= 0 && overrides[j].weight > keyWeight) {
-            overrides[j + 1] = overrides[j];
+        while (j >= 0 && groups[j].weight > keyWeight) {
+            groups[j + 1] = groups[j];
             j -= 1;
         }
 
-        overrides[j + 1] = keyOverride;
+        groups[j + 1] = keyGroup;
     }
 }

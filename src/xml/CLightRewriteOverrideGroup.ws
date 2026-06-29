@@ -27,6 +27,7 @@ class CLightRewriteOverrideGroup {
             if (!params) params = new CLightRewriteSourceParams in entity;
             override.ApplyTo(params);
 
+            // TODO: Determine if we want tags from all merged overrides
             params.tag = override.tag;
             params.displayName = override.displayName;
         }
