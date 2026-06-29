@@ -58,6 +58,13 @@
       <xs:documentation>Per-area overrides for light source defaults.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="matches"
+                  type="sharedMatchesType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Match filters shared by every override in this group, ANDed into each override's own filters. When present, must be the first child, before any override.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="override"
                   type="overrideEntryType"
                   maxOccurs="unbounded">
@@ -82,6 +89,27 @@
         <xs:documentation>Effectively, 0 is typically for global defaults, and 100 would be for a very specific small area.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="sharedMatchesType">
+    <xs:annotation>
+      <xs:documentation>A group of match filters shared by every override in the overrides group. Holds the same match and any blocks an override can, and they are ANDed into each override's own filters.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0"
+               maxOccurs="unbounded">
+      <xs:element name="match"
+                  type="matchType">
+        <xs:annotation>
+          <xs:documentation>A filter ANDed into every override in this group. Same attributes and behaviour as a top-level override match.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="any"
+                  type="anyMatchType">
+        <xs:annotation>
+          <xs:documentation>An any-match group ANDed into every override in this group. Same behaviour as a top-level override any group.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="overrideEntryType">
