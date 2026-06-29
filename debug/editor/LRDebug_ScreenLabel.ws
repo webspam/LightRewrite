@@ -23,7 +23,6 @@ class LRDebug_ScreenLabel {
 
     public function SetText(text: string) {
         this.text = text;
-        Show();
     }
 
     public function Show() {

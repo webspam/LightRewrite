@@ -21,7 +21,6 @@ class LRDebug_LabelManager {
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='10' color='#dd88ff'>#</font>");
-        groupLabel.Hide();
     }
 
     private function ShowToast(text: string) {
