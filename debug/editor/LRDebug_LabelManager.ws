@@ -10,12 +10,12 @@ class LRDebug_LabelManager {
     private var showPathLabels: bool;
     private var target        : CGameplayEntity;
     private var toast         : LRDebug_ToastOneLiner;
-    private var pathLabel     : LRDebug_ScreenLabel;
+    private var pathLabel     : LRDebug_PathLabel;
     private var locked        : bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
-        pathLabel = new LRDebug_ScreenLabel in this;
+        pathLabel = new LRDebug_PathLabel in this;
         pathLabel.Init(0x40006000, 0.5, 0.88);
     }
 
