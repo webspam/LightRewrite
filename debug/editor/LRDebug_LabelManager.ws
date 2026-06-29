@@ -4,19 +4,19 @@
  * Scan() is called each timer tick to:
  *   - Ensure every nearby light entity has an oneliner (creates if missing, restarts if idle)
  *   - Pick the most camera-forward entity within range as the highlighted target
- *
- * showPathLabels is public so LRDebug_LightOneLiner.GenerateText can read it
- * via thePlayer.lrDebugLabelManager.showPathLabels without a separate accessor.
  */
 class LRDebug_LabelManager {
-    private var tagSeq       : int;
-    public var showPathLabels: bool;
-    private var target       : CGameplayEntity;
-    private var toast        : LRDebug_ToastOneLiner;
-    private var locked       : bool;
+    private var tagSeq        : int;
+    private var showPathLabels: bool;
+    private var target        : CGameplayEntity;
+    private var toast         : LRDebug_ToastOneLiner;
+    private var pathLabel     : LRDebug_ScreenLabel;
+    private var locked        : bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
+        pathLabel = new LRDebug_ScreenLabel in this;
+        pathLabel.Init(0x40006000, 0.5, 0.88);
     }
 
     private function ShowToast(text: string) {
@@ -101,15 +101,29 @@ class LRDebug_LabelManager {
             if (thePlayer.lrDebugTargetMarkers) {
                 thePlayer.lrDebugTargetMarkers.SetTarget(target);
             }
+
+            UpdatePathLabel();
         }
     }
 
-    /**
-     * Toggles path-label visibility and regenerates markup on all nearby oneliners.
-     */
     public function TogglePathLabels() {
         showPathLabels = !showPathLabels;
-        RegenerateNearbyOneliners();
+        UpdatePathLabel();
+    }
+
+    /** One label at the bottom of the screen for the active target, instead of a line per entity */
+    private function UpdatePathLabel() {
+        if (!showPathLabels || !target) {
+            pathLabel.Hide();
+            return;
+        }
+
+        pathLabel.SetText(LRDebug_BuildPathLabel(target));
+    }
+
+    /** Called when labels are switched off so the path label does not linger on screen */
+    public function HidePathLabel() {
+        pathLabel.Hide();
     }
 
     public function RegenerateNearbyOneliners() {
