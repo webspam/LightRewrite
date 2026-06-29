@@ -239,7 +239,8 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
 public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.ToggleGroupEdit(lrDebugAttrEditor);
+    lrDebugAttrEditor.ToggleGroupEdit();
+    lrDebugLabelManager.RefreshGroupLabel(lrDebugAttrEditor);
     return true;
 }
 

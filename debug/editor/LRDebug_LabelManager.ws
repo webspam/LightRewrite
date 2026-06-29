@@ -155,11 +155,6 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
-    public function ToggleGroupEdit(editor: LRDebug_AttributeEditor) {
-        editor.ToggleGroupEdit();
-        RefreshGroupLabel(editor);
-    }
-
     public function RefreshGroupLabel(editor: LRDebug_AttributeEditor) {
         if (editor.IsGroupEditing()) groupLabel.Show("<font size='10' color='#dd88ff'>#</font>");
         else groupLabel.Hide();
