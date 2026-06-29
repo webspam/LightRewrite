@@ -156,8 +156,7 @@ class LRDebug_LabelManager {
     }
 
     public function ToggleGroupEdit(editor: LRDebug_AttributeEditor) {
-        if (editor.ToggleGroupEdit()) ShowToast("Group edit: ON");
-        else ShowToast("Group edit: OFF");
+        editor.ToggleGroupEdit();
         RefreshGroupLabel(editor);
     }
 
