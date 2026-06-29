@@ -1,6 +1,7 @@
 class LRDebug_PathLabel extends LRDebug_ScreenLabel {
     public function ShowPath(entity: CGameplayEntity) {
-        SetText(BuildPathLabel(entity));
+        super.SetText(BuildPathLabel(entity));
+        super.Show();
     }
 
     /**

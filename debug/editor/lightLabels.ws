@@ -58,6 +58,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputToggleGroupEdit', 'LRDebug_GroupEdit');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
@@ -162,10 +163,12 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     if (lrDebugLabels) {
         theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
+        if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
+        else lrDebugLabelManager.HideGroupLabel();
     }
     else {
         theInput.RestoreContext('LRDebug', true);
-        lrDebugLabelManager.HidePathLabel();
+        lrDebugLabelManager.HideScreenLabels();
     }
 
     return true;
@@ -230,6 +233,15 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.SwapLightSelection(lrDebugAttrEditor);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugAttrEditor.ToggleGroupEdit()) lrDebugLabelManager.ShowGroupLabel();
+    else lrDebugLabelManager.HideGroupLabel();
     return true;
 }
 

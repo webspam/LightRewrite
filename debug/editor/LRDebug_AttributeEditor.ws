@@ -10,6 +10,10 @@ class LRDebug_AttributeEditor {
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
 
+    private var groupEdit      : bool;
+    private var groupEditTarget: CGameplayEntity;
+    private var groupMembers   : array<CGameplayEntity>;
+
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
     }
@@ -129,15 +133,8 @@ class LRDebug_AttributeEditor {
         params: CLightRewriteSourceParams,
         target: CGameplayEntity
     ): CLightRewriteSpotlightParams {
-        if (!target.lrDebugSpotOwned) {
-            // Clone so edits don't mutate the profile's shared spotlight (ApplyTo copies it by reference).
-            if (params.spotlight) {
-                params.spotlight = (CLightRewriteSpotlightParams)params.spotlight.Clone(target);
-            }
-            else {
-                params.spotlight = new CLightRewriteSpotlightParams in target;
-            }
-            target.lrDebugSpotOwned = true;
+        if (!params.spotlight) {
+            params.spotlight = new CLightRewriteSpotlightParams in target;
         }
         return params.spotlight;
     }
@@ -389,9 +386,7 @@ class LRDebug_AttributeEditor {
                 return false;
         }
 
-        rewriter.LRDebug_SetMenuOverrideParams(params);
-        rewriter.RestoreOriginalState();
-        rewriter.RewriteLight();
+        ApplyParams(target, rewriter, params);
         return true;
     }
 
@@ -438,9 +433,7 @@ class LRDebug_AttributeEditor {
             params.pointLightOffsetPos.value.Y += dy;
         }
 
-        rewriter.LRDebug_SetMenuOverrideParams(params);
-        rewriter.RestoreOriginalState();
-        rewriter.RewriteLight();
+        ApplyParams(target, rewriter, params);
         return true;
     }
 
@@ -545,9 +538,92 @@ class LRDebug_AttributeEditor {
                 return false;
         }
 
+        ApplyParams(target, rewriter, params);
+        return true;
+    }
+
+    public function ToggleGroupEdit(): bool {
+        groupEdit = !groupEdit;
+        return groupEdit;
+    }
+
+    public function IsGroupEditing(): bool {
+        return groupEdit;
+    }
+
+    private function ApplyParams(
+        target: CGameplayEntity,
+        rewriter: ILightSourceRewriter,
+        params: CLightRewriteSourceParams
+    ) {
         rewriter.LRDebug_SetMenuOverrideParams(params);
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
-        return true;
+
+        if (groupEdit) ApplyToGroup(target, params);
+    }
+
+    private function ApplyToGroup(target: CGameplayEntity, params: CLightRewriteSourceParams) {
+        var entity: CGameplayEntity;
+        var rewriter: ILightSourceRewriter;
+        var memberParams: CLightRewriteSourceParams;
+        var i, count: int;
+
+        CacheGroupMembers(target);
+
+        count = groupMembers.Size();
+        for (i = 0; i < count; i += 1) {
+            entity = groupMembers[i];
+            if (!entity) continue;
+
+            rewriter = entity.LRDebug_GetOrCreateRewriter();
+            memberParams = entity.LRDebug_GetParams(rewriter);
+            params.ApplyTo(memberParams);
+            rewriter.LRDebug_SetMenuOverrideParams(memberParams);
+            rewriter.RestoreOriginalState();
+            rewriter.RewriteLight();
+        }
+    }
+
+    private function CacheGroupMembers(target: CGameplayEntity) {
+        var match: CLightRewriteMatchAll;
+        var entities: array<CEntity>;
+        var entity: CGameplayEntity;
+        var i, count: int;
+
+        if (groupEditTarget == target) return;
+
+        groupEditTarget = target;
+        groupMembers.Clear();
+
+        match = BuildGroupMatch(target);
+        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            entity = (CGameplayEntity)entities[i];
+            if (!entity || entity == target) continue;
+            if (!match.Matches(entity)) continue;
+            groupMembers.PushBack(entity);
+        }
+    }
+
+    private function BuildGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
+        var match: CLightRewriteMatchAll = new CLightRewriteMatchAll in this;
+        var entityRule, layerRule: CLightRewriteMatchRule;
+
+        entityRule = new CLightRewriteMatchRule in match;
+        entityRule.matchType = LR_Match_Entity;
+        entityRule.matchMode = LR_Match_Exact;
+        entityRule.matchValue = entityRule.GetSubject(target);
+        match.rules.PushBack(entityRule);
+
+        layerRule = new CLightRewriteMatchRule in match;
+        layerRule.matchType = LR_Match_Layer;
+        layerRule.matchMode = LR_Match_Exact;
+        layerRule.matchValue = layerRule.GetSubject(target);
+        match.rules.PushBack(layerRule);
+
+        return match;
     }
 }

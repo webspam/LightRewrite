@@ -2,11 +2,14 @@ class LRDebug_ScreenLabel {
     private var id    : int;
     private var ratioX: float;
     private var ratioY: float;
+    private var text  : string;
 
-    private var hud    : CR4ScriptedHud;
-    private var flash  : CScriptedFlashSprite;
-    private var sprite : CScriptedFlashSprite;
-    private var created: bool;
+    private var hud   : CR4ScriptedHud;
+    private var flash : CScriptedFlashSprite;
+    private var sprite: CScriptedFlashSprite;
+
+    private var created  : bool;
+    private var isVisible: bool;
 
     public function Init(id: int, ratioX: float, ratioY: float) {
         var module: CR4HudModuleOneliners;
@@ -20,40 +23,63 @@ class LRDebug_ScreenLabel {
         this.flash = module.GetModuleFlash();
     }
 
-    protected function SetText(text: string) {
-        if (text == "") {
-            Hide();
-            return;
-        }
+    /** The flash oneliner has no text setter, so changed text means rebuilding the sprite. */
+    public function SetText(newText: string) {
+        if (newText == this.text) return;
 
-        Create(text);
-        Reposition();
+        this.text = newText;
+
+        if (!created) return;
+
+        // Nothing to show; defer the rebuild until Show() has text again.
+        if (newText == "") Remove();
+        else Rebuild();
+    }
+
+    public function Show() {
+        if (text == "") return;
+
+        if (!created) Rebuild();
+        SetVisible(true);
     }
 
     public function Hide() {
+        SetVisible(false);
+    }
+
+    public function Destroy() {
         if (!created) return;
 
         Remove();
     }
 
-    private function Create(text: string) {
+    private function Rebuild() {
         var fxCreate: CScriptedFlashFunction;
 
         if (created) Remove();
 
         fxCreate = this.flash.GetMemberFlashFunction("CreateOneliner");
-        fxCreate.InvokeSelfTwoArgs(FlashArgInt(this.id), FlashArgString(text));
+        fxCreate.InvokeSelfTwoArgs(FlashArgInt(this.id), FlashArgString(this.text));
 
         this.sprite = this.flash.GetChildFlashSprite("mcOneliner" + this.id);
-        this.sprite.SetVisible(true);
-        created = true;
+        this.created = true;
+
+        Reposition();
+        this.sprite.SetVisible(this.isVisible);
     }
 
     private function Remove() {
         var fxRemove: CScriptedFlashFunction = this.flash.GetMemberFlashFunction("RemoveOneliner");
 
         fxRemove.InvokeSelfOneArg(FlashArgInt(this.id));
-        created = false;
+        this.created = false;
+    }
+
+    private function SetVisible(visible: bool) {
+        if (visible == this.isVisible) return;
+
+        this.isVisible = visible;
+        if (created) this.sprite.SetVisible(visible);
     }
 
     private function Reposition() {
