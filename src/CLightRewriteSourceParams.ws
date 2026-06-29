@@ -40,11 +40,6 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Virtual constructor
     public function Init() {}
 
-    public function MatchesEntity(entity: CGameplayEntity): bool {
-        if (condition) return condition.Matches(entity);
-        return true;
-    }
-
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
         if (enabled.has) target.enabled = enabled;

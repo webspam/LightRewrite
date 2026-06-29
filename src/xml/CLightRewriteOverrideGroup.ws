@@ -15,7 +15,7 @@ class CLightRewriteOverrideGroup {
         count = overrides.Size();
         for (i = 0; i < count; i += 1) {
             override = overrides[i];
-            if (!override.MatchesEntity(entity)) continue;
+            if (!override.condition.Matches(entity)) continue;
 
             if (!params) params = new CLightRewriteSourceParams in entity;
             override.ApplyTo(params);
