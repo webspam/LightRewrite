@@ -57,8 +57,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
-    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
-    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
@@ -226,22 +224,6 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 /*
  * Input: Attributes
  */
-
-@addMethod(CR4Player)
-public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, -1);
-    return true;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnInputCycleAttrNext(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, 1);
-    return true;
-}
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {

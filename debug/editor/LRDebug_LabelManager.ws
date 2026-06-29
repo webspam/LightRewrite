@@ -158,14 +158,6 @@ class LRDebug_LabelManager {
         return editor.GetSelectedLightType(target);
     }
 
-    /** CycleAttribute needs the target, which only the manager holds. */
-    public function CycleSelectedAttribute(editor: LRDebug_AttributeEditor, delta: int) {
-        if (!target) return;
-
-        editor.CycleAttribute(delta, target);
-        RefreshTargetOneliner();
-    }
-
     /**
      * Applies a continuous (analog) delta to the target's selected attribute and
      * refreshes its oneliner if the adjustment took effect.
