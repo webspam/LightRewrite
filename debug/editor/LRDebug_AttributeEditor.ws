@@ -10,7 +10,6 @@ class LRDebug_AttributeEditor {
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
 
-    // Group edit: every change is mirrored onto all same-template, same-layer lights
     private var groupEdit       : bool;
     private var groupMatch      : CLightRewriteMatchAll;
     private var groupMatchTarget: CGameplayEntity;
@@ -548,7 +547,6 @@ class LRDebug_AttributeEditor {
         return groupEdit;
     }
 
-    /** Snap the whole group to the target the moment group mode is switched on */
     public function ApplyGroupFromTarget(target: CGameplayEntity) {
         if (!groupEdit || !target || !target.lrDebugParams) return;
         ApplyToGroup(target, target.lrDebugParams);
