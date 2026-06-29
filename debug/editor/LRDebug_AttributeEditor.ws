@@ -129,15 +129,8 @@ class LRDebug_AttributeEditor {
         params: CLightRewriteSourceParams,
         target: CGameplayEntity
     ): CLightRewriteSpotlightParams {
-        if (!target.lrDebugSpotOwned) {
-            // Clone so edits don't mutate the profile's shared spotlight (ApplyTo copies it by reference).
-            if (params.spotlight) {
-                params.spotlight = (CLightRewriteSpotlightParams)params.spotlight.Clone(target);
-            }
-            else {
-                params.spotlight = new CLightRewriteSpotlightParams in target;
-            }
-            target.lrDebugSpotOwned = true;
+        if (!params.spotlight) {
+            params.spotlight = new CLightRewriteSpotlightParams in target;
         }
         return params.spotlight;
     }

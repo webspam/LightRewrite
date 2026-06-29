@@ -42,8 +42,6 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
 /** Pre-edit snapshot the export diffs against, so profile-inherited values aren't re-emitted */
 @addField(CGameplayEntity) public var lrDebugBaseline: CLightRewriteSourceParams;
 
-@addField(CGameplayEntity) public var lrDebugSpotOwned: bool;
-
 /** Lazy getter. Copies current effective params on first call, keeping a baseline for the export */
 @addMethod(CGameplayEntity)
 public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewriteSourceParams {
@@ -72,7 +70,6 @@ public function LRDebug_GetParams(rewriter: ILightSourceRewriter): CLightRewrite
 public function LRDebug_ClearDebugParams() {
     lrDebugParams = NULL;
     lrDebugBaseline = NULL;
-    lrDebugSpotOwned = false;
 }
 
 // ---- ILightSourceRewriter extensions ----
