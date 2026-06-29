@@ -450,8 +450,7 @@ class LRDebug_AttributeEditor {
 
     /**
      * Accumulates the analog mouse delta and releases it in whole `quantum` increments,
-     * carrying the sub-quantum remainder so high-DPI / high-FPS movement isn't lost to the
-     * value's per-frame rounding.
+     * carrying the sub-quantum remainder so high-DPI / high-FPS movement isn't lost.
      */
     private function ConsumeQuantizedDelta(delta: float, quantum: float): float {
         var sign: float;
