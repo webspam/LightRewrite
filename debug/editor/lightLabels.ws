@@ -15,6 +15,7 @@
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
+ * IK_G=(Action=LRDebug_GroupEdit)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -58,6 +59,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputToggleGroupEdit', 'LRDebug_GroupEdit');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
@@ -230,6 +232,14 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.SwapLightSelection(lrDebugAttrEditor);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    lrDebugLabelManager.ToggleGroupEdit(lrDebugAttrEditor);
     return true;
 }
 

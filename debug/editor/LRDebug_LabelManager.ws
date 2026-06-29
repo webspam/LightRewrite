@@ -151,6 +151,16 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
+    public function ToggleGroupEdit(editor: LRDebug_AttributeEditor) {
+        if (editor.ToggleGroupEdit()) {
+            ShowToast("Group edit: ON");
+            editor.ApplyGroupFromTarget(target);
+        }
+        else {
+            ShowToast("Group edit: OFF");
+        }
+    }
+
     /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
     public function GetTargetLightType(editor: LRDebug_AttributeEditor): name {
         if (!target) return 'point';

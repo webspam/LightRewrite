@@ -10,6 +10,11 @@ class LRDebug_AttributeEditor {
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
 
+    // Group edit: every change is mirrored onto all same-template, same-layer lights
+    private var groupEdit       : bool;
+    private var groupMatch      : CLightRewriteMatchAll;
+    private var groupMatchTarget: CGameplayEntity;
+
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
     }
@@ -382,9 +387,7 @@ class LRDebug_AttributeEditor {
                 return false;
         }
 
-        rewriter.LRDebug_SetMenuOverrideParams(params);
-        rewriter.RestoreOriginalState();
-        rewriter.RewriteLight();
+        ApplyParams(target, rewriter, params);
         return true;
     }
 
@@ -431,9 +434,7 @@ class LRDebug_AttributeEditor {
             params.pointLightOffsetPos.value.Y += dy;
         }
 
-        rewriter.LRDebug_SetMenuOverrideParams(params);
-        rewriter.RestoreOriginalState();
-        rewriter.RewriteLight();
+        ApplyParams(target, rewriter, params);
         return true;
     }
 
@@ -538,9 +539,80 @@ class LRDebug_AttributeEditor {
                 return false;
         }
 
+        ApplyParams(target, rewriter, params);
+        return true;
+    }
+
+    public function ToggleGroupEdit(): bool {
+        groupEdit = !groupEdit;
+        return groupEdit;
+    }
+
+    /** Snap the whole group to the target the moment group mode is switched on */
+    public function ApplyGroupFromTarget(target: CGameplayEntity) {
+        if (!groupEdit || !target || !target.lrDebugParams) return;
+        ApplyToGroup(target, target.lrDebugParams);
+    }
+
+    private function ApplyParams(
+        target: CGameplayEntity,
+        rewriter: ILightSourceRewriter,
+        params: CLightRewriteSourceParams
+    ) {
         rewriter.LRDebug_SetMenuOverrideParams(params);
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
-        return true;
+
+        if (groupEdit) ApplyToGroup(target, params);
+    }
+
+    private function ApplyToGroup(target: CGameplayEntity, params: CLightRewriteSourceParams) {
+        var entities: array<CEntity>;
+        var entity: CGameplayEntity;
+        var rewriter: ILightSourceRewriter;
+        var match: CLightRewriteMatchAll;
+        var i, count: int;
+
+        match = GetGroupMatch(target);
+        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            entity = (CGameplayEntity)entities[i];
+            if (!entity || entity == target) continue;
+            if (!match.Matches(entity)) continue;
+
+            rewriter = entity.LRDebug_GetOrCreateRewriter();
+            rewriter.LRDebug_SetMenuOverrideParams(params);
+            rewriter.RestoreOriginalState();
+            rewriter.RewriteLight();
+        }
+    }
+
+    private function GetGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
+        if (groupMatch && groupMatchTarget == target) return groupMatch;
+
+        groupMatch = BuildGroupMatch(target);
+        groupMatchTarget = target;
+        return groupMatch;
+    }
+
+    private function BuildGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
+        var match: CLightRewriteMatchAll = new CLightRewriteMatchAll in this;
+        var entityRule, layerRule: CLightRewriteMatchRule;
+
+        entityRule = new CLightRewriteMatchRule in match;
+        entityRule.matchType = LR_Match_Entity;
+        entityRule.matchMode = LR_Match_Exact;
+        entityRule.matchValue = entityRule.GetSubject(target);
+        match.rules.PushBack(entityRule);
+
+        layerRule = new CLightRewriteMatchRule in match;
+        layerRule.matchType = LR_Match_Layer;
+        layerRule.matchMode = LR_Match_Exact;
+        layerRule.matchValue = layerRule.GetSubject(target);
+        match.rules.PushBack(layerRule);
+
+        return match;
     }
 }

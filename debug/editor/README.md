@@ -16,6 +16,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - Face the light you want to edit; focus mode extends pick range
 - Swap between point and spot lights
 - Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting
+- Toggle group edit to apply every change to all lights sharing the target's entity and layer path
 
 ## Requires
 
