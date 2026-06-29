@@ -54,11 +54,11 @@ function LoadLightRewriteOverrideGroup(
     group = new CLightRewriteOverrideGroup in owner;
     group.weight = weight;
     group.profileName = profileName;
-    group.filter = new CLightRewriteMatchAll in owner;
+    group.filter = new CLightRewriteMatchAll in group;
 
     matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
     if (matchesNode.nodeName == 'matches') {
-        ParseLightRewriteMatchRules(owner, dm, matchesNode, group.filter);
+        ParseLightRewriteMatchRules(dm, matchesNode, group.filter);
     }
 
     count = overridesNode.subNodes.Size();
@@ -66,8 +66,8 @@ function LoadLightRewriteOverrideGroup(
         entryNode = overridesNode.subNodes[i];
         if (entryNode.nodeName != 'override') continue;
 
-        override = new CLightRewriteSourceParams in owner;
-        override.condition = new CLightRewriteMatchAll in owner;
+        override = new CLightRewriteSourceParams in group;
+        override.condition = new CLightRewriteMatchAll in override;
 
         if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
             LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
@@ -99,7 +99,7 @@ function LoadLightRewriteOverrideGroup(
             override.forceCastShadows.value = (strVal == "true");
         }
 
-        ParseLightRewriteMatchRules(owner, dm, entryNode, override.condition);
+        ParseLightRewriteMatchRules(dm, entryNode, override.condition);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffset)) {
@@ -114,7 +114,7 @@ function LoadLightRewriteOverrideGroup(
 
         spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
         if (spotlightNode.nodeName == 'spotlight') {
-            override.spotlight = ParseLightRewriteSpotlightParams(owner, dm, spotlightNode);
+            override.spotlight = ParseLightRewriteSpotlightParams(override, dm, spotlightNode);
         }
 
         LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.condition.rules.Size() + ")");
@@ -125,7 +125,6 @@ function LoadLightRewriteOverrideGroup(
 }
 
 function ParseLightRewriteMatchRules(
-    owner: CObject,
     dm: CDefinitionsManagerAccessor,
     node: SCustomNode,
     target: CLightRewriteMatchAll
@@ -140,11 +139,11 @@ function ParseLightRewriteMatchRules(
         childNode = node.subNodes[i];
 
         if (childNode.nodeName == 'match') {
-            rule = ParseLightRewriteMatchRule(owner, dm, childNode);
+            rule = ParseLightRewriteMatchRule(target, dm, childNode);
             if (rule) target.rules.PushBack(rule);
         }
         else if (childNode.nodeName == 'any') {
-            group = ParseLightRewriteMatchGroup(owner, dm, childNode);
+            group = ParseLightRewriteMatchGroup(target, dm, childNode);
             if (group.rules.Size() > 0) target.rules.PushBack(group);
         }
     }
@@ -164,7 +163,7 @@ function ParseLightRewriteMatchGroup(
     count = groupNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
         if (groupNode.subNodes[i].nodeName != 'match') continue;
-        rule = ParseLightRewriteMatchRule(owner, dm, groupNode.subNodes[i]);
+        rule = ParseLightRewriteMatchRule(group, dm, groupNode.subNodes[i]);
         if (rule) group.rules.PushBack(rule);
     }
 
