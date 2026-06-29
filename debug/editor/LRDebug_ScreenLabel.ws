@@ -32,7 +32,7 @@ class LRDebug_ScreenLabel {
             return;
         }
 
-        Create(text);
+        Create();
         Reposition();
     }
 
@@ -42,13 +42,13 @@ class LRDebug_ScreenLabel {
         Remove();
     }
 
-    private function Create(text: string) {
+    private function Create() {
         var fxCreate: CScriptedFlashFunction;
 
         if (created) Remove();
 
         fxCreate = this.flash.GetMemberFlashFunction("CreateOneliner");
-        fxCreate.InvokeSelfTwoArgs(FlashArgInt(this.id), FlashArgString(text));
+        fxCreate.InvokeSelfTwoArgs(FlashArgInt(this.id), FlashArgString(this.text));
 
         this.sprite = this.flash.GetChildFlashSprite("mcOneliner" + this.id);
         this.sprite.SetVisible(true);
