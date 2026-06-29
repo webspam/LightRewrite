@@ -22,15 +22,8 @@ class CLightRewriteMatchRule extends ILightRewriteMatchRule {
     default matchMode = LR_Match_StartsWith;
 
     public function Matches(entity: CGameplayEntity): bool {
-        var subject: string;
+        var subject: string = GetSubject(entity);
         var value: string = matchValue;
-
-        if (matchType == LR_Match_Layer) {
-            subject = StrBeforeFirst(StrAfterFirst(entity.ToString(), "\""), "\"");
-        }
-        else {
-            subject = StrAfterLast(entity.ToString(), StrChar(92));
-        }
 
         switch (matchMode) {
             case LR_Match_Contains:  return StrFindFirst(subject, value) != -1;
@@ -38,5 +31,12 @@ class CLightRewriteMatchRule extends ILightRewriteMatchRule {
             case LR_Match_Exact:     return subject == value;
             default:                 return StrBeginsWith(subject, value);
         }
+    }
+
+    public function GetSubject(entity: CGameplayEntity): string {
+        if (matchType == LR_Match_Layer) {
+            return StrBeforeFirst(StrAfterFirst(entity.ToString(), "\""), "\"");
+        }
+        return StrAfterLast(entity.ToString(), StrChar(92));
     }
 }
