@@ -27,7 +27,7 @@ class LRDebug_LabelManager {
     public function Update(targeting: LRDebug_Targeting) {
         var entities: array<CGameplayEntity>;
         var entity: CGameplayEntity;
-        var i, count, pointLights, spotLights: int;
+        var i, count: int;
         var targetChanged: bool;
 
         FindNearbyLights(entities);
@@ -42,11 +42,7 @@ class LRDebug_LabelManager {
                 continue;
             }
 
-            pointLights = CountComponents(entity, 'CPointLightComponent');
-            spotLights = CountComponents(entity, 'CSpotLightComponent');
-            if (pointLights == 0 && spotLights == 0) continue;
-
-            CreateOnelinerForEntity(entity, pointLights, spotLights);
+            CreateOnelinerForEntity(entity);
         }
 
         targetChanged = targeting.Scan(entities);
@@ -166,13 +162,15 @@ class LRDebug_LabelManager {
         return components.Size();
     }
 
-    private function CreateOnelinerForEntity(
-        entity: CGameplayEntity,
-        pointLights: int,
-        spotLights: int
-    ) {
-        var label: LRDebug_LightOneLiner = new LRDebug_LightOneLiner in entity;
+    private function CreateOnelinerForEntity(entity: CGameplayEntity) {
+        var label: LRDebug_LightOneLiner;
 
+        var pointLights: int = CountComponents(entity, 'CPointLightComponent');
+        var spotLights: int = CountComponents(entity, 'CSpotLightComponent');
+
+        if (pointLights == 0 && spotLights == 0) return;
+
+        label = new LRDebug_LightOneLiner in entity;
         label.Init(entity, pointLights, spotLights);
 
         tagSeq += 1;
