@@ -152,7 +152,7 @@ class LRDebug_AttributeEditor {
         if (spot) spotParams.offset.value = spot.GetLocalPosition();
     }
 
-    // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
+    /** RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04. */
     private function ClampAttributeValue(attr: name, value: float): float {
         var clamped: float;
 
