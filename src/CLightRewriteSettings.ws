@@ -811,7 +811,7 @@ class CLightRewriteSettings {
         for (i = 0; i < count; i += 1) {
             if (overrideGroups[i].profileName != currentProfile) continue;
 
-            overrideGroups[i].Apply(entity, params);
+            params = overrideGroups[i].Apply(entity, params);
         }
 
         return params;

@@ -6,11 +6,14 @@ class CLightRewriteOverrideGroup {
 
     public var overrides: array<CLightRewriteSourceParams>;
 
-    public function Apply(entity: CGameplayEntity, out params: CLightRewriteSourceParams) {
+    public function Apply(
+        entity: CGameplayEntity,
+        params: CLightRewriteSourceParams
+    ): CLightRewriteSourceParams {
         var override: CLightRewriteSourceParams;
         var i, count: int;
 
-        if (!filter.Matches(entity)) return;
+        if (!filter.Matches(entity)) return params;
 
         count = overrides.Size();
         for (i = 0; i < count; i += 1) {
@@ -24,5 +27,7 @@ class CLightRewriteOverrideGroup {
             params.tag = override.tag;
             params.displayName = override.displayName;
         }
+
+        return params;
     }
 }
