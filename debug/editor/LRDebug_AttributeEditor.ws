@@ -547,6 +547,10 @@ class LRDebug_AttributeEditor {
         return groupEdit;
     }
 
+    public function SetGroupEdit(on: bool) {
+        groupEdit = on;
+    }
+
     private function ApplyParams(
         target: CGameplayEntity,
         rewriter: ILightSourceRewriter,
