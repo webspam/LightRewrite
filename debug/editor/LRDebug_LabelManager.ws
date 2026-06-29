@@ -20,7 +20,7 @@ class LRDebug_LabelManager {
         pathLabel.Init(0x40006000, 0.5, 0.92);
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
-        groupLabel.SetText("<font size='10' color='#dd88ff'>#</font>");
+        groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
     }
 
     private function ShowToast(text: string) {
