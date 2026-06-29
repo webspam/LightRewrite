@@ -10,9 +10,9 @@ class LRDebug_AttributeEditor {
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
 
-    private var groupEdit       : bool;
-    private var groupMatch      : CLightRewriteMatchAll;
-    private var groupMatchTarget: CGameplayEntity;
+    private var groupEdit      : bool;
+    private var groupEditTarget: CGameplayEntity;
+    private var groupMembers   : array<CGameplayEntity>;
 
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
@@ -564,21 +564,17 @@ class LRDebug_AttributeEditor {
     }
 
     private function ApplyToGroup(target: CGameplayEntity, params: CLightRewriteSourceParams) {
-        var entities: array<CEntity>;
         var entity: CGameplayEntity;
         var rewriter: ILightSourceRewriter;
         var memberParams: CLightRewriteSourceParams;
-        var match: CLightRewriteMatchAll;
         var i, count: int;
 
-        match = GetGroupMatch(target);
-        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
+        CacheGroupMembers(target);
 
-        count = entities.Size();
+        count = groupMembers.Size();
         for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)entities[i];
-            if (!entity || entity == target) continue;
-            if (!match.Matches(entity)) continue;
+            entity = groupMembers[i];
+            if (!entity) continue;
 
             rewriter = entity.LRDebug_GetOrCreateRewriter();
             memberParams = entity.LRDebug_GetParams(rewriter);
@@ -589,12 +585,27 @@ class LRDebug_AttributeEditor {
         }
     }
 
-    private function GetGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
-        if (groupMatch && groupMatchTarget == target) return groupMatch;
+    private function CacheGroupMembers(target: CGameplayEntity) {
+        var match: CLightRewriteMatchAll;
+        var entities: array<CEntity>;
+        var entity: CGameplayEntity;
+        var i, count: int;
 
-        groupMatch = BuildGroupMatch(target);
-        groupMatchTarget = target;
-        return groupMatch;
+        if (groupEditTarget == target) return;
+
+        groupEditTarget = target;
+        groupMembers.Clear();
+
+        match = BuildGroupMatch(target);
+        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            entity = (CGameplayEntity)entities[i];
+            if (!entity || entity == target) continue;
+            if (!match.Matches(entity)) continue;
+            groupMembers.PushBack(entity);
+        }
     }
 
     private function BuildGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
