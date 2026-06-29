@@ -211,15 +211,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return "?";
     }
 
-    private function EscapeHtml(str: string): string {
-        var r: string;
-
-        r = StrReplaceAll(str, "&", "&amp;");
-        r = StrReplaceAll(r, "<", "&lt;");
-        r = StrReplaceAll(r, ">", "&gt;");
-        return r;
-    }
-
     private function ToHtmlBlock(text: string, size: int, optional colour: string): string {
         var colourAttr: string;
 
@@ -265,20 +256,12 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return html;
     }
 
-    /**
-     * Example entity.ToString():
-     * ```
-     * CLayer "full\editor\level\path.somext"::full\path\to\entity.w2ent
-     * ```
-     */
     private function GenerateText(): string {
-        var layerPart, entityPath, levelPath, fileName, filePath: string;
         var headerHtml, body, countString, marker, pSeg, sSeg: string;
         var attrId: name;
         var type: name;
 
         var fontSize: int = 13;
-        var descriptor: string = entity.ToString();
 
         countString = CountToHtml("P", pointLights) + " / " + CountToHtml("S", spotLights);
         marker = "<font color='#dd88ff'>-</font> ";
@@ -304,35 +287,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 + "</font><br/>";
         }
         body = "<font size='" + fontSize + "'>" + headerHtml + countString + "</font>";
-
-        if (thePlayer.lrDebugLabelManager.showPathLabels) {
-            if (StrFindFirst(descriptor, "::") != -1) {
-                layerPart = StrBeforeFirst(descriptor, "::");
-                entityPath = StrAfterFirst(descriptor, "::");
-                levelPath = layerPart;
-
-                if (StrFindFirst(layerPart, "\"") != -1) {
-                    levelPath = StrBeforeFirst(StrAfterFirst(layerPart, "\""), "\"");
-                }
-
-                fileName = StrAfterLast(entityPath, StrChar(92));
-                filePath = StrBeforeLast(entityPath, StrChar(92));
-            }
-            else {
-                // Fallback: display the raw descriptor as the path.
-                filePath = descriptor;
-            }
-
-            if (fileName != "") {
-                body += ToHtmlBlock(EscapeHtml(fileName), fontSize + 3);
-            }
-            if (filePath != "") {
-                body += ToHtmlBlock(EscapeHtml(filePath), fontSize - 1);
-            }
-            if (levelPath != "") {
-                body += ToHtmlBlock(EscapeHtml(levelPath), fontSize + 2);
-            }
-        }
 
         if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
             body += ShadowStatusHtml(fontSize);
