@@ -7,13 +7,8 @@
  */
 class LRDebug_AttributeEditor {
     private var attrIndex        : int;
-    private var accelerator      : LRDebug_AdjustAccelerator;
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
-
-    public function Init() {
-        accelerator = new LRDebug_AdjustAccelerator in thePlayer;
-    }
 
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
@@ -157,26 +152,6 @@ class LRDebug_AttributeEditor {
         if (spot) spotParams.offset.value = spot.GetLocalPosition();
     }
 
-    private function GetFloatStep(value: float): float {
-        if (value >= 50.0) return 5.0;
-        if (value >= 25.0) return 2.5;
-        if (value >= 15.0) return 1.0;
-        if (value >= 3.5) return 0.5;
-        if (value >= 1.0) return 0.25;
-        if (value >= 0.5) return 0.1;
-        if (value >= 0.1) return 0.05;
-        return 0.01;
-    }
-
-    private function GetFloatStepDirectional(currentValue: float, value: float): float {
-        var floatStep: float = GetFloatStep(currentValue);
-
-        if (value > 0.0) return floatStep;
-
-        // If decrementing would take us into a lower band, use the lower band's step.
-        return MinF(floatStep, GetFloatStep(currentValue - floatStep));
-    }
-
     // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
     private function ClampAttributeValue(attr: name, value: float): float {
         var clamped: float;
@@ -200,51 +175,6 @@ class LRDebug_AttributeEditor {
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    private function GetDynamicStep(attr: name, currentValue: float, value: float): float {
-        switch (attr) {
-            case 'alignOffsetZ':
-            case 'attenuation':
-            case 'shadowBlendFactor':
-                return 0.05;
-            default:
-                return GetFloatStepDirectional(currentValue, value);
-        }
-    }
-
-    private function ApplyFloatDelta(attr: name, currentValue: float, delta: float): float {
-        var remaining: float;
-        var sign: float;
-        var step: float;
-        var prevValue: float;
-        var i: int;
-
-        if (delta == 0.0) return currentValue;
-
-        remaining = delta;
-        sign = 1.0;
-        if (remaining < 0.0) sign = -1.0;
-
-        // Apply in sub-steps so large deltas don't skip step-size thresholds.
-        for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-            step = GetDynamicStep(attr, currentValue, sign);
-            if (step <= 0.0) break;
-
-            if (step > remaining * sign) step = remaining * sign;
-
-            prevValue = currentValue;
-            currentValue = currentValue + (step * sign);
-            currentValue = ClampAttributeValue(attr, currentValue);
-
-            // If rounding/clamping prevented any change, stop to avoid getting stuck.
-            if (currentValue == prevValue) break;
-
-            remaining = remaining - (step * sign);
-            if (currentValue == 0.0 && sign < 0.0) break;
-        }
-
-        return currentValue;
-    }
-
     public function CycleAttribute(delta: int, target: CGameplayEntity) {
         var count: int = 14;
         var type: name;
@@ -265,9 +195,8 @@ class LRDebug_AttributeEditor {
     }
 
     /**
-     * Analog hold-to-edit path: adds a raw signed delta to the attribute and
-     * applies it live. Unlike AdjustAttribute this skips the discrete step and
-     * scroll-acceleration logic; the caller has already scaled the mouse delta.
+     * Analog hold-to-edit path: adds a raw signed delta to the attribute and applies
+     * it live; the caller has already scaled the mouse delta.
      */
     public function AdjustAttributeContinuous(
         delta: float,

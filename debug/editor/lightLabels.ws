@@ -1,7 +1,7 @@
 /**
  * Light Rewrite's in-game light authoring overlay.
  *
- * Wires input actions to the label manager, attribute editor, and accelerator.
+ * Wires input actions to the label manager and attribute editor.
  * All domain logic lives in the dedicated files in this folder.
  *
  * Requires: mod_sharedutils_oneliners via SU_Oneliner
@@ -52,7 +52,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
-    lrDebugAttrEditor.Init();
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
