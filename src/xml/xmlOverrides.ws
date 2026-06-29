@@ -49,10 +49,15 @@ function LoadLightRewriteOverridesGroup(
     var nameVal: name;
     var i, count: int;
     var spotlightNode: SCustomNode;
+    var matchesNode: SCustomNode;
+
+    matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
 
     count = overridesNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
         entryNode = overridesNode.subNodes[i];
+        if (entryNode.nodeName != 'override') continue;
+
         override = new CLightRewriteSourceParams in owner;
         override.weight = weight;
         override.profileName = profileName;
@@ -87,6 +92,9 @@ function LoadLightRewriteOverridesGroup(
             override.forceCastShadows.value = (strVal == "true");
         }
 
+        if (matchesNode.nodeName == 'matches') {
+            ParseLightRewriteMatchRules(override, dm, matchesNode);
+        }
         ParseLightRewriteMatchRules(override, dm, entryNode);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
