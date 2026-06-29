@@ -547,11 +547,6 @@ class LRDebug_AttributeEditor {
         return groupEdit;
     }
 
-    public function ApplyGroupFromTarget(target: CGameplayEntity) {
-        if (!groupEdit || !target || !target.lrDebugParams) return;
-        ApplyToGroup(target, target.lrDebugParams);
-    }
-
     private function ApplyParams(
         target: CGameplayEntity,
         rewriter: ILightSourceRewriter,
