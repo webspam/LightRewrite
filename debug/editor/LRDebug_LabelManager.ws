@@ -117,7 +117,7 @@ class LRDebug_LabelManager {
             return;
         }
 
-        pathLabel.SetText(LRDebug_BuildPathLabel(target));
+        pathLabel.ShowPath(target);
     }
 
     public function HidePathLabel() {

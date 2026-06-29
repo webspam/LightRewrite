@@ -34,61 +34,6 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
     return LRT_Unknown;
 }
 
-// ---- Path label ----
-
-/**
- * Example entity.ToString():
- * ```
- * CLayer "full\editor\level\path.somext"::full\path\to\entity.w2ent
- * ```
- */
-function LRDebug_BuildPathLabel(entity: CGameplayEntity): string {
-    var descriptor, layerPart, entityPath, levelPath, fileName, filePath, html: string;
-    var fontSize: int;
-
-    if (!entity) return "";
-
-    fontSize = 13;
-    descriptor = entity.ToString();
-
-    if (StrFindFirst(descriptor, "::") != -1) {
-        layerPart = StrBeforeFirst(descriptor, "::");
-        entityPath = StrAfterFirst(descriptor, "::");
-        levelPath = layerPart;
-
-        if (StrFindFirst(layerPart, "\"") != -1) {
-            levelPath = StrBeforeFirst(StrAfterFirst(layerPart, "\""), "\"");
-        }
-
-        fileName = StrAfterLast(entityPath, StrChar(92));
-        filePath = StrBeforeLast(entityPath, StrChar(92));
-    }
-    else {
-        // Fallback: the raw descriptor when it has no layer/entity split
-        filePath = descriptor;
-    }
-
-    html = LRDebug_AppendPathLine(html, fileName, fontSize + 3);
-    html = LRDebug_AppendPathLine(html, filePath, fontSize - 1);
-    html = LRDebug_AppendPathLine(html, levelPath, fontSize + 2);
-    return html;
-}
-
-function LRDebug_AppendPathLine(html: string, text: string, size: int): string {
-    if (text == "") return html;
-    if (html != "") html += "<br/>";
-    return html + "<font size='" + size + "'>" + LRDebug_EscapeHtml(text) + "</font>";
-}
-
-function LRDebug_EscapeHtml(str: string): string {
-    var r: string;
-
-    r = StrReplaceAll(str, "&", "&amp;");
-    r = StrReplaceAll(r, "<", "&lt;");
-    r = StrReplaceAll(r, ">", "&gt;");
-    return r;
-}
-
 // ---- CGameplayEntity extensions ----
 
 /** The params used to edit the light source */
