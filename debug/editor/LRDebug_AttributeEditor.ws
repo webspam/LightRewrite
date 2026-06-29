@@ -176,8 +176,7 @@ class LRDebug_AttributeEditor {
     }
 
     /**
-     * Analog hold-to-edit path: adds a raw signed delta to the attribute and applies
-     * it live; the caller has already scaled the mouse delta.
+     * Analog hold-to-edit: adds a raw signed delta to the attribute and applies it
      */
     public function AdjustAttributeContinuous(
         delta: float,
