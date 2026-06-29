@@ -1,9 +1,9 @@
 /**
  * Owns the currently-selected attribute index and all per-attribute edit logic.
  *
- * CycleAttribute and AdjustAttributeContinuous intentionally do not call
- * LRDebug_RegenerateText on the target's oneliner - that is the caller's
- * responsibility after each operation so the call site stays explicit.
+ * The attribute edit functions intentionally do not call LRDebug_RegenerateText
+ * on the target's oneliner - that is the caller's responsibility after each
+ * operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
     private var attrIndex        : int;
@@ -98,7 +98,7 @@ class LRDebug_AttributeEditor {
 
         type = GetSelectedLightType(target);
         if (!IsAttrApplicable(GetCurrentAttrId(type), type)) {
-            CycleAttribute(1, target);
+            SetAttributeIndex(0);
         }
     }
 
@@ -173,25 +173,6 @@ class LRDebug_AttributeEditor {
 
         if (clamped >= 0.0) return (float)FloorF(clamped * 100.0 + 0.5) / 100.0;
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
-    }
-
-    public function CycleAttribute(delta: int, target: CGameplayEntity) {
-        var count: int = 14;
-        var type: name;
-        var guard: int;
-
-        if (count <= 0 || delta == 0) return;
-
-        type = GetSelectedLightType(target);
-
-        // Skip attributes inactive for the selected type; guard bounds the loop if none are.
-        for (guard = 0; guard < count; guard += 1) {
-            attrIndex += delta;
-            while (attrIndex < 0) attrIndex += count;
-            while (attrIndex >= count) attrIndex -= count;
-
-            if (IsAttrApplicable(GetCurrentAttrId(type), type)) return;
-        }
     }
 
     /**
