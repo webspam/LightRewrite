@@ -61,6 +61,7 @@ function LoadLightRewriteOverridesGroup(
         override = new CLightRewriteSourceParams in owner;
         override.weight = weight;
         override.profileName = profileName;
+        override.condition = new CLightRewriteMatchAll in owner;
 
         if (!dm.GetCustomNodeAttributeValueName(entryNode, 'tag_name', nameVal)) {
             LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
@@ -93,9 +94,9 @@ function LoadLightRewriteOverridesGroup(
         }
 
         if (matchesNode.nodeName == 'matches') {
-            ParseLightRewriteMatchRules(override, dm, matchesNode);
+            ParseLightRewriteMatchRules(owner, dm, matchesNode, override.condition);
         }
-        ParseLightRewriteMatchRules(override, dm, entryNode);
+        ParseLightRewriteMatchRules(owner, dm, entryNode, override.condition);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffset)) {
@@ -113,33 +114,33 @@ function LoadLightRewriteOverridesGroup(
             override.spotlight = ParseLightRewriteSpotlightParams(owner, dm, spotlightNode);
         }
 
-        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.matchRules.Size() + ")");
+        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.condition.rules.Size() + ")");
         overrides.PushBack(override);
     }
 }
 
-/** Parses the match rules for a single override. */
 function ParseLightRewriteMatchRules(
-    override: CLightRewriteSourceParams,
+    owner: CObject,
     dm: CDefinitionsManagerAccessor,
-    entryNode: SCustomNode
+    node: SCustomNode,
+    target: CLightRewriteMatchAll
 ) {
     var childNode: SCustomNode;
     var rule: CLightRewriteMatchRule;
     var group: CLightRewriteMatchAny;
     var i, count: int;
 
-    count = entryNode.subNodes.Size();
+    count = node.subNodes.Size();
     for (i = 0; i < count; i += 1) {
-        childNode = entryNode.subNodes[i];
+        childNode = node.subNodes[i];
 
         if (childNode.nodeName == 'match') {
-            rule = ParseLightRewriteMatchRule(override, dm, childNode);
-            if (rule) override.matchRules.PushBack(rule);
+            rule = ParseLightRewriteMatchRule(owner, dm, childNode);
+            if (rule) target.rules.PushBack(rule);
         }
         else if (childNode.nodeName == 'any') {
-            group = ParseLightRewriteMatchGroup(override, dm, childNode);
-            if (group.rules.Size() > 0) override.matchRules.PushBack(group);
+            group = ParseLightRewriteMatchGroup(owner, dm, childNode);
+            if (group.rules.Size() > 0) target.rules.PushBack(group);
         }
     }
 }

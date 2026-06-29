@@ -4,8 +4,8 @@
  * Every field except tag/displayName is optional; a has* guard being false
  * means "do not touch this property - leave it as the engine set it".
  *
- * When matchRules is non-empty the object acts as an override: it will only
- * be applied to entities that satisfy all of its rules.
+ * When condition is set the object acts as an override: it will only be
+ * applied to entities that satisfy all of its rules.
  */
 class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
@@ -13,8 +13,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var displayName: string;
     default displayName = "generic";
 
-    // Override matching - empty means this is a base-params entry, not an override
-    public var matchRules: array<ILightRewriteMatchRule>;
+    // Override match condition - NULL means this is a base-params entry, not an override
+    public var condition: CLightRewriteMatchAll;
 
     // Weight of the override - higher weights override lower weights
     public var weight: int;
@@ -46,17 +46,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Virtual constructor
     public function Init() {}
 
-    // Returns true if this params object matches the given entity (all rules must pass).
     public function MatchesEntity(entity: CGameplayEntity): bool {
-        var i, count: int;
-
-        count = matchRules.Size();
-        for (i = 0; i < count; i += 1) {
-            if (!matchRules[i].Matches(entity)) {
-                return false;
-            }
-        }
-
+        if (condition) return condition.Matches(entity);
         return true;
     }
 
