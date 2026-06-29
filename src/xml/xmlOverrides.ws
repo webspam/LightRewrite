@@ -5,6 +5,7 @@ function LogLightRewriteXml(message: string) {
 /** Loads all override groups from all XML files */
 function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideGroup> {
     var groups: array<CLightRewriteOverrideGroup>;
+    var group: CLightRewriteOverrideGroup;
     var dm: CDefinitionsManagerAccessor;
     var lrNode, overridesNode: SCustomNode;
     var i, count, weight: int;
@@ -26,7 +27,10 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideG
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
         LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
 
-        groups.PushBack(LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName));
+        group = LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName);
+        if (group.overrides.Size() > 0) {
+            groups.PushBack(group);
+        }
     }
 
     ArraySortGroupsByWeight(groups);
