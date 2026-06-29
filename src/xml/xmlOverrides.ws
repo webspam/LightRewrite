@@ -2,7 +2,6 @@ function LogLightRewriteXml(message: string) {
     LogChannel('LightRewriteXml', message);
 }
 
-/** Loads all override groups from all XML files */
 function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideGroup> {
     var groups: array<CLightRewriteOverrideGroup>;
     var group: CLightRewriteOverrideGroup;
