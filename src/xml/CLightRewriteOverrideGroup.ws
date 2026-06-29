@@ -13,7 +13,10 @@ class CLightRewriteOverrideGroup {
 
     public var overrides: array<CLightRewriteSourceParams>;
 
-    public function ApplyMatching(entity: CGameplayEntity, out params: CLightRewriteSourceParams) {
+    public function ApplyMatchingOverrides(
+        entity: CGameplayEntity,
+        out params: CLightRewriteSourceParams
+    ) {
         var override: CLightRewriteSourceParams;
         var i, count: int;
 

@@ -50,7 +50,7 @@ class CLightRewriteSettings {
     private var lightSourceMenu  : array<CLightRewriteSourceMenu>;
 
     // All override groups loaded from XML files, sorted by weight
-    private var loadedGroups: array<CLightRewriteOverrideGroup>;
+    private var overrideGroups: array<CLightRewriteOverrideGroup>;
 
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions: array<name>;
@@ -72,7 +72,7 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
         loadedParams = LoadLightRewriteParams(this);
-        loadedGroups = LoadLightRewriteOverrides(this);
+        overrideGroups = LoadLightRewriteOverrides(this);
 
         profileOptions.PushBack(NONE_PRESET_LABEL);
         FindLightRewriteProfileNames(profileOptions);
@@ -775,9 +775,9 @@ class CLightRewriteSettings {
             tags.PushBack(lightSourceParams[i].tag);
         }
 
-        count = loadedGroups.Size();
+        count = overrideGroups.Size();
         for (i = 0; i < count; i += 1) {
-            overrides = loadedGroups[i].overrides;
+            overrides = overrideGroups[i].overrides;
             overrideCount = overrides.Size();
             for (j = 0; j < overrideCount; j += 1) {
                 tags.PushBack(overrides[j].tag);
@@ -807,11 +807,11 @@ class CLightRewriteSettings {
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PRESET_LABEL) return NULL;
 
-        count = loadedGroups.Size();
+        count = overrideGroups.Size();
         for (i = 0; i < count; i += 1) {
-            if (loadedGroups[i].profileName != currentProfile) continue;
+            if (overrideGroups[i].profileName != currentProfile) continue;
 
-            loadedGroups[i].ApplyMatching(entity, params);
+            overrideGroups[i].ApplyMatchingOverrides(entity, params);
         }
 
         return params;
