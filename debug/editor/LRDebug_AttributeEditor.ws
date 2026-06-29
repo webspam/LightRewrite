@@ -563,6 +563,7 @@ class LRDebug_AttributeEditor {
         var entities: array<CEntity>;
         var entity: CGameplayEntity;
         var rewriter: ILightSourceRewriter;
+        var memberParams: CLightRewriteSourceParams;
         var match: CLightRewriteMatchAll;
         var i, count: int;
 
@@ -576,7 +577,9 @@ class LRDebug_AttributeEditor {
             if (!match.Matches(entity)) continue;
 
             rewriter = entity.LRDebug_GetOrCreateRewriter();
-            rewriter.LRDebug_SetMenuOverrideParams(params);
+            memberParams = entity.LRDebug_GetParams(rewriter);
+            params.ApplyTo(memberParams);
+            rewriter.LRDebug_SetMenuOverrideParams(memberParams);
             rewriter.RestoreOriginalState();
             rewriter.RewriteLight();
         }
