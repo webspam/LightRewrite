@@ -44,8 +44,9 @@ class CLightRewriteManager {
         var globalOverrides: CLightRewriteSourceParams;
 
         switch (params.rewriterType.value) {
-            case LRT_Candle:  rewriter = new CCandleLightRewriter in entity;   break;
-            default:          rewriter = new CGenericLightRewriter in entity;  break;
+            case LRT_Candle:     rewriter = new CCandleLightRewriter in entity;     break;
+            case LRT_Spotlight:  rewriter = new CSpotlightLightRewriter in entity;  break;
+            default:             rewriter = new CGenericLightRewriter in entity;    break;
         }
 
         globalOverrides = settings.GetGlobalOverrideParams(GetGlobalOverrideType(entity));
