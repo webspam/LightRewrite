@@ -156,14 +156,14 @@ class LRDebug_LabelManager {
     }
 
     public function ToggleGroupEdit(editor: LRDebug_AttributeEditor) {
-        if (editor.ToggleGroupEdit()) {
-            ShowToast("Group edit: ON");
-            groupLabel.Show("<font size='10' color='#dd88ff'>#</font>");
-        }
-        else {
-            ShowToast("Group edit: OFF");
-            groupLabel.Hide();
-        }
+        if (editor.ToggleGroupEdit()) ShowToast("Group edit: ON");
+        else ShowToast("Group edit: OFF");
+        RefreshGroupLabel(editor);
+    }
+
+    public function RefreshGroupLabel(editor: LRDebug_AttributeEditor) {
+        if (editor.IsGroupEditing()) groupLabel.Show("<font size='10' color='#dd88ff'>#</font>");
+        else groupLabel.Hide();
     }
 
     /** Modifier-key handlers reuse one key per light type, so they need the target's type. */

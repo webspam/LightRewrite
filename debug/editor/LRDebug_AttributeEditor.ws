@@ -547,8 +547,8 @@ class LRDebug_AttributeEditor {
         return groupEdit;
     }
 
-    public function SetGroupEdit(on: bool) {
-        groupEdit = on;
+    public function IsGroupEditing(): bool {
+        return groupEdit;
     }
 
     private function ApplyParams(

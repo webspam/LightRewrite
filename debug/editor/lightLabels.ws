@@ -163,10 +163,10 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     if (lrDebugLabels) {
         theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
+        lrDebugLabelManager.RefreshGroupLabel(lrDebugAttrEditor);
     }
     else {
         theInput.RestoreContext('LRDebug', true);
-        lrDebugAttrEditor.SetGroupEdit(false);
         lrDebugLabelManager.HideScreenLabels();
     }
 
