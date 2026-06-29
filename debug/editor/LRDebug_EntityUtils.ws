@@ -37,8 +37,6 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
 // ---- Path label ----
 
 /**
- * The entity's file and level path as stacked HTML font blocks, for the on-screen path label.
- *
  * Example entity.ToString():
  * ```
  * CLayer "full\editor\level\path.somext"::full\path\to\entity.w2ent

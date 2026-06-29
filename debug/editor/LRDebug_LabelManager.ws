@@ -111,7 +111,6 @@ class LRDebug_LabelManager {
         UpdatePathLabel();
     }
 
-    /** One label at the bottom of the screen for the active target, instead of a line per entity */
     private function UpdatePathLabel() {
         if (!showPathLabels || !target) {
             pathLabel.Hide();
@@ -121,7 +120,6 @@ class LRDebug_LabelManager {
         pathLabel.SetText(LRDebug_BuildPathLabel(target));
     }
 
-    /** Called when labels are switched off so the path label does not linger on screen */
     public function HidePathLabel() {
         pathLabel.Hide();
     }

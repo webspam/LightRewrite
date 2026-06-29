@@ -1,11 +1,3 @@
-/**
- * A single HUD label pinned to a fixed screen position rather than a world point.
- *
- * Shares the oneliner-module flash plumbing of LRDebug_WorldMarker, but its anchor is
- * a screen ratio (e.g. 0.5, 0.9 for bottom-centre) and its text can change. Changing the
- * text re-creates the underlying oneliner, so SetText is meant for occasional updates,
- * not per-frame churn.
- */
 class LRDebug_ScreenLabel {
     private var id    : int;
     private var ratioX: float;
