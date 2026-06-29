@@ -465,7 +465,7 @@ class LRDebug_AttributeEditor {
         return sign * steps * quantum;
     }
 
-    /** Minimum input step size: colours are bytes, so must be 1 */
+    /** Minimum input step size. Colours are bytes. */
     private function GetAdjustQuantum(attr: name): float {
         switch (attr) {
             case 'colourR':
