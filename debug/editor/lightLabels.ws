@@ -440,11 +440,17 @@ public function LRDebug_MovingOffsetXY(): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
+    var modifier: float = 1.0;
+
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
     if (!LRDebug_MovingOffsetXY()) return false;
 
+    if (theInput.IsActionPressed('LRDebug_CtrlModifier')) {
+        modifier = 0.2;
+    }
+
     lrDebugLabelManager.MoveTargetXY(
-        action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+        action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
         0.0,
         lrDebugAttrEditor
     );
@@ -453,19 +459,25 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
+    var modifier: float = 1.0;
+
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
+
+    if (theInput.IsActionPressed('LRDebug_CtrlModifier')) {
+        modifier = 0.2;
+    }
 
     if (LRDebug_MovingOffsetXY()) {
         lrDebugLabelManager.MoveTargetXY(
             0.0,
-            -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+            -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
             lrDebugAttrEditor
         );
         return true;
     }
 
     lrDebugLabelManager.ApplyContinuousAdjustment(
-        -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY,
+        -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
         lrDebugAttrEditor
     );
     return true;
