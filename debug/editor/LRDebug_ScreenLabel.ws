@@ -30,6 +30,10 @@ class LRDebug_ScreenLabel {
         Reposition();
     }
 
+    public function Show(text: string) {
+        SetText(text);
+    }
+
     public function Hide() {
         if (!created) return;
 

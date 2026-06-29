@@ -166,7 +166,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     }
     else {
         theInput.RestoreContext('LRDebug', true);
-        lrDebugLabelManager.HidePathLabel();
+        lrDebugLabelManager.HideScreenLabels();
     }
 
     return true;

@@ -11,12 +11,15 @@ class LRDebug_LabelManager {
     private var target        : CGameplayEntity;
     private var toast         : LRDebug_ToastOneLiner;
     private var pathLabel     : LRDebug_PathLabel;
+    private var groupLabel    : LRDebug_ScreenLabel;
     private var locked        : bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
         pathLabel = new LRDebug_PathLabel in this;
         pathLabel.Init(0x40006000, 0.5, 0.88);
+        groupLabel = new LRDebug_ScreenLabel in this;
+        groupLabel.Init(0x40006001, 0.5, 0.98);
     }
 
     private function ShowToast(text: string) {
@@ -120,8 +123,9 @@ class LRDebug_LabelManager {
         pathLabel.ShowPath(target);
     }
 
-    public function HidePathLabel() {
+    public function HideScreenLabels() {
         pathLabel.Hide();
+        groupLabel.Hide();
     }
 
     public function RegenerateNearbyOneliners() {
@@ -152,8 +156,14 @@ class LRDebug_LabelManager {
     }
 
     public function ToggleGroupEdit(editor: LRDebug_AttributeEditor) {
-        if (editor.ToggleGroupEdit()) ShowToast("Group edit: ON");
-        else ShowToast("Group edit: OFF");
+        if (editor.ToggleGroupEdit()) {
+            ShowToast("Group edit: ON");
+            groupLabel.Show("<font size='10' color='#dd88ff'>#</font>");
+        }
+        else {
+            ShowToast("Group edit: OFF");
+            groupLabel.Hide();
+        }
     }
 
     /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
