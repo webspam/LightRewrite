@@ -37,10 +37,7 @@ class LRDebug_ScreenLabel {
     }
 
     public function Show() {
-        if (text == "") {
-            Hide();
-            return;
-        }
+        if (text == "") return;
 
         if (!created) Rebuild();
         SetVisible(true);
