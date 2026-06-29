@@ -93,9 +93,9 @@ function ParseExportLines {
 
 # ---- Grouping ----
 
-$floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', 'alignOffsetZ',
-    'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ',
-    'spot_brightness', 'spot_radius', 'spot_attenuation', 'spot_shadowFadeDistance', 'spot_shadowFadeRange', 'spot_shadowBlendFactor',
+$floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', 'alignOffsetZ', `
+    'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ', `
+    'spot_brightness', 'spot_radius', 'spot_attenuation', 'spot_shadowFadeDistance', 'spot_shadowFadeRange', 'spot_shadowBlendFactor', `
     'spot_innerAngle', 'spot_outerAngle', 'spot_softness', 'spot_offsetX', 'spot_offsetY', 'spot_offsetZ'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', 'spot_colorR', 'spot_colorG', 'spot_colorB'
 
@@ -259,7 +259,7 @@ function BuildOverrideElement {
     if ($Params.ContainsKey('attenuation')) { $override.SetAttribute('attenuation', (FmtFloat $Params['attenuation'])) }
     if ($Params.ContainsKey('useSpotlightColor')) {
         $val = if ($Params['useSpotlightColor'] -eq 1) { 'true' } else { 'false' }
-        $override.SetAttribute('use_spotlight_color', $val)
+        $override.SetAttribute('use_spotlight_colour', $val)
     }
 
     # <match mode="exact"> for entity file stem
@@ -339,7 +339,11 @@ function BuildXml {
     $doc.AppendChild($decl) | Out-Null
 
     $schemaLocation = 'LightRewriteDefinitions.xsd'
-    if ((Split-Path (Split-Path $OutputFile -Parent) -Leaf) -eq 'data') {
+    $parent = Split-Path $OutputFile -Parent
+    if (
+        !(Test-Path (Join-Path $parent 'LightRewriteDefinitions.xsd')) &&
+        Test-Path (Join-Path $parent '..' 'LightRewriteDefinitions.xsd')
+    ) {
         $schemaLocation = "../$schemaLocation"
     }
 

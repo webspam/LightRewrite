@@ -51,7 +51,7 @@ function LoadLightRewriteParams(owner: CObject): array<CLightRewriteSourceParams
             params.enabled.value = (strVal != "false");
         }
 
-        if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_color', strVal)) {
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'use_spotlight_colour', strVal)) {
             params.useSpotlightColor.has = true;
             params.useSpotlightColor.value = (strVal == "true");
         }
