@@ -9,7 +9,6 @@ class CLightRewriteOverrideGroup {
     public var weight     : int;
     public var profileName: name;
 
-    // A block with no <matches> leaves this empty, and an empty all-match passes every entity
     public var filter: CLightRewriteMatchAll;
 
     public var overrides: array<CLightRewriteSourceParams>;
