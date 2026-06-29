@@ -123,7 +123,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         slotPos = VecTransform(worldToLocal, slotWorldPos) / scale / scale;
 
         // Arbitrary fire FX offset: centre of candle flame (ish)
-        slotPos += GetEffectiveParams().pointLightOffset * scale;
+        slotPos += GetEffectiveParams().pointLightOffset;
 
         light.SetPosition(slotPos);
     }
