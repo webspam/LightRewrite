@@ -175,9 +175,7 @@ class LRDebug_AttributeEditor {
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    /**
-     * Analog hold-to-edit: adds a raw signed delta to the attribute and applies it
-     */
+    /** Analog hold-to-edit: adds a raw signed delta to the attribute and applies it */
     public function AdjustAttributeContinuous(
         delta: float,
         target: CGameplayEntity,
