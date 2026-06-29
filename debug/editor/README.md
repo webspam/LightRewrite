@@ -1,6 +1,6 @@
 # Debug Editor
 
-In-game light authoring overlay for Light Rewrite: floating labels on nearby light-bearing entities, a camera-forward highlight for the active target, and live attribute tweaks via keyboard and scroll wheel.
+In-game light authoring overlay for Light Rewrite: floating labels on nearby light-bearing entities, a camera-forward highlight for the active target, and live attribute tweaks via keyboard and mouse.
 
 Debug-only - not part of the distributed mod. Copy this folder into any `Mods/MODNAME/content/scripts` alongside the main mod scripts, or use `debug.ps1` from the repo to deploy it with the rest of the debug bundle.
 
@@ -13,7 +13,6 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Using it
 
 - Turn labels on before any other control
-- Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute
 - Face the light you want to edit; focus mode extends pick range
 - Swap between point and spot lights
 - Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting
@@ -28,7 +27,6 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights
 - **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly
 - **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light
-- **`LRDebug_AdjustAccelerator.ws`** - Speeds up adjustment when you scroll quickly
 - **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity
 - **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity
 - **`LRDebug_WorldMarker.ws`** - A single label pinned to a point in the world
@@ -43,6 +41,5 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 1. `lightLabels.ws` captures player input
 2. `LRDebug_LabelManager` picks the light you are aiming at
 3. `LRDebug_AttributeEditor` turns the input into an attribute change
-4. `LRDebug_AdjustAccelerator` scales the step when scrolling fast
-5. `ILightSourceRewriter` applies the change immediately
-6. `LRDebug_LightOneLiner` refreshes the floating label
+4. `ILightSourceRewriter` applies the change immediately
+5. `LRDebug_LightOneLiner` refreshes the floating label

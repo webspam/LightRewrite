@@ -1,7 +1,7 @@
 /**
  * Light Rewrite's in-game light authoring overlay.
  *
- * Wires input actions to the label manager, attribute editor, and accelerator.
+ * Wires input actions to the label manager and attribute editor.
  * All domain logic lives in the dedicated files in this folder.
  *
  * Requires: mod_sharedutils_oneliners via SU_Oneliner
@@ -52,16 +52,12 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
-    lrDebugAttrEditor.Init();
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
-    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
-    theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
-    theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
@@ -230,22 +226,6 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
  */
 
 @addMethod(CR4Player)
-public function LRDebug_OnInputCycleAttrPrev(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, -1);
-    return true;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnInputCycleAttrNext(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
-
-    lrDebugLabelManager.CycleSelectedAttribute(lrDebugAttrEditor, 1);
-    return true;
-}
-
-@addMethod(CR4Player)
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
@@ -262,23 +242,6 @@ function OnConfigUI() {
     wrappedMethod();
 
     iManager.lrDebug = new LRDebug_Input in iManager;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
-    if (!lrDebugLabels || !action.value || !thePlayer) return false;
-
-    if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
-        lrDebugLabelManager.CycleSelectedAttribute(
-            lrDebugAttrEditor,
-            (int)SignF(action.value) * -1
-        );
-        return true;
-    }
-
-    // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
-    lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333333f, lrDebugAttrEditor);
-    return true;
 }
 
 @addMethod(CR4Player)

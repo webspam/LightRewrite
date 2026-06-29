@@ -1,19 +1,14 @@
 /**
  * Owns the currently-selected attribute index and all per-attribute edit logic.
  *
- * CycleAttribute and AdjustAttribute intentionally do not call
- * LRDebug_RegenerateText on the target's oneliner - that is the caller's
- * responsibility after each operation so the call site stays explicit.
+ * The attribute edit functions intentionally do not call LRDebug_RegenerateText
+ * on the target's oneliner - that is the caller's responsibility after each
+ * operation so the call site stays explicit.
  */
 class LRDebug_AttributeEditor {
     private var attrIndex        : int;
-    private var accelerator      : LRDebug_AdjustAccelerator;
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
-
-    public function Init() {
-        accelerator = new LRDebug_AdjustAccelerator in thePlayer;
-    }
 
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
@@ -103,7 +98,7 @@ class LRDebug_AttributeEditor {
 
         type = GetSelectedLightType(target);
         if (!IsAttrApplicable(GetCurrentAttrId(type), type)) {
-            CycleAttribute(1, target);
+            SetAttributeIndex(0);
         }
     }
 
@@ -157,27 +152,7 @@ class LRDebug_AttributeEditor {
         if (spot) spotParams.offset.value = spot.GetLocalPosition();
     }
 
-    private function GetFloatStep(value: float): float {
-        if (value >= 50.0) return 5.0;
-        if (value >= 25.0) return 2.5;
-        if (value >= 15.0) return 1.0;
-        if (value >= 3.5) return 0.5;
-        if (value >= 1.0) return 0.25;
-        if (value >= 0.5) return 0.1;
-        if (value >= 0.1) return 0.05;
-        return 0.01;
-    }
-
-    private function GetFloatStepDirectional(currentValue: float, value: float): float {
-        var floatStep: float = GetFloatStep(currentValue);
-
-        if (value > 0.0) return floatStep;
-
-        // If decrementing would take us into a lower band, use the lower band's step.
-        return MinF(floatStep, GetFloatStep(currentValue - floatStep));
-    }
-
-    // RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04.
+    /** RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04. */
     private function ClampAttributeValue(attr: name, value: float): float {
         var clamped: float;
 
@@ -200,343 +175,7 @@ class LRDebug_AttributeEditor {
         return (float)CeilF(clamped * 100.0 - 0.5) / 100.0;
     }
 
-    private function GetDynamicStep(attr: name, currentValue: float, value: float): float {
-        switch (attr) {
-            case 'alignOffsetZ':
-            case 'attenuation':
-            case 'shadowBlendFactor':
-                return 0.05;
-            default:
-                return GetFloatStepDirectional(currentValue, value);
-        }
-    }
-
-    private function ApplyFloatDelta(attr: name, currentValue: float, delta: float): float {
-        var remaining: float;
-        var sign: float;
-        var step: float;
-        var prevValue: float;
-        var i: int;
-
-        if (delta == 0.0) return currentValue;
-
-        remaining = delta;
-        sign = 1.0;
-        if (remaining < 0.0) sign = -1.0;
-
-        // Apply in sub-steps so large deltas don't skip step-size thresholds.
-        for (i = 0; i < 1000 && remaining * sign > 0.0; i += 1) {
-            step = GetDynamicStep(attr, currentValue, sign);
-            if (step <= 0.0) break;
-
-            if (step > remaining * sign) step = remaining * sign;
-
-            prevValue = currentValue;
-            currentValue = currentValue + (step * sign);
-            currentValue = ClampAttributeValue(attr, currentValue);
-
-            // If rounding/clamping prevented any change, stop to avoid getting stuck.
-            if (currentValue == prevValue) break;
-
-            remaining = remaining - (step * sign);
-            if (currentValue == 0.0 && sign < 0.0) break;
-        }
-
-        return currentValue;
-    }
-
-    public function CycleAttribute(delta: int, target: CGameplayEntity) {
-        var count: int = 14;
-        var type: name;
-        var guard: int;
-
-        if (count <= 0 || delta == 0) return;
-
-        type = GetSelectedLightType(target);
-
-        // Skip attributes inactive for the selected type; guard bounds the loop if none are.
-        for (guard = 0; guard < count; guard += 1) {
-            attrIndex += delta;
-            while (attrIndex < 0) attrIndex += count;
-            while (attrIndex >= count) attrIndex -= count;
-
-            if (IsAttrApplicable(GetCurrentAttrId(type), type)) return;
-        }
-    }
-
-    /**
-     * Applies a signed adjustment to the currently selected attribute on the
-     * given entity. Returns true if the adjustment was applied (caller should
-     * then call LRDebug_RegenerateText on the entity's oneliner).
-     */
-    public function AdjustAttribute(
-        value: float,
-        target: CGameplayEntity,
-        optional attr: name
-    ): bool {
-        var step: float;
-        var point: CPointLightComponent;
-        var spot: CSpotLightComponent;
-        var sourceLight: CLightComponent;
-        var params: CLightRewriteSourceParams;
-        var lightParams: ILightRewriteParams;
-        var spotParams: CLightRewriteSpotlightParams;
-        var rewriter: ILightSourceRewriter;
-        var colourStep: int;
-        var type: name;
-
-        var accelMult: float = 1.0;
-
-        if (!target) return false;
-        if (!target.lrdebugOneliner) return false;
-        if (!accelerator) {
-            LogLightRewrite("LRDebug_AttributeEditor: You need to call Init() on the attribute editor first.");
-            return false;
-        }
-
-        rewriter = target.LRDebug_GetOrCreateRewriter();
-        params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
-        spot = LRDebug_FirstSpotLight(target);
-
-        type = GetSelectedLightType(target);
-        if (attr == '') attr = GetCurrentAttrId(type);
-        if (!IsAttrApplicable(attr, type)) return false;
-
-        switch (attr) {
-            case 'brightness':
-            case 'radius':
-            case 'attenuation':
-            case 'shadowFadeDistance':
-            case 'shadowFadeRange':
-            case 'shadowBlendFactor':
-            case 'alignOffsetZ':
-            case 'innerAngle':
-            case 'outerAngle':
-            case 'softness':
-                accelMult = accelerator.GetMultiplier(value);
-        }
-
-        if (type == 'spot') sourceLight = spot;
-        else sourceLight = point;
-
-        switch (attr) {
-            case 'brightness':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.brightness.has) {
-                    lightParams.brightness.has = true;
-                    if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
-                }
-                step = GetDynamicStep(attr, lightParams.brightness.value, value) * accelMult;
-                lightParams.brightness.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.brightness.value,
-                    step * value
-                );
-                break;
-
-            case 'radius':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.radius.has) {
-                    lightParams.radius.has = true;
-                    if (sourceLight) lightParams.radius.value = sourceLight.radius;
-                }
-                step = GetDynamicStep(attr, lightParams.radius.value, value) * accelMult;
-                lightParams.radius.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.radius.value,
-                    step * value
-                );
-                break;
-
-            case 'attenuation':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.attenuation.has) {
-                    lightParams.attenuation.has = true;
-                    if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
-                }
-                step = GetDynamicStep(attr, lightParams.attenuation.value, value) * accelMult;
-                lightParams.attenuation.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.attenuation.value,
-                    step * value
-                );
-                break;
-
-            case 'shadowFadeDistance':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.shadowFadeDistance.has) {
-                    lightParams.shadowFadeDistance.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowFadeDistance.value = sourceLight.shadowFadeDistance;
-                    }
-                }
-                step = GetDynamicStep(attr, lightParams.shadowFadeDistance.value, value) * accelMult;
-                lightParams.shadowFadeDistance.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.shadowFadeDistance.value,
-                    step * value
-                );
-                break;
-
-            case 'shadowFadeRange':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.shadowFadeRange.has) {
-                    lightParams.shadowFadeRange.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowFadeRange.value = sourceLight.shadowFadeRange;
-                    }
-                }
-                step = GetDynamicStep(attr, lightParams.shadowFadeRange.value, value) * accelMult;
-                lightParams.shadowFadeRange.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.shadowFadeRange.value,
-                    step * value
-                );
-                break;
-
-            case 'shadowBlendFactor':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.shadowBlendFactor.has) {
-                    lightParams.shadowBlendFactor.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowBlendFactor.value = sourceLight.shadowBlendFactor;
-                    }
-                }
-                step = GetDynamicStep(attr, lightParams.shadowBlendFactor.value, value) * accelMult;
-                lightParams.shadowBlendFactor.value = ApplyFloatDelta(
-                    attr,
-                    lightParams.shadowBlendFactor.value,
-                    step * value
-                );
-                break;
-
-            case 'useSpotlightColor':
-                params.useSpotlightColor.has = true;
-                params.useSpotlightColor.value = (value > 0);
-                break;
-
-            case 'alignPointLights':
-                params.alignPointLights.has = true;
-                params.alignPointLights.value = (value > 0);
-                break;
-
-            case 'alignOffsetZ':
-                if (type == 'spot') {
-                    spotParams = EnsureSpotParams(params, target);
-                    SeedSpotOffset(spotParams, spot);
-                    step = GetDynamicStep(attr, spotParams.offset.value.Z, value) * accelMult;
-                    spotParams.offset.value.Z += step * value;
-                }
-                else if (LRDebug_IsCandle(target)) {
-                    if (!params.alignPointLights.has) {
-                        params.alignPointLights.has = true;
-                        params.alignPointLights.value = true;
-                    }
-                    step = GetDynamicStep(attr, params.pointLightOffset.Z, value) * accelMult;
-                    params.pointLightOffset.Z += step * value;
-                }
-                else {
-                    if (!params.pointLightOffsetPos.has) {
-                        params.pointLightOffsetPos.has = true;
-                    }
-                    step = GetDynamicStep(attr, params.pointLightOffsetPos.value.Z, value) * accelMult;
-                    params.pointLightOffsetPos.value.Z += step * value;
-                }
-                break;
-
-            case 'innerAngle':
-                spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.innerAngle.has) {
-                    spotParams.innerAngle.has = true;
-                    if (spot) spotParams.innerAngle.value = spot.innerAngle;
-                }
-                step = GetDynamicStep(attr, spotParams.innerAngle.value, value) * accelMult;
-                spotParams.innerAngle.value = ApplyFloatDelta(
-                    attr,
-                    spotParams.innerAngle.value,
-                    step * value
-                );
-                break;
-
-            case 'outerAngle':
-                spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.outerAngle.has) {
-                    spotParams.outerAngle.has = true;
-                    if (spot) spotParams.outerAngle.value = spot.outerAngle;
-                }
-                step = GetDynamicStep(attr, spotParams.outerAngle.value, value) * accelMult;
-                spotParams.outerAngle.value = ApplyFloatDelta(
-                    attr,
-                    spotParams.outerAngle.value,
-                    step * value
-                );
-                break;
-
-            case 'softness':
-                spotParams = EnsureSpotParams(params, target);
-                if (!spotParams.softness.has) {
-                    spotParams.softness.has = true;
-                    if (spot) spotParams.softness.value = spot.softness;
-                }
-                step = GetDynamicStep(attr, spotParams.softness.value, value) * accelMult;
-                spotParams.softness.value = ApplyFloatDelta(
-                    attr,
-                    spotParams.softness.value,
-                    step * value
-                );
-                break;
-
-            case 'overrideColour':
-                lightParams = GetSharedParams(params, target, type);
-                lightParams.color.has = (value > 0);
-                if (lightParams.color.has && sourceLight) {
-                    lightParams.color.value = sourceLight.color;
-                }
-                break;
-
-            case 'colourR':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.color.has) {
-                    lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
-                }
-                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.value.Red = (byte)Clamp(lightParams.color.value.Red + colourStep, 0, 255);
-                break;
-
-            case 'colourG':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.color.has) {
-                    lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
-                }
-                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.value.Green = (byte)Clamp(lightParams.color.value.Green + colourStep, 0, 255);
-                break;
-
-            case 'colourB':
-                lightParams = GetSharedParams(params, target, type);
-                if (!lightParams.color.has) {
-                    lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
-                }
-                colourStep = RoundF(SignF(value) * Max(1, FloorF(AbsF(value))));
-                lightParams.color.value.Blue = (byte)Clamp(lightParams.color.value.Blue + colourStep, 0, 255);
-                break;
-        }
-
-        rewriter.LRDebug_SetMenuOverrideParams(params);
-        rewriter.RestoreOriginalState();
-        rewriter.RewriteLight();
-        return true;
-    }
-
-    /**
-     * Analog hold-to-edit path: adds a raw signed delta to the attribute and
-     * applies it live. Unlike AdjustAttribute this skips the discrete step and
-     * scroll-acceleration logic; the caller has already scaled the mouse delta.
-     */
+    /** Analog hold-to-edit: adds a raw signed delta to the attribute and applies it */
     public function AdjustAttributeContinuous(
         delta: float,
         target: CGameplayEntity,
@@ -811,8 +450,7 @@ class LRDebug_AttributeEditor {
 
     /**
      * Accumulates the analog mouse delta and releases it in whole `quantum` increments,
-     * carrying the sub-quantum remainder so high-DPI / high-FPS movement isn't lost to the
-     * value's per-frame rounding.
+     * carrying the sub-quantum remainder so high-DPI / high-FPS movement isn't lost.
      */
     private function ConsumeQuantizedDelta(delta: float, quantum: float): float {
         var sign: float;
@@ -827,7 +465,7 @@ class LRDebug_AttributeEditor {
         return sign * steps * quantum;
     }
 
-    /** Minimum input step size: colours are bytes, so must be 1 */
+    /** Minimum input step size. Colours are bytes. */
     private function GetAdjustQuantum(attr: name): float {
         switch (attr) {
             case 'colourR':
