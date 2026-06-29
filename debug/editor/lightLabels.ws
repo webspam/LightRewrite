@@ -15,7 +15,6 @@
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
- * IK_G=(Action=LRDebug_GroupEdit)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
