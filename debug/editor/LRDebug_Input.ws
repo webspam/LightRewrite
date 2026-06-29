@@ -14,6 +14,6 @@ class LRDebug_Input {
     public const var COLOUR_B_MODIFIER            : name;  default COLOUR_B_MODIFIER = 'LRDebug_ColourBModifier';
 
     // Hold-to-edit: holding a modifier locks the camera and feeds mouse-Y into the value.
-    public const var CAMERA_LOCK_SOURCE     : name;   default CAMERA_LOCK_SOURCE = 'LRDebug';
-    public const var ADJUST_AXIS_SENSITIVITY: float;  default ADJUST_AXIS_SENSITIVITY = 0.5;
+    public const var CAMERA_LOCK_SOURCE: name;   default CAMERA_LOCK_SOURCE = 'LRDebug';
+    public var ADJUST_AXIS_SENSITIVITY : float;  default ADJUST_AXIS_SENSITIVITY = 0.15;
 }
