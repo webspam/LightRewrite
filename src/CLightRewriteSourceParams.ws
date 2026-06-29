@@ -61,7 +61,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         if (forceSingleLight.has) target.forceSingleLight = forceSingleLight;
         if (forceCastShadows.has) target.forceCastShadows = forceCastShadows;
         if (spotlight) {
-            target.spotlight = spotlight;
+            if (!target.spotlight) target.spotlight = new CLightRewriteSpotlightParams in target;
+            spotlight.ApplyTo(target.spotlight);
         }
     }
 }
