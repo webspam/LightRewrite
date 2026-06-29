@@ -20,6 +20,8 @@ class LRDebug_LabelManager {
         pathLabel.Init(0x40006000, 0.5, 0.88);
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
+        groupLabel.SetText("<font size='10' color='#dd88ff'>#</font>");
+        groupLabel.Hide();
     }
 
     private function ShowToast(text: string) {
@@ -155,9 +157,12 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
-    public function RefreshGroupLabel(editor: LRDebug_AttributeEditor) {
-        if (editor.IsGroupEditing()) groupLabel.Show("<font size='10' color='#dd88ff'>#</font>");
-        else groupLabel.Hide();
+    public function ShowGroupLabel() {
+        groupLabel.Show();
+    }
+
+    public function HideGroupLabel() {
+        groupLabel.Hide();
     }
 
     /** Modifier-key handlers reuse one key per light type, so they need the target's type. */

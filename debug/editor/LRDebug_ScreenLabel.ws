@@ -2,6 +2,7 @@ class LRDebug_ScreenLabel {
     private var id    : int;
     private var ratioX: float;
     private var ratioY: float;
+    private var text  : string;
 
     private var hud    : CR4ScriptedHud;
     private var flash  : CScriptedFlashSprite;
@@ -20,7 +21,12 @@ class LRDebug_ScreenLabel {
         this.flash = module.GetModuleFlash();
     }
 
-    protected function SetText(text: string) {
+    public function SetText(text: string) {
+        this.text = text;
+        Show();
+    }
+
+    public function Show() {
         if (text == "") {
             Hide();
             return;
@@ -28,10 +34,6 @@ class LRDebug_ScreenLabel {
 
         Create(text);
         Reposition();
-    }
-
-    public function Show(text: string) {
-        SetText(text);
     }
 
     public function Hide() {

@@ -163,7 +163,8 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     if (lrDebugLabels) {
         theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
-        lrDebugLabelManager.RefreshGroupLabel(lrDebugAttrEditor);
+        if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
+        else lrDebugLabelManager.HideGroupLabel();
     }
     else {
         theInput.RestoreContext('LRDebug', true);
@@ -239,8 +240,8 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
 public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugAttrEditor.ToggleGroupEdit();
-    lrDebugLabelManager.RefreshGroupLabel(lrDebugAttrEditor);
+    if (lrDebugAttrEditor.ToggleGroupEdit()) lrDebugLabelManager.ShowGroupLabel();
+    else lrDebugLabelManager.HideGroupLabel();
     return true;
 }
 
