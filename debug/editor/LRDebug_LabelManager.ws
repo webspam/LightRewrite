@@ -17,7 +17,7 @@ class LRDebug_LabelManager {
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
         pathLabel = new LRDebug_PathLabel in this;
-        pathLabel.Init(0x40006000, 0.5, 0.88);
+        pathLabel.Init(0x40006000, 0.5, 0.92);
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='10' color='#dd88ff'>#</font>");
