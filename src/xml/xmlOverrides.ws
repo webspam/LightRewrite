@@ -54,11 +54,11 @@ function LoadLightRewriteOverrideGroup(
     group = new CLightRewriteOverrideGroup in owner;
     group.weight = weight;
     group.profileName = profileName;
-    group.gate = new CLightRewriteMatchAll in owner;
+    group.filter = new CLightRewriteMatchAll in owner;
 
     matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
     if (matchesNode.nodeName == 'matches') {
-        ParseLightRewriteMatchRules(owner, dm, matchesNode, group.gate);
+        ParseLightRewriteMatchRules(owner, dm, matchesNode, group.filter);
     }
 
     count = overridesNode.subNodes.Size();
