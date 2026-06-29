@@ -1,6 +1,6 @@
 # Debug Editor
 
-In-game light authoring overlay for Light Rewrite: floating labels on nearby light-bearing entities, a camera-forward highlight for the active target, and live attribute tweaks via keyboard and scroll wheel.
+In-game light authoring overlay for Light Rewrite: floating labels on nearby light-bearing entities, a camera-forward highlight for the active target, and live attribute tweaks via keyboard and mouse.
 
 Debug-only - not part of the distributed mod. Copy this folder into any `Mods/MODNAME/content/scripts` alongside the main mod scripts, or use `debug.ps1` from the repo to deploy it with the rest of the debug bundle.
 
@@ -13,7 +13,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Using it
 
 - Turn labels on before any other control
-- Scroll to adjust; `ShowDeveloperModeAlt` + scroll to cycle attribute
+- Cycle the active attribute with the bound prev/next keys
 - Face the light you want to edit; focus mode extends pick range
 - Swap between point and spot lights
 - Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting

@@ -61,7 +61,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrPrev', 'LRDebug_CycleAttrPrev');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleAttrNext', 'LRDebug_CycleAttrNext');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
-    theInput.RegisterListener(this, 'LRDebug_OnInputAdjustDown', 'LRDebug_AdjustDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
@@ -262,23 +261,6 @@ function OnConfigUI() {
     wrappedMethod();
 
     iManager.lrDebug = new LRDebug_Input in iManager;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnInputAdjustDown(action: SInputAction): bool {
-    if (!lrDebugLabels || !action.value || !thePlayer) return false;
-
-    if (theInput.IsActionPressed('ShowDeveloperModeAlt')) {
-        lrDebugLabelManager.CycleSelectedAttribute(
-            lrDebugAttrEditor,
-            (int)SignF(action.value) * -1
-        );
-        return true;
-    }
-
-    // Mouse scroll wheel sends multiples of +/- 3.0 per event (fast scrolling yields higher numbers)
-    lrDebugLabelManager.ApplyAttributeAdjustment(action.value * 0.333333f, lrDebugAttrEditor);
-    return true;
 }
 
 @addMethod(CR4Player)

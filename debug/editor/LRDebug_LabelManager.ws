@@ -167,20 +167,6 @@ class LRDebug_LabelManager {
     }
 
     /**
-     * Applies a signed attribute adjustment to the target entity and refreshes its
-     * oneliner if the adjustment took effect.
-     */
-    public function ApplyAttributeAdjustment(
-        value: float,
-        editor: LRDebug_AttributeEditor,
-        optional attr: name
-    ) {
-        if (!editor.AdjustAttribute(value, target, attr)) return;
-
-        RefreshTargetOneliner();
-    }
-
-    /**
      * Applies a continuous (analog) delta to the target's selected attribute and
      * refreshes its oneliner if the adjustment took effect.
      */
