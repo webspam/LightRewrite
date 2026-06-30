@@ -27,7 +27,7 @@ class LRDebug_Targeting {
         var entity, bestEntity: CGameplayEntity;
         var i, count: int;
         var camPos, camDir, entPos, toEnt: Vector;
-        var score, bestScore, dot, visibilityRange: float;
+        var bestScore, dot, visibilityRange: float;
 
         bestScore = -1.0;
         bestEntity = NULL;
@@ -54,13 +54,12 @@ class LRDebug_Targeting {
 
             toEnt = VecNormalize(toEnt);
             dot = VecDot(toEnt, camDir);
-            score = dot * 4.0;
 
             // Rough in-front filter to reduce "behind camera" picks.
             if (dot < 0.6) continue;
 
-            if (score > bestScore) {
-                bestScore = score;
+            if (dot > bestScore) {
+                bestScore = dot;
                 bestEntity = entity;
             }
         }
