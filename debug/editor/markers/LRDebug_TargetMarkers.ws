@@ -2,7 +2,7 @@
 function OnTick(timeDelta: float) {
     wrappedMethod(timeDelta);
 
-    if (thePlayer.lrDebugTargetMarkers) {
+    if (thePlayer.lrDebugLabels && thePlayer.lrDebugTargetMarkers) {
         thePlayer.lrDebugTargetMarkers.Update();
     }
 }
@@ -34,7 +34,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
 
         count = markers.Size();
         for (i = 0; i < count; i += 1) {
-            if (thePlayer.lrDebugLabels && components[i]) {
+            if (components[i]) {
                 markers[i].SetWorldPosition(components[i].GetWorldPosition());
             }
             else {
@@ -50,7 +50,6 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         var light: CLightComponent;
 
         if (
-            thePlayer.lrDebugLabels &&
             thePlayer.lrDebugAttrEditor &&
             thePlayer.lrDebugAttrEditor.IsEditingRadius()
         ) {
@@ -59,6 +58,11 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
         else radiusRing.Hide();
+    }
+
+    public function Hide() {
+        super.Hide();
+        radiusRing.Hide();
     }
 
     /** Bind the marker pool to the new target's light components (point then spot). */

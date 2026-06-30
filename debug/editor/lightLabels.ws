@@ -181,6 +181,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     else {
         theInput.RestoreContext('LRDebug', true);
         lrDebugLabelManager.HideScreenLabels();
+        lrDebugTargetMarkers.Hide();
     }
 
     return true;
