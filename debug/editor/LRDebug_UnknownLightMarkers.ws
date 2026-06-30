@@ -35,14 +35,11 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
         count = found.Size();
         for (i = 0; i < count; i += 1) {
             entity = found[i];
-            if (!entity || entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)) continue;
+            if (!entity) continue;
+            if (entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)) continue;
+            if (!entity.HasRewritableLight()) continue;
 
-            if (
-                entity.GetComponentByClassName('CPointLightComponent') ||
-                entity.GetComponentByClassName('CSpotLightComponent')
-            ) {
-                Register(entity);
-            }
+            Register(entity);
         }
     }
 
