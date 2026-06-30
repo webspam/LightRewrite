@@ -54,6 +54,14 @@ class LRDebug_Targeting {
             entity = entities[i];
             if (!entity) continue;
 
+            if (
+                !entity.GetComponentByClassName('CPointLightComponent') &&
+                !entity.GetComponentByClassName('CSpotLightComponent')
+            ) {
+                continue;
+            }
+
+            // TODO: In-game markers for: !entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)
             entPos = entity.GetWorldPosition();
             if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;
