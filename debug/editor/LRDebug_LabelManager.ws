@@ -137,24 +137,14 @@ class LRDebug_LabelManager {
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
-        var maxRange: float = thePlayer.lrDebugTargeting.GetMaxRange();
-
-        // Find in a large radius can exceed 1024 entities
-        if (maxRange > 10.0) {
-            FindGameplayEntitiesInRange(
-                entities,
-                thePlayer,
-                maxRange,
-                1024,
-                theGame.lightRewrite.TAG_HAS_LIGHT,
-                FLAG_ExcludePlayer
-            );
-        }
-        // OnSpawned is overriden by many subclasses, some do not call super.OnSpawned
-        // By omitting the tag filter, we can still see them.
-        else {
-            FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
-        }
+        FindGameplayEntitiesInRange(
+            entities,
+            thePlayer,
+            thePlayer.lrDebugTargeting.GetMaxRange(),
+            1024,
+            theGame.lightRewrite.TAG_HAS_LIGHT,
+            FLAG_ExcludePlayer
+        );
     }
 
     private function CountComponents(entity: CGameplayEntity, className: name): int {

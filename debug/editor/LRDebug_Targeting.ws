@@ -54,13 +54,6 @@ class LRDebug_Targeting {
             entity = entities[i];
             if (!entity) continue;
 
-            if (
-                !entity.GetComponentByClassName('CPointLightComponent') &&
-                !entity.GetComponentByClassName('CSpotLightComponent')
-            ) {
-                continue;
-            }
-
             entPos = entity.GetWorldPosition();
             if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;
