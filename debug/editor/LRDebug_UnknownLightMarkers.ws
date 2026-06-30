@@ -1,3 +1,12 @@
+@wrapMethod(CR4HudModuleOneliners)
+function OnTick(timeDelta: float) {
+    wrappedMethod(timeDelta);
+
+    if (thePlayer.lrDebugUnknownMarkers) {
+        thePlayer.lrDebugUnknownMarkers.Update();
+    }
+}
+
 /**
  * Permanent HUD flags for light entities the mod isn't tagging.
  *
