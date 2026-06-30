@@ -65,6 +65,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleGroupEdit', 'LRDebug_GroupEdit');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleShadowMode', 'LRDebug_CycleShadowMode');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
@@ -275,6 +276,16 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ToggleRewriterOnTarget();
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugAttrEditor.CycleShadowMode(lrDebugTargeting.GetTarget())) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+    }
     return true;
 }
 
