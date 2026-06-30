@@ -15,6 +15,15 @@ class LRDebug_Targeting {
         return target;
     }
 
+    public function GetMaxRange(): float {
+        var maxRange: float = 10.0;
+
+        if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= 3.0;
+        if (theGame.IsFocusModeActive()) maxRange *= 3.0;
+
+        return maxRange;
+    }
+
     public function ToggleLock() {
         locked = !locked;
     }
@@ -31,17 +40,14 @@ class LRDebug_Targeting {
         var entity, bestEntity: CGameplayEntity;
         var i, count: int;
         var camPos, camDir, entPos, toEnt: Vector;
-        var bestScore, dot, visibilityRange: float;
+        var bestScore, dot: float;
+
+        var visibilityRange: float = GetMaxRange();
 
         bestScore = -1.0;
         bestEntity = NULL;
         GetCameraPositionAndDirection(camPos, camDir);
         camDir = VecNormalize(camDir);
-
-        visibilityRange = 10.0;
-
-        if (theInput.IsActionPressed('LRDebug_ModifierKey')) visibilityRange *= 3.0;
-        if (theGame.IsFocusModeActive()) visibilityRange *= 3.0;
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {

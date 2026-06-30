@@ -299,9 +299,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 state Idle in LRDebug_LightOneLiner {}
 
 state FollowEntity in LRDebug_LightOneLiner {
-    private const var NORMAL_RANGE: float;  default NORMAL_RANGE = 10.0;
-    private const var MULTIPLIER  : float;  default MULTIPLIER = 3.0;
-
     event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
         parent.register();
@@ -323,10 +320,7 @@ state FollowEntity in LRDebug_LightOneLiner {
             parent.position = parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f);
             SleepOneFrame();
 
-            maxRange = NORMAL_RANGE;
-
-            if (theGame.IsFocusModeActive()) maxRange *= MULTIPLIER;
-            if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= MULTIPLIER;
+            maxRange = thePlayer.lrDebugTargeting.GetMaxRange();
         }
 
         parent.active = false;

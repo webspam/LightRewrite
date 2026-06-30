@@ -141,10 +141,7 @@ class LRDebug_LabelManager {
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
-        var maxRange: float = 10.0;
-
-        if (theInput.IsActionPressed('LRDebug_ModifierKey')) maxRange *= 3.0;
-        if (theGame.IsFocusModeActive()) maxRange *= 3.0;
+        var maxRange: float = thePlayer.lrDebugTargeting.GetMaxRange();
 
         // Find in a large radius can exceed 1024 entities
         if (maxRange > 10.0) {
