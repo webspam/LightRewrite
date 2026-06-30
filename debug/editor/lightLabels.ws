@@ -157,6 +157,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     }
 
     lrDebugLabelManager.Update(lrDebugTargeting);
+    lrDebugUnknownMarkers.Scan();
 }
 
 /*

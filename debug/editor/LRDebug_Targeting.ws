@@ -61,13 +61,6 @@ class LRDebug_Targeting {
                 continue;
             }
 
-            if (
-                thePlayer.lrDebugUnknownMarkers &&
-                !entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)
-            ) {
-                thePlayer.lrDebugUnknownMarkers.Register(entity);
-            }
-
             entPos = entity.GetWorldPosition();
             if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;
