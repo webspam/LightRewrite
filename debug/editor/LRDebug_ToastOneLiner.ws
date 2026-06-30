@@ -13,6 +13,9 @@ statemachine class LRDebug_ToastOneLiner extends SU_Oneliner {
     }
 
     public function Start() {
+        if (this.IsInState('FollowPlayer')) {
+            this.GotoState('Idle');
+        }
         this.GotoState('FollowPlayer');
     }
 }
