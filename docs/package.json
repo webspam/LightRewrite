@@ -9,7 +9,7 @@
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
-    "format": "prettier --write ."
+    "format": "prettier --log-level warn --write ."
   },
   "devDependencies": {
     "prettier": "^3.8.4",
