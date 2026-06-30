@@ -8,14 +8,9 @@ function OnTick(timeDelta: float) {
 }
 
 /**
- * Maintains a pool of LRDebug_WorldMarker labels that pinpoint each light
- * component on the current target entity.
- *
- * SetTarget() rebinds the pool to a new entity's light components - point lights
- * to the green markers, spot lights to the purple ones. Update() repositions every
- * bound marker to its component's on-screen position and is driven from the oneliner
- * HUD module's tick (see the wrapMethod below) so the markers track at frame rate
- * rather than at the slower Scan() cadence.
+ * Pinpoints where each light physically sits on the target entity, which may carry
+ * several spread away from its single entity label. Repositioned every HUD frame (the
+ * wrapMethod above) so the markers stay pinned as the camera moves.
  */
 class LRDebug_TargetMarkers {
     private const var markersPerType: int;  default markersPerType = 5;
