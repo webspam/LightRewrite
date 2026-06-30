@@ -29,8 +29,6 @@ class LRDebug_LabelManager {
     public function Scan() {
         var entities: array<CGameplayEntity>;
 
-        if (thePlayer.lrDebugTargeting.IsLocked()) return;
-
         FindNearbyLights(entities);
         EnsureOneliners(entities);
         thePlayer.lrDebugTargeting.Select(entities);

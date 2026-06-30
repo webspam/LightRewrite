@@ -145,7 +145,13 @@ function GetAllLightSourceTags(): array<name> {
 @addMethod(CR4Player)
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
-    if (theInput.IsActionPressed('LRDebug_CtrlModifier')) return;
+
+    if (
+        lrDebugTargeting.IsLocked() ||
+        theInput.IsActionPressed('LRDebug_CtrlModifier')
+    ) {
+        return;
+    }
 
     lrDebugLabelManager.Scan();
 }
