@@ -26,7 +26,8 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Files
 
 - **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights
-- **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly
+- **`LRDebug_LabelManager.ws`** - Lifecycle of the floating labels: creates and refreshes an oneliner for every nearby light entity each scan tick
+- **`LRDebug_Targeting.ws`** - Owns the active target; picks the most camera-forward light each scan and exposes it via `GetTarget()`
 - **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light
 - **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity
 - **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity
@@ -40,7 +41,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Data flow
 
 1. `lightLabels.ws` captures player input
-2. `LRDebug_LabelManager` picks the light you are aiming at
+2. `LRDebug_Targeting` picks the light you are aiming at
 3. `LRDebug_AttributeEditor` turns the input into an attribute change
 4. `ILightSourceRewriter` applies the change immediately
 5. `LRDebug_LightOneLiner` refreshes the floating label

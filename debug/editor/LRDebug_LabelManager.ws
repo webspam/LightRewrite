@@ -1,23 +1,17 @@
 /**
- * Manages the lifecycle of LRDebug_LightOneLiner instances and target selection.
+ * Manages the lifecycle of LRDebug_LightOneLiner instances.
  *
- * Scan() is called each timer tick to:
- *   - Ensure every nearby light entity has an oneliner (creates if missing, restarts if idle)
- *   - Pick the most camera-forward entity within range as the highlighted target
+ * Scan() is called each timer tick to ensure every nearby light entity has an
+ * oneliner (creating if missing, restarting if idle), then hands the entities to
+ * LRDebug_Targeting so it can pick the highlighted target.
  */
 class LRDebug_LabelManager {
-    private var tagSeq        : int;
-    private var showPathLabels: bool;
-    private var target        : CGameplayEntity;
-    private var toast         : LRDebug_ToastOneLiner;
-    private var pathLabel     : LRDebug_PathLabel;
-    private var groupLabel    : LRDebug_ScreenLabel;
-    private var locked        : bool;
+    private var tagSeq    : int;
+    private var toast     : LRDebug_ToastOneLiner;
+    private var groupLabel: LRDebug_ScreenLabel;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
-        pathLabel = new LRDebug_PathLabel in this;
-        pathLabel.Init(0x40006000, 0.5, 0.92);
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
@@ -28,31 +22,19 @@ class LRDebug_LabelManager {
         toast.Start();
     }
 
-    public function ToggleLock() {
-        locked = !locked;
-    }
-
     public function Scan() {
         var entities: array<CGameplayEntity>;
-        var entity: CGameplayEntity;
-        var i, count, pointLights, spotLights: int;
-        var camPos, camDir, entPos, toEnt: Vector;
-        var score, bestScore, dot, visibilityRange: float;
-        var bestEntity: CGameplayEntity;
 
-        if (locked) return;
+        if (thePlayer.lrDebugTargeting.IsLocked()) return;
 
         FindNearbyLights(entities);
+        EnsureOneliners(entities);
+        thePlayer.lrDebugTargeting.Select(entities);
+    }
 
-        bestScore = -1.0;
-        bestEntity = NULL;
-        GetCameraPositionAndDirection(camPos, camDir);
-        camDir = VecNormalize(camDir);
-
-        visibilityRange = 10.0;
-
-        if (theInput.IsActionPressed('LRDebug_ModifierKey')) visibilityRange *= 3.0;
-        if (theGame.IsFocusModeActive()) visibilityRange *= 3.0;
+    private function EnsureOneliners(entities: array<CGameplayEntity>) {
+        var entity: CGameplayEntity;
+        var i, count, pointLights, spotLights: int;
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
@@ -61,71 +43,19 @@ class LRDebug_LabelManager {
 
             if (entity.lrdebugOneliner) {
                 entity.lrdebugOneliner.Start();
-            }
-            else {
-                pointLights = CountComponents(entity, 'CPointLightComponent');
-                spotLights = CountComponents(entity, 'CSpotLightComponent');
-                if (pointLights == 0 && spotLights == 0) continue;
-
-                CreateOnelinerForEntity(entity, pointLights, spotLights);
-            }
-
-            entPos = entity.GetWorldPosition();
-            if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;
             }
 
-            toEnt = entPos - camPos;
-            if (VecLengthSquared(toEnt) < 0.001) continue;
+            pointLights = CountComponents(entity, 'CPointLightComponent');
+            spotLights = CountComponents(entity, 'CSpotLightComponent');
+            if (pointLights == 0 && spotLights == 0) continue;
 
-            toEnt = VecNormalize(toEnt);
-            dot = VecDot(toEnt, camDir);
-            score = dot * 4.0;
-
-            // Rough in-front filter to reduce "behind camera" picks.
-            if (dot < 0.6) continue;
-
-            if (score > bestScore) {
-                bestScore = score;
-                bestEntity = entity;
-            }
+            CreateOnelinerForEntity(entity, pointLights, spotLights);
         }
-
-        if (bestEntity != target) {
-            if (target && target.lrdebugOneliner) {
-                target.lrdebugOneliner.SetHighlighted(false);
-            }
-
-            target = bestEntity;
-
-            if (target && target.lrdebugOneliner) {
-                target.lrdebugOneliner.SetHighlighted(true);
-            }
-
-            if (thePlayer.lrDebugTargetMarkers) {
-                thePlayer.lrDebugTargetMarkers.SetTarget(target);
-            }
-
-            UpdatePathLabel();
-        }
-    }
-
-    public function TogglePathLabels() {
-        showPathLabels = !showPathLabels;
-        UpdatePathLabel();
-    }
-
-    private function UpdatePathLabel() {
-        if (!showPathLabels || !target) {
-            pathLabel.Hide();
-            return;
-        }
-
-        pathLabel.ShowPath(target);
     }
 
     public function HideScreenLabels() {
-        pathLabel.Hide();
+        thePlayer.lrDebugTargeting.HidePathLabel();
         groupLabel.Hide();
     }
 
@@ -143,17 +73,13 @@ class LRDebug_LabelManager {
         }
     }
 
-    public function RefreshTargetOneliner() {
-        if (!target || !target.lrdebugOneliner) return;
-
-        target.lrdebugOneliner.RegenerateText();
-    }
-
     public function SwapLightSelection(editor: LRDebug_AttributeEditor) {
+        var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
+
         if (!target) return;
 
         editor.SwapLightSelection(target);
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     public function ShowGroupLabel() {
@@ -166,38 +92,31 @@ class LRDebug_LabelManager {
 
     /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
     public function GetTargetLightType(editor: LRDebug_AttributeEditor): name {
-        if (!target) return 'point';
-
-        return editor.GetSelectedLightType(target);
+        return editor.GetSelectedLightType(thePlayer.lrDebugTargeting.GetTarget());
     }
 
-    /**
-     * Applies a continuous (analog) delta to the target's selected attribute and
-     * refreshes its oneliner if the adjustment took effect.
-     */
     public function ApplyContinuousAdjustment(
         delta: float,
         editor: LRDebug_AttributeEditor,
         optional attr: name
     ) {
-        if (!editor.AdjustAttributeContinuous(delta, target, attr)) return;
+        if (!editor.AdjustAttributeContinuous(delta, thePlayer.lrDebugTargeting.GetTarget(), attr)) {
+            return;
+        }
 
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     public function MoveTargetXY(dx: float, dy: float, editor: LRDebug_AttributeEditor) {
-        if (!editor.MoveOffsetXY(dx, dy, target)) return;
+        if (!editor.MoveOffsetXY(dx, dy, thePlayer.lrDebugTargeting.GetTarget())) return;
 
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
-    /**
-     * Toggles a boolean attribute on the target and refreshes its oneliner.
-     */
     public function ApplyToggle(editor: LRDebug_AttributeEditor, optional attr: name) {
-        if (!editor.ToggleAttribute(target, attr)) return;
+        if (!editor.ToggleAttribute(thePlayer.lrDebugTargeting.GetTarget(), attr)) return;
 
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     /**
@@ -205,6 +124,7 @@ class LRDebug_LabelManager {
      * state.
      */
     public function ToggleRewriterOnTarget() {
+        var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
         var rewriter: ILightSourceRewriter;
 
         if (!target) return;
@@ -219,10 +139,11 @@ class LRDebug_LabelManager {
             ShowToast("LightRewrite: OFF");
         }
 
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     public function ResetTarget() {
+        var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
         var rewriter: ILightSourceRewriter;
 
         if (!target) return;
@@ -233,7 +154,7 @@ class LRDebug_LabelManager {
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
 
-        RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
@@ -258,16 +179,6 @@ class LRDebug_LabelManager {
         else {
             FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
         }
-    }
-
-    private function GetCameraPositionAndDirection(
-        out cameraPosition: Vector,
-        out cameraDirection: Vector
-    ) {
-        var director: CCameraDirector = theGame.GetWorld().GetCameraDirector();
-
-        cameraPosition = director.GetCameraPosition();
-        cameraDirection = director.GetCameraDirection();
     }
 
     private function CountComponents(entity: CGameplayEntity, className: name): int {

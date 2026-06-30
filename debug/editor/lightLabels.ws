@@ -30,6 +30,7 @@
 
 @addField(CR4Player) public var lrDebugLabels: bool;
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
+@addField(CR4Player) public var lrDebugTargeting: LRDebug_Targeting;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
@@ -51,6 +52,8 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
 
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
+    lrDebugTargeting = new LRDebug_Targeting in this;
+    lrDebugTargeting.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
@@ -124,9 +127,9 @@ function OptionValueChanged(groupId: int, optionName: name, optionValue: string)
         isEnabled != wasEnabled &&
         thePlayer &&
         thePlayer.lrDebugLabels &&
-        thePlayer.lrDebugLabelManager
+        thePlayer.lrDebugTargeting
     ) {
-        thePlayer.lrDebugLabelManager.RefreshTargetOneliner();
+        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 }
 
@@ -187,7 +190,7 @@ function PostStateChange() {
 public function LRDebug_OnInputLock(action: SInputAction): bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.ToggleLock();
+    lrDebugTargeting.ToggleLock();
     return true;
 }
 
@@ -220,7 +223,7 @@ public function LRDebug_OnAltPressed(action: SInputAction): bool {
 public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.TogglePathLabels();
+    lrDebugTargeting.TogglePathLabels();
     return true;
 }
 
