@@ -44,9 +44,6 @@ class LRDebug_Targeting {
             entity = entities[i];
             if (!entity) continue;
 
-            // EnsureOneliners ran first, so a missing oneliner means a non-light entity.
-            if (!entity.lrdebugOneliner) continue;
-
             entPos = entity.GetWorldPosition();
             if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;
