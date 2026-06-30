@@ -153,7 +153,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
         return;
     }
 
-    lrDebugLabelManager.Scan();
+    lrDebugLabelManager.Update(lrDebugTargeting);
 }
 
 /*

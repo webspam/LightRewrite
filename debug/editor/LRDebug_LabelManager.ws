@@ -26,17 +26,12 @@ class LRDebug_LabelManager {
         toast.Start();
     }
 
-    public function Scan() {
+    public function Update(targeting: LRDebug_Targeting) {
         var entities: array<CGameplayEntity>;
-
-        FindNearbyLights(entities);
-        EnsureOneliners(entities);
-        thePlayer.lrDebugTargeting.Select(entities);
-    }
-
-    private function EnsureOneliners(entities: array<CGameplayEntity>) {
         var entity: CGameplayEntity;
         var i, count, pointLights, spotLights: int;
+
+        FindNearbyLights(entities);
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
@@ -54,6 +49,8 @@ class LRDebug_LabelManager {
 
             CreateOnelinerForEntity(entity, pointLights, spotLights);
         }
+
+        targeting.Select(entities);
     }
 
     public function HideScreenLabels() {
