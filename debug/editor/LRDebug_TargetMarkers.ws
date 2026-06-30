@@ -47,14 +47,14 @@ class LRDebug_TargetMarkers {
 
     /** Show a 2d indicator of the first lights radius (always pointlight if any are present) */
     private function UpdateRadiusRing() {
-        var light: CPointLightComponent;
+        var light: CLightComponent;
 
         if (
             thePlayer.lrDebugLabels &&
             thePlayer.lrDebugAttrEditor &&
             thePlayer.lrDebugAttrEditor.IsEditingRadius()
         ) {
-            light = (CPointLightComponent)components[0];
+            light = (CLightComponent)components[0];
         }
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
