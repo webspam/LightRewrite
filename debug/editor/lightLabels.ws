@@ -58,6 +58,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
+    lrDebugUnknownMarkers.Init();
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');

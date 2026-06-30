@@ -13,24 +13,21 @@ function OnTick(timeDelta: float) {
  * Walking near a point or spot light that lacks TAG_HAS_LIGHT registers it here; the
  * marker then stays put so untracked light sources can be spotted and folded into a profile.
  */
-class LRDebug_UnknownLightMarkers {
+class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private const var fontSize: int;     default fontSize = 32;
     private const var colour  : string;  default colour = "#ff0000";
 
-    private var markerIdSeq: int;  default markerIdSeq = 0x40007000;
-    private var markers : array<LRDebug_WorldMarker>;
     private var entities: array<CGameplayEntity>;
+
+    public function Init() {
+        InitPool(0x40007000);
+    }
 
     /** Permanently flag an untracked light */
     public function Register(entity: CGameplayEntity) {
-        var marker: LRDebug_WorldMarker;
-
         if (!entity || IsRegistered(entity)) return;
 
-        marker = new LRDebug_WorldMarker in this;
-        marker.Init("?", fontSize, colour, NextMarkerId());
-
-        markers.PushBack(marker);
+        AddMarker("?", fontSize, colour);
         entities.PushBack(entity);
     }
 
@@ -55,10 +52,5 @@ class LRDebug_UnknownLightMarkers {
             if (entities[i] == entity) return true;
         }
         return false;
-    }
-
-    private function NextMarkerId(): int {
-        markerIdSeq += 1;
-        return markerIdSeq;
     }
 }
