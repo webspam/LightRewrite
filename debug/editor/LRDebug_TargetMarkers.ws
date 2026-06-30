@@ -8,8 +8,7 @@ function OnTick(timeDelta: float) {
 }
 
 /**
- * Pinpoints each light's actual position on the target entity, which may hold several
- * spread away from its single label; repositioned every frame to track the moving camera.
+ * Shows a pinpoint HUD marker for each of an entities lights.
  */
 class LRDebug_TargetMarkers {
     private const var markersPerType: int;  default markersPerType = 5;
@@ -29,7 +28,7 @@ class LRDebug_TargetMarkers {
         Update();
     }
 
-    /** Reposition every bound marker; hide any without a component or while labels are off. */
+    /** Reposition every marker and hide any without a component. */
     public function Update() {
         var i, count: int;
 
@@ -46,7 +45,7 @@ class LRDebug_TargetMarkers {
         UpdateRadiusRing();
     }
 
-    /** Ring the first point light with radius dots, but only while radius is the selected attribute. */
+    /** Show a 2d indicator of the first lights radius (always pointlight if any are present) */
     private function UpdateRadiusRing() {
         var light: CPointLightComponent;
 
