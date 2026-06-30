@@ -546,6 +546,48 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
+    public function CycleShadowMode(target: CGameplayEntity): bool {
+        var point: CPointLightComponent;
+        var spot: CSpotLightComponent;
+        var sourceLight: CLightComponent;
+        var params: CLightRewriteSourceParams;
+        var lightParams: ILightRewriteParams;
+        var rewriter: ILightSourceRewriter;
+        var type: name;
+
+        if (!target) return false;
+        if (!target.lrdebugOneliner) return false;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        point = LRDebug_FirstPointLight(target);
+        spot = LRDebug_FirstSpotLight(target);
+
+        type = GetSelectedLightType(target);
+        if (type == 'spot') sourceLight = spot;
+        else sourceLight = point;
+
+        lightParams = GetSharedParams(params, target, type);
+        if (!lightParams.castShadows.has) {
+            lightParams.castShadows.has = true;
+            if (sourceLight) lightParams.castShadows.value = sourceLight.shadowCastingMode;
+        }
+        lightParams.castShadows.value = NextShadowMode(lightParams.castShadows.value);
+
+        ApplyParams(target, rewriter, params);
+        return true;
+    }
+
+    private function NextShadowMode(mode: ELightShadowCastingMode): ELightShadowCastingMode {
+        switch (mode) {
+            case LSCM_None:         return LSCM_OnlyDynamic;
+            case LSCM_OnlyDynamic:  return LSCM_OnlyStatic;
+            case LSCM_OnlyStatic:   return LSCM_Normal;
+            case LSCM_Normal:       return LSCM_None;
+        }
+        return LSCM_None;
+    }
+
     public function ToggleGroupEdit(): bool {
         groupEdit = !groupEdit;
         return groupEdit;
