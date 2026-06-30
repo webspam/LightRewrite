@@ -14,6 +14,13 @@ const IMG = "https://webspam.github.io/images/";
 
 export const GALLERY: GalleryItem[] = [
   {
+    id: "white-orchard-road",
+    title: "White Orchard",
+    tag: "Road Lights",
+    before: IMG + "white-orchard-road-lights-before-219.jpg",
+    after: IMG + "white-orchard-road-lights-after-219.jpg",
+  },
+  {
     id: "spikeroog-inn",
     title: "Spikeroog inn",
     tag: "Interior",
@@ -89,5 +96,12 @@ export const GALLERY: GalleryItem[] = [
     tag: "Candlelit townhouse",
     before: IMG + "novigrad-bits-before-219.jpg",
     after: IMG + "novigrad-bits-after-219.jpg",
+  },
+  {
+    id: "white-orchard-inn",
+    title: "White Orchard inn",
+    tag: "Inn - Cozy RTX Fires",
+    before: IMG + "white-orchard-inn-cozy-before-219.jpg",
+    after: IMG + "white-orchard-inn-cozy-afer-219.jpg",
   },
 ];
