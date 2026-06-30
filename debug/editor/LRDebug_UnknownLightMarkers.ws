@@ -14,9 +14,9 @@ function OnTick(timeDelta: float) {
  * marker then stays put so untracked light sources can be spotted and folded into a profile.
  */
 class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
-    private const var fontSize : int;     default fontSize = 32;
-    private const var colour   : string;  default colour = "#ff0000";
-    private const var scanRange: float;   default scanRange = 10.0;
+    private const var FONT_SIZE : int;     default FONT_SIZE = 32;
+    private const var COLOUR    : string;  default COLOUR = "#ff0000";
+    private const var SCAN_RANGE: float;   default SCAN_RANGE = 10.0;
 
     private var entities: array<CGameplayEntity>;
 
@@ -30,7 +30,7 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
         var entity: CGameplayEntity;
         var i, count: int;
 
-        FindGameplayEntitiesInRange(found, thePlayer, scanRange, 1024, , FLAG_ExcludePlayer);
+        FindGameplayEntitiesInRange(found, thePlayer, SCAN_RANGE, 1024, , FLAG_ExcludePlayer);
 
         count = found.Size();
         for (i = 0; i < count; i += 1) {
@@ -46,7 +46,7 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private function Register(entity: CGameplayEntity) {
         if (IsRegistered(entity)) return;
 
-        AddMarker("?", fontSize, colour);
+        AddMarker("?", FONT_SIZE, COLOUR);
         entities.PushBack(entity);
     }
 
