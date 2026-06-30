@@ -7,9 +7,6 @@
  * bound marker to its component's on-screen position and is driven from the oneliner
  * HUD module's tick (see the wrapMethod below) so the markers track at frame rate
  * rather than at the slower Scan() cadence.
- *
- * Lives on CR4Player as lrDebugTargetMarkers; LRDebug_LabelManager only tells it
- * which entity is the target.
  */
 
 @wrapMethod(CR4HudModuleOneliners)
