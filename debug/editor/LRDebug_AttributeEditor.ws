@@ -78,28 +78,16 @@ class LRDebug_AttributeEditor {
     }
 
     public function GetSelectedLightType(target: CGameplayEntity): name {
-        var hasPoint, hasSpot: bool;
-
-        if (!target) return 'point';
-
-        if (LRDebug_FirstPointLight(target)) hasPoint = true;
-        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
-
-        if (selectedLightType == 'spot' && hasSpot) return 'spot';
-        if (!hasPoint && hasSpot) return 'spot';
+        if (target && target.HasSpotLight()) {
+            if (selectedLightType == 'spot' || !target.HasPointLight()) return 'spot';
+        }
         return 'point';
     }
 
     public function SwapLightSelection(target: CGameplayEntity) {
-        var hasPoint, hasSpot: bool;
         var type: name;
 
-        if (!target) return;
-
-        if (LRDebug_FirstPointLight(target)) hasPoint = true;
-        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
-
-        if (!hasPoint || !hasSpot) return;
+        if (!target || !target.HasPointLight() || !target.HasSpotLight()) return;
 
         if (selectedLightType == 'spot') selectedLightType = 'point';
         else selectedLightType = 'spot';
@@ -122,6 +110,11 @@ class LRDebug_AttributeEditor {
                 return type != 'spot';
         }
         return true;
+    }
+
+    private function GetLight(target: CGameplayEntity, type: name): CLightComponent {
+        if (type == 'spot') return LRDebug_FirstSpotLight(target);
+        return LRDebug_FirstPointLight(target);
     }
 
     private function GetSharedParams(
@@ -182,9 +175,8 @@ class LRDebug_AttributeEditor {
         target: CGameplayEntity,
         optional attr: name
     ): bool {
-        var point: CPointLightComponent;
         var spot: CSpotLightComponent;
-        var sourceLight: CLightComponent;
+        var light: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotParams: CLightRewriteSpotlightParams;
@@ -197,7 +189,6 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
         spot = LRDebug_FirstSpotLight(target);
 
         type = GetSelectedLightType(target);
@@ -211,15 +202,15 @@ class LRDebug_AttributeEditor {
         delta = ConsumeQuantizedDelta(delta, GetAdjustQuantum(attr));
         if (delta == 0.0) return false;
 
-        if (type == 'spot') sourceLight = spot;
-        else sourceLight = point;
+        if (type == 'spot') light = spot;
+        else light = LRDebug_FirstPointLight(target);
 
         switch (attr) {
             case 'brightness':
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.brightness.has) {
                     lightParams.brightness.has = true;
-                    if (sourceLight) lightParams.brightness.value = sourceLight.brightness;
+                    if (light) lightParams.brightness.value = light.brightness;
                 }
                 lightParams.brightness.value = ClampAttributeValue(
                     attr,
@@ -231,7 +222,7 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.radius.has) {
                     lightParams.radius.has = true;
-                    if (sourceLight) lightParams.radius.value = sourceLight.radius;
+                    if (light) lightParams.radius.value = light.radius;
                 }
                 lightParams.radius.value = ClampAttributeValue(
                     attr,
@@ -243,7 +234,7 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.attenuation.has) {
                     lightParams.attenuation.has = true;
-                    if (sourceLight) lightParams.attenuation.value = sourceLight.attenuation;
+                    if (light) lightParams.attenuation.value = light.attenuation;
                 }
                 lightParams.attenuation.value = ClampAttributeValue(
                     attr,
@@ -255,8 +246,8 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.shadowFadeDistance.has) {
                     lightParams.shadowFadeDistance.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowFadeDistance.value = sourceLight.shadowFadeDistance;
+                    if (light) {
+                        lightParams.shadowFadeDistance.value = light.shadowFadeDistance;
                     }
                 }
                 lightParams.shadowFadeDistance.value = ClampAttributeValue(
@@ -269,8 +260,8 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.shadowFadeRange.has) {
                     lightParams.shadowFadeRange.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowFadeRange.value = sourceLight.shadowFadeRange;
+                    if (light) {
+                        lightParams.shadowFadeRange.value = light.shadowFadeRange;
                     }
                 }
                 lightParams.shadowFadeRange.value = ClampAttributeValue(
@@ -283,8 +274,8 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.shadowBlendFactor.has) {
                     lightParams.shadowBlendFactor.has = true;
-                    if (sourceLight) {
-                        lightParams.shadowBlendFactor.value = sourceLight.shadowBlendFactor;
+                    if (light) {
+                        lightParams.shadowBlendFactor.value = light.shadowBlendFactor;
                     }
                 }
                 lightParams.shadowBlendFactor.value = ClampAttributeValue(
@@ -363,7 +354,7 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
+                    if (light) lightParams.color.value = light.color;
                 }
                 lightParams.color.value.Red = (byte)Clamp(lightParams.color.value.Red + (int)delta, 0, 255);
                 break;
@@ -372,7 +363,7 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
+                    if (light) lightParams.color.value = light.color;
                 }
                 lightParams.color.value.Green = (byte)Clamp(lightParams.color.value.Green + (int)delta, 0, 255);
                 break;
@@ -381,7 +372,7 @@ class LRDebug_AttributeEditor {
                 lightParams = GetSharedParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
-                    if (sourceLight) lightParams.color.value = sourceLight.color;
+                    if (light) lightParams.color.value = light.color;
                 }
                 lightParams.color.value.Blue = (byte)Clamp(lightParams.color.value.Blue + (int)delta, 0, 255);
                 break;
@@ -496,9 +487,7 @@ class LRDebug_AttributeEditor {
      * key-press rather than via analog hold-to-edit.
      */
     public function ToggleAttribute(target: CGameplayEntity, optional attr: name): bool {
-        var point: CPointLightComponent;
-        var spot: CSpotLightComponent;
-        var sourceLight: CLightComponent;
+        var light: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
@@ -509,15 +498,12 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
-        spot = LRDebug_FirstSpotLight(target);
 
         type = GetSelectedLightType(target);
         if (attr == '') attr = GetCurrentAttrId(type);
         if (!IsAttrApplicable(attr, type)) return false;
 
-        if (type == 'spot') sourceLight = spot;
-        else sourceLight = point;
+        light = GetLight(target, type);
 
         switch (attr) {
             case 'useSpotlightColor':
@@ -533,8 +519,8 @@ class LRDebug_AttributeEditor {
             case 'overrideColour':
                 lightParams = GetSharedParams(params, target, type);
                 lightParams.color.has = !lightParams.color.has;
-                if (lightParams.color.has && sourceLight) {
-                    lightParams.color.value = sourceLight.color;
+                if (lightParams.color.has && light) {
+                    lightParams.color.value = light.color;
                 }
                 break;
 
@@ -544,6 +530,33 @@ class LRDebug_AttributeEditor {
 
         ApplyParams(target, rewriter, params);
         return true;
+    }
+
+    public function CycleShadowMode(target: CGameplayEntity) {
+        var rewriter: ILightSourceRewriter = target.LRDebug_GetOrCreateRewriter();
+        var params: CLightRewriteSourceParams = target.LRDebug_GetParams(rewriter);
+
+        var type: name = GetSelectedLightType(target);
+        var light: CLightComponent = GetLight(target, type);
+        var lightParams: ILightRewriteParams = GetSharedParams(params, target, type);
+
+        if (!lightParams.castShadows.has) {
+            lightParams.castShadows.has = true;
+            if (light) lightParams.castShadows.value = light.shadowCastingMode;
+        }
+        lightParams.castShadows.value = NextShadowMode(lightParams.castShadows.value);
+
+        ApplyParams(target, rewriter, params);
+    }
+
+    private function NextShadowMode(mode: ELightShadowCastingMode): ELightShadowCastingMode {
+        switch (mode) {
+            case LSCM_None:         return LSCM_OnlyDynamic;
+            case LSCM_OnlyDynamic:  return LSCM_OnlyStatic;
+            case LSCM_OnlyStatic:   return LSCM_Normal;
+            case LSCM_Normal:       return LSCM_None;
+        }
+        return LSCM_None;
     }
 
     public function ToggleGroupEdit(): bool {
