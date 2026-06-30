@@ -12,7 +12,7 @@ class LRDebug_UnknownLightMarkers {
     private var markers : array<LRDebug_WorldMarker>;
     private var entities: array<CGameplayEntity>;
 
-    /** Flag an untracked light once; a light already flagged is left alone so it stays marked */
+    /** Permanently flag an untracked light */
     public function Register(entity: CGameplayEntity) {
         var marker: LRDebug_WorldMarker;
 
