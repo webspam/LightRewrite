@@ -2,7 +2,7 @@
  * Base for the overlay's world-marker managers.
  *
  * Each pool draws its markers onto the shared oneliner HUD module, so every marker needs a
- * flash id unique across all pools; InitPool seeds a disjoint range per manager.
+ * flash id unique across all pools.
  */
 class LRDebug_MarkerPool {
     protected var markers  : array<LRDebug_WorldMarker>;
