@@ -73,50 +73,12 @@ class LRDebug_LabelManager {
         }
     }
 
-    public function SwapLightSelection(editor: LRDebug_AttributeEditor) {
-        var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
-
-        if (!target) return;
-
-        editor.SwapLightSelection(target);
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
-    }
-
     public function ShowGroupLabel() {
         groupLabel.Show();
     }
 
     public function HideGroupLabel() {
         groupLabel.Hide();
-    }
-
-    /** Modifier-key handlers reuse one key per light type, so they need the target's type. */
-    public function GetTargetLightType(editor: LRDebug_AttributeEditor): name {
-        return editor.GetSelectedLightType(thePlayer.lrDebugTargeting.GetTarget());
-    }
-
-    public function ApplyContinuousAdjustment(
-        delta: float,
-        editor: LRDebug_AttributeEditor,
-        optional attr: name
-    ) {
-        if (!editor.AdjustAttributeContinuous(delta, thePlayer.lrDebugTargeting.GetTarget(), attr)) {
-            return;
-        }
-
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
-    }
-
-    public function MoveTargetXY(dx: float, dy: float, editor: LRDebug_AttributeEditor) {
-        if (!editor.MoveOffsetXY(dx, dy, thePlayer.lrDebugTargeting.GetTarget())) return;
-
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
-    }
-
-    public function ApplyToggle(editor: LRDebug_AttributeEditor, optional attr: name) {
-        if (!editor.ToggleAttribute(thePlayer.lrDebugTargeting.GetTarget(), attr)) return;
-
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
     }
 
     /**
