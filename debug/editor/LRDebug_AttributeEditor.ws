@@ -80,13 +80,13 @@ class LRDebug_AttributeEditor {
     public function GetSelectedLightType(target: CGameplayEntity): name {
         var hasPoint, hasSpot: bool;
 
-        if (!target) return 'point';
+        if (target) {
+            hasSpot = target.GetComponentsCountByClassName('CSpotLightComponent') > 0;
+            if (selectedLightType == 'spot' && hasSpot) return 'spot';
 
-        if (LRDebug_FirstPointLight(target)) hasPoint = true;
-        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
-
-        if (selectedLightType == 'spot' && hasSpot) return 'spot';
-        if (!hasPoint && hasSpot) return 'spot';
+            hasPoint = target.GetComponentsCountByClassName('CPointLightComponent') > 0;
+            if (!hasPoint && hasSpot) return 'spot';
+        }
         return 'point';
     }
 
