@@ -148,7 +148,17 @@ function GroupEntities {
             $primary[$key] = $entry
         }
         elseif (-not (EntriesIdentical $primary[$key] $entry)) {
-            $overflow["$key|$($overflow.Count)"] = $entry
+            $alreadySeen = $false
+            foreach ($existing in $overflow.Values) {
+                $existingLayer = if ($existing.ContainsKey('layerPath')) { $existing['layerPath'] } else { '' }
+                if ($existing['entityFile'] -eq $entityFile -and $existingLayer -eq $layerPath -and (EntriesIdentical $existing $entry)) {
+                    $alreadySeen = $true
+                    break
+                }
+            }
+            if (!$alreadySeen) {
+                $overflow["$key|$($overflow.Count)"] = $entry
+            }
         }
     }
 
