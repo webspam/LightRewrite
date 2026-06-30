@@ -205,7 +205,6 @@ public function LRDebug_OnModifierKeyPressed(action: SInputAction): bool {
         lrDebugLabels &&
         (IsPressed(action) || IsReleased(action))
     ) {
-        LogChannel('LRDebug', "LRDebug_ModifierKeyPressed");
         lrDebugLabelManager.RegenerateNearbyOneliners();
     }
 
