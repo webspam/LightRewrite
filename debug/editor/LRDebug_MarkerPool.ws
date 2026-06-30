@@ -5,19 +5,19 @@
  * flash id unique across all pools.
  */
 class LRDebug_MarkerPool {
-    protected var markers  : array<LRDebug_WorldMarker>;
-    private var markerIdSeq: int;
+    protected var markers: array<LRDebug_WorldMarker>;
+    private var lastId   : int;
 
     protected function InitPool(idBase: int) {
-        markerIdSeq = idBase;
+        lastId = idBase;
     }
 
     protected function AddMarker(text: string, fontSize: int, colour: string) {
         var marker: LRDebug_WorldMarker;
 
-        markerIdSeq += 1;
+        lastId += 1;
         marker = new LRDebug_WorldMarker in this;
-        marker.Init(text, fontSize, colour, markerIdSeq);
+        marker.Init(text, fontSize, colour, lastId);
 
         markers.PushBack(marker);
     }
