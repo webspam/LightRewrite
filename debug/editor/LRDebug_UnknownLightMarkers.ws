@@ -21,7 +21,7 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private var entities: array<CGameplayEntity>;
 
     public function Init() {
-        InitPool(0x40007000);
+        SetBaseId(0x40007000);
     }
 
     /** Sweep nearby entities for light sources the mod never tagged and flag each one */

@@ -6,8 +6,8 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
 
     private var offsets: array<Vector>;
 
-    public function Init(idBase: int) {
-        InitPool(idBase);
+    public function Init(baseId: int) {
+        SetBaseId(baseId);
 
         BuildCircle(0);
         BuildCircle(1);

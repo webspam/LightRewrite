@@ -8,8 +8,8 @@ class LRDebug_MarkerPool {
     protected var markers: array<LRDebug_WorldMarker>;
     private var lastId   : int;
 
-    protected function InitPool(idBase: int) {
-        lastId = idBase;
+    protected function SetBaseId(baseId: int) {
+        lastId = baseId;
     }
 
     protected function AddMarker(text: string, fontSize: int, colour: string) {

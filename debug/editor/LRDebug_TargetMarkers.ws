@@ -17,7 +17,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     private var radiusRing: LRDebug_RadiusRing;
 
     public function Init() {
-        InitPool(0x40004000);
+        SetBaseId(0x40004000);
 
         BuildPool("#00ff52");
         BuildPool("#b100ff");
