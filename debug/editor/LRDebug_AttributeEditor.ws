@@ -124,6 +124,11 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
+    private function GetSourceLight(target: CGameplayEntity, type: name): CLightComponent {
+        if (type == 'spot') return LRDebug_FirstSpotLight(target);
+        return LRDebug_FirstPointLight(target);
+    }
+
     private function GetSharedParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
@@ -496,8 +501,6 @@ class LRDebug_AttributeEditor {
      * key-press rather than via analog hold-to-edit.
      */
     public function ToggleAttribute(target: CGameplayEntity, optional attr: name): bool {
-        var point: CPointLightComponent;
-        var spot: CSpotLightComponent;
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
@@ -509,15 +512,12 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
-        spot = LRDebug_FirstSpotLight(target);
 
         type = GetSelectedLightType(target);
         if (attr == '') attr = GetCurrentAttrId(type);
         if (!IsAttrApplicable(attr, type)) return false;
 
-        if (type == 'spot') sourceLight = spot;
-        else sourceLight = point;
+        sourceLight = GetSourceLight(target, type);
 
         switch (attr) {
             case 'useSpotlightColor':
@@ -547,8 +547,6 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleShadowMode(target: CGameplayEntity): bool {
-        var point: CPointLightComponent;
-        var spot: CSpotLightComponent;
         var sourceLight: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
@@ -560,12 +558,8 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
-        spot = LRDebug_FirstSpotLight(target);
-
         type = GetSelectedLightType(target);
-        if (type == 'spot') sourceLight = spot;
-        else sourceLight = point;
+        sourceLight = GetSourceLight(target, type);
 
         lightParams = GetSharedParams(params, target, type);
         if (!lightParams.castShadows.has) {
