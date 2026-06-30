@@ -6,12 +6,16 @@
  * LRDebug_Targeting so it can pick the highlighted target.
  */
 class LRDebug_LabelManager {
-    private var tagSeq    : int;
-    private var toast     : LRDebug_ToastOneLiner;
-    private var groupLabel: LRDebug_ScreenLabel;
+    private var tagSeq        : int;
+    private var toast         : LRDebug_ToastOneLiner;
+    private var groupLabel    : LRDebug_ScreenLabel;
+    private var pathLabel     : LRDebug_PathLabel;
+    private var showPathLabels: bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
+        pathLabel = new LRDebug_PathLabel in this;
+        pathLabel.Init(0x40006000, 0.5, 0.92);
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
@@ -55,8 +59,22 @@ class LRDebug_LabelManager {
     }
 
     public function HideScreenLabels() {
-        thePlayer.lrDebugTargeting.HidePathLabel();
+        pathLabel.Hide();
         groupLabel.Hide();
+    }
+
+    public function TogglePathLabels() {
+        showPathLabels = !showPathLabels;
+        UpdatePathLabel(thePlayer.lrDebugTargeting.GetTarget());
+    }
+
+    public function UpdatePathLabel(target: CGameplayEntity) {
+        if (!showPathLabels || !target) {
+            pathLabel.Hide();
+            return;
+        }
+
+        pathLabel.ShowPath(target);
     }
 
     public function RegenerateNearbyOneliners() {

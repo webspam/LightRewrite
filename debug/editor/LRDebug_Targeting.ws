@@ -8,15 +8,8 @@
  * Lives on CR4Player as lrDebugTargeting.
  */
 class LRDebug_Targeting {
-    private var target        : CGameplayEntity;
-    private var locked        : bool;
-    private var showPathLabels: bool;
-    private var pathLabel     : LRDebug_PathLabel;
-
-    public function Init() {
-        pathLabel = new LRDebug_PathLabel in this;
-        pathLabel.Init(0x40006000, 0.5, 0.92);
-    }
+    private var target: CGameplayEntity;
+    private var locked: bool;
 
     public function GetTarget(): CGameplayEntity {
         return target;
@@ -95,31 +88,15 @@ class LRDebug_Targeting {
             thePlayer.lrDebugTargetMarkers.SetTarget(target);
         }
 
-        UpdatePathLabel();
+        if (thePlayer.lrDebugLabelManager) {
+            thePlayer.lrDebugLabelManager.UpdatePathLabel(target);
+        }
     }
 
     public function RefreshTargetOneliner() {
         if (!target || !target.lrdebugOneliner) return;
 
         target.lrdebugOneliner.RegenerateText();
-    }
-
-    public function TogglePathLabels() {
-        showPathLabels = !showPathLabels;
-        UpdatePathLabel();
-    }
-
-    public function HidePathLabel() {
-        pathLabel.Hide();
-    }
-
-    private function UpdatePathLabel() {
-        if (!showPathLabels || !target) {
-            pathLabel.Hide();
-            return;
-        }
-
-        pathLabel.ShowPath(target);
     }
 
     private function GetCameraPositionAndDirection(

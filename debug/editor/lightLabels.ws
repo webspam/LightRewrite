@@ -53,7 +53,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
     lrDebugTargeting = new LRDebug_Targeting in this;
-    lrDebugTargeting.Init();
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
@@ -223,7 +222,7 @@ public function LRDebug_OnAltPressed(action: SInputAction): bool {
 public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugTargeting.TogglePathLabels();
+    lrDebugLabelManager.TogglePathLabels();
     return true;
 }
 
