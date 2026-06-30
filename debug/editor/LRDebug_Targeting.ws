@@ -61,7 +61,13 @@ class LRDebug_Targeting {
                 continue;
             }
 
-            // TODO: In-game markers for: !entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)
+            if (
+                thePlayer.lrDebugUnknownMarkers &&
+                !entity.HasTag(theGame.lightRewrite.TAG_HAS_LIGHT)
+            ) {
+                thePlayer.lrDebugUnknownMarkers.Register(entity);
+            }
+
             entPos = entity.GetWorldPosition();
             if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
                 continue;

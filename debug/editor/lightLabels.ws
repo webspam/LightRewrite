@@ -33,6 +33,7 @@
 @addField(CR4Player) public var lrDebugTargeting: LRDebug_Targeting;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
+@addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
 
 /*
@@ -56,6 +57,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
+    lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');

@@ -5,6 +5,9 @@ function OnTick(timeDelta: float) {
     if (thePlayer.lrDebugTargetMarkers) {
         thePlayer.lrDebugTargetMarkers.Update();
     }
+    if (thePlayer.lrDebugUnknownMarkers) {
+        thePlayer.lrDebugUnknownMarkers.Update();
+    }
 }
 
 /**
