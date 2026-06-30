@@ -12,7 +12,7 @@ class LRDebug_MarkerPool {
         markerIdSeq = idBase;
     }
 
-    protected function AddMarker(text: string, fontSize: int, colour: string): LRDebug_WorldMarker {
+    protected function AddMarker(text: string, fontSize: int, colour: string) {
         var marker: LRDebug_WorldMarker;
 
         markerIdSeq += 1;
@@ -20,7 +20,6 @@ class LRDebug_MarkerPool {
         marker.Init(text, fontSize, colour, markerIdSeq);
 
         markers.PushBack(marker);
-        return marker;
     }
 
     public function Hide() {
