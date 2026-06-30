@@ -23,10 +23,11 @@ class LRDebug_MarkerPool {
         return marker;
     }
 
-    protected function HideAll() {
-        var i: int;
+    public function Hide() {
+        var i, count: int;
 
-        for (i = 0; i < markers.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             markers[i].Hide();
         }
     }

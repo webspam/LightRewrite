@@ -30,10 +30,6 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
         }
     }
 
-    public function Hide() {
-        HideAll();
-    }
-
     /** One circle of dots; plane 0=XY, 1=XZ, 2=YZ */
     private function BuildCircle(plane: int) {
         var i: int;
