@@ -27,7 +27,7 @@ class LRDebug_LabelManager {
     public function Update(targeting: LRDebug_Targeting) {
         var entities: array<CGameplayEntity>;
         var entity: CGameplayEntity;
-        var i, count, pointLights, spotLights: int;
+        var i, count: int;
         var targetChanged: bool;
 
         FindNearbyLights(entities);
@@ -42,11 +42,7 @@ class LRDebug_LabelManager {
                 continue;
             }
 
-            pointLights = CountComponents(entity, 'CPointLightComponent');
-            spotLights = CountComponents(entity, 'CSpotLightComponent');
-            if (pointLights == 0 && spotLights == 0) continue;
-
-            CreateOnelinerForEntity(entity, pointLights, spotLights);
+            CreateOnelinerForEntity(entity);
         }
 
         targetChanged = targeting.Scan(entities);
@@ -141,24 +137,14 @@ class LRDebug_LabelManager {
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
-        var maxRange: float = thePlayer.lrDebugTargeting.GetMaxRange();
-
-        // Find in a large radius can exceed 1024 entities
-        if (maxRange > 10.0) {
-            FindGameplayEntitiesInRange(
-                entities,
-                thePlayer,
-                maxRange,
-                1024,
-                theGame.lightRewrite.TAG_HAS_LIGHT,
-                FLAG_ExcludePlayer
-            );
-        }
-        // OnSpawned is overriden by many subclasses, some do not call super.OnSpawned
-        // By omitting the tag filter, we can still see them.
-        else {
-            FindGameplayEntitiesInRange(entities, thePlayer, maxRange, 1024, , FLAG_ExcludePlayer);
-        }
+        FindGameplayEntitiesInRange(
+            entities,
+            thePlayer,
+            thePlayer.lrDebugTargeting.GetMaxRange(),
+            1024,
+            theGame.lightRewrite.TAG_HAS_LIGHT,
+            FLAG_ExcludePlayer
+        );
     }
 
     private function CountComponents(entity: CGameplayEntity, className: name): int {
@@ -166,13 +152,15 @@ class LRDebug_LabelManager {
         return components.Size();
     }
 
-    private function CreateOnelinerForEntity(
-        entity: CGameplayEntity,
-        pointLights: int,
-        spotLights: int
-    ) {
-        var label: LRDebug_LightOneLiner = new LRDebug_LightOneLiner in entity;
+    private function CreateOnelinerForEntity(entity: CGameplayEntity) {
+        var label: LRDebug_LightOneLiner;
 
+        var pointLights: int = CountComponents(entity, 'CPointLightComponent');
+        var spotLights: int = CountComponents(entity, 'CSpotLightComponent');
+
+        if (pointLights == 0 && spotLights == 0) return;
+
+        label = new LRDebug_LightOneLiner in entity;
         label.Init(entity, pointLights, spotLights);
 
         tagSeq += 1;

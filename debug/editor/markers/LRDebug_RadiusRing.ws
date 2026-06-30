@@ -1,50 +1,41 @@
 /** Three great-circle rings of dots around a point light - an XYZ sphere sized to its radius */
-class LRDebug_RadiusRing {
+class LRDebug_RadiusRing extends LRDebug_MarkerPool {
     private const var dotCount: int;     default dotCount = 48;
     private const var pastel  : float;   default pastel = 0.5;
     private const var magenta : string;  default magenta = "#ff00ff";
 
-    private var dots   : array<LRDebug_WorldMarker>;
     private var offsets: array<Vector>;
 
-    public function Init(idBase: int) {
-        var id: int;
+    public function Init(baseId: int) {
+        SetBaseId(baseId);
 
-        id = BuildCircle(idBase, 0);
-        id = BuildCircle(id, 1);
-        id = BuildCircle(id, 2);
+        BuildCircle(0);
+        BuildCircle(1);
+        BuildCircle(2);
 
-        AddDot(id, Vector(1.0, 0.0, 0.0), magenta);
-        AddDot(id + 1, Vector(0.0, 1.0, 0.0), magenta);
-        AddDot(id + 2, Vector(0.0, 0.0, 1.0), magenta);
+        AddDot(Vector(1.0, 0.0, 0.0), magenta);
+        AddDot(Vector(0.0, 1.0, 0.0), magenta);
+        AddDot(Vector(0.0, 0.0, 1.0), magenta);
     }
 
     public function Update(center: Vector, radius: float) {
-        var i: int;
+        var i, count: int;
         var position: Vector;
 
-        for (i = 0; i < dots.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             position = center + offsets[i] * radius;
             // Reset W to 1 - Vector operators are basic and operate on all props
             position.W = 1.0;
-            dots[i].SetWorldPosition(position);
+            markers[i].SetWorldPosition(position);
         }
     }
 
-    public function Hide() {
+    /** One circle of dots; plane 0=XY, 1=XZ, 2=YZ */
+    private function BuildCircle(plane: int) {
         var i: int;
-
-        for (i = 0; i < dots.Size(); i += 1) {
-            dots[i].Hide();
-        }
-    }
-
-    /** One circle of dots; plane 0=XY, 1=XZ, 2=YZ. Returns the next free marker id */
-    private function BuildCircle(idStart: int, plane: int): int {
-        var i, id: int;
         var v, dir: Vector;
 
-        id = idStart;
         for (i = 0; i < dotCount; i += 1) {
             v = VecFromHeading((360.0 / (float)dotCount) * (float)i);
 
@@ -58,18 +49,12 @@ class LRDebug_RadiusRing {
                 dir = Vector(0.0, v.X, v.Y);
             }
 
-            AddDot(id, dir, DirectionColor(dir));
-            id += 1;
+            AddDot(dir, DirectionColor(dir));
         }
-        return id;
     }
 
-    private function AddDot(id: int, offset: Vector, color: string) {
-        var dot: LRDebug_WorldMarker;
-
-        dot = new LRDebug_WorldMarker in this;
-        dot.Init("&#8226;", 16, color, id);
-        dots.PushBack(dot);
+    private function AddDot(offset: Vector, color: string) {
+        AddMarker("&#8226;", 16, color);
         offsets.PushBack(offset);
     }
 

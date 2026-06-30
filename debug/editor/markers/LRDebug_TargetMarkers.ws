@@ -2,7 +2,7 @@
 function OnTick(timeDelta: float) {
     wrappedMethod(timeDelta);
 
-    if (thePlayer.lrDebugTargetMarkers) {
+    if (thePlayer.lrDebugLabels && thePlayer.lrDebugTargetMarkers) {
         thePlayer.lrDebugTargetMarkers.Update();
     }
 }
@@ -10,15 +10,15 @@ function OnTick(timeDelta: float) {
 /**
  * Shows a pinpoint HUD marker for each of an entities lights.
  */
-class LRDebug_TargetMarkers {
+class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     private const var markersPerType: int;  default markersPerType = 5;
 
-    private var markerIdSeq: int;  default markerIdSeq = 0x40004000;
-    private var labels    : array<LRDebug_WorldMarker>;
     private var components: array<CComponent>;
     private var radiusRing: LRDebug_RadiusRing;
 
     public function Init() {
+        SetBaseId(0x40004000);
+
         BuildPool("#00ff52");
         BuildPool("#b100ff");
 
@@ -32,13 +32,13 @@ class LRDebug_TargetMarkers {
     public function Update() {
         var i, count: int;
 
-        count = labels.Size();
+        count = markers.Size();
         for (i = 0; i < count; i += 1) {
-            if (thePlayer.lrDebugLabels && components[i]) {
-                labels[i].SetWorldPosition(components[i].GetWorldPosition());
+            if (components[i]) {
+                markers[i].SetWorldPosition(components[i].GetWorldPosition());
             }
             else {
-                labels[i].Hide();
+                markers[i].Hide();
             }
         }
 
@@ -50,7 +50,6 @@ class LRDebug_TargetMarkers {
         var light: CLightComponent;
 
         if (
-            thePlayer.lrDebugLabels &&
             thePlayer.lrDebugAttrEditor &&
             thePlayer.lrDebugAttrEditor.IsEditingRadius()
         ) {
@@ -59,6 +58,11 @@ class LRDebug_TargetMarkers {
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
         else radiusRing.Hide();
+    }
+
+    public function Hide() {
+        super.Hide();
+        radiusRing.Hide();
     }
 
     /** Bind the marker pool to the new target's light components (point then spot). */
@@ -82,11 +86,12 @@ class LRDebug_TargetMarkers {
     }
 
     private function Clear() {
-        var i: int;
+        var i, count: int;
 
-        for (i = 0; i < labels.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             components[i] = NULL;
-            labels[i].Hide();
+            markers[i].Hide();
         }
 
         radiusRing.Hide();
@@ -94,18 +99,10 @@ class LRDebug_TargetMarkers {
 
     private function BuildPool(color: string) {
         var i: int;
-        var marker: LRDebug_WorldMarker;
 
         for (i = 0; i < markersPerType; i += 1) {
-            marker = new LRDebug_WorldMarker in this;
-            marker.Init("+", 16, color, NextMarkerId());
-            labels.PushBack(marker);
+            AddMarker("+", 16, color);
             components.PushBack(NULL);
         }
-    }
-
-    private function NextMarkerId(): int {
-        markerIdSeq += 1;
-        return markerIdSeq;
     }
 }
