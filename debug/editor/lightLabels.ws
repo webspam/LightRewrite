@@ -30,6 +30,7 @@
 
 @addField(CR4Player) public var lrDebugLabels: bool;
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
+@addField(CR4Player) public var lrDebugTargeting: LRDebug_Targeting;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
@@ -51,6 +52,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
 
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
+    lrDebugTargeting = new LRDebug_Targeting in this;
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
@@ -143,9 +145,15 @@ function GetAllLightSourceTags(): array<name> {
 @addMethod(CR4Player)
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
-    if (theInput.IsActionPressed('LRDebug_CtrlModifier')) return;
 
-    lrDebugLabelManager.Scan();
+    if (
+        lrDebugTargeting.IsLocked() ||
+        theInput.IsActionPressed('LRDebug_CtrlModifier')
+    ) {
+        return;
+    }
+
+    lrDebugLabelManager.Update(lrDebugTargeting);
 }
 
 /*
@@ -187,7 +195,7 @@ function PostStateChange() {
 public function LRDebug_OnInputLock(action: SInputAction): bool {
     if (!IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.ToggleLock();
+    lrDebugTargeting.ToggleLock();
     return true;
 }
 
@@ -197,7 +205,6 @@ public function LRDebug_OnModifierKeyPressed(action: SInputAction): bool {
         lrDebugLabels &&
         (IsPressed(action) || IsReleased(action))
     ) {
-        LogChannel('LRDebug', "LRDebug_ModifierKeyPressed");
         lrDebugLabelManager.RegenerateNearbyOneliners();
     }
 
@@ -232,7 +239,8 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    lrDebugLabelManager.SwapLightSelection(lrDebugAttrEditor);
+    lrDebugAttrEditor.SwapLightSelection(lrDebugTargeting.GetTarget());
+    lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
@@ -326,7 +334,7 @@ public function LRDebug_OnShadowBlendFactorModifier(action: SInputAction): bool 
 /** Spot mode hold-edits inner angle; point mode toggles the bool */
 @addMethod(CR4Player)
 public function LRDebug_OnUseSpotlightColorModifier(action: SInputAction): bool {
-    if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
+    if (lrDebugAttrEditor.GetSelectedLightType(lrDebugTargeting.GetTarget()) == 'spot') {
         return LRDebug_EnterAdjust(action, 6);
     }
     return LRDebug_ToggleAttr(action, 6);
@@ -335,7 +343,7 @@ public function LRDebug_OnUseSpotlightColorModifier(action: SInputAction): bool 
 /** Spot mode hold-edits outer angle; point mode toggles the bool */
 @addMethod(CR4Player)
 public function LRDebug_OnAlignPointLightsModifier(action: SInputAction): bool {
-    if (lrDebugLabelManager.GetTargetLightType(lrDebugAttrEditor) == 'spot') {
+    if (lrDebugAttrEditor.GetSelectedLightType(lrDebugTargeting.GetTarget()) == 'spot') {
         return LRDebug_EnterAdjust(action, 7);
     }
     return LRDebug_ToggleAttr(action, 7);
@@ -403,7 +411,9 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-    lrDebugLabelManager.ApplyToggle(lrDebugAttrEditor);
+    if (lrDebugAttrEditor.ToggleAttribute(lrDebugTargeting.GetTarget())) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+    }
     return true;
 }
 
@@ -425,16 +435,15 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
         modifier = 0.2;
     }
 
-    lrDebugLabelManager.MoveTargetXY(
-        action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
-        0.0,
-        lrDebugAttrEditor
-    );
+    if (lrDebugAttrEditor.MoveOffsetXY(action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, 0.0, lrDebugTargeting.GetTarget())) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+    }
     return true;
 }
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
+    var changeMade: bool;
     var modifier: float = 1.0;
 
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
@@ -444,17 +453,21 @@ public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
     }
 
     if (LRDebug_MovingOffsetXY()) {
-        lrDebugLabelManager.MoveTargetXY(
+        changeMade = lrDebugAttrEditor.MoveOffsetXY(
             0.0,
             -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
-            lrDebugAttrEditor
+            lrDebugTargeting.GetTarget()
         );
+
+        if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
         return true;
     }
 
-    lrDebugLabelManager.ApplyContinuousAdjustment(
+    changeMade = lrDebugAttrEditor.AdjustAttributeContinuous(
         -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
-        lrDebugAttrEditor
+        lrDebugTargeting.GetTarget()
     );
+
+    if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }

@@ -26,12 +26,10 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Files
 
 - **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights
-- **`LRDebug_LabelManager.ws`** - The heart of the overlay: tracks nearby light entities, decides which one you are aiming at, and routes edits and label updates accordingly
+- **`LRDebug_Targeting.ws`** - Targets the most camera-forward light each scan and exposes it via `GetTarget()`
 - **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light
+- **`LRDebug_LabelManager.ws`** - Creates and refreshes a floating label for every nearby light entity each scan tick
 - **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity
-- **`LRDebug_TargetMarkers.ws`** - Markers for each individual light on the targeted entity
-- **`LRDebug_WorldMarker.ws`** - A single label pinned to a point in the world
-- **`LRDebug_ScreenLabel.ws`** - Base label pinned to a fixed screen position
 - **`LRDebug_PathLabel.ws`** - Screen label subclass that shows the active target's path at the bottom centre
 - **`LRDebug_ToastOneLiner.ws`** - Brief on-screen confirmation messages
 - **`LRDebug_EntityUtils.ws`** - Shared helpers for finding light components, recognising candles, and creating rewriters
@@ -40,7 +38,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 ## Data flow
 
 1. `lightLabels.ws` captures player input
-2. `LRDebug_LabelManager` picks the light you are aiming at
+2. `LRDebug_Targeting` picks the light you are aiming at
 3. `LRDebug_AttributeEditor` turns the input into an attribute change
 4. `ILightSourceRewriter` applies the change immediately
 5. `LRDebug_LightOneLiner` refreshes the floating label

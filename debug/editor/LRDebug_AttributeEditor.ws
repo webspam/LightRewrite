@@ -80,6 +80,8 @@ class LRDebug_AttributeEditor {
     public function GetSelectedLightType(target: CGameplayEntity): name {
         var hasPoint, hasSpot: bool;
 
+        if (!target) return 'point';
+
         if (LRDebug_FirstPointLight(target)) hasPoint = true;
         if (LRDebug_FirstSpotLight(target)) hasSpot = true;
 
@@ -91,6 +93,8 @@ class LRDebug_AttributeEditor {
     public function SwapLightSelection(target: CGameplayEntity) {
         var hasPoint, hasSpot: bool;
         var type: name;
+
+        if (!target) return;
 
         if (LRDebug_FirstPointLight(target)) hasPoint = true;
         if (LRDebug_FirstSpotLight(target)) hasSpot = true;

@@ -1,17 +1,3 @@
-/**
- * Maintains a pool of LRDebug_WorldMarker labels that pinpoint each light
- * component on the current target entity.
- *
- * SetTarget() rebinds the pool to a new entity's light components - point lights
- * to the green markers, spot lights to the purple ones. Update() repositions every
- * bound marker to its component's on-screen position and is driven from the oneliner
- * HUD module's tick (see the wrapMethod below) so the markers track at frame rate
- * rather than at the slower Scan() cadence.
- *
- * Lives on CR4Player as lrDebugTargetMarkers; LRDebug_LabelManager only tells it
- * which entity is the target.
- */
-
 @wrapMethod(CR4HudModuleOneliners)
 function OnTick(timeDelta: float) {
     wrappedMethod(timeDelta);
@@ -21,6 +7,9 @@ function OnTick(timeDelta: float) {
     }
 }
 
+/**
+ * Shows a pinpoint HUD marker for each of an entities lights.
+ */
 class LRDebug_TargetMarkers {
     private const var markersPerType: int;  default markersPerType = 5;
 
@@ -39,7 +28,7 @@ class LRDebug_TargetMarkers {
         Update();
     }
 
-    /** Reposition every bound marker; hide any without a component or while labels are off. */
+    /** Reposition every marker and hide any without a component. */
     public function Update() {
         var i, count: int;
 
@@ -56,16 +45,16 @@ class LRDebug_TargetMarkers {
         UpdateRadiusRing();
     }
 
-    /** Ring the first point light with radius dots, but only while radius is the selected attribute. */
+    /** Show a 2d indicator of the first lights radius (always pointlight if any are present) */
     private function UpdateRadiusRing() {
-        var light: CPointLightComponent;
+        var light: CLightComponent;
 
         if (
             thePlayer.lrDebugLabels &&
             thePlayer.lrDebugAttrEditor &&
             thePlayer.lrDebugAttrEditor.IsEditingRadius()
         ) {
-            light = (CPointLightComponent)components[0];
+            light = (CLightComponent)components[0];
         }
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
