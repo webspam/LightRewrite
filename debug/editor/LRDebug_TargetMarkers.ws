@@ -1,3 +1,12 @@
+@wrapMethod(CR4HudModuleOneliners)
+function OnTick(timeDelta: float) {
+    wrappedMethod(timeDelta);
+
+    if (thePlayer.lrDebugTargetMarkers) {
+        thePlayer.lrDebugTargetMarkers.Update();
+    }
+}
+
 /**
  * Maintains a pool of LRDebug_WorldMarker labels that pinpoint each light
  * component on the current target entity.
@@ -8,16 +17,6 @@
  * HUD module's tick (see the wrapMethod below) so the markers track at frame rate
  * rather than at the slower Scan() cadence.
  */
-
-@wrapMethod(CR4HudModuleOneliners)
-function OnTick(timeDelta: float) {
-    wrappedMethod(timeDelta);
-
-    if (thePlayer.lrDebugTargetMarkers) {
-        thePlayer.lrDebugTargetMarkers.Update();
-    }
-}
-
 class LRDebug_TargetMarkers {
     private const var markersPerType: int;  default markersPerType = 5;
 
