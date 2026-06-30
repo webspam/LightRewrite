@@ -82,9 +82,10 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     }
 
     private function Clear() {
-        var i: int;
+        var i, count: int;
 
-        for (i = 0; i < markers.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             components[i] = NULL;
             markers[i].Hide();
         }

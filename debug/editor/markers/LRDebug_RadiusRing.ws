@@ -19,10 +19,11 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
     }
 
     public function Update(center: Vector, radius: float) {
-        var i: int;
+        var i, count: int;
         var position: Vector;
 
-        for (i = 0; i < markers.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             position = center + offsets[i] * radius;
             // Reset W to 1 - Vector operators are basic and operate on all props
             position.W = 1.0;

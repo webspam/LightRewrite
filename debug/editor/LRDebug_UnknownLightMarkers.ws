@@ -52,9 +52,10 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
 
     /** A flag hides while the overlay is off or once its entity has streamed out of the world */
     public function Update() {
-        var i: int;
+        var i, count: int;
 
-        for (i = 0; i < markers.Size(); i += 1) {
+        count = markers.Size();
+        for (i = 0; i < count; i += 1) {
             if (thePlayer.lrDebugLabels && entities[i]) {
                 markers[i].SetWorldPosition(entities[i].GetWorldPosition());
             }
@@ -65,9 +66,10 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     }
 
     private function IsRegistered(entity: CGameplayEntity): bool {
-        var i: int;
+        var i, count: int;
 
-        for (i = 0; i < entities.Size(); i += 1) {
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
             if (entities[i] == entity) return true;
         }
         return false;
