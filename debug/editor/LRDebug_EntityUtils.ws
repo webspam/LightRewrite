@@ -8,6 +8,16 @@
 
 // ---- Component helpers ----
 
+@addMethod(CGameplayEntity)
+public function HasPointLight(): bool {
+    return GetComponentsCountByClassName('CPointLightComponent') > 0;
+}
+
+@addMethod(CGameplayEntity)
+public function HasSpotLight(): bool {
+    return GetComponentsCountByClassName('CSpotLightComponent') > 0;
+}
+
 function LRDebug_FirstPointLight(entity: CGameplayEntity): CPointLightComponent {
     var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CPointLightComponent');

@@ -78,28 +78,16 @@ class LRDebug_AttributeEditor {
     }
 
     public function GetSelectedLightType(target: CGameplayEntity): name {
-        var hasPoint, hasSpot: bool;
-
-        if (target) {
-            hasSpot = target.GetComponentsCountByClassName('CSpotLightComponent') > 0;
-            if (selectedLightType == 'spot' && hasSpot) return 'spot';
-
-            hasPoint = target.GetComponentsCountByClassName('CPointLightComponent') > 0;
-            if (!hasPoint && hasSpot) return 'spot';
+        if (target && target.HasSpotLight()) {
+            if (selectedLightType == 'spot' || !target.HasPointLight()) return 'spot';
         }
         return 'point';
     }
 
     public function SwapLightSelection(target: CGameplayEntity) {
-        var hasPoint, hasSpot: bool;
         var type: name;
 
-        if (!target) return;
-
-        if (LRDebug_FirstPointLight(target)) hasPoint = true;
-        if (LRDebug_FirstSpotLight(target)) hasSpot = true;
-
-        if (!hasPoint || !hasSpot) return;
+        if (!target || !target.HasPointLight() || !target.HasSpotLight()) return;
 
         if (selectedLightType == 'spot') selectedLightType = 'point';
         else selectedLightType = 'spot';
