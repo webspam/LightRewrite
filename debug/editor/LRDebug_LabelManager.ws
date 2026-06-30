@@ -1,7 +1,7 @@
 /**
  * Manages the lifecycle of LRDebug_LightOneLiner instances.
  *
- * Scan() is called each timer tick to ensure every nearby light entity has an
+ * Update() is called to ensure every nearby light entity has an
  * oneliner (creating if missing, restarting if idle), then hands the entities to
  * LRDebug_Targeting so it can pick the highlighted target.
  */
