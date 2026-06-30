@@ -28,6 +28,7 @@ class LRDebug_LabelManager {
         var entities: array<CGameplayEntity>;
         var entity: CGameplayEntity;
         var i, count, pointLights, spotLights: int;
+        var targetChanged: bool;
 
         FindNearbyLights(entities);
 
@@ -48,7 +49,8 @@ class LRDebug_LabelManager {
             CreateOnelinerForEntity(entity, pointLights, spotLights);
         }
 
-        targeting.Select(entities);
+        targetChanged = targeting.Scan(entities);
+        if (targetChanged) UpdatePathLabel(targeting.GetTarget());
     }
 
     public function HideScreenLabels() {
@@ -61,7 +63,7 @@ class LRDebug_LabelManager {
         UpdatePathLabel(thePlayer.lrDebugTargeting.GetTarget());
     }
 
-    public function UpdatePathLabel(target: CGameplayEntity) {
+    private function UpdatePathLabel(target: CGameplayEntity) {
         if (!showPathLabels || !target) {
             pathLabel.Hide();
             return;

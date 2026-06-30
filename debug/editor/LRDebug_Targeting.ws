@@ -23,7 +23,11 @@ class LRDebug_Targeting {
         return locked;
     }
 
-    public function Select(entities: array<CGameplayEntity>) {
+    /**
+     * Updates the current target: the closest in-range target to the centre of the viewport.
+     * Returns: `true` if target changed
+     */
+    public function Scan(entities: array<CGameplayEntity>): bool {
         var entity, bestEntity: CGameplayEntity;
         var i, count: int;
         var camPos, camDir, entPos, toEnt: Vector;
@@ -64,12 +68,12 @@ class LRDebug_Targeting {
             }
         }
 
+        if (bestEntity == target) return false;
         ApplyTargetChange(bestEntity);
+        return true;
     }
 
     private function ApplyTargetChange(bestEntity: CGameplayEntity) {
-        if (bestEntity == target) return;
-
         if (target && target.lrdebugOneliner) {
             target.lrdebugOneliner.SetHighlighted(false);
         }
@@ -82,10 +86,6 @@ class LRDebug_Targeting {
 
         if (thePlayer.lrDebugTargetMarkers) {
             thePlayer.lrDebugTargetMarkers.SetTarget(target);
-        }
-
-        if (thePlayer.lrDebugLabelManager) {
-            thePlayer.lrDebugLabelManager.UpdatePathLabel(target);
         }
     }
 
