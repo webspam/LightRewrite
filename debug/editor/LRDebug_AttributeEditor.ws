@@ -545,18 +545,13 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleShadowMode(target: CGameplayEntity) {
-        var light: CLightComponent;
-        var params: CLightRewriteSourceParams;
-        var lightParams: ILightRewriteParams;
-        var rewriter: ILightSourceRewriter;
-        var type: name;
+        var rewriter: ILightSourceRewriter = target.LRDebug_GetOrCreateRewriter();
+        var params: CLightRewriteSourceParams = target.LRDebug_GetParams(rewriter);
 
-        rewriter = target.LRDebug_GetOrCreateRewriter();
-        params = target.LRDebug_GetParams(rewriter);
-        type = GetSelectedLightType(target);
-        light = GetLight(target, type);
+        var type: name = GetSelectedLightType(target);
+        var light: CLightComponent = GetLight(target, type);
+        var lightParams: ILightRewriteParams = GetSharedParams(params, target, type);
 
-        lightParams = GetSharedParams(params, target, type);
         if (!lightParams.castShadows.has) {
             lightParams.castShadows.has = true;
             if (light) lightParams.castShadows.value = light.shadowCastingMode;
