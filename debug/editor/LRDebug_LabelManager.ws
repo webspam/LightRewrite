@@ -1,9 +1,7 @@
 /**
- * Manages the lifecycle of LRDebug_LightOneLiner instances.
- *
- * Update() is called to ensure every nearby light entity has an
- * oneliner (creating if missing, restarting if idle), then hands the entities to
- * LRDebug_Targeting so it can pick the highlighted target.
+ * Creates and updates the overlay's labels: the per-light oneliners, the toast,
+ * and the UI / edit-status indicators. Owns the singleton labels and keeps their
+ * fiddly setup in one place.
  */
 class LRDebug_LabelManager {
     private var tagSeq        : int;
