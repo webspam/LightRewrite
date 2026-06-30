@@ -93,12 +93,6 @@ class LRDebug_Targeting {
         }
     }
 
-    public function RefreshTargetOneliner() {
-        if (!target || !target.lrdebugOneliner) return;
-
-        target.lrdebugOneliner.RegenerateText();
-    }
-
     private function GetCameraPositionAndDirection(
         out cameraPosition: Vector,
         out cameraDirection: Vector

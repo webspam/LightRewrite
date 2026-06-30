@@ -126,9 +126,9 @@ function OptionValueChanged(groupId: int, optionName: name, optionValue: string)
         isEnabled != wasEnabled &&
         thePlayer &&
         thePlayer.lrDebugLabels &&
-        thePlayer.lrDebugTargeting
+        thePlayer.lrDebugLabelManager
     ) {
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
+        thePlayer.lrDebugLabelManager.RefreshTargetOneliner();
     }
 }
 
@@ -235,7 +235,7 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SwapLightSelection(lrDebugTargeting.GetTarget());
-    lrDebugTargeting.RefreshTargetOneliner();
+    lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
@@ -386,7 +386,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (IsPressed(action)) {
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
         lrDebugAttrEditor.ResetAdjustAccumulator();
-        lrDebugTargeting.RefreshTargetOneliner();
+        lrDebugLabelManager.RefreshTargetOneliner();
         thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
         return true;
@@ -407,7 +407,7 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
 
     lrDebugAttrEditor.SetAttributeIndex(attrIndex);
     if (lrDebugAttrEditor.ToggleAttribute(lrDebugTargeting.GetTarget())) {
-        lrDebugTargeting.RefreshTargetOneliner();
+        lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;
 }
@@ -431,7 +431,7 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
     }
 
     if (lrDebugAttrEditor.MoveOffsetXY(action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, 0.0, lrDebugTargeting.GetTarget())) {
-        lrDebugTargeting.RefreshTargetOneliner();
+        lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;
 }
@@ -448,13 +448,13 @@ public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
 
     if (LRDebug_MovingOffsetXY()) {
         if (lrDebugAttrEditor.MoveOffsetXY(0.0, -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, lrDebugTargeting.GetTarget())) {
-            lrDebugTargeting.RefreshTargetOneliner();
+            lrDebugLabelManager.RefreshTargetOneliner();
         }
         return true;
     }
 
     if (lrDebugAttrEditor.AdjustAttributeContinuous(-action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, lrDebugTargeting.GetTarget())) {
-        lrDebugTargeting.RefreshTargetOneliner();
+        lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;
 }

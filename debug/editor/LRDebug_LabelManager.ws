@@ -91,6 +91,14 @@ class LRDebug_LabelManager {
         }
     }
 
+    public function RefreshTargetOneliner() {
+        var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
+
+        if (!target || !target.lrdebugOneliner) return;
+
+        target.lrdebugOneliner.RegenerateText();
+    }
+
     public function ShowGroupLabel() {
         groupLabel.Show();
     }
@@ -119,7 +127,7 @@ class LRDebug_LabelManager {
             ShowToast("LightRewrite: OFF");
         }
 
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
+        RefreshTargetOneliner();
     }
 
     public function ResetTarget() {
@@ -134,7 +142,7 @@ class LRDebug_LabelManager {
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
 
-        thePlayer.lrDebugTargeting.RefreshTargetOneliner();
+        RefreshTargetOneliner();
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
