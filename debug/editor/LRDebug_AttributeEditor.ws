@@ -544,15 +544,12 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
-    public function CycleShadowMode(target: CGameplayEntity): bool {
+    public function CycleShadowMode(target: CGameplayEntity) {
         var light: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
-
-        if (!target) return false;
-        if (!target.lrdebugOneliner) return false;
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
@@ -567,7 +564,6 @@ class LRDebug_AttributeEditor {
         lightParams.castShadows.value = NextShadowMode(lightParams.castShadows.value);
 
         ApplyParams(target, rewriter, params);
-        return true;
     }
 
     private function NextShadowMode(mode: ELightShadowCastingMode): ELightShadowCastingMode {

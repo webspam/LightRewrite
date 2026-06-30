@@ -281,11 +281,15 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
+    var target: CGameplayEntity;
+
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
-    if (lrDebugAttrEditor.CycleShadowMode(lrDebugTargeting.GetTarget())) {
-        lrDebugLabelManager.RefreshTargetOneliner();
-    }
+    target = lrDebugTargeting.GetTarget();
+    if (!target || !target.lrdebugOneliner) return true;
+
+    lrDebugAttrEditor.CycleShadowMode(target);
+    lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
