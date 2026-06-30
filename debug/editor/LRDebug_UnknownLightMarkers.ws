@@ -2,7 +2,7 @@
 function OnTick(timeDelta: float) {
     wrappedMethod(timeDelta);
 
-    if (thePlayer.lrDebugUnknownMarkers) {
+    if (thePlayer.lrDebugLabels && thePlayer.lrDebugUnknownMarkers) {
         thePlayer.lrDebugUnknownMarkers.Update();
     }
 }
@@ -54,13 +54,12 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
         entities.PushBack(entity);
     }
 
-    /** A flag hides while the overlay is off or once its entity has streamed out of the world */
     public function Update() {
         var i, count: int;
 
         count = markers.Size();
         for (i = 0; i < count; i += 1) {
-            if (thePlayer.lrDebugLabels && entities[i]) {
+            if (entities[i]) {
                 markers[i].SetWorldPosition(entities[i].GetWorldPosition());
             }
             else {
