@@ -438,6 +438,7 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
+    var changeMade: bool;
     var modifier: float = 1.0;
 
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
@@ -447,14 +448,21 @@ public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
     }
 
     if (LRDebug_MovingOffsetXY()) {
-        if (lrDebugAttrEditor.MoveOffsetXY(0.0, -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, lrDebugTargeting.GetTarget())) {
-            lrDebugLabelManager.RefreshTargetOneliner();
-        }
+        changeMade = lrDebugAttrEditor.MoveOffsetXY(
+            0.0,
+            -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
+            lrDebugTargeting.GetTarget()
+        );
+
+        if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
         return true;
     }
 
-    if (lrDebugAttrEditor.AdjustAttributeContinuous(-action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, lrDebugTargeting.GetTarget())) {
-        lrDebugLabelManager.RefreshTargetOneliner();
-    }
+    changeMade = lrDebugAttrEditor.AdjustAttributeContinuous(
+        -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
+        lrDebugTargeting.GetTarget()
+    );
+
+    if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
