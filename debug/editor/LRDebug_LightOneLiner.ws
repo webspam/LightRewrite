@@ -314,7 +314,7 @@ state FollowEntity in LRDebug_LightOneLiner {
     }
 
     entry function FollowEntity(): void {
-        var maxRange: float = NORMAL_RANGE * MULTIPLIER * MULTIPLIER;
+        var maxRange: float = 999.9;
 
         while (
             thePlayer.lrDebugLabels &&
