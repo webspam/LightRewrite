@@ -8,9 +8,8 @@ function OnTick(timeDelta: float) {
 }
 
 /**
- * Pinpoints where each light physically sits on the target entity, which may carry
- * several spread away from its single entity label. Repositioned every HUD frame (the
- * wrapMethod above) so the markers stay pinned as the camera moves.
+ * Pinpoints each light's actual position on the target entity, which may hold several
+ * spread away from its single label; repositioned every frame to track the moving camera.
  */
 class LRDebug_TargetMarkers {
     private const var markersPerType: int;  default markersPerType = 5;
