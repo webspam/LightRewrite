@@ -18,10 +18,14 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private const var COLOUR    : string;  default COLOUR = "#ff0000";
     private const var SCAN_RANGE: float;   default SCAN_RANGE = 10.0;
 
-    private var entities: array<CGameplayEntity>;
+    private var entities : array<CGameplayEntity>;
+    private var pathLabel: LRDebug_PathLabel;
 
     public function Init() {
         SetBaseId(0x40007000);
+
+        pathLabel = new LRDebug_PathLabel in this;
+        pathLabel.Init(0x40006002, 0.13, 0.9);
     }
 
     /** Sweep nearby entities for light sources the mod never tagged and flag each one */
@@ -47,6 +51,11 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
         }
     }
 
+    public function Hide() {
+        super.Hide();
+        pathLabel.Hide();
+    }
+
     private function Register(entity: CGameplayEntity) {
         if (IsRegistered(entity)) return;
 
@@ -67,6 +76,39 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
                 markers[i].Hide();
             }
         }
+
+        UpdatePathLabel();
+    }
+
+    /** Name the nearest untagged light so its layer/entity can be folded into a profile */
+    private function UpdatePathLabel() {
+        var nearest: CGameplayEntity = NearestEntity();
+
+        if (!nearest) {
+            pathLabel.Hide();
+            return;
+        }
+
+        pathLabel.ShowPath(nearest);
+    }
+
+    private function NearestEntity(): CGameplayEntity {
+        var playerPos: Vector = thePlayer.GetWorldPosition();
+        var nearest: CGameplayEntity;
+        var bestDist, dist: float;
+        var i, count: int;
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            if (!entities[i]) continue;
+
+            dist = VecDistanceSquared(playerPos, entities[i].GetWorldPosition());
+            if (!nearest || dist < bestDist) {
+                nearest = entities[i];
+                bestDist = dist;
+            }
+        }
+        return nearest;
     }
 
     private function IsRegistered(entity: CGameplayEntity): bool {
