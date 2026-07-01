@@ -37,9 +37,6 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
-    // Virtual constructor
-    public function Init() {}
-
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
         if (enabled.has) target.enabled = enabled;
