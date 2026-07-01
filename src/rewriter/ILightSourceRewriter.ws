@@ -8,8 +8,8 @@ abstract class ILightSourceRewriter {
     // The parameters for this light source
     protected var params: CLightRewriteSourceParams;
 
-    // When set, RewriteLight uses these instead of params.
-    protected var menuOverrideParams: CLightRewriteSourceParams;
+    // Extensible API; not used by main code
+    protected var overrideParams: CLightRewriteSourceParams;
 
     // Spotlight spawned for a spawn="true" override
     protected var spawnedSpotlight: CEntity;
@@ -18,19 +18,11 @@ abstract class ILightSourceRewriter {
     protected var maxSafeRadius: float;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
-    public function Init(
-        parentEntity: CGameplayEntity,
-        params: CLightRewriteSourceParams,
-        globalOverrides: CLightRewriteSourceParams
-    ) {
+    public function Init(parentEntity: CGameplayEntity, params: CLightRewriteSourceParams) {
         this.parentEntity = parentEntity;
         this.params = params;
 
         parentEntity.AddTag(params.tag);
-        if (globalOverrides) {
-            parentEntity.AddTag(globalOverrides.tag);
-            SetGlobalOverride(globalOverrides);
-        }
     }
 
     // Set the spacing pass's radius bound; re-applied on every RewriteLight
@@ -53,14 +45,8 @@ abstract class ILightSourceRewriter {
         return pointLight.radius;
     }
 
-    // If the params passed in (global params) are enabled, set the menu override params to them.
-    public function SetGlobalOverride(params: CLightRewriteSourceParams) {
-        if (params.enabled.value) menuOverrideParams = params;
-        else menuOverrideParams = NULL;
-    }
-
     protected function GetEffectiveParams(): CLightRewriteSourceParams {
-        if (menuOverrideParams) return menuOverrideParams;
+        if (overrideParams) return overrideParams;
         return params;
     }
 

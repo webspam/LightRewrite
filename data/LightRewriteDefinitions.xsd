@@ -28,28 +28,10 @@
       <xs:documentation>LightRewrite configuration section.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="menu_defaults"
-                  type="menuDefaultsType"
-                  minOccurs="0" />
       <xs:element name="overrides"
                   type="overridesType"
                   minOccurs="0"
                   maxOccurs="unbounded" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="menuDefaultsType">
-    <xs:annotation>
-      <xs:documentation>The default values for the mod menu config overrides.</xs:documentation>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element name="menu_default"
-                  type="overrideEntryType"
-                  maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation>Configuration for a single light source type in the mod menu.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -320,11 +302,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="LRT_Candle" />
       <xs:enumeration value="LRT_Spotlight" />
-      <xs:enumeration value="LRT_Torch" />
-      <xs:enumeration value="LRT_Candelabra" />
-      <xs:enumeration value="LRT_Brazier" />
-      <xs:enumeration value="LRT_Campfire" />
-      <xs:enumeration value="LRT_Chandelier" />
     </xs:restriction>
   </xs:simpleType>
 

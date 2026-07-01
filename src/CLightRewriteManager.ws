@@ -41,7 +41,6 @@ class CLightRewriteManager {
         entity: CGameplayEntity
     ): ILightSourceRewriter {
         var rewriter: ILightSourceRewriter;
-        var globalOverrides: CLightRewriteSourceParams;
 
         switch (params.rewriterType.value) {
             case LRT_Candle:     rewriter = new CCandleLightRewriter in entity;     break;
@@ -49,8 +48,7 @@ class CLightRewriteManager {
             default:             rewriter = new CGenericLightRewriter in entity;    break;
         }
 
-        globalOverrides = settings.GetGlobalOverrideParams(GetGlobalOverrideType(entity));
-        rewriter.Init(entity, params, globalOverrides);
+        rewriter.Init(entity, params);
         return rewriter;
     }
 
@@ -117,21 +115,6 @@ class CLightRewriteManager {
         }
     }
 
-    public function SetGlobalOverride(params: CLightRewriteSourceParams) {
-        var entities: array<CEntity>;
-        var entity: CGameplayEntity;
-        var i: int;
-        var count: int;
-
-        theGame.GetEntitiesByTag(params.tag, entities);
-        count = entities.Size();
-
-        for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)entities[i];
-            if (entity) entity.lightSourceRewriter.SetGlobalOverride(params);
-        }
-    }
-
     private function GetAllLightSourceEntities(out entities: array<CGameplayEntity>) {
         var nodes: array<CNode>;
         var entity: CGameplayEntity;
@@ -147,18 +130,5 @@ class CLightRewriteManager {
             entity = (CGameplayEntity)nodes[i];
             if (entity) entities.PushBack(entity);
         }
-    }
-
-    // Get the global override type for a given entity. Borderline legacy code at this point.
-    private function GetGlobalOverrideType(entity: CGameplayEntity): ELightRewriteType {
-        var fileName: string = StrAfterLast(entity.ToString(), StrChar(92));
-
-        if (StrFindFirst(fileName, "candelabra") != -1) return LRT_Candelabra;
-        else if (StrFindFirst(fileName, "chandelier") != -1) return LRT_Chandelier;
-        else if (StrFindFirst(fileName, "candle") != -1) return LRT_Candle;
-        else if (StrFindFirst(fileName, "torch") != -1) return LRT_Torch;
-        else if (StrFindFirst(fileName, "brazier") != -1) return LRT_Brazier;
-        else if (StrFindFirst(fileName, "campfire") != -1) return LRT_Campfire;
-        return LRT_None;
     }
 }
