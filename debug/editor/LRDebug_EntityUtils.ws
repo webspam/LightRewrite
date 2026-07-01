@@ -114,12 +114,12 @@ public function LRDebug_GetEffectiveParams(): CLightRewriteSourceParams {
 
 @addMethod(ILightSourceRewriter)
 public function LRDebug_SetMenuOverrideParams(params: CLightRewriteSourceParams) {
-    this.menuOverrideParams = params;
+    this.overrideParams = params;
 }
 
 @addMethod(ILightSourceRewriter)
 public function LRDebug_ClearMenuOverrideParams() {
-    this.menuOverrideParams = NULL;
+    this.overrideParams = NULL;
 }
 
 // ---- Rewriter access ----

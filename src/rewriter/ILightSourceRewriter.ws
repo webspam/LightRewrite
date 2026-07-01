@@ -8,8 +8,8 @@ abstract class ILightSourceRewriter {
     // The parameters for this light source
     protected var params: CLightRewriteSourceParams;
 
-    // Debug editor's live-edit override; GetEffectiveParams prefers it over params
-    protected var menuOverrideParams: CLightRewriteSourceParams;
+    // Extensible API; not used by main code
+    protected var overrideParams: CLightRewriteSourceParams;
 
     // Spotlight spawned for a spawn="true" override
     protected var spawnedSpotlight: CEntity;
@@ -46,7 +46,7 @@ abstract class ILightSourceRewriter {
     }
 
     protected function GetEffectiveParams(): CLightRewriteSourceParams {
-        if (menuOverrideParams) return menuOverrideParams;
+        if (overrideParams) return overrideParams;
         return params;
     }
 
