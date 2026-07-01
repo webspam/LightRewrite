@@ -15,6 +15,7 @@
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
+ * IK_NumPad0=(Action=LRDebug_Undo)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -73,6 +74,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
@@ -309,6 +311,23 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ResetTarget();
+    return true;
+}
+
+/** Ignored mid-hold so an in-progress edit finishes before its predecessor is reverted */
+@addMethod(CR4Player)
+public function LRDebug_OnInputUndo(action: SInputAction): bool {
+    if (
+        !lrDebugLabels ||
+        !IsPressed(action) ||
+        !thePlayer ||
+        lrDebugAdjusting ||
+        !theInput.IsActionPressed('LRDebug_CtrlModifier')
+    ) {
+        return false;
+    }
+
+    lrDebugLabelManager.Undo(lrDebugHistory);
     return true;
 }
 
