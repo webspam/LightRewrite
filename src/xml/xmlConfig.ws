@@ -22,13 +22,8 @@ function FindLightRewriteProfileNames(out profileNames: array<name>) {
 
 function ParseLightRewriteType(str: string): ELightRewriteType {
     switch (str) {
-        case "LRT_Candle":      return LRT_Candle;
-        case "LRT_Spotlight":   return LRT_Spotlight;
-        case "LRT_Torch":       return LRT_Torch;
-        case "LRT_Brazier":     return LRT_Brazier;
-        case "LRT_Candelabra":  return LRT_Candelabra;
-        case "LRT_Campfire":    return LRT_Campfire;
-        case "LRT_Chandelier":  return LRT_Chandelier;
-        default:                return LRT_None;
+        case "LRT_Candle":     return LRT_Candle;
+        case "LRT_Spotlight":  return LRT_Spotlight;
+        default:               return LRT_None;
     }
 }

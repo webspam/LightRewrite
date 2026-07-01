@@ -302,11 +302,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="LRT_Candle" />
       <xs:enumeration value="LRT_Spotlight" />
-      <xs:enumeration value="LRT_Torch" />
-      <xs:enumeration value="LRT_Candelabra" />
-      <xs:enumeration value="LRT_Brazier" />
-      <xs:enumeration value="LRT_Campfire" />
-      <xs:enumeration value="LRT_Chandelier" />
     </xs:restriction>
   </xs:simpleType>
 
