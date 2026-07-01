@@ -14,9 +14,8 @@ function FindLightRewriteProfileNames(out profileNames: array<name>) {
             !profileNames.Contains(nameVal)
         ) {
             profileNames.PushBack(nameVal);
+            LogLightRewriteXml("[XmlConfig] Found profile: " + NameToString(nameVal));
         }
-
-        LogLightRewrite("[XmlConfig] Found profile: " + NameToString(nameVal));
     }
 }
 
