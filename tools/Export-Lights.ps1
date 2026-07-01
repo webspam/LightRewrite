@@ -351,8 +351,8 @@ function BuildXml {
     $schemaLocation = 'LightRewriteDefinitions.xsd'
     $parent = Split-Path $OutputFile -Parent
     if (
-        !(Test-Path (Join-Path $parent 'LightRewriteDefinitions.xsd')) &&
-        Test-Path (Join-Path $parent '..' 'LightRewriteDefinitions.xsd')
+        !(Test-Path (Join-Path $parent 'LightRewriteDefinitions.xsd')) -and
+        (Test-Path (Join-Path $parent '..' 'LightRewriteDefinitions.xsd'))
     ) {
         $schemaLocation = "../$schemaLocation"
     }
