@@ -110,8 +110,6 @@ class CLightRewriteSettings {
         theGame.SaveUserSettings();
     }
 
-    // Delegates to W3GameParams.ReadLightRewriteConfig(), which can write to
-    // its own fields directly.
     public function ReadGameConfig() {
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
