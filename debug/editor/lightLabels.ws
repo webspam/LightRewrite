@@ -15,6 +15,7 @@
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
+ * IK_NumPad0=(Action=LRDebug_Undo)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -32,6 +33,7 @@
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugTargeting: LRDebug_Targeting;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
+@addField(CR4Player) public var lrDebugHistory: LRDebug_EditHistory;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
@@ -55,6 +57,8 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugLabelManager.Init();
     lrDebugTargeting = new LRDebug_Targeting in this;
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
+    lrDebugHistory = new LRDebug_EditHistory in this;
+    lrDebugAttrEditor.SetHistory(lrDebugHistory);
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
@@ -70,6 +74,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
@@ -309,6 +314,23 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
     return true;
 }
 
+/** Ignored mid-hold so an in-progress edit finishes before its predecessor is reverted */
+@addMethod(CR4Player)
+public function LRDebug_OnInputUndo(action: SInputAction): bool {
+    if (
+        !lrDebugLabels ||
+        !IsPressed(action) ||
+        !thePlayer ||
+        lrDebugAdjusting ||
+        !theInput.IsActionPressed('LRDebug_CtrlModifier')
+    ) {
+        return false;
+    }
+
+    lrDebugLabelManager.Undo(lrDebugHistory);
+    return true;
+}
+
 @addMethod(CR4Player)
 public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
@@ -411,7 +433,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
 
     if (IsPressed(action)) {
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-        lrDebugAttrEditor.ResetAdjustAccumulator();
+        lrDebugAttrEditor.BeginAdjust(lrDebugTargeting.GetTarget());
         lrDebugLabelManager.RefreshTargetOneliner();
         thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
@@ -421,6 +443,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (IsReleased(action)) {
         thePlayer.EnableManualCameraControl(true, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = false;
+        lrDebugAttrEditor.EndAdjust();
         return true;
     }
 
@@ -432,7 +455,7 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-    if (lrDebugAttrEditor.ToggleAttribute(lrDebugTargeting.GetTarget())) {
+    if (lrDebugAttrEditor.Toggle(lrDebugTargeting.GetTarget())) {
         lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;

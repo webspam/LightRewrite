@@ -121,6 +121,27 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
+    /** Regenerate the reverted lights' labels so their values reflect the restored state */
+    public function Undo(history: LRDebug_EditHistory) {
+        var record: LRDebug_EditEntry;
+        var i, count: int;
+
+        record = history.Undo();
+        if (!record) {
+            ShowToast("Nothing to undo");
+            return;
+        }
+
+        count = record.entities.Size();
+        for (i = 0; i < count; i += 1) {
+            if (record.entities[i] && record.entities[i].lrdebugOneliner) {
+                record.entities[i].lrdebugOneliner.RegenerateText();
+            }
+        }
+
+        ShowToast("Undo: " + record.label);
+    }
+
     public function ResetTarget() {
         var target: CGameplayEntity = thePlayer.lrDebugTargeting.GetTarget();
         var rewriter: ILightSourceRewriter;
@@ -130,6 +151,7 @@ class LRDebug_LabelManager {
         rewriter = target.LRDebug_GetOrCreateRewriter();
         rewriter.LRDebug_ClearMenuOverrideParams();
         target.LRDebug_ClearDebugParams();
+        thePlayer.lrDebugHistory.ForgetEntity(target);
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
 
