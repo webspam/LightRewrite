@@ -97,25 +97,31 @@ public function LightRewriteProfileChanged() {
 // We must wrap the OnSpawned methods of multiple classes with broken inheritance chains
 @wrapMethod(CGameplayEntity)
 function OnSpawned(spawnData: SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
+    InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
 @wrapMethod(CInteractiveEntity)
 function OnSpawned(spawnData: SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
+    InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
 @wrapMethod(W3FireSource)
 function OnSpawned(spawnData: SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
+    InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
 @wrapMethod(W3Campfire)
 function OnSpawned(spawnData: SEntitySpawnData) {
-    if (!spawnData.restored) InitialiseLightRewrite();
+    InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+
+@wrapMethod(CMajorPlaceOfPowerEntity)
+function OnSpawned(spawnData: SEntitySpawnData) {
+    InitialiseLightRewrite();
     wrappedMethod(spawnData);
 }
 
