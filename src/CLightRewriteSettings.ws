@@ -3,19 +3,19 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION      : int;     default CONFIG_VERSION = 12;
+    private const var CONFIG_VERSION       : int;     default CONFIG_VERSION = 12;
     // Group name constants (must match XML Group id values)
-    private const var GENERAL_GROUP       : name;    default GENERAL_GROUP = 'LightRewrite_General';
+    private const var GENERAL_GROUP        : name;    default GENERAL_GROUP = 'LightRewrite_General';
     // Label key constants (must match XML Var id values)
-    private const var CURRENT_PRESET_LABEL: string;  default CURRENT_PRESET_LABEL = 'LightRewrite_CurrentProfile';
-    private const var NONE_PRESET_LABEL   : name;    default NONE_PRESET_LABEL = 'LightRewrite_None';
+    private const var CURRENT_PROFILE_LABEL: string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
+    private const var NONE_PROFILE_LABEL   : name;    default NONE_PROFILE_LABEL = 'LightRewrite_None';
     // Setting name constants (must match XML Var id values)
-    private const var ENABLED             : name;    default ENABLED = 'Enabled';
-    private const var INIT_VERSION        : name;    default INIT_VERSION = 'InitVersion';
-    private const var CURRENT_PRESET      : name;    default CURRENT_PRESET = 'CurrentProfile';
-    private const var SPACING_MODE        : name;    default SPACING_MODE = 'SpacingMode';
-    private const var SPACING_COUNT       : name;    default SPACING_COUNT = 'SpacingCount';
-    private const var SPACING_BUDGET      : name;    default SPACING_BUDGET = 'SpacingBudget';
+    private const var ENABLED              : name;    default ENABLED = 'Enabled';
+    private const var INIT_VERSION         : name;    default INIT_VERSION = 'InitVersion';
+    private const var CURRENT_PROFILE      : name;    default CURRENT_PROFILE = 'CurrentProfile';
+    private const var SPACING_MODE         : name;    default SPACING_MODE = 'SpacingMode';
+    private const var SPACING_COUNT        : name;    default SPACING_COUNT = 'SpacingCount';
+    private const var SPACING_BUDGET       : name;    default SPACING_BUDGET = 'SpacingBudget';
 
     // Internal group IDs resolved at init time
     private var generalGroupId: int;
@@ -51,7 +51,7 @@ class CLightRewriteSettings {
 
         overrideGroups = LoadLightRewriteOverrides(this);
 
-        profileOptions.PushBack(NONE_PRESET_LABEL);
+        profileOptions.PushBack(NONE_PROFILE_LABEL);
         FindLightRewriteProfileNames(profileOptions);
     }
 
@@ -113,12 +113,12 @@ class CLightRewriteSettings {
     public function ReadGameConfig() {
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        profileIndex = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PRESET), 0);
+        profileIndex = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PROFILE), 0);
         if (profileIndex >= 0 && profileIndex < profileOptions.Size()) {
             currentProfile = profileOptions[profileIndex];
         }
         else {
-            currentProfile = NONE_PRESET_LABEL;
+            currentProfile = NONE_PROFILE_LABEL;
         }
 
         spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
@@ -145,7 +145,7 @@ class CLightRewriteSettings {
             // ForceProcessFlashStorage() inside UpdateSpacingMenuDisabledState resets dynamic
             // option lists back to XML defaults, so we must restore them afterwards.
             if (ShouldRefreshProfileMenu(optionName)) {
-                ReplacePresetMenuOptions();
+                ReplaceProfileMenuOptions();
             }
 
             // We've just turned the mod off
@@ -179,20 +179,25 @@ class CLightRewriteSettings {
         previousSpacingAmount = GetSpacingAmount();
 
         UpdateSpacingMenuDisabledState();
-        ReplacePresetMenuOptions();
+        ReplaceProfileMenuOptions();
     }
 
     private function ShouldRefreshProfileMenu(optionName: name): bool {
         return optionName == SPACING_MODE;
     }
 
-    private function ReplacePresetMenuOptions() {
+    private function ReplaceProfileMenuOptions() {
         var optionKeys: array<name>;
 
-        optionKeys.PushBack(NONE_PRESET_LABEL);
+        optionKeys.PushBack(NONE_PROFILE_LABEL);
         FindLightRewriteProfileNames(optionKeys);
 
-        LR_ReplaceFlashMenuOptions(CURRENT_PRESET, CURRENT_PRESET_LABEL, GENERAL_GROUP, optionKeys);
+        LR_ReplaceFlashMenuOptions(
+            CURRENT_PROFILE,
+            CURRENT_PROFILE_LABEL,
+            GENERAL_GROUP,
+            optionKeys
+        );
     }
 
     // Ensures only the active mode's slider is enabled.
@@ -245,7 +250,7 @@ class CLightRewriteSettings {
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
-        if (currentProfile == NONE_PRESET_LABEL) return NULL;
+        if (currentProfile == NONE_PROFILE_LABEL) return NULL;
 
         count = overrideGroups.Size();
         for (i = 0; i < count; i += 1) {
