@@ -50,6 +50,7 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private function Register(entity: CGameplayEntity) {
         if (IsRegistered(entity)) return;
 
+        LogChannel('LRDebugUnknown', "Marking: " + entity.ToString());
         AddMarker("?", FONT_SIZE, COLOUR);
         entities.PushBack(entity);
     }
