@@ -17,6 +17,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - Swap between point and spot lights
 - Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting
 - Toggle group edit to apply every change to all lights sharing the target's entity and layer path
+- Undo the last edit with Ctrl held (a hold, a toggle, or a shadow-mode cycle each count as one step)
 
 ## Requires
 
@@ -28,6 +29,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - **`lightLabels.ws`** - Entry point. Hooks the overlay into the player and the input bindings, and drives the periodic scan for nearby lights
 - **`LRDebug_Targeting.ws`** - Targets the most camera-forward light each scan and exposes it via `GetTarget()`
 - **`LRDebug_AttributeEditor.ws`** - Holds the attribute and light type currently being edited, and applies each change to the light
+- **`LRDebug_EditHistory.ws`** - Undo stack; snapshots the edited lights before each change and restores them on undo
 - **`LRDebug_LabelManager.ws`** - Creates and refreshes a floating label for every nearby light entity each scan tick
 - **`LRDebug_LightOneLiner.ws`** - The floating label shown above a light entity
 - **`LRDebug_PathLabel.ws`** - Screen label subclass that shows the active target's path at the bottom centre
