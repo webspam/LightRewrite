@@ -156,7 +156,8 @@ function LRDebug_ExportEditedLights() {
     var entities: array<CEntity>;
     var entity: CGameplayEntity;
     var params, baseline: CLightRewriteSourceParams;
-    var descriptor, entityFile, layerPath, fields: string;
+    var descriptor, entityFile, layerPath, fields, line: string;
+    var loggedLines: array<string>;
     var i, count, exported: int;
     var toast: LRDebug_ToastOneLiner;
 
@@ -179,10 +180,11 @@ function LRDebug_ExportEditedLights() {
         layerPath = LRDebug_ParseLayerDir(descriptor);
         if (entityFile == "") continue;
 
-        LogChannel(
-            'LRDebug_Export',
-            "entityFile=" + entityFile + " layerPath=" + layerPath + fields
-        );
+        line = "entityFile=" + entityFile + " layerPath=" + layerPath + fields;
+        if (loggedLines.Contains(line)) continue;
+        loggedLines.PushBack(line);
+
+        LogChannel('LRDebug_Export', line);
         exported += 1;
     }
 
