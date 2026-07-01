@@ -105,7 +105,7 @@ ForEach-Object {
 }
 
 # Copy mod scripts
-Copy-Item -Recurse -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
+Copy-Item -Recurse -Filter "*.ws" -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
 
 # Copy prebuilt localisation binaries (generated out-of-band)
 New-Directory $modContentDir
