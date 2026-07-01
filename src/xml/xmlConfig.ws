@@ -1,6 +1,6 @@
 function FindLightRewriteProfileNames(out profileNames: array<name>) {
     var dm: CDefinitionsManagerAccessor;
-    var lrNode, overridesNode, entryNode: SCustomNode;
+    var lrNode: SCustomNode;
     var i, count: int;
     var nameVal: name;
 
