@@ -18,19 +18,11 @@ abstract class ILightSourceRewriter {
     protected var maxSafeRadius: float;
 
     // Virtual; Lazy constructor.  If reimplementing, ensure super.Init(parentEntity) is called.
-    public function Init(
-        parentEntity: CGameplayEntity,
-        params: CLightRewriteSourceParams,
-        globalOverrides: CLightRewriteSourceParams
-    ) {
+    public function Init(parentEntity: CGameplayEntity, params: CLightRewriteSourceParams) {
         this.parentEntity = parentEntity;
         this.params = params;
 
         parentEntity.AddTag(params.tag);
-        if (globalOverrides) {
-            parentEntity.AddTag(globalOverrides.tag);
-            SetGlobalOverride(globalOverrides);
-        }
     }
 
     // Set the spacing pass's radius bound; re-applied on every RewriteLight
@@ -51,12 +43,6 @@ abstract class ILightSourceRewriter {
             return pointLight.lightRewriteOriginalValues.radius;
         }
         return pointLight.radius;
-    }
-
-    // If the params passed in (global params) are enabled, set the menu override params to them.
-    public function SetGlobalOverride(params: CLightRewriteSourceParams) {
-        if (params.enabled.value) menuOverrideParams = params;
-        else menuOverrideParams = NULL;
     }
 
     protected function GetEffectiveParams(): CLightRewriteSourceParams {

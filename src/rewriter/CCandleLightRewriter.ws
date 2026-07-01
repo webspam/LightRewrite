@@ -10,12 +10,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
     // Stores the names of the active fire FX slots found on this entity.
     private var fireFxSlotNames: array<name>;
 
-    public function Init(
-        parentEntity: CGameplayEntity,
-        params: CLightRewriteSourceParams,
-        globalOverrides: CLightRewriteSourceParams
-    ) {
-        super.Init(parentEntity, params, globalOverrides);
+    public function Init(parentEntity: CGameplayEntity, params: CLightRewriteSourceParams) {
+        super.Init(parentEntity, params);
 
         FindLightRewriteFireFxSlotNames();
     }
