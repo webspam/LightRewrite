@@ -32,6 +32,7 @@
 @addField(CR4Player) public var lrDebugLabelManager: LRDebug_LabelManager;
 @addField(CR4Player) public var lrDebugTargeting: LRDebug_Targeting;
 @addField(CR4Player) public var lrDebugAttrEditor: LRDebug_AttributeEditor;
+@addField(CR4Player) public var lrDebugHistory: LRDebug_EditHistory;
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
@@ -55,6 +56,8 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugLabelManager.Init();
     lrDebugTargeting = new LRDebug_Targeting in this;
     lrDebugAttrEditor = new LRDebug_AttributeEditor in this;
+    lrDebugHistory = new LRDebug_EditHistory in this;
+    lrDebugAttrEditor.SetHistory(lrDebugHistory);
     lrDebugTargetMarkers = new LRDebug_TargetMarkers in this;
     lrDebugTargetMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
@@ -411,7 +414,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
 
     if (IsPressed(action)) {
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-        lrDebugAttrEditor.ResetAdjustAccumulator();
+        lrDebugAttrEditor.BeginAdjust(lrDebugTargeting.GetTarget());
         lrDebugLabelManager.RefreshTargetOneliner();
         thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
@@ -421,6 +424,7 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (IsReleased(action)) {
         thePlayer.EnableManualCameraControl(true, theInput.lrDebug.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = false;
+        lrDebugAttrEditor.EndAdjust();
         return true;
     }
 
@@ -432,7 +436,7 @@ public function LRDebug_ToggleAttr(action: SInputAction, attrIndex: int): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SetAttributeIndex(attrIndex);
-    if (lrDebugAttrEditor.ToggleAttribute(lrDebugTargeting.GetTarget())) {
+    if (lrDebugAttrEditor.Toggle(lrDebugTargeting.GetTarget())) {
         lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;

@@ -14,6 +14,13 @@ class LRDebug_AttributeEditor {
     private var groupEditTarget: CGameplayEntity;
     private var groupMembers   : array<CGameplayEntity>;
 
+    private var history      : LRDebug_EditHistory;
+    private var adjustChanged: bool;
+
+    public function SetHistory(value: LRDebug_EditHistory) {
+        history = value;
+    }
+
     public function SetAttributeIndex(index: int) {
         attrIndex = index;
     }
@@ -382,6 +389,7 @@ class LRDebug_AttributeEditor {
         }
 
         ApplyParams(target, rewriter, params);
+        adjustChanged = true;
         return true;
     }
 
@@ -429,10 +437,11 @@ class LRDebug_AttributeEditor {
         }
 
         ApplyParams(target, rewriter, params);
+        adjustChanged = true;
         return true;
     }
 
-    public function ResetAdjustAccumulator() {
+    private function ResetAdjustAccumulator() {
         adjustAccumulator = 0.0;
     }
 
@@ -486,7 +495,7 @@ class LRDebug_AttributeEditor {
      * Flips a boolean attribute on the target and applies it live. Bools toggle on a
      * key-press rather than via analog hold-to-edit.
      */
-    public function ToggleAttribute(target: CGameplayEntity, optional attr: name): bool {
+    private function ToggleAttribute(target: CGameplayEntity, optional attr: name): bool {
         var light: CLightComponent;
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
@@ -533,12 +542,23 @@ class LRDebug_AttributeEditor {
     }
 
     public function CycleShadowMode(target: CGameplayEntity) {
-        var rewriter: ILightSourceRewriter = target.LRDebug_GetOrCreateRewriter();
-        var params: CLightRewriteSourceParams = target.LRDebug_GetParams(rewriter);
+        var rewriter: ILightSourceRewriter;
+        var params: CLightRewriteSourceParams;
+        var type: name;
+        var light: CLightComponent;
+        var lightParams: ILightRewriteParams;
+        var scope: array<CGameplayEntity>;
 
-        var type: name = GetSelectedLightType(target);
-        var light: CLightComponent = GetLight(target, type);
-        var lightParams: ILightRewriteParams = GetSharedParams(params, target, type);
+        if (!target) return;
+
+        GetEditScope(target, scope);
+        history.StartEdit(scope, "shadow mode");
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        type = GetSelectedLightType(target);
+        light = GetLight(target, type);
+        lightParams = GetSharedParams(params, target, type);
 
         if (!lightParams.castShadows.has) {
             lightParams.castShadows.has = true;
@@ -547,6 +567,7 @@ class LRDebug_AttributeEditor {
         lightParams.castShadows.value = NextShadowMode(lightParams.castShadows.value);
 
         ApplyParams(target, rewriter, params);
+        history.Commit(true);
     }
 
     private function NextShadowMode(mode: ELightShadowCastingMode): ELightShadowCastingMode {
@@ -566,6 +587,52 @@ class LRDebug_AttributeEditor {
 
     public function IsGroupEditing(): bool {
         return groupEdit;
+    }
+
+    public function Toggle(target: CGameplayEntity): bool {
+        var changed: bool;
+        var scope: array<CGameplayEntity>;
+
+        if (!target) return false;
+
+        GetEditScope(target, scope);
+        history.StartEdit(scope, GetCurrentAttrLabel(GetSelectedLightType(target)));
+        changed = ToggleAttribute(target);
+        history.Commit(changed);
+        return changed;
+    }
+
+    /** Analog edits span a key hold, so the snapshot is taken here and committed at EndAdjust */
+    public function BeginAdjust(target: CGameplayEntity) {
+        var scope: array<CGameplayEntity>;
+
+        if (!target) return;
+
+        ResetAdjustAccumulator();
+        adjustChanged = false;
+        GetEditScope(target, scope);
+        history.StartEdit(scope, GetCurrentAttrLabel(GetSelectedLightType(target)));
+    }
+
+    public function EndAdjust() {
+        history.Commit(adjustChanged);
+    }
+
+    /** The undo scope is every light the edit touches, so a group edit reverts all members */
+    private function GetEditScope(target: CGameplayEntity, out entities: array<CGameplayEntity>) {
+        var i, count: int;
+
+        entities.Clear();
+        if (!target) return;
+
+        entities.PushBack(target);
+        if (!groupEdit) return;
+
+        CacheGroupMembers(target);
+        count = groupMembers.Size();
+        for (i = 0; i < count; i += 1) {
+            if (groupMembers[i]) entities.PushBack(groupMembers[i]);
+        }
     }
 
     private function ApplyParams(
