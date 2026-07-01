@@ -119,6 +119,12 @@ function OnSpawned(spawnData: SEntitySpawnData) {
     wrappedMethod(spawnData);
 }
 
+@wrapMethod(CMajorPlaceOfPowerEntity)
+function OnSpawned(spawnData: SEntitySpawnData) {
+    InitialiseLightRewrite();
+    wrappedMethod(spawnData);
+}
+
 // Ensure lights that are ignited (e.g. by the player) are rewritten.
 @wrapMethod(CGameplayEntity)
 function AddTag(tag: name) {
