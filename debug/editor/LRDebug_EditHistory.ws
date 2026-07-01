@@ -49,6 +49,21 @@ class LRDebug_EditHistory {
         return record;
     }
 
+    /** A reset clears the light's baseline too, so restoring its old snapshot would break export */
+    public function ForgetEntity(entity: CGameplayEntity) {
+        var i: int;
+
+        if (pending) {
+            pending.Remove(entity);
+            if (pending.entities.Size() == 0) pending = NULL;
+        }
+
+        for (i = entries.Size() - 1; i >= 0; i -= 1) {
+            entries[i].Remove(entity);
+            if (entries[i].entities.Size() == 0) entries.Erase(i);
+        }
+    }
+
     /** Falls back to effective params when unedited, so undoing a no-op leaves no debug params behind */
     private function SnapshotParams(entity: CGameplayEntity): CLightRewriteSourceParams {
         var rewriter: ILightSourceRewriter;
@@ -95,4 +110,13 @@ class LRDebug_EditEntry {
     public var entities : array<CGameplayEntity>;
     public var snapshots: array<CLightRewriteSourceParams>;
     public var label    : string;
+
+    public function Remove(entity: CGameplayEntity) {
+        var idx: int = entities.FindFirst(entity);
+
+        if (idx == -1) return;
+
+        entities.Erase(idx);
+        snapshots.Erase(idx);
+    }
 }

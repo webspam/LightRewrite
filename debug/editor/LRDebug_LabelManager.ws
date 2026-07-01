@@ -151,6 +151,7 @@ class LRDebug_LabelManager {
         rewriter = target.LRDebug_GetOrCreateRewriter();
         rewriter.LRDebug_ClearMenuOverrideParams();
         target.LRDebug_ClearDebugParams();
+        thePlayer.lrDebugHistory.ForgetEntity(target);
         rewriter.RestoreOriginalState();
         rewriter.RewriteLight();
 
