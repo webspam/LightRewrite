@@ -8,7 +8,7 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideG
     var dm: CDefinitionsManagerAccessor;
     var lrNode, overridesNode: SCustomNode;
     var i, count, weight: int;
-    var profileName: name;
+    var profileName, inheritsProfile: name;
 
     dm = theGame.GetDefinitionsManager();
     lrNode = dm.GetCustomDefinition('light_rewrite');
@@ -24,9 +24,13 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideG
         }
 
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
+        if (!dm.GetCustomNodeAttributeValueName(overridesNode, 'inherits_profile', inheritsProfile)) {
+            inheritsProfile = '';
+        }
         LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
 
         group = LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName);
+        group.inheritsProfile = inheritsProfile;
         if (group.overrides.Size() > 0) {
             groups.PushBack(group);
         }

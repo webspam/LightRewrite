@@ -1,6 +1,7 @@
 class CLightRewriteOverrideGroup {
-    public var weight     : int;
-    public var profileName: name;
+    public var weight         : int;
+    public var profileName    : name;
+    public var inheritsProfile: name;
 
     public var filter: CLightRewriteMatchAll;
 
