@@ -85,7 +85,6 @@ if (!$SkipDlc) {
 }
 
 Remove-DirectoryIfExists $modsRoot
-New-Directory $scriptsDir
 
 # Stage XML files into the in-bundle path
 $xmlSourceDir = Join-Path $RepoRoot "data"
@@ -105,7 +104,7 @@ ForEach-Object {
 }
 
 # Copy mod scripts
-Copy-Item -Recurse -Filter "*.ws" -Path (Join-Path $RepoRoot "src/*") -Destination $scriptsDir
+Copy-Item -Recurse -Filter "*.ws" -Path (Join-Path $RepoRoot "src") -Destination $scriptsDir
 
 # Copy prebuilt localisation binaries (generated out-of-band)
 New-Directory $modContentDir
