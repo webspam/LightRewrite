@@ -24,7 +24,7 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideG
         }
 
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
-        LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + NameToString(profileName) + ", overrides: " + overridesNode.subNodes.Size());
+        LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + profileName + ", overrides: " + overridesNode.subNodes.Size());
 
         group = LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName);
         if (group.overrides.Size() > 0) {
@@ -126,7 +126,7 @@ function LoadLightRewriteOverrideGroup(
             override.spotlight = ParseLightRewriteSpotlightParams(override, dm, spotlightNode);
         }
 
-        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + NameToString(override.tag) + ", rules=" + override.condition.rules.Size() + ")");
+        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + override.tag + ", rules=" + override.condition.rules.Size() + ")");
         group.overrides.PushBack(override);
     }
 
