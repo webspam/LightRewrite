@@ -114,10 +114,11 @@ function LR_CollectProfileChainGroups(
     chain: array<name>
 ): array<CLightRewriteOverrideGroup> {
     var result: array<CLightRewriteOverrideGroup>;
-    var i, j, count: int;
+    var i, j, count, chainCount: int;
 
     count = groups.Size();
-    for (i = 0; i < chain.Size(); i += 1) {
+    chainCount = chain.Size();
+    for (i = 0; i < chainCount; i += 1) {
         for (j = 0; j < count; j += 1) {
             if (groups[j].profileName == chain[i]) result.PushBack(groups[j]);
         }
