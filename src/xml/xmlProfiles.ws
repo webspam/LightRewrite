@@ -2,90 +2,112 @@ function BuildLightRewriteProfiles(
     owner: CObject,
     groups: array<CLightRewriteOverrideGroup>
 ): array<CLightRewriteProfile> {
-    var profiles: array<CLightRewriteProfile>;
-    var profileNames, bases, chain: array<name>;
-    var profile: CLightRewriteProfile;
+    var profiles, resolved: array<CLightRewriteProfile>;
+    var chain: array<name>;
     var i, count: int;
 
-    LR_CollectProfileBases(groups, profileNames, bases);
+    profiles = LR_CollectProfileBases(owner, groups);
 
-    count = profileNames.Size();
+    count = profiles.Size();
     for (i = 0; i < count; i += 1) {
-        if (!LR_TryResolveProfileChain(profileNames[i], profileNames, bases, chain)) {
-            LogLightRewriteXml("Dropping profile '" + NameToString(profileNames[i]) + "' - circular inheritance.");
+        if (!LR_TryResolveProfileChain(profiles[i], profiles, chain)) {
+            LogLightRewriteXml("Dropping profile '" + profiles[i].profileName + "' - circular inheritance.");
             continue;
         }
 
-        profile = new CLightRewriteProfile in owner;
-        profile.profileName = profileNames[i];
-        profile.groups = LR_CollectProfileChainGroups(groups, chain);
-        profiles.PushBack(profile);
+        profiles[i].groups = LR_CollectProfileChainGroups(groups, chain);
+        resolved.PushBack(profiles[i]);
+    }
+
+    return resolved;
+}
+
+/** A profile split across files may declare bases on any of its groups */
+function LR_CollectProfileBases(
+    owner: CObject,
+    groups: array<CLightRewriteOverrideGroup>
+): array<CLightRewriteProfile> {
+    var profiles: array<CLightRewriteProfile>;
+    var profile: CLightRewriteProfile;
+    var i, j, count: int;
+
+    count = groups.Size();
+    for (i = 0; i < count; i += 1) {
+        profile = LR_FindProfile(profiles, groups[i].profileName);
+        if (!profile) {
+            profile = new CLightRewriteProfile in owner;
+            profile.profileName = groups[i].profileName;
+            profiles.PushBack(profile);
+        }
+
+        for (j = 0; j < groups[i].inherits.Size(); j += 1) {
+            if (!profile.bases.Contains(groups[i].inherits[j])) {
+                profile.bases.PushBack(groups[i].inherits[j]);
+            }
+        }
     }
 
     return profiles;
 }
 
-/** A profile split across files may declare its base on any of its groups */
-function LR_CollectProfileBases(
-    groups: array<CLightRewriteOverrideGroup>,
-    out profileNames: array<name>,
-    out bases: array<name>
-) {
-    var i, idx, count: int;
+function LR_FindProfile(
+    profiles: array<CLightRewriteProfile>,
+    profileName: name
+): CLightRewriteProfile {
+    var i, count: int;
 
-    count = groups.Size();
+    count = profiles.Size();
     for (i = 0; i < count; i += 1) {
-        idx = profileNames.FindFirst(groups[i].profileName);
-        if (idx == -1) {
-            profileNames.PushBack(groups[i].profileName);
-            bases.PushBack(groups[i].inheritsProfile);
+        if (profiles[i].profileName == profileName) return profiles[i];
+    }
+
+    return NULL;
+}
+
+/** Chain lists bases in application order, the profile itself last; false when inheritance is circular */
+function LR_TryResolveProfileChain(
+    profile: CLightRewriteProfile,
+    profiles: array<CLightRewriteProfile>,
+    out chain: array<name>
+): bool {
+    var visiting: array<name>;
+
+    chain.Clear();
+    return LR_ExpandProfileChain(profile, profiles, visiting, chain);
+}
+
+function LR_ExpandProfileChain(
+    profile: CLightRewriteProfile,
+    profiles: array<CLightRewriteProfile>,
+    out visiting: array<name>,
+    out chain: array<name>
+): bool {
+    var baseProfile: CLightRewriteProfile;
+    var i, count: int;
+
+    // A base shared through separate branches is applied once, at its earliest position
+    if (chain.Contains(profile.profileName)) return true;
+    if (visiting.Contains(profile.profileName)) return false;
+
+    visiting.PushBack(profile.profileName);
+
+    count = profile.bases.Size();
+    for (i = 0; i < count; i += 1) {
+        baseProfile = LR_FindProfile(profiles, profile.bases[i]);
+        if (!baseProfile) {
+            LogLightRewriteXml("Profile '" + profile.profileName + "' inherits unknown profile '" + profile.bases[i] + "'.");
             continue;
         }
 
-        if (groups[i].inheritsProfile == '') continue;
-
-        if (bases[idx] == '') {
-            bases[idx] = groups[i].inheritsProfile;
-        }
-        else if (bases[idx] != groups[i].inheritsProfile) {
-            LogLightRewriteXml("Profile '" + NameToString(groups[i].profileName) + "' declares conflicting bases; keeping '" + NameToString(bases[idx]) + "'.");
-        }
-    }
-}
-
-/** Chain is ordered self to root; false when inheritance is circular */
-function LR_TryResolveProfileChain(
-    profileName: name,
-    profileNames: array<name>,
-    bases: array<name>,
-    out chain: array<name>
-): bool {
-    var current, baseProfile: name;
-    var idx: int;
-
-    chain.Clear();
-    current = profileName;
-
-    while (true) {
-        chain.PushBack(current);
-
-        idx = profileNames.FindFirst(current);
-        baseProfile = bases[idx];
-        if (baseProfile == '') return true;
-        if (chain.Contains(baseProfile)) return false;
-
-        if (profileNames.FindFirst(baseProfile) == -1) {
-            LogLightRewriteXml("Profile '" + NameToString(current) + "' inherits unknown profile '" + NameToString(baseProfile) + "'.");
-            return true;
-        }
-
-        current = baseProfile;
+        if (!LR_ExpandProfileChain(baseProfile, profiles, visiting, chain)) return false;
     }
 
+    visiting.Remove(profile.profileName);
+    chain.PushBack(profile.profileName);
     return true;
 }
 
-/** Base profile groups sort before inheritors on equal weight */
+/** Chain order breaks weight ties, so later bases and finally the profile itself win */
 function LR_CollectProfileChainGroups(
     groups: array<CLightRewriteOverrideGroup>,
     chain: array<name>
@@ -94,7 +116,7 @@ function LR_CollectProfileChainGroups(
     var i, j, count: int;
 
     count = groups.Size();
-    for (i = chain.Size() - 1; i >= 0; i -= 1) {
+    for (i = 0; i < chain.Size(); i += 1) {
         for (j = 0; j < count; j += 1) {
             if (groups[j].profileName == chain[i]) result.PushBack(groups[j]);
         }

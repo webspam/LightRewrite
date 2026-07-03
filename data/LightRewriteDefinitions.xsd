@@ -40,6 +40,14 @@
       <xs:documentation>Per-area overrides for light source defaults.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="inherits"
+                  type="nonEmptyString"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Comma-separated list of base profiles this profile builds on. Their overrides are merged in as if they were part of this profile, applied in listed order before this profile's own; on equal weight, later bases win and this profile wins over all bases. Inheritance is transitive.</xs:documentation>
+          <xs:documentation>Any circular inheritance chain is rejected and every profile in it is dropped entirely.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="matches"
                   type="sharedMatchesType"
                   minOccurs="0">
@@ -60,14 +68,6 @@
                   use="required">
       <xs:annotation>
         <xs:documentation>The profile that these overrides are part of. Users can change the active profile from the in-game mod menu. A profile can be split across multiple files.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="inherits_profile"
-                  type="nonEmptyString"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>Name of another profile whose overrides this profile builds on. The inherited profile's overrides are merged in as if they were part of this profile; on equal weight, this profile's overrides win. Inheritance is transitive.</xs:documentation>
-        <xs:documentation>Any circular inheritance chain is rejected and every profile in it is dropped entirely.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="weight"
