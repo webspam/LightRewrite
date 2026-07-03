@@ -144,11 +144,9 @@ class CLightRewriteSettings {
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
-            if (optionName == SPACING_MODE) UpdateSpacingMenuDisabledState();
-
-            // ForceProcessFlashStorage() inside UpdateSpacingMenuDisabledState resets dynamic
-            // option lists back to XML defaults, so we must restore them afterwards.
-            if (ShouldRefreshProfileMenu(optionName)) {
+            if (optionName == SPACING_MODE) {
+                UpdateSpacingMenuDisabledState();
+                // UpdateSpacingMenuDisabledState's flash reset wipes the dynamic profile list
                 ReplaceProfileMenuOptions();
             }
 
@@ -184,10 +182,6 @@ class CLightRewriteSettings {
 
         UpdateSpacingMenuDisabledState();
         ReplaceProfileMenuOptions();
-    }
-
-    private function ShouldRefreshProfileMenu(optionName: name): bool {
-        return optionName == SPACING_MODE;
     }
 
     private function ReplaceProfileMenuOptions() {
