@@ -1,7 +1,9 @@
 // Resolves profile inheritance from override groups and answers profile lookups
 class CLightRewriteProfileSet {
     // Excludes profiles dropped for circular inheritance
-    private var profiles: array<CLightRewriteProfile>;
+    private var profiles    : array<CLightRewriteProfile>;
+    // Paired with `profiles`; must be kept in sync
+    private var profileNames: array<name>;
 
     // Scratch shared across the recursive resolve of one profile
     private var chain   : array<name>;
@@ -9,6 +11,7 @@ class CLightRewriteProfileSet {
 
     public function Build(groups: array<CLightRewriteOverrideGroup>) {
         var resolved: array<CLightRewriteProfile>;
+        var resolvedNames: array<name>;
         var inheritance: string;
         var i, count: int;
 
@@ -28,33 +31,24 @@ class CLightRewriteProfileSet {
 
             profiles[i].groups = CollectChainGroups(groups);
             resolved.PushBack(profiles[i]);
+            resolvedNames.PushBack(profiles[i].profileName);
         }
 
         profiles = resolved;
+        profileNames = resolvedNames;
     }
 
     public function GetNames(): array<name> {
-        var names: array<name>;
-        var i, count: int;
-
-        count = profiles.Size();
-        names.Grow(count);
-        for (i = 0; i < count; i += 1) {
-            names[i] = profiles[i].profileName;
-        }
-
-        return names;
+        return profileNames;
     }
 
     public function Find(profileName: name): CLightRewriteProfile {
-        var i, count: int;
+        var i: int;
 
-        count = profiles.Size();
-        for (i = 0; i < count; i += 1) {
-            if (profiles[i].profileName == profileName) return profiles[i];
-        }
+        i = profileNames.FindFirst(profileName);
+        if (i == -1) return NULL;
 
-        return NULL;
+        return profiles[i];
     }
 
     /** A profile split across files may declare bases on any of its groups */
@@ -69,6 +63,7 @@ class CLightRewriteProfileSet {
                 profile = new CLightRewriteProfile in this;
                 profile.profileName = groups[i].profileName;
                 profiles.PushBack(profile);
+                profileNames.PushBack(profile.profileName);
             }
 
             inheritCount = groups[i].inherits.Size();
