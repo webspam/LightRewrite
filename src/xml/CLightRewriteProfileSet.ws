@@ -11,6 +11,9 @@ class CLightRewriteProfileSet {
 
     private var duplicateInherits: bool;
 
+    // Profiles with a duplicate or unknown inherits declaration
+    private var dirtyProfiles: array<name>;
+
     public function Build(groups: array<CLightRewriteOverrideGroup>) {
         var resolved: array<CLightRewriteProfile>;
         var resolvedNames: array<name>;
@@ -48,6 +51,10 @@ class CLightRewriteProfileSet {
         return duplicateInherits;
     }
 
+    public function IsDirty(profileName: name): bool {
+        return dirtyProfiles.Contains(profileName);
+    }
+
     public function Find(profileName: name): CLightRewriteProfile {
         var i: int = profileNames.FindFirst(profileName);
 
@@ -77,6 +84,7 @@ class CLightRewriteProfileSet {
             // File merge order is engine-controlled, so which declaration wins is arbitrary
             if (profile.bases.Size() > 0) {
                 duplicateInherits = true;
+                MarkDirty(profile.profileName);
                 LogLightRewriteXml("Profile '" + profile.profileName + "' declares inherits more than once; using the last one read.");
                 profile.bases.Clear();
             }
@@ -87,6 +95,10 @@ class CLightRewriteProfileSet {
                 }
             }
         }
+    }
+
+    private function MarkDirty(profileName: name) {
+        if (!dirtyProfiles.Contains(profileName)) dirtyProfiles.PushBack(profileName);
     }
 
     /** Chain lists bases in application order, the profile itself last; false when inheritance is circular */
@@ -110,6 +122,7 @@ class CLightRewriteProfileSet {
         for (i = 0; i < count; i += 1) {
             baseProfile = Find(profile.bases[i]);
             if (!baseProfile) {
+                MarkDirty(profile.profileName);
                 LogLightRewriteXml("Profile '" + profile.profileName + "' inherits unknown profile '" + profile.bases[i] + "'.");
                 continue;
             }
