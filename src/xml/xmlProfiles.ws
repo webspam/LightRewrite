@@ -29,7 +29,7 @@ function LR_CollectProfileBases(
 ): array<CLightRewriteProfile> {
     var profiles: array<CLightRewriteProfile>;
     var profile: CLightRewriteProfile;
-    var i, j, count: int;
+    var i, j, count, inheritCount: int;
 
     count = groups.Size();
     for (i = 0; i < count; i += 1) {
@@ -40,7 +40,8 @@ function LR_CollectProfileBases(
             profiles.PushBack(profile);
         }
 
-        for (j = 0; j < groups[i].inherits.Size(); j += 1) {
+        inheritCount = groups[i].inherits.Size();
+        for (j = 0; j < inheritCount; j += 1) {
             if (!profile.bases.Contains(groups[i].inherits[j])) {
                 profile.bases.PushBack(groups[i].inherits[j]);
             }
