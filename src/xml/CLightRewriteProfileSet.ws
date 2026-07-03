@@ -9,6 +9,8 @@ class CLightRewriteProfileSet {
     private var chain   : array<name>;
     private var visiting: array<name>;
 
+    private var duplicateInherits: bool;
+
     public function Build(groups: array<CLightRewriteOverrideGroup>) {
         var resolved: array<CLightRewriteProfile>;
         var resolvedNames: array<name>;
@@ -42,6 +44,10 @@ class CLightRewriteProfileSet {
         return profileNames;
     }
 
+    public function HasDuplicateInherits(): bool {
+        return duplicateInherits;
+    }
+
     public function Find(profileName: name): CLightRewriteProfile {
         var i: int = profileNames.FindFirst(profileName);
 
@@ -66,6 +72,15 @@ class CLightRewriteProfileSet {
             }
 
             inheritCount = groups[i].inherits.Size();
+            if (inheritCount == 0) continue;
+
+            // File merge order is engine-controlled, so which declaration wins is arbitrary
+            if (profile.bases.Size() > 0) {
+                duplicateInherits = true;
+                LogLightRewriteXml("Profile '" + profile.profileName + "' declares inherits more than once; using the last one read.");
+                profile.bases.Clear();
+            }
+
             for (j = 0; j < inheritCount; j += 1) {
                 if (!profile.bases.Contains(groups[i].inherits[j])) {
                     profile.bases.PushBack(groups[i].inherits[j]);
