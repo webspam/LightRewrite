@@ -59,6 +59,34 @@ function Copy-XmlAsUtf16Le([string]$Source, [string]$Destination) {
   [System.IO.File]::WriteAllText($Destination, [System.IO.File]::ReadAllText($Source), [System.Text.Encoding]::Unicode)
 }
 
+function Find-ProfileInheritanceProblem {
+  param(
+    [Parameter(Mandatory)] [string] $ProfileName,
+    [Parameter(Mandatory)] [hashtable] $ProfileBases,
+    [System.Collections.Generic.List[string]] $Seen = [System.Collections.Generic.List[string]]::new(),
+    [string[]] $Path = @()
+  )
+
+  if ($Path -contains $ProfileName) {
+    return "circular inheritance: $(($Path + $ProfileName) -join ' -> ')"
+  }
+  # Reject diamond inheritance in base profiles
+  if ($Seen -contains $ProfileName) {
+    return "diamond inheritance: '$ProfileName' was already seen"
+  }
+  $Seen.Add($ProfileName)
+
+  foreach ($base in $ProfileBases[$ProfileName]) {
+    if (!$ProfileBases.ContainsKey($base)) {
+      Write-Warning "Profile '$ProfileName' inherits from unknown base '$base'"
+    }
+    $problem = Find-ProfileInheritanceProblem -ProfileName $base -ProfileBases $ProfileBases -Seen $Seen -Path ($Path + $ProfileName)
+    if ($problem) { return $problem }
+  }
+
+  return $null
+}
+
 # Configuration
 
 $RepoRoot = (Resolve-Path -Path $RepoRoot).Path
@@ -83,6 +111,34 @@ $dlcSourceDir = Join-Path $RepoRoot "dlc"
 
 # Main execution
 
+$xmlSourceDir = Join-Path $RepoRoot "data"
+
+# Reject diamond or circular profile inheritance before touching the build dirs
+$profileBases = @{}
+Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
+  $doc = [xml][System.IO.File]::ReadAllText($_.FullName)
+  foreach ($overrides in $doc.SelectNodes('//overrides')) {
+    $profileName = $overrides.GetAttribute('profile_name')
+    if (!$profileName) { continue }
+    if (!$profileBases.ContainsKey($profileName)) { $profileBases[$profileName] = @() }
+    foreach ($inherits in $overrides.SelectNodes('inherits')) {
+      foreach ($base in $inherits.InnerText -split ',') {
+        $base = $base.Trim()
+        if ($base -and $profileBases[$profileName] -notcontains $base) {
+          $profileBases[$profileName] += $base
+        }
+      }
+    }
+  }
+}
+
+foreach ($profileName in @($profileBases.Keys)) {
+  $problem = Find-ProfileInheritanceProblem -ProfileName $profileName -ProfileBases $profileBases
+  if ($problem) {
+    throw "Profile '$profileName' has $problem"
+  }
+}
+
 # Clean build dirs
 if (!$SkipWcc) {
   Remove-DirectoryIfExists $bundleDir
@@ -98,7 +154,6 @@ if (!$SkipDlc) {
 Remove-DirectoryIfExists $modsRoot
 
 # Stage XML files into the in-bundle path
-$xmlSourceDir = Join-Path $RepoRoot "data"
 $xmlDestDir = Join-Path $bundleDir "gameplay/abilities"
 
 New-Directory $xmlDestDir
