@@ -4,6 +4,7 @@ function BuildLightRewriteProfiles(
 ): array<CLightRewriteProfile> {
     var profiles, resolved: array<CLightRewriteProfile>;
     var chain: array<name>;
+    var inheritance: string;
     var i, count: int;
 
     profiles = LR_CollectProfileBases(owner, groups);
@@ -13,6 +14,11 @@ function BuildLightRewriteProfiles(
         if (!LR_TryResolveProfileChain(profiles[i], profiles, chain)) {
             LogLightRewriteXml("Dropping profile '" + profiles[i].profileName + "' - circular inheritance.");
             continue;
+        }
+
+        inheritance = profiles[i].BasesToString();
+        if (inheritance != "") {
+            LogLightRewriteXml("Profile '" + profiles[i].profileName + "' inherits " + inheritance + ".");
         }
 
         profiles[i].groups = LR_CollectProfileChainGroups(groups, chain);
