@@ -115,6 +115,7 @@ $xmlSourceDir = Join-Path $RepoRoot "data"
 
 # Reject diamond or circular profile inheritance before touching the build dirs
 $profileBases = @{}
+$inheritsDeclaredIn = @{}
 Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
   $doc = [xml][System.IO.File]::ReadAllText($_.FullName)
   foreach ($overrides in $doc.SelectNodes('//overrides')) {
@@ -122,6 +123,10 @@ Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
     if (!$profileName) { continue }
     if (!$profileBases.ContainsKey($profileName)) { $profileBases[$profileName] = @() }
     foreach ($inherits in $overrides.SelectNodes('inherits')) {
+      if ($inheritsDeclaredIn.ContainsKey($profileName)) {
+        throw "Profile '$profileName' declares <inherits> more than once: in $($inheritsDeclaredIn[$profileName]) and $($_.Name)"
+      }
+      $inheritsDeclaredIn[$profileName] = $_.Name
       foreach ($base in $inherits.InnerText -split ',') {
         $base = $base.Trim()
         if ($base -and $profileBases[$profileName] -notcontains $base) {
