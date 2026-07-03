@@ -43,9 +43,8 @@ class CLightRewriteProfileSet {
     }
 
     public function Find(profileName: name): CLightRewriteProfile {
-        var i: int;
+        var i: int = profileNames.FindFirst(profileName);
 
-        i = profileNames.FindFirst(profileName);
         if (i == -1) return NULL;
 
         return profiles[i];
