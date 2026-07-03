@@ -33,8 +33,7 @@ class CLightRewriteSettings {
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
 
-    // Excludes profiles dropped for circular inheritance
-    private var profiles: array<CLightRewriteProfile>;
+    private var profiles: CLightRewriteProfileSet;
 
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions: array<name>;
@@ -53,10 +52,11 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
         overrideGroups = LoadLightRewriteOverrides(this);
-        profiles = BuildLightRewriteProfiles(this, overrideGroups);
+        profiles = new CLightRewriteProfileSet in this;
+        profiles.Build(overrideGroups);
 
         profileOptions.PushBack(NONE_PROFILE_LABEL);
-        AppendProfileNames(profileOptions);
+        profiles.AppendNames(profileOptions);
     }
 
     public function GetEnabledOptionId(): name {
@@ -190,20 +190,11 @@ class CLightRewriteSettings {
         return optionName == SPACING_MODE;
     }
 
-    private function AppendProfileNames(out names: array<name>) {
-        var i, count: int;
-
-        count = profiles.Size();
-        for (i = 0; i < count; i += 1) {
-            names.PushBack(profiles[i].profileName);
-        }
-    }
-
     private function ReplaceProfileMenuOptions() {
         var optionKeys: array<name>;
 
         optionKeys.PushBack(NONE_PROFILE_LABEL);
-        AppendProfileNames(optionKeys);
+        profiles.AppendNames(optionKeys);
 
         LR_ReplaceFlashMenuOptions(
             CURRENT_PROFILE,
@@ -266,7 +257,7 @@ class CLightRewriteSettings {
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PROFILE_LABEL) return NULL;
 
-        profile = FindCurrentProfile();
+        profile = profiles.FindByName(currentProfile);
         if (!profile) return NULL;
 
         count = profile.groups.Size();
@@ -275,16 +266,5 @@ class CLightRewriteSettings {
         }
 
         return params;
-    }
-
-    private function FindCurrentProfile(): CLightRewriteProfile {
-        var i, count: int;
-
-        count = profiles.Size();
-        for (i = 0; i < count; i += 1) {
-            if (profiles[i].profileName == currentProfile) return profiles[i];
-        }
-
-        return NULL;
     }
 }
