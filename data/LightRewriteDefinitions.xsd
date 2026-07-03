@@ -40,6 +40,15 @@
       <xs:documentation>Per-area overrides for light source defaults.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
+      <xs:element name="inherits"
+                  type="nonEmptyString"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Comma-separated list of base profiles this profile builds on. Their overrides are merged in as if they were part of this profile, applied in listed order before this profile's own; on equal weight, later bases win and this profile wins over all bases. Inheritance is transitive.</xs:documentation>
+          <xs:documentation>Any circular inheritance chain is rejected and every profile in it is dropped entirely.</xs:documentation>
+          <xs:documentation>Declare at most once per profile, even when the profile is split across files. A redeclaration replaces the earlier list entirely, and which one is read last is engine-controlled; the build rejects duplicates.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="matches"
                   type="sharedMatchesType"
                   minOccurs="0">

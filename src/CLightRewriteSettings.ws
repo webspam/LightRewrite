@@ -33,6 +33,8 @@ class CLightRewriteSettings {
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
 
+    private var profiles: CLightRewriteProfileSet;
+
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions: array<name>;
     private var profileIndex  : int;
@@ -50,9 +52,11 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
         overrideGroups = LoadLightRewriteOverrides(this);
+        profiles = new CLightRewriteProfileSet in this;
+        profiles.Build(overrideGroups);
 
-        profileOptions.PushBack(NONE_PROFILE_LABEL);
-        FindLightRewriteProfileNames(profileOptions);
+        profileOptions = profiles.GetNames();
+        profileOptions.Insert(0, NONE_PROFILE_LABEL);
     }
 
     public function GetEnabledOptionId(): name {
@@ -140,11 +144,9 @@ class CLightRewriteSettings {
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
-            if (optionName == SPACING_MODE) UpdateSpacingMenuDisabledState();
-
-            // ForceProcessFlashStorage() inside UpdateSpacingMenuDisabledState resets dynamic
-            // option lists back to XML defaults, so we must restore them afterwards.
-            if (ShouldRefreshProfileMenu(optionName)) {
+            if (optionName == SPACING_MODE) {
+                UpdateSpacingMenuDisabledState();
+                // UpdateSpacingMenuDisabledState's flash reset wipes the dynamic profile list
                 ReplaceProfileMenuOptions();
             }
 
@@ -182,21 +184,33 @@ class CLightRewriteSettings {
         ReplaceProfileMenuOptions();
     }
 
-    private function ShouldRefreshProfileMenu(optionName: name): bool {
-        return optionName == SPACING_MODE;
+    public function ShouldWarnInvalidProfile(): bool {
+        return profileIndex != previousProfile && profiles.IsDirty(currentProfile);
     }
 
     private function ReplaceProfileMenuOptions() {
-        var optionKeys: array<name>;
+        var optionTexts: array<string>;
+        var optionText: string;
+        var i, count: int;
+        var selectedIsDirty: bool = profiles.IsDirty(currentProfile);
 
-        optionKeys.PushBack(NONE_PROFILE_LABEL);
-        FindLightRewriteProfileNames(optionKeys);
+        count = profileOptions.Size();
+        for (i = 0; i < count; i += 1) {
+            optionText = GetLocStringByKeyExt(profileOptions[i]);
+            if (optionText == "") optionText = profileOptions[i];
+
+            if (selectedIsDirty && profileOptions[i] == currentProfile) {
+                optionText += " [x]";
+            }
+
+            optionTexts.PushBack(optionText);
+        }
 
         LR_ReplaceFlashMenuOptions(
             CURRENT_PROFILE,
-            CURRENT_PROFILE_LABEL,
+            GetLocStringByKeyExt(CURRENT_PROFILE_LABEL),
             GENERAL_GROUP,
-            optionKeys
+            optionTexts
         );
     }
 
@@ -247,16 +261,18 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
         var params: CLightRewriteSourceParams = NULL;
+        var profile: CLightRewriteProfile;
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PROFILE_LABEL) return NULL;
 
-        count = overrideGroups.Size();
-        for (i = 0; i < count; i += 1) {
-            if (overrideGroups[i].profileName != currentProfile) continue;
+        profile = profiles.Find(currentProfile);
+        if (!profile) return NULL;
 
-            params = overrideGroups[i].Apply(entity, params);
+        count = profile.groups.Size();
+        for (i = 0; i < count; i += 1) {
+            params = profile.groups[i].Apply(entity, params);
         }
 
         return params;

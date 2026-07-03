@@ -84,3 +84,4 @@
 2122144081||LightRewrite_Spacing_Mode_Volume|Volume de sobreposição
 2122144082||LightRewrite_Spacing_Count|Máx. de sobreposições
 2122144083||LightRewrite_Spacing_Budget|Área máx. de sobreposição
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite: A predefinição selecionada tem herança inválida
