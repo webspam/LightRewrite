@@ -246,7 +246,7 @@ class CLightRewriteSettings {
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PROFILE_LABEL) return NULL;
 
-        profile = profiles.FindByName(currentProfile);
+        profile = profiles.Find(currentProfile);
         if (!profile) return NULL;
 
         count = profile.groups.Size();

@@ -46,7 +46,7 @@ class CLightRewriteProfileSet {
         return names;
     }
 
-    public function FindByName(profileName: name): CLightRewriteProfile {
+    public function Find(profileName: name): CLightRewriteProfile {
         var i, count: int;
 
         count = profiles.Size();
@@ -64,7 +64,7 @@ class CLightRewriteProfileSet {
 
         count = groups.Size();
         for (i = 0; i < count; i += 1) {
-            profile = FindByName(groups[i].profileName);
+            profile = Find(groups[i].profileName);
             if (!profile) {
                 profile = new CLightRewriteProfile in this;
                 profile.profileName = groups[i].profileName;
@@ -99,7 +99,7 @@ class CLightRewriteProfileSet {
 
         count = profile.bases.Size();
         for (i = 0; i < count; i += 1) {
-            baseProfile = FindByName(profile.bases[i]);
+            baseProfile = Find(profile.bases[i]);
             if (!baseProfile) {
                 LogLightRewriteXml("Profile '" + profile.profileName + "' inherits unknown profile '" + profile.bases[i] + "'.");
                 continue;
