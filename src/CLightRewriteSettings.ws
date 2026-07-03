@@ -184,15 +184,24 @@ class CLightRewriteSettings {
         ReplaceProfileMenuOptions();
     }
 
+    public function IsCurrentProfileDirty(): bool {
+        return profiles.IsDirty(currentProfile);
+    }
+
     private function ReplaceProfileMenuOptions() {
         var optionTexts: array<string>;
         var optionText: string;
         var i, count: int;
+        var selectedIsDirty: bool = IsCurrentProfileDirty();
 
         count = profileOptions.Size();
         for (i = 0; i < count; i += 1) {
             optionText = GetLocStringByKeyExt(profileOptions[i]);
             if (optionText == "") optionText = profileOptions[i];
+
+            if (selectedIsDirty && profileOptions[i] == currentProfile) {
+                optionText += " [x]";
+            }
 
             optionTexts.PushBack(optionText);
         }
