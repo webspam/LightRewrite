@@ -2,12 +2,9 @@
 
 @wrapMethod(CR4IngameMenu)
 function OnClosingMenu() {
-    LR_NotifyInvalidConfiguration();
+    if (theGame.GetLightRewriteSettings().ShouldWarnInvalidProfile()) {
+        thePlayer.DisplayHudMessage(GetLocStringByKeyExt("LightRewrite_InvalidPresetMessage"));
+    }
+
     wrappedMethod();
-}
-
-function LR_NotifyInvalidConfiguration() {
-    if (!theGame.GetLightRewriteSettings().IsCurrentProfileDirty()) return;
-
-    thePlayer.DisplayHudMessage(GetLocStringByKeyExt("LightRewrite_InvalidPresetMessage"));
 }
