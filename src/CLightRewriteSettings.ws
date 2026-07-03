@@ -33,6 +33,9 @@ class CLightRewriteSettings {
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
 
+    // Excludes profiles dropped for circular inheritance
+    private var profiles: array<CLightRewriteProfile>;
+
     // Profile names in dropdown order, built once at init from XML
     private var profileOptions: array<name>;
     private var profileIndex  : int;
@@ -50,9 +53,10 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
 
         overrideGroups = LoadLightRewriteOverrides(this);
+        profiles = BuildLightRewriteProfiles(this, overrideGroups);
 
         profileOptions.PushBack(NONE_PROFILE_LABEL);
-        FindLightRewriteProfileNames(profileOptions);
+        AppendProfileNames(profileOptions);
     }
 
     public function GetEnabledOptionId(): name {
@@ -186,11 +190,20 @@ class CLightRewriteSettings {
         return optionName == SPACING_MODE;
     }
 
+    private function AppendProfileNames(out names: array<name>) {
+        var i, count: int;
+
+        count = profiles.Size();
+        for (i = 0; i < count; i += 1) {
+            names.PushBack(profiles[i].profileName);
+        }
+    }
+
     private function ReplaceProfileMenuOptions() {
         var optionKeys: array<name>;
 
         optionKeys.PushBack(NONE_PROFILE_LABEL);
-        FindLightRewriteProfileNames(optionKeys);
+        AppendProfileNames(optionKeys);
 
         LR_ReplaceFlashMenuOptions(
             CURRENT_PROFILE,
@@ -247,18 +260,31 @@ class CLightRewriteSettings {
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
         var params: CLightRewriteSourceParams = NULL;
+        var profile: CLightRewriteProfile;
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PROFILE_LABEL) return NULL;
 
-        count = overrideGroups.Size();
-        for (i = 0; i < count; i += 1) {
-            if (overrideGroups[i].profileName != currentProfile) continue;
+        profile = FindCurrentProfile();
+        if (!profile) return NULL;
 
-            params = overrideGroups[i].Apply(entity, params);
+        count = profile.groups.Size();
+        for (i = 0; i < count; i += 1) {
+            params = profile.groups[i].Apply(entity, params);
         }
 
         return params;
+    }
+
+    private function FindCurrentProfile(): CLightRewriteProfile {
+        var i, count: int;
+
+        count = profiles.Size();
+        for (i = 0; i < count; i += 1) {
+            if (profiles[i].profileName == currentProfile) return profiles[i];
+        }
+
+        return NULL;
     }
 }
