@@ -26,6 +26,10 @@ function OnGameStarting(restored: bool) {
 @addField(CR4IngameMenu)
 private var lightRewriteSettings: CLightRewriteSettings;
 
+// Id of the last options submenu opened, so back-nav only applies changes for our menu
+@addField(CR4IngameMenu)
+private var lightRewriteLastSubmenuId: string;
+
 @wrapMethod(CR4IngameMenu)
 function OnConfigUI() {
     wrappedMethod();
@@ -39,6 +43,7 @@ function OnConfigUI() {
 function OnShowOptionSubmenu(actionType: int, menuTag: int, id: string) {
     wrappedMethod(actionType, menuTag, id);
 
+    lightRewriteLastSubmenuId = id;
     if (id == "LightRewrite") {
         lightRewriteSettings.ReadGameConfig();
         lightRewriteSettings.ConfigureModMenu();
@@ -60,6 +65,8 @@ function OnOptionValueChanged(groupId: int, optionName: name, optionValue: strin
 // Apply any deferred Light Rewrite menu changes when exiting the menu
 @wrapMethod(CR4IngameMenu)
 function OnOptionPanelNavigateBack() {
-    lightRewriteSettings.ApplyPendingChanges();
+    if (lightRewriteLastSubmenuId == "LightRewrite") {
+        lightRewriteSettings.ApplyPendingChanges();
+    }
     return wrappedMethod();
 }
