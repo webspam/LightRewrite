@@ -33,7 +33,8 @@ class CLightRewriteProfileSet {
         profiles = resolved;
     }
 
-    public function AppendNames(out names: array<name>) {
+    public function GetNames(): array<name> {
+        var names: array<name>;
         var i, count: int;
 
         count = profiles.Size();
@@ -41,6 +42,8 @@ class CLightRewriteProfileSet {
         for (i = 0; i < count; i += 1) {
             names[i] = profiles[i].profileName;
         }
+
+        return names;
     }
 
     public function FindByName(profileName: name): CLightRewriteProfile {

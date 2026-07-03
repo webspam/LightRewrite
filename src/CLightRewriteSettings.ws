@@ -55,8 +55,8 @@ class CLightRewriteSettings {
         profiles = new CLightRewriteProfileSet in this;
         profiles.Build(overrideGroups);
 
-        profileOptions.PushBack(NONE_PROFILE_LABEL);
-        profiles.AppendNames(profileOptions);
+        profileOptions = profiles.GetNames();
+        profileOptions.Insert(0, NONE_PROFILE_LABEL);
     }
 
     public function GetEnabledOptionId(): name {
