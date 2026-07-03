@@ -9,6 +9,5 @@ function OnClosingMenu() {
 function LR_NotifyInvalidConfiguration() {
     if (!theGame.GetLightRewriteSettings().IsCurrentProfileDirty()) return;
 
-    thePlayer.DisplayHudMessage("Light Rewrite: the selected preset has a broken inheritance declaration"
-        + " (duplicate or unknown base preset); check its XML files.");
+    thePlayer.DisplayHudMessage(GetLocStringByKeyExt("LightRewrite_InvalidPresetMessage"));
 }
