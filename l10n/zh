@@ -84,3 +84,4 @@
 2122144081||LightRewrite_Spacing_Mode_Volume|重疊體積
 2122144082||LightRewrite_Spacing_Count|最大重疊數
 2122144083||LightRewrite_Spacing_Budget|最大重疊面積
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite：所選預設的繼承有誤

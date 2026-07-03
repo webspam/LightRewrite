@@ -84,3 +84,4 @@
 2122144081||LightRewrite_Spacing_Mode_Volume|Volume de chevauchement
 2122144082||LightRewrite_Spacing_Count|Max. de chevauchements
 2122144083||LightRewrite_Spacing_Budget|Surface max. de chevauchement
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite : l'héritage du préréglage sélectionné est invalide
