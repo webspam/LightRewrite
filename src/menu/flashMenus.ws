@@ -18,16 +18,15 @@
  */
 function LR_ReplaceFlashMenuOptions(
     optionId: name,
-    optionLabelKey: string,
+    optionLabel: string,
     groupId: name,
-    optionKeys: array<name>
+    optionTexts: array<string>
 ) {
     var groupIndex: int;
     var newObject, existingObject, parentObject: CScriptedFlashObject;
     var flashArray, options: CScriptedFlashArray;
     var currentValue: string;
     var i, count: int;
-    var optionText: string;
 
     var gameConfig: CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
     var ingameMenu: CR4IngameMenu = theGame.GetGuiManager().GetIngameMenu();
@@ -57,18 +56,15 @@ function LR_ReplaceFlashMenuOptions(
 
     // Add all options to the list
     options = flash.CreateTempFlashArray();
-    count = optionKeys.Size();
+    count = optionTexts.Size();
     for (i = 0; i < count; i += 1) {
-        optionText = GetLocStringByKeyExt(optionKeys[i]);
-        if (optionText == "") optionText = optionKeys[i];
-
-        options.PushBackFlashString(optionText);
+        options.PushBackFlashString(optionTexts[i]);
     }
 
     // Create new menu entry
     newObject = flash.CreateTempFlashObject();
     newObject.SetMemberFlashString("id", "1");
-    newObject.SetMemberFlashString("label", GetLocStringByKeyExt(optionLabelKey));
+    newObject.SetMemberFlashString("label", optionLabel);
     newObject.SetMemberFlashUInt("type", IGMActionType_List);
     newObject.SetMemberFlashUInt("tag", NameToFlashUInt(optionId));
     newObject.SetMemberFlashString("current", currentValue);

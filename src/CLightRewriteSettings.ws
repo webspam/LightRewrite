@@ -185,11 +185,23 @@ class CLightRewriteSettings {
     }
 
     private function ReplaceProfileMenuOptions() {
+        var optionTexts: array<string>;
+        var optionText: string;
+        var i, count: int;
+
+        count = profileOptions.Size();
+        for (i = 0; i < count; i += 1) {
+            optionText = GetLocStringByKeyExt(profileOptions[i]);
+            if (optionText == "") optionText = profileOptions[i];
+
+            optionTexts.PushBack(optionText);
+        }
+
         LR_ReplaceFlashMenuOptions(
             CURRENT_PROFILE,
-            CURRENT_PROFILE_LABEL,
+            GetLocStringByKeyExt(CURRENT_PROFILE_LABEL),
             GENERAL_GROUP,
-            profileOptions
+            optionTexts
         );
     }
 
