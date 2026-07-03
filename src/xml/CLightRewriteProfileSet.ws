@@ -3,9 +3,12 @@ class CLightRewriteProfileSet {
     // Excludes profiles dropped for circular inheritance
     private var profiles: array<CLightRewriteProfile>;
 
+    // Scratch shared across the recursive resolve of one profile
+    private var chain   : array<name>;
+    private var visiting: array<name>;
+
     public function Build(groups: array<CLightRewriteOverrideGroup>) {
         var resolved: array<CLightRewriteProfile>;
-        var chain: array<name>;
         var inheritance: string;
         var i, count: int;
 
@@ -13,7 +16,7 @@ class CLightRewriteProfileSet {
 
         count = profiles.Size();
         for (i = 0; i < count; i += 1) {
-            if (!TryResolveChain(profiles[i], chain)) {
+            if (!TryResolveChain(profiles[i])) {
                 LogLightRewriteXml("Dropping profile '" + profiles[i].profileName + "' - circular inheritance.");
                 continue;
             }
@@ -23,7 +26,7 @@ class CLightRewriteProfileSet {
                 LogLightRewriteXml("Profile '" + profiles[i].profileName + "' inherits " + inheritance + ".");
             }
 
-            profiles[i].groups = CollectChainGroups(groups, chain);
+            profiles[i].groups = CollectChainGroups(groups);
             resolved.PushBack(profiles[i]);
         }
 
@@ -75,18 +78,13 @@ class CLightRewriteProfileSet {
     }
 
     /** Chain lists bases in application order, the profile itself last; false when inheritance is circular */
-    private function TryResolveChain(profile: CLightRewriteProfile, out chain: array<name>): bool {
-        var visiting: array<name>;
-
+    private function TryResolveChain(profile: CLightRewriteProfile): bool {
         chain.Clear();
-        return ExpandChain(profile, visiting, chain);
+        visiting.Clear();
+        return ExpandChain(profile);
     }
 
-    private function ExpandChain(
-        profile: CLightRewriteProfile,
-        out visiting: array<name>,
-        out chain: array<name>
-    ): bool {
+    private function ExpandChain(profile: CLightRewriteProfile): bool {
         var baseProfile: CLightRewriteProfile;
         var i, count: int;
 
@@ -104,7 +102,7 @@ class CLightRewriteProfileSet {
                 continue;
             }
 
-            if (!ExpandChain(baseProfile, visiting, chain)) return false;
+            if (!ExpandChain(baseProfile)) return false;
         }
 
         visiting.Remove(profile.profileName);
@@ -114,8 +112,7 @@ class CLightRewriteProfileSet {
 
     /** Chain order breaks weight ties, so later bases and finally the profile itself win */
     private function CollectChainGroups(
-        groups: array<CLightRewriteOverrideGroup>,
-        chain: array<name>
+        groups: array<CLightRewriteOverrideGroup>
     ): array<CLightRewriteOverrideGroup> {
         var result: array<CLightRewriteOverrideGroup>;
         var i, j, count, chainCount: int;
