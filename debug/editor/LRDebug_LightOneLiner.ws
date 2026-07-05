@@ -189,6 +189,9 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                     if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                     else valF = 0.0;
                 }
+                else if (pointParams && pointParams.offset.has) {
+                    valF = pointParams.offset.value.Z;
+                }
                 else if (params && params.pointLightOffsetPos.has) {
                     valF = params.pointLightOffsetPos.value.Z;
                 }

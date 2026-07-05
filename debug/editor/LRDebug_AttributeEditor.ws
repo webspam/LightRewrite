@@ -195,13 +195,13 @@ class LRDebug_AttributeEditor {
     }
 
     /** Seed offset from the live position; it's absolute, so starting at 0 would teleport the light */
-    private function SeedSpotOffset(
-        spotParams: CLightRewriteSpotlightParams,
-        spot: CSpotLightComponent
+    private function SeedComponentOffset(
+        params: CLightRewriteComponentLightParams,
+        light: CLightComponent
     ) {
-        if (spotParams.offset.has) return;
-        spotParams.offset.has = true;
-        if (spot) spotParams.offset.value = spot.GetLocalPosition();
+        if (params.offset.has) return;
+        params.offset.has = true;
+        if (light) params.offset.value = light.GetLocalPosition();
     }
 
     /** RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04. */
@@ -238,6 +238,7 @@ class LRDebug_AttributeEditor {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotParams: CLightRewriteSpotlightParams;
+        var pointParams: CLightRewriteComponentLightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
 
@@ -345,7 +346,7 @@ class LRDebug_AttributeEditor {
             case 'alignOffsetZ':
                 if (type == 'spot') {
                     spotParams = EnsureSpotParams(params, target);
-                    SeedSpotOffset(spotParams, spot);
+                    SeedComponentOffset(spotParams, spot);
                     spotParams.offset.value.Z = ClampAttributeValue(
                         attr,
                         spotParams.offset.value.Z + delta
@@ -359,6 +360,14 @@ class LRDebug_AttributeEditor {
                     params.pointLightOffset.Z = ClampAttributeValue(
                         attr,
                         params.pointLightOffset.Z + delta
+                    );
+                }
+                else if (LRDebug_PointLightCount(target) > 1) {
+                    pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
+                    SeedComponentOffset(pointParams, light);
+                    pointParams.offset.value.Z = ClampAttributeValue(
+                        attr,
+                        pointParams.offset.value.Z + delta
                     );
                 }
                 else {
@@ -450,6 +459,7 @@ class LRDebug_AttributeEditor {
         var spot: CSpotLightComponent;
         var params: CLightRewriteSourceParams;
         var spotParams: CLightRewriteSpotlightParams;
+        var pointParams: CLightRewriteComponentLightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
         var scale: float;
@@ -472,12 +482,18 @@ class LRDebug_AttributeEditor {
 
         if (type == 'spot') {
             spotParams = EnsureSpotParams(params, target);
-            SeedSpotOffset(spotParams, spot);
+            SeedComponentOffset(spotParams, spot);
             spotParams.offset.value.X += dx;
             spotParams.offset.value.Y += dy;
         }
         else if (LRDebug_IsCandle(target)) {
             return false;
+        }
+        else if (LRDebug_PointLightCount(target) > 1) {
+            pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
+            SeedComponentOffset(pointParams, point);
+            pointParams.offset.value.X += dx;
+            pointParams.offset.value.Y += dy;
         }
         else {
             if (!params.pointLightOffsetPos.has) {
