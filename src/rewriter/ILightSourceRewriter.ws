@@ -133,10 +133,49 @@ abstract class ILightSourceRewriter {
         for (i = 0; i < count; i += 1) {
             lightComponent = (CSpotLightComponent)components[i];
 
+            // Keep the spotlight enabled if it has per-component params
+            if (GetEffectiveParams().GetSpotLightParams(i)) continue;
+
             if (lightComponent) {
                 lightComponent.SaveLightRewriteOriginalValues();
                 lightComponent.SetEnabled(false);
             }
+        }
+    }
+
+    protected function ApplyPerLightSpotOverrides() {
+        var spotLight: CSpotLightComponent;
+        var spotParams: CLightRewriteSpotlightParams;
+        var wasEnabled: bool;
+        var i, count: int;
+        var components: array<CComponent>;
+
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (p.spotLights.Size() == 0) return;
+
+        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
+        for (i = 0; i < count; i += 1) {
+            spotLight = (CSpotLightComponent)components[i];
+            if (!spotLight) continue;
+
+            spotParams = p.GetSpotLightParams(i);
+            if (!spotParams) continue;
+
+            spotLight.SaveLightRewriteOriginalValues();
+
+            if (spotParams.enabled.has && !spotParams.enabled.value) {
+                spotLight.SetEnabled(false);
+                continue;
+            }
+
+            wasEnabled = spotLight.IsEnabled();
+            if (wasEnabled) spotLight.SetEnabled(false);
+
+            ApplySpotlightParams(spotLight, spotParams);
+
+            if (wasEnabled) spotLight.SetEnabled(true);
         }
     }
 

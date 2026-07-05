@@ -39,5 +39,6 @@ class CSpotlightLightRewriter extends ILightSourceRewriter {
         }
 
         if (p.spotlight) RewriteSpotlight(p.spotlight);
+        ApplyPerLightSpotOverrides();
     }
 }

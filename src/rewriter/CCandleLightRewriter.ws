@@ -27,6 +27,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         else {
             DisableAllSpotlightComponents();
         }
+        ApplyPerLightSpotOverrides();
     }
 
     public function RewriteLight() {
@@ -96,6 +97,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 DisableAllSpotlightComponents();
             }
         }
+        ApplyPerLightSpotOverrides();
 
         ApplyForceCastShadows();
     }
