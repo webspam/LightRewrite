@@ -86,6 +86,10 @@ class LRDebug_Targeting {
 
         target = bestEntity;
 
+        if (thePlayer.lrDebugAttrEditor) {
+            thePlayer.lrDebugAttrEditor.ResetLightIndices();
+        }
+
         if (target && target.lrdebugOneliner) {
             target.lrdebugOneliner.SetHighlighted(true);
         }

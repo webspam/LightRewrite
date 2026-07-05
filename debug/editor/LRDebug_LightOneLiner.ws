@@ -54,6 +54,11 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return html + "'>" + prefix + " " + count + "</font>";
     }
 
+    private function ActiveCountToHtml(prefix: string, count: int, activeIndex: int): string {
+        if (count < 2) return CountToHtml(prefix, count);
+        return "<font color='#00ff00'>" + prefix + " " + (activeIndex + 1) + "/" + count + "</font>";
+    }
+
     private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
@@ -273,9 +278,19 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             pSeg = CountToHtml("P", pointLights);
             sSeg = CountToHtml("S", spotLights);
             if (type == 'spot') {
+                sSeg = ActiveCountToHtml(
+                    "S",
+                    spotLights,
+                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
+                );
                 sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
             }
             else {
+                pSeg = ActiveCountToHtml(
+                    "P",
+                    pointLights,
+                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
+                );
                 pSeg = "<font color='#dd88ff'>[</font>" + pSeg + "<font color='#dd88ff'>]</font>";
             }
             countString = marker + pSeg + " / " + sSeg + " <font color='#dd88ff'>-</font>";

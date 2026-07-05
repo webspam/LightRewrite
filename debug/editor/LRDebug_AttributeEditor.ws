@@ -9,6 +9,8 @@ class LRDebug_AttributeEditor {
     private var attrIndex        : int;
     private var adjustAccumulator: float;
     private var selectedLightType: name;  default selectedLightType = 'point';
+    private var pointLightIndex: int;
+    private var spotLightIndex : int;
 
     private var groupEdit      : bool;
     private var groupEditTarget: CGameplayEntity;
@@ -89,6 +91,48 @@ class LRDebug_AttributeEditor {
             if (selectedLightType == 'spot' || !target.HasPointLight()) return 'spot';
         }
         return 'point';
+    }
+
+    public function ResetLightIndices() {
+        pointLightIndex = 0;
+        spotLightIndex = 0;
+    }
+
+    /** Clamped to the live component count, so a stale index cannot outlive a despawned light */
+    public function GetActiveLightIndex(target: CGameplayEntity, type: name): int {
+        var count, index: int;
+
+        if (type == 'spot') {
+            count = LRDebug_SpotLightCount(target);
+            index = spotLightIndex;
+        }
+        else {
+            count = LRDebug_PointLightCount(target);
+            index = pointLightIndex;
+        }
+
+        if (index >= count) return count - 1;
+        return index;
+    }
+
+    public function CycleActiveLight(target: CGameplayEntity, delta: int): bool {
+        var count: int;
+        var type: name;
+
+        if (!target) return false;
+
+        type = GetSelectedLightType(target);
+        if (type == 'spot') {
+            count = LRDebug_SpotLightCount(target);
+            if (count < 2) return false;
+            spotLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;
+        }
+        else {
+            count = LRDebug_PointLightCount(target);
+            if (count < 2) return false;
+            pointLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;
+        }
+        return true;
     }
 
     public function SwapLightSelection(target: CGameplayEntity) {
