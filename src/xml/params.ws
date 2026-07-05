@@ -53,6 +53,39 @@ function ParseLightRewriteBaseParams(
     }
 }
 
+function ParseLightRewritePerLightNodes(
+    override: CLightRewriteSourceParams,
+    dm: CDefinitionsManagerAccessor,
+    entryNode: SCustomNode
+) {
+    var childNode: SCustomNode;
+    var spotParams: CLightRewriteSpotlightParams;
+    var index, i, count: int;
+
+    count = entryNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        childNode = entryNode.subNodes[i];
+
+        if (childNode.nodeName == 'light') {
+            if (!dm.GetCustomNodeAttributeValueInt(childNode, 'index', index)) {
+                LogLightRewriteXml("Skipping invalid light element - missing index attribute.");
+                continue;
+            }
+            ParseLightRewriteBaseParams(override.GetOrCreatePointLightParams(index), dm, childNode);
+        }
+        else if (childNode.nodeName == 'spotlight') {
+            spotParams = ParseLightRewriteSpotlightParams(override, dm, childNode);
+            if (dm.GetCustomNodeAttributeValueInt(childNode, 'index', index)) {
+                spotParams.index = index;
+                override.spotLights.PushBack(spotParams);
+            }
+            else {
+                override.spotlight = spotParams;
+            }
+        }
+    }
+}
+
 /** Parses a <spotlight> node into a new CLightRewriteSpotlightParams. */
 function ParseLightRewriteSpotlightParams(
     owner: CObject,
