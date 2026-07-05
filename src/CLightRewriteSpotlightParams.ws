@@ -1,4 +1,7 @@
 class CLightRewriteSpotlightParams extends ILightRewriteParams {
+    // -1 targets every spotlight (the entity-wide params); >= 0 targets one component
+    public var index: int;  default index = -1;
+
     public var innerAngle: SLightRewriteOptionalFloat;
 
     public var outerAngle: SLightRewriteOptionalFloat;

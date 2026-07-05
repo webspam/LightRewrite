@@ -37,8 +37,54 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
+    // Per-component overrides, applied on top of the entity-wide fields above
+    public var pointLights: array<CLightRewritePointLightParams>;
+    public var spotLights : array<CLightRewriteSpotlightParams>;
+
+    public function GetPointLightParams(index: int): CLightRewritePointLightParams {
+        var i: int;
+        for (i = 0; i < pointLights.Size(); i += 1) {
+            if (pointLights[i].index == index) return pointLights[i];
+        }
+        return NULL;
+    }
+
+    public function GetOrCreatePointLightParams(index: int): CLightRewritePointLightParams {
+        var params: CLightRewritePointLightParams;
+
+        params = GetPointLightParams(index);
+        if (!params) {
+            params = new CLightRewritePointLightParams in this;
+            params.index = index;
+            pointLights.PushBack(params);
+        }
+        return params;
+    }
+
+    public function GetSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var i: int;
+        for (i = 0; i < spotLights.Size(); i += 1) {
+            if (spotLights[i].index == index) return spotLights[i];
+        }
+        return NULL;
+    }
+
+    public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var params: CLightRewriteSpotlightParams;
+
+        params = GetSpotLightParams(index);
+        if (!params) {
+            params = new CLightRewriteSpotlightParams in this;
+            params.index = index;
+            spotLights.PushBack(params);
+        }
+        return params;
+    }
+
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
+        var i: int;
+
         ApplyBaseTo(target);
         if (rewriterType.has) target.rewriterType = rewriterType;
         if (alignPointLights.has) {
@@ -52,6 +98,12 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         if (spotlight) {
             if (!target.spotlight) target.spotlight = new CLightRewriteSpotlightParams in target;
             spotlight.ApplyTo(target.spotlight);
+        }
+        for (i = 0; i < pointLights.Size(); i += 1) {
+            pointLights[i].ApplyTo(target.GetOrCreatePointLightParams(pointLights[i].index));
+        }
+        for (i = 0; i < spotLights.Size(); i += 1) {
+            spotLights[i].ApplyTo(target.GetOrCreateSpotLightParams(spotLights[i].index));
         }
     }
 }
