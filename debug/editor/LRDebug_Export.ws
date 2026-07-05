@@ -63,32 +63,33 @@ function LRDebug_BuildLightFieldSegment(
     return line;
 }
 
-/** Changed spotlight fields, spot_-prefixed */
+/** Changed spotlight fields (prefix "spot_" for the entity-wide params, "sN_" for per-component) */
 function LRDebug_BuildSpotlightSegment(
     cur: CLightRewriteSpotlightParams,
-    base: CLightRewriteSpotlightParams
+    base: CLightRewriteSpotlightParams,
+    prefix: string
 ): string {
     var line: string;
 
-    line = LRDebug_BuildLightFieldSegment(cur, base, "spot_");
+    line = LRDebug_BuildLightFieldSegment(cur, base, prefix);
 
     if (LRDebug_FloatEdited(cur.innerAngle, base.innerAngle)) {
-        line += " spot_innerAngle=" + FloatToString(cur.innerAngle.value);
+        line += " " + prefix + "innerAngle=" + FloatToString(cur.innerAngle.value);
     }
     if (LRDebug_FloatEdited(cur.outerAngle, base.outerAngle)) {
-        line += " spot_outerAngle=" + FloatToString(cur.outerAngle.value);
+        line += " " + prefix + "outerAngle=" + FloatToString(cur.outerAngle.value);
     }
     if (LRDebug_FloatEdited(cur.softness, base.softness)) {
-        line += " spot_softness=" + FloatToString(cur.softness.value);
+        line += " " + prefix + "softness=" + FloatToString(cur.softness.value);
     }
 
     if (
         cur.offset.has &&
         (!base.offset.has || cur.offset.value.X != base.offset.value.X || cur.offset.value.Y != base.offset.value.Y || cur.offset.value.Z != base.offset.value.Z)
     ) {
-        line += " spot_offsetX=" + FloatToString(cur.offset.value.X);
-        line += " spot_offsetY=" + FloatToString(cur.offset.value.Y);
-        line += " spot_offsetZ=" + FloatToString(cur.offset.value.Z);
+        line += " " + prefix + "offsetX=" + FloatToString(cur.offset.value.X);
+        line += " " + prefix + "offsetY=" + FloatToString(cur.offset.value.Y);
+        line += " " + prefix + "offsetZ=" + FloatToString(cur.offset.value.Z);
     }
 
     return line;
@@ -114,6 +115,9 @@ function LRDebug_BuildEditedFields(
     baseline: CLightRewriteSourceParams
 ): string {
     var line: string;
+    var pBase: CLightRewritePointLightParams;
+    var sBase: CLightRewriteSpotlightParams;
+    var i: int;
 
     line = LRDebug_BuildLightFieldSegment(params, baseline, "");
 
@@ -145,7 +149,27 @@ function LRDebug_BuildEditedFields(
     }
 
     if (params.spotlight) {
-        line += LRDebug_BuildSpotlightSegment(params.spotlight, baseline.spotlight);
+        line += LRDebug_BuildSpotlightSegment(params.spotlight, baseline.spotlight, "spot_");
+    }
+
+    for (i = 0; i < params.pointLights.Size(); i += 1) {
+        pBase = baseline.GetPointLightParams(params.pointLights[i].index);
+        if (!pBase) pBase = new CLightRewritePointLightParams in baseline;
+        line += LRDebug_BuildLightFieldSegment(
+            params.pointLights[i],
+            pBase,
+            "p" + params.pointLights[i].index + "_"
+        );
+    }
+
+    for (i = 0; i < params.spotLights.Size(); i += 1) {
+        sBase = baseline.GetSpotLightParams(params.spotLights[i].index);
+        if (!sBase) sBase = new CLightRewriteSpotlightParams in baseline;
+        line += LRDebug_BuildSpotlightSegment(
+            params.spotLights[i],
+            sBase,
+            "s" + params.spotLights[i].index + "_"
+        );
     }
 
     return line;
