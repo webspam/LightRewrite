@@ -15,6 +15,7 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 - Turn labels on before any other control
 - Face the light you want to edit; focus mode extends pick range
 - Swap between point and spot lights
+- Cycle up/down through the individual lights of the selected type; the label shows the active slot (e.g. `P 2/3`) and edits apply to that light only
 - Hold a modifier key (e.g. for brightness) and move the mouse to adjust that setting
 - Toggle group edit to apply every change to all lights sharing the target's entity and layer path
 - Undo the last edit with Ctrl held (a hold, a toggle, or a shadow-mode cycle each count as one step)
