@@ -254,6 +254,24 @@ function AddColourChild {
     $Parent.AppendChild($colour) | Out-Null
 }
 
+# Appends an <offset> child when any prefixed offset field is present
+function AddOffsetChild {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [hashtable]              $Params,
+        [string]                 $Prefix
+    )
+
+    if (-not ($Params.ContainsKey("${Prefix}offsetX") -or $Params.ContainsKey("${Prefix}offsetY") -or $Params.ContainsKey("${Prefix}offsetZ"))) { return }
+
+    $off = $Doc.CreateElement('offset')
+    $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey("${Prefix}offsetX") ? $Params["${Prefix}offsetX"] : 0.0)))
+    $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey("${Prefix}offsetY") ? $Params["${Prefix}offsetY"] : 0.0)))
+    $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey("${Prefix}offsetZ") ? $Params["${Prefix}offsetZ"] : 0.0)))
+    $Parent.AppendChild($off) | Out-Null
+}
+
 # Builds a <spotlight> element from prefixed params ('spot_' entity-wide, 'sN_' per-component).
 # Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD.
 function BuildSpotlightElement {
@@ -273,14 +291,7 @@ function BuildSpotlightElement {
 
     AddShadowsChild $Doc $spot $Params $Prefix
     AddColourChild $Doc $spot $Params $Prefix
-
-    if ($Params.ContainsKey("${Prefix}offsetX") -or $Params.ContainsKey("${Prefix}offsetY") -or $Params.ContainsKey("${Prefix}offsetZ")) {
-        $off = $Doc.CreateElement('offset')
-        $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey("${Prefix}offsetX") ? $Params["${Prefix}offsetX"] : 0.0)))
-        $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey("${Prefix}offsetY") ? $Params["${Prefix}offsetY"] : 0.0)))
-        $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey("${Prefix}offsetZ") ? $Params["${Prefix}offsetZ"] : 0.0)))
-        $spot.AppendChild($off) | Out-Null
-    }
+    AddOffsetChild $Doc $spot $Params $Prefix
 
     return $spot
 }
@@ -302,6 +313,7 @@ function BuildLightElement {
 
     AddShadowsChild $Doc $light $Params $prefix
     AddColourChild $Doc $light $Params $prefix
+    AddOffsetChild $Doc $light $Params $prefix
 
     return $light
 }
