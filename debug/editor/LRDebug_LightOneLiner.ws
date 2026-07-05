@@ -62,12 +62,14 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
-        var spotP: CLightRewriteSpotlightParams;
+        var spotlight, spotParams, mergedSpot: CLightRewriteSpotlightParams;
+        var pointParams, mergedPoint: CLightRewritePointLightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
         var position: Vector;
         var valF: float;
         var valI: int;
+        var activeIndex: int;
 
         if (!entity) return "?";
 
@@ -78,17 +80,35 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             params = NULL;
         }
 
+        activeIndex = thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type);
+
         if (type == 'spot') {
             if (params) {
-                lightParams = params.spotlight;
-                spotP = params.spotlight;
+                spotlight = params.spotlight;
+                spotParams = params.GetSpotLightParams(activeIndex);
+                if (spotParams) {
+                    mergedSpot = new CLightRewriteSpotlightParams in this;
+                    if (spotlight) spotlight.ApplyTo(mergedSpot);
+                    spotParams.ApplyTo(mergedSpot);
+                    spotlight = mergedSpot;
+                }
+                lightParams = spotlight;
             }
-            light = LRDebug_FirstSpotLight(entity);
-            spotComp = LRDebug_FirstSpotLight(entity);
+            light = LRDebug_SpotLightAt(entity, activeIndex);
+            spotComp = LRDebug_SpotLightAt(entity, activeIndex);
         }
         else {
             lightParams = params;
-            light = LRDebug_FirstPointLight(entity);
+            if (params) {
+                pointParams = params.GetPointLightParams(activeIndex);
+                if (pointParams) {
+                    mergedPoint = new CLightRewritePointLightParams in this;
+                    params.ApplyBaseTo(mergedPoint);
+                    pointParams.ApplyTo(mergedPoint);
+                    lightParams = mergedPoint;
+                }
+            }
+            light = LRDebug_PointLightAt(entity, activeIndex);
         }
 
         switch (attr) {
@@ -156,8 +176,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'alignOffsetZ':
                 if (type == 'spot') {
-                    if (spotP && spotP.offset.has) {
-                        valF = spotP.offset.value.Z;
+                    if (spotlight && spotlight.offset.has) {
+                        valF = spotlight.offset.value.Z;
                     }
                     else if (spotComp) {
                         position = spotComp.GetLocalPosition();
@@ -179,17 +199,17 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'innerAngle':
-                if (spotP && spotP.innerAngle.has) valF = spotP.innerAngle.value;
+                if (spotlight && spotlight.innerAngle.has) valF = spotlight.innerAngle.value;
                 else if (spotComp) valF = spotComp.innerAngle;
                 return FloatToString(valF);
 
             case 'outerAngle':
-                if (spotP && spotP.outerAngle.has) valF = spotP.outerAngle.value;
+                if (spotlight && spotlight.outerAngle.has) valF = spotlight.outerAngle.value;
                 else if (spotComp) valF = spotComp.outerAngle;
                 return FloatToString(valF);
 
             case 'softness':
-                if (spotP && spotP.softness.has) valF = spotP.softness.value;
+                if (spotlight && spotlight.softness.has) valF = spotlight.softness.value;
                 else if (spotComp) valF = spotComp.softness;
                 return FloatToString(valF);
 

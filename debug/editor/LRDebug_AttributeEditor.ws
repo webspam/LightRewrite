@@ -164,16 +164,20 @@ class LRDebug_AttributeEditor {
     }
 
     private function GetLight(target: CGameplayEntity, type: name): CLightComponent {
-        if (type == 'spot') return LRDebug_FirstSpotLight(target);
-        return LRDebug_FirstPointLight(target);
+        if (type == 'spot') return LRDebug_SpotLightAt(target, GetActiveLightIndex(target, type));
+        return LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));
     }
 
+    /** Single-light entities keep writing entity-wide params, so their exports stay as before */
     private function GetSharedParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
         type: name
     ): ILightRewriteParams {
         if (type == 'spot') return EnsureSpotParams(params, target);
+        if (LRDebug_PointLightCount(target) > 1) {
+            return params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
+        }
         return params;
     }
 
@@ -181,6 +185,9 @@ class LRDebug_AttributeEditor {
         params: CLightRewriteSourceParams,
         target: CGameplayEntity
     ): CLightRewriteSpotlightParams {
+        if (LRDebug_SpotLightCount(target) > 1) {
+            return params.GetOrCreateSpotLightParams(GetActiveLightIndex(target, 'spot'));
+        }
         if (!params.spotlight) {
             params.spotlight = new CLightRewriteSpotlightParams in target;
         }
@@ -240,7 +247,7 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        spot = LRDebug_FirstSpotLight(target);
+        spot = LRDebug_SpotLightAt(target, GetActiveLightIndex(target, 'spot'));
 
         type = GetSelectedLightType(target);
         if (attr == '') attr = GetCurrentAttrId(type);
@@ -254,7 +261,7 @@ class LRDebug_AttributeEditor {
         if (delta == 0.0) return false;
 
         if (type == 'spot') light = spot;
-        else light = LRDebug_FirstPointLight(target);
+        else light = LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));
 
         switch (attr) {
             case 'brightness':
@@ -453,8 +460,8 @@ class LRDebug_AttributeEditor {
 
         rewriter = target.LRDebug_GetOrCreateRewriter();
         params = target.LRDebug_GetParams(rewriter);
-        point = LRDebug_FirstPointLight(target);
-        spot = LRDebug_FirstSpotLight(target);
+        point = LRDebug_PointLightAt(target, GetActiveLightIndex(target, 'point'));
+        spot = LRDebug_SpotLightAt(target, GetActiveLightIndex(target, 'spot'));
 
         type = GetSelectedLightType(target);
 
