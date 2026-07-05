@@ -243,29 +243,47 @@ abstract class ILightSourceRewriter {
     // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight: CPointLightComponent,
+        index: int,
         optional spotLight: CSpotLightComponent
     ) {
         var wasEnabled: bool;
 
         pointLight.SaveLightRewriteOriginalValues();
 
+        if (IsPointLightForceDisabled(index)) {
+            pointLight.SetEnabled(false);
+            return;
+        }
+
         wasEnabled = pointLight.IsEnabled();
         if (wasEnabled) pointLight.SetEnabled(false);
 
-        SetPointLightSettings(pointLight);
-        SetPointLightColour(pointLight, spotLight);
+        SetPointLightSettings(pointLight, index);
+        SetPointLightColour(pointLight, index, spotLight);
 
         if (wasEnabled) pointLight.SetEnabled(true);
     }
 
+    protected function IsPointLightForceDisabled(index: int): bool {
+        var pointParams: CLightRewritePointLightParams = GetEffectiveParams().GetPointLightParams(index);
+
+        if (pointParams) return pointParams.enabled.has && !pointParams.enabled.value;
+        return false;
+    }
+
     // Sets basic point light settings
-    protected function SetPointLightSettings(pointLight: CPointLightComponent) {
+    protected function SetPointLightSettings(pointLight: CPointLightComponent, index: int) {
         var uncapped: float;
+        var pointParams: CLightRewritePointLightParams;
 
         ApplyLightParams(pointLight, GetEffectiveParams());
 
+        pointParams = GetEffectiveParams().GetPointLightParams(index);
+        if (pointParams) ApplyLightParams(pointLight, pointParams);
+
         // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
-        uncapped = GetUncappedRadius(pointLight);
+        if (pointParams && pointParams.radius.has) uncapped = pointParams.radius.value;
+        else uncapped = GetUncappedRadius(pointLight);
         pointLight.radius = uncapped;
         if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) pointLight.radius = maxSafeRadius;
     }
@@ -273,11 +291,16 @@ abstract class ILightSourceRewriter {
     // Sets point light colour to the specified override, spotlight, or original colour
     protected function SetPointLightColour(
         pointLight: CPointLightComponent,
+        index: int,
         optional spotLight: CSpotLightComponent
     ) {
         var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
+        var pointParams: CLightRewritePointLightParams = pamparams.GetPointLightParams(index);
 
-        if (pamparams.color.has) {
+        if (pointParams && pointParams.color.has) {
+            pointLight.color = pointParams.color.value;
+        }
+        else if (pamparams.color.has) {
             pointLight.color = pamparams.color.value;
         }
         else if (spotLight) {

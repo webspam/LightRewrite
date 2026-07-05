@@ -63,11 +63,16 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 continue;
             }
 
+            if (IsPointLightForceDisabled(i)) {
+                pointLight.SetEnabled(false);
+                continue;
+            }
+
             wasEnabled = pointLight.IsEnabled();
             if (wasEnabled) pointLight.SetEnabled(false);
 
-            SetPointLightSettings(pointLight);
-            SetPointLightColour(pointLight, spotLight);
+            SetPointLightSettings(pointLight, i);
+            SetPointLightColour(pointLight, i, spotLight);
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
