@@ -39,16 +39,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
-        if (enabled.has) target.enabled = enabled;
+        ApplyBaseTo(target);
         if (rewriterType.has) target.rewriterType = rewriterType;
-        if (brightness.has) target.brightness = brightness;
-        if (radius.has) target.radius = radius;
-        if (attenuation.has) target.attenuation = attenuation;
-        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
-        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
-        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
-        if (castShadows.has) target.castShadows = castShadows;
-        if (color.has) target.color = color;
         if (alignPointLights.has) {
             target.alignPointLights = alignPointLights;
             target.pointLightOffset = pointLightOffset;

@@ -11,15 +11,7 @@ class CLightRewriteSpotlightParams extends ILightRewriteParams {
     public var spawn: bool;  default spawn = false;
 
     public function ApplyTo(target: CLightRewriteSpotlightParams) {
-        if (enabled.has) target.enabled = enabled;
-        if (brightness.has) target.brightness = brightness;
-        if (radius.has) target.radius = radius;
-        if (attenuation.has) target.attenuation = attenuation;
-        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
-        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
-        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
-        if (castShadows.has) target.castShadows = castShadows;
-        if (color.has) target.color = color;
+        ApplyBaseTo(target);
         if (innerAngle.has) target.innerAngle = innerAngle;
         if (outerAngle.has) target.outerAngle = outerAngle;
         if (softness.has) target.softness = softness;

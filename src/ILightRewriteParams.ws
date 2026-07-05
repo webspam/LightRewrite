@@ -25,4 +25,16 @@ abstract class ILightRewriteParams {
     public var castShadows: SLightRewriteOptionalShadowMode;
 
     public var color: SLightRewriteOptionalColour;
+
+    public function ApplyBaseTo(target: ILightRewriteParams) {
+        if (enabled.has) target.enabled = enabled;
+        if (brightness.has) target.brightness = brightness;
+        if (radius.has) target.radius = radius;
+        if (attenuation.has) target.attenuation = attenuation;
+        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
+        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
+        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
+        if (castShadows.has) target.castShadows = castShadows;
+        if (color.has) target.color = color;
+    }
 }
