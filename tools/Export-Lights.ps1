@@ -99,6 +99,11 @@ $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'sha
     'spot_innerAngle', 'spot_outerAngle', 'spot_softness', 'spot_offsetX', 'spot_offsetY', 'spot_offsetZ'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', 'spot_colorR', 'spot_colorG', 'spot_colorB'
 
+# Per-light fields arrive as pN_/sN_ prefixed variants of the base names
+$perLightFloatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
+    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ'
+$perLightIntFields = 'colorR', 'colorG', 'colorB'
+
 function CoerceEntry {
     param([hashtable] $raw)
 
@@ -106,10 +111,16 @@ function CoerceEntry {
     foreach ($kv in $raw.GetEnumerator()) {
         $k = $kv.Key
         $v = $kv.Value
-        if ($k -in $floatFields) {
+        $isFloat = $k -in $floatFields
+        $isInt = $k -in $intFields
+        if ($k -match '^(?:p|s)\d+_(\w+)$') {
+            $isFloat = $Matches[1] -in $perLightFloatFields
+            $isInt = $Matches[1] -in $perLightIntFields
+        }
+        if ($isFloat) {
             $out[$k] = [double]::Parse($v, [System.Globalization.CultureInfo]::InvariantCulture)
         }
-        elseif ($k -in $intFields) {
+        elseif ($isInt) {
             $out[$k] = [int]$v
         }
         else {
@@ -204,50 +215,95 @@ function FmtFloat {
 
 # ---- XML generation ----
 
-# Builds a <spotlight> element from spot_-prefixed params. Scalars are attributes;
-# shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD.
+# Appends a <shadows> child when any prefixed shadow field is present
+function AddShadowsChild {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [hashtable]              $Params,
+        [string]                 $Prefix
+    )
+
+    $hasShadows = $Params.ContainsKey("${Prefix}shadowFadeDistance") -or
+    $Params.ContainsKey("${Prefix}shadowFadeRange") -or
+    $Params.ContainsKey("${Prefix}shadowBlendFactor")
+    if (-not $hasShadows) { return }
+
+    $shadows = $Doc.CreateElement('shadows')
+    if ($Params.ContainsKey("${Prefix}shadowFadeDistance")) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params["${Prefix}shadowFadeDistance"])) }
+    if ($Params.ContainsKey("${Prefix}shadowFadeRange")) { $shadows.SetAttribute('fade_range', (FmtFloat $Params["${Prefix}shadowFadeRange"])) }
+    if ($Params.ContainsKey("${Prefix}shadowBlendFactor")) { $shadows.SetAttribute('blend_factor', (FmtFloat $Params["${Prefix}shadowBlendFactor"])) }
+    $Parent.AppendChild($shadows) | Out-Null
+}
+
+# Appends a <colour> child when the prefixed colour fields are present
+function AddColourChild {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [hashtable]              $Params,
+        [string]                 $Prefix
+    )
+
+    if (-not $Params.ContainsKey("${Prefix}colorR")) { return }
+
+    $colour = $Doc.CreateElement('colour')
+    $colour.SetAttribute('r', [string]$Params["${Prefix}colorR"])
+    $colour.SetAttribute('g', [string]($Params.ContainsKey("${Prefix}colorG") ? $Params["${Prefix}colorG"] : 0))
+    $colour.SetAttribute('b', [string]($Params.ContainsKey("${Prefix}colorB") ? $Params["${Prefix}colorB"] : 0))
+    $Parent.AppendChild($colour) | Out-Null
+}
+
+# Builds a <spotlight> element from prefixed params ('spot_' entity-wide, 'sN_' per-component).
+# Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD.
 function BuildSpotlightElement {
     param(
         [System.Xml.XmlDocument] $Doc,
-        [hashtable]              $Params
+        [hashtable]              $Params,
+        [string]                 $Prefix
     )
 
     $spot = $Doc.CreateElement('spotlight')
-    if ($Params.ContainsKey('spot_brightness')) { $spot.SetAttribute('brightness', (FmtFloat $Params['spot_brightness'])) }
-    if ($Params.ContainsKey('spot_radius')) { $spot.SetAttribute('radius', (FmtFloat $Params['spot_radius'])) }
-    if ($Params.ContainsKey('spot_attenuation')) { $spot.SetAttribute('attenuation', (FmtFloat $Params['spot_attenuation'])) }
-    if ($Params.ContainsKey('spot_innerAngle')) { $spot.SetAttribute('innerAngle', (FmtFloat $Params['spot_innerAngle'])) }
-    if ($Params.ContainsKey('spot_outerAngle')) { $spot.SetAttribute('outerAngle', (FmtFloat $Params['spot_outerAngle'])) }
-    if ($Params.ContainsKey('spot_softness')) { $spot.SetAttribute('softness', (FmtFloat $Params['spot_softness'])) }
+    if ($Params.ContainsKey("${Prefix}brightness")) { $spot.SetAttribute('brightness', (FmtFloat $Params["${Prefix}brightness"])) }
+    if ($Params.ContainsKey("${Prefix}radius")) { $spot.SetAttribute('radius', (FmtFloat $Params["${Prefix}radius"])) }
+    if ($Params.ContainsKey("${Prefix}attenuation")) { $spot.SetAttribute('attenuation', (FmtFloat $Params["${Prefix}attenuation"])) }
+    if ($Params.ContainsKey("${Prefix}innerAngle")) { $spot.SetAttribute('innerAngle', (FmtFloat $Params["${Prefix}innerAngle"])) }
+    if ($Params.ContainsKey("${Prefix}outerAngle")) { $spot.SetAttribute('outerAngle', (FmtFloat $Params["${Prefix}outerAngle"])) }
+    if ($Params.ContainsKey("${Prefix}softness")) { $spot.SetAttribute('softness', (FmtFloat $Params["${Prefix}softness"])) }
 
-    $hasSpotShadows = $Params.ContainsKey('spot_shadowFadeDistance') -or
-    $Params.ContainsKey('spot_shadowFadeRange') -or
-    $Params.ContainsKey('spot_shadowBlendFactor')
-    if ($hasSpotShadows) {
-        $shadows = $Doc.CreateElement('shadows')
-        if ($Params.ContainsKey('spot_shadowFadeDistance')) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params['spot_shadowFadeDistance'])) }
-        if ($Params.ContainsKey('spot_shadowFadeRange')) { $shadows.SetAttribute('fade_range', (FmtFloat $Params['spot_shadowFadeRange'])) }
-        if ($Params.ContainsKey('spot_shadowBlendFactor')) { $shadows.SetAttribute('blend_factor', (FmtFloat $Params['spot_shadowBlendFactor'])) }
-        $spot.AppendChild($shadows) | Out-Null
-    }
+    AddShadowsChild $Doc $spot $Params $Prefix
+    AddColourChild $Doc $spot $Params $Prefix
 
-    if ($Params.ContainsKey('spot_colorR')) {
-        $colour = $Doc.CreateElement('colour')
-        $colour.SetAttribute('r', [string]$Params['spot_colorR'])
-        $colour.SetAttribute('g', [string]($Params.ContainsKey('spot_colorG') ? $Params['spot_colorG'] : 0))
-        $colour.SetAttribute('b', [string]($Params.ContainsKey('spot_colorB') ? $Params['spot_colorB'] : 0))
-        $spot.AppendChild($colour) | Out-Null
-    }
-
-    if ($Params.ContainsKey('spot_offsetX') -or $Params.ContainsKey('spot_offsetY') -or $Params.ContainsKey('spot_offsetZ')) {
+    if ($Params.ContainsKey("${Prefix}offsetX") -or $Params.ContainsKey("${Prefix}offsetY") -or $Params.ContainsKey("${Prefix}offsetZ")) {
         $off = $Doc.CreateElement('offset')
-        $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey('spot_offsetX') ? $Params['spot_offsetX'] : 0.0)))
-        $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey('spot_offsetY') ? $Params['spot_offsetY'] : 0.0)))
-        $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey('spot_offsetZ') ? $Params['spot_offsetZ'] : 0.0)))
+        $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey("${Prefix}offsetX") ? $Params["${Prefix}offsetX"] : 0.0)))
+        $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey("${Prefix}offsetY") ? $Params["${Prefix}offsetY"] : 0.0)))
+        $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey("${Prefix}offsetZ") ? $Params["${Prefix}offsetZ"] : 0.0)))
         $spot.AppendChild($off) | Out-Null
     }
 
     return $spot
+}
+
+# Builds a <light index="N"> element from pN_-prefixed params
+function BuildLightElement {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [hashtable]              $Params,
+        [int]                    $Index
+    )
+
+    $prefix = "p${Index}_"
+    $light = $Doc.CreateElement('light')
+    $light.SetAttribute('index', [string]$Index)
+    if ($Params.ContainsKey("${prefix}brightness")) { $light.SetAttribute('brightness', (FmtFloat $Params["${prefix}brightness"])) }
+    if ($Params.ContainsKey("${prefix}radius")) { $light.SetAttribute('radius', (FmtFloat $Params["${prefix}radius"])) }
+    if ($Params.ContainsKey("${prefix}attenuation")) { $light.SetAttribute('attenuation', (FmtFloat $Params["${prefix}attenuation"])) }
+
+    AddShadowsChild $Doc $light $Params $prefix
+    AddColourChild $Doc $light $Params $prefix
+
+    return $light
 }
 
 function BuildOverrideElement {
@@ -287,26 +343,8 @@ function BuildOverrideElement {
         $override.AppendChild($matchLayer) | Out-Null
     }
 
-    # <shadows> - only when at least one shadow field is present
-    $hasShadows = $Params.ContainsKey('shadowFadeDistance') -or
-    $Params.ContainsKey('shadowFadeRange') -or
-    $Params.ContainsKey('shadowBlendFactor')
-    if ($hasShadows) {
-        $shadows = $Doc.CreateElement('shadows')
-        if ($Params.ContainsKey('shadowFadeDistance')) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params['shadowFadeDistance'])) }
-        if ($Params.ContainsKey('shadowFadeRange')) { $shadows.SetAttribute('fade_range', (FmtFloat $Params['shadowFadeRange'])) }
-        if ($Params.ContainsKey('shadowBlendFactor')) { $shadows.SetAttribute('blend_factor', (FmtFloat $Params['shadowBlendFactor'])) }
-        $override.AppendChild($shadows) | Out-Null
-    }
-
-    # <colour> - only when color fields are present
-    if ($Params.ContainsKey('colorR')) {
-        $colour = $Doc.CreateElement('colour')
-        $colour.SetAttribute('r', [string]$Params['colorR'])
-        $colour.SetAttribute('g', [string]($Params.ContainsKey('colorG') ? $Params['colorG'] : 0))
-        $colour.SetAttribute('b', [string]($Params.ContainsKey('colorB') ? $Params['colorB'] : 0))
-        $override.AppendChild($colour) | Out-Null
-    }
+    AddShadowsChild $Doc $override $Params ''
+    AddColourChild $Doc $override $Params ''
 
     # <fire_fx_offset> - only when alignPointLights is present
     if ($Params.ContainsKey('alignPointLights')) {
@@ -326,10 +364,22 @@ function BuildOverrideElement {
         $override.AppendChild($off) | Out-Null
     }
 
-    # <spotlight> — only when at least one spot_ field is present
+    # <spotlight> - only when at least one spot_ field is present
     $hasSpot = @($Params.Keys | Where-Object { $_ -like 'spot_*' }).Count -gt 0
     if ($hasSpot) {
-        $override.AppendChild((BuildSpotlightElement $Doc $Params)) | Out-Null
+        $override.AppendChild((BuildSpotlightElement $Doc $Params 'spot_')) | Out-Null
+    }
+
+    $pointIndices = @($Params.Keys | ForEach-Object { if ($_ -match '^p(\d+)_') { [int]$Matches[1] } }) | Sort-Object -Unique
+    foreach ($idx in $pointIndices) {
+        $override.AppendChild((BuildLightElement $Doc $Params $idx)) | Out-Null
+    }
+
+    $spotIndices = @($Params.Keys | ForEach-Object { if ($_ -match '^s(\d+)_') { [int]$Matches[1] } }) | Sort-Object -Unique
+    foreach ($idx in $spotIndices) {
+        $spotEl = BuildSpotlightElement $Doc $Params "s${idx}_"
+        $spotEl.SetAttribute('index', [string]$idx)
+        $override.AppendChild($spotEl) | Out-Null
     }
 
     return $override
