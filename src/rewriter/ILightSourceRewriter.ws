@@ -351,7 +351,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Enables shadow casting on all drawable (mesh) components - for noshadow entities.
+    // Enables shadow casting on all drawable (mesh) components - for noshadow entities
     protected function ApplyForceCastShadows() {
         var drawable: CDrawableComponent;
         var components: array<CComponent>;
