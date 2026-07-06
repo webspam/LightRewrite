@@ -268,7 +268,6 @@ abstract class ILightSourceRewriter {
         return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
     }
 
-    // Destroy the spawned spotlight entity when this rewriter is discarded, rather than orphan it
     public function DestroySpawnedSpotlight() {
         if (spawnedSpotlight) {
             spawnedSpotlight.Destroy();
