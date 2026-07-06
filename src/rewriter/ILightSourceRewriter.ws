@@ -194,7 +194,6 @@ abstract class ILightSourceRewriter {
         if (pamparams.color.has) light.color = pamparams.color.value;
     }
 
-    // Rewrites the spotlight component on the entity with the given params.
     protected function RewriteSpotlight(spotParams: CLightRewriteSpotlightParams) {
         var spotLight: CSpotLightComponent;
         var wasEnabled: bool;
