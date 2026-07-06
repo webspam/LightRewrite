@@ -275,7 +275,6 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight: CPointLightComponent,
         index: int,
