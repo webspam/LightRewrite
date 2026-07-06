@@ -149,16 +149,16 @@ class LRDebug_AttributeEditor {
         }
     }
 
-    /** Cone attributes only exist on spotlights; the rewriter bools only on point lights. */
-    private function IsAttrApplicable(attr: name, type: name): bool {
-        switch (attr) {
+    /** Whether an attribute can be edited on a given light type */
+    private function IsAttrApplicable(attribute: name, lightType: name): bool {
+        switch (attribute) {
             case 'innerAngle':
             case 'outerAngle':
             case 'softness':
-                return type == 'spot';
+                return lightType == 'spot';
             case 'useSpotlightColor':
             case 'alignPointLights':
-                return type != 'spot';
+                return lightType != 'spot';
         }
         return true;
     }
