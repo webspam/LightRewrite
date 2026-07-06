@@ -303,8 +303,14 @@ abstract class ILightSourceRewriter {
         if (wasEnabled) pointLight.SetEnabled(true);
     }
 
+    protected function ApplyPointLightParamsOffset(pointLight: CPointLightComponent, index: int) {
+        var pointParams: CLightRewriteComponentLightParams = GetEffectiveParams().GetPointLightParams(index);
+
+        if (pointParams && pointParams.offset.has) pointLight.SetPosition(pointParams.offset.value);
+    }
+
     protected function IsPointLightForceDisabled(index: int): bool {
-        var pointParams: CLightRewritePointLightParams = GetEffectiveParams().GetPointLightParams(index);
+        var pointParams: CLightRewriteComponentLightParams = GetEffectiveParams().GetPointLightParams(index);
 
         if (pointParams) return pointParams.enabled.has && !pointParams.enabled.value;
         return false;
@@ -313,7 +319,7 @@ abstract class ILightSourceRewriter {
     // Sets basic point light settings
     protected function SetPointLightSettings(pointLight: CPointLightComponent, index: int) {
         var uncapped: float;
-        var pointParams: CLightRewritePointLightParams;
+        var pointParams: CLightRewriteComponentLightParams;
 
         ApplyLightParams(pointLight, GetEffectiveParams());
 
@@ -334,7 +340,7 @@ abstract class ILightSourceRewriter {
         optional spotLight: CSpotLightComponent
     ) {
         var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
-        var pointParams: CLightRewritePointLightParams = pamparams.GetPointLightParams(index);
+        var pointParams: CLightRewriteComponentLightParams = pamparams.GetPointLightParams(index);
 
         if (pointParams && pointParams.color.has) {
             pointLight.color = pointParams.color.value;

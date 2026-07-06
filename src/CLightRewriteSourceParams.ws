@@ -38,10 +38,10 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var spotlight: CLightRewriteSpotlightParams;
 
     // Per-component overrides, applied on top of the entity-wide fields above
-    public var pointLights: array<CLightRewritePointLightParams>;
+    public var pointLights: array<CLightRewriteComponentLightParams>;
     public var spotLights : array<CLightRewriteSpotlightParams>;
 
-    public function GetPointLightParams(index: int): CLightRewritePointLightParams {
+    public function GetPointLightParams(index: int): CLightRewriteComponentLightParams {
         var i: int;
         for (i = 0; i < pointLights.Size(); i += 1) {
             if (pointLights[i].index == index) return pointLights[i];
@@ -49,12 +49,12 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    public function GetOrCreatePointLightParams(index: int): CLightRewritePointLightParams {
-        var params: CLightRewritePointLightParams;
+    public function GetOrCreatePointLightParams(index: int): CLightRewriteComponentLightParams {
+        var params: CLightRewriteComponentLightParams;
 
         params = GetPointLightParams(index);
         if (!params) {
-            params = new CLightRewritePointLightParams in this;
+            params = new CLightRewriteComponentLightParams in this;
             params.index = index;
             pointLights.PushBack(params);
         }

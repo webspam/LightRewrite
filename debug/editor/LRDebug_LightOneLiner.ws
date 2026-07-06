@@ -63,7 +63,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotlight, spotParams, mergedSpot: CLightRewriteSpotlightParams;
-        var pointParams, mergedPoint: CLightRewritePointLightParams;
+        var pointParams, mergedPoint: CLightRewriteComponentLightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
         var position: Vector;
@@ -102,7 +102,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             if (params) {
                 pointParams = params.GetPointLightParams(activeIndex);
                 if (pointParams) {
-                    mergedPoint = new CLightRewritePointLightParams in this;
+                    mergedPoint = new CLightRewriteComponentLightParams in this;
                     params.ApplyBaseTo(mergedPoint);
                     pointParams.ApplyTo(mergedPoint);
                     lightParams = mergedPoint;

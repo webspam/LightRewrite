@@ -115,7 +115,7 @@ function LRDebug_BuildEditedFields(
     baseline: CLightRewriteSourceParams
 ): string {
     var line: string;
-    var pBase: CLightRewritePointLightParams;
+    var pBase: CLightRewriteComponentLightParams;
     var sBase: CLightRewriteSpotlightParams;
     var i: int;
 
@@ -154,7 +154,7 @@ function LRDebug_BuildEditedFields(
 
     for (i = 0; i < params.pointLights.Size(); i += 1) {
         pBase = baseline.GetPointLightParams(params.pointLights[i].index);
-        if (!pBase) pBase = new CLightRewritePointLightParams in baseline;
+        if (!pBase) pBase = new CLightRewriteComponentLightParams in baseline;
         line += LRDebug_BuildLightFieldSegment(
             params.pointLights[i],
             pBase,
