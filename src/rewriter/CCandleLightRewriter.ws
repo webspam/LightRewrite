@@ -83,6 +83,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                     AlignPointLight(i, pointLight);
                 }
             }
+            ApplyPointLightParamsOffset(pointLight, i);
 
             if (wasEnabled) pointLight.SetEnabled(true);
         }

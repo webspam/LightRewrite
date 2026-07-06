@@ -25,6 +25,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
             if (pointLight) {
                 RewritePointLight(pointLight, i, spotLight);
                 if (p.pointLightOffsetPos.has) pointLight.SetPosition(p.pointLightOffsetPos.value);
+                ApplyPointLightParamsOffset(pointLight, i);
             }
         }
 
