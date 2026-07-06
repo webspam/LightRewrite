@@ -9,11 +9,13 @@ class CLightRewriteSpotlightParams extends CLightRewriteComponentLightParams {
     public var spawn: bool;  default spawn = false;
 
     public function ApplyTo(target: CLightRewriteComponentLightParams) {
-        var spot: CLightRewriteSpotlightParams = (CLightRewriteSpotlightParams)target;
+        var spot: CLightRewriteSpotlightParams;
 
         super.ApplyTo(target);
 
+        spot = (CLightRewriteSpotlightParams)target;
         if (!spot) return;
+
         if (innerAngle.has) spot.innerAngle = innerAngle;
         if (outerAngle.has) spot.outerAngle = outerAngle;
         if (softness.has) spot.softness = softness;
