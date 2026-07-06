@@ -311,7 +311,6 @@ abstract class ILightSourceRewriter {
         return false;
     }
 
-    // Sets basic point light settings
     protected function SetPointLightSettings(pointLight: CPointLightComponent, index: int) {
         var uncapped: float;
         var pointParams: CLightRewriteComponentLightParams;
