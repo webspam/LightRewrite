@@ -436,6 +436,13 @@
           <xs:documentation>If present, overrides this point light's colour.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="offset"
+                  type="vectorType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>When present, moves this point light to this local-space offset from the entity origin. Wins over the entry-level offset and candle flame alignment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:all>
     <xs:attribute name="index"
                   type="xs:nonNegativeInteger"
