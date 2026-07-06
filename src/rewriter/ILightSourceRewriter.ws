@@ -96,7 +96,7 @@ abstract class ILightSourceRewriter {
             }
         }
 
-        // Restore the original state of any spotlights.
+        // Restore the original state of any spotlights
         components.Clear();
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -122,7 +122,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Disables all spotlight components on the entity.
+    // Disables all spotlight components on the entity
     public function DisableAllSpotlightComponents() {
         var lightComponent: CSpotLightComponent;
         var i: int;
