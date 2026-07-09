@@ -139,7 +139,7 @@ function ParseLightRewriteMatchRules(
     target: CLightRewriteMatchAll
 ) {
     var childNode: SCustomNode;
-    var rule: CLightRewriteMatchRule;
+    var rule: ILightRewriteMatchRule;
     var group: CLightRewriteMatchAny;
     var i, count: int;
 
@@ -147,13 +147,13 @@ function ParseLightRewriteMatchRules(
     for (i = 0; i < count; i += 1) {
         childNode = node.subNodes[i];
 
-        if (childNode.nodeName == 'match') {
-            rule = ParseLightRewriteMatchRule(target, dm, childNode);
-            if (rule) target.rules.PushBack(rule);
-        }
-        else if (childNode.nodeName == 'any') {
+        if (childNode.nodeName == 'any') {
             group = ParseLightRewriteMatchGroup(target, dm, childNode);
             if (group.rules.Size() > 0) target.rules.PushBack(group);
+        }
+        else {
+            rule = ParseLightRewriteRule(target, dm, childNode);
+            if (rule) target.rules.PushBack(rule);
         }
     }
 }
@@ -164,19 +164,41 @@ function ParseLightRewriteMatchGroup(
     groupNode: SCustomNode
 ): CLightRewriteMatchAny {
     var group: CLightRewriteMatchAny;
-    var rule: CLightRewriteMatchRule;
+    var rule: ILightRewriteMatchRule;
     var i, count: int;
 
     group = new CLightRewriteMatchAny in owner;
 
     count = groupNode.subNodes.Size();
     for (i = 0; i < count; i += 1) {
-        if (groupNode.subNodes[i].nodeName != 'match') continue;
-        rule = ParseLightRewriteMatchRule(group, dm, groupNode.subNodes[i]);
+        rule = ParseLightRewriteRule(group, dm, groupNode.subNodes[i]);
         if (rule) group.rules.PushBack(rule);
     }
 
     return group;
+}
+
+function ParseLightRewriteRule(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    node: SCustomNode
+): ILightRewriteMatchRule {
+    var scaleRule: CLightRewriteScaleRule;
+    var strVal: string;
+
+    if (node.nodeName == 'match') return ParseLightRewriteMatchRule(owner, dm, node);
+    if (node.nodeName != 'match_scale') return NULL;
+
+    if (!dm.GetCustomNodeAttributeValueString(node, 'mode', strVal)) {
+        LogLightRewriteXml("Skipping invalid scale filter - missing mode attribute.");
+        return NULL;
+    }
+
+    scaleRule = new CLightRewriteScaleRule in owner;
+    if (strVal == "larger") scaleRule.matchValue = LR_Scale_Larger;
+    else if (strVal == "smaller") scaleRule.matchValue = LR_Scale_Smaller;
+
+    return scaleRule;
 }
 
 function ParseLightRewriteMatchRule(
@@ -189,12 +211,12 @@ function ParseLightRewriteMatchRule(
 
     if (matchNode.values.Size() == 0) return NULL;
 
+    dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal);
+
     rule = new CLightRewriteMatchRule in owner;
     rule.matchValue = matchNode.values[0];
 
-    if (dm.GetCustomNodeAttributeValueString(matchNode, 'type', strVal)) {
-        if (strVal == "layer") rule.matchType = LR_Match_Layer;
-    }
+    if (strVal == "layer") rule.matchType = LR_Match_Layer;
 
     if (dm.GetCustomNodeAttributeValueString(matchNode, 'mode', strVal)) {
         switch (strVal) {
