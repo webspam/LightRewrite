@@ -105,6 +105,14 @@ function ParseLightRewriteVector(
     return true;
 }
 
+function ParseLightRewriteType(str: string): ELightRewriteType {
+    switch (str) {
+        case "LRT_Candle":     return LRT_Candle;
+        case "LRT_Spotlight":  return LRT_Spotlight;
+        default:               return LRT_None;
+    }
+}
+
 function LR_StringToLightShadowCastingMode(str: string): ELightShadowCastingMode {
     switch (str) {
         case "None":         return LSCM_None;
