@@ -63,7 +63,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotlight: CLightRewriteSpotlightParams;
-        var pointParams, mergedPoint: CLightRewriteComponentLightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
         var position: Vector;
@@ -91,16 +90,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             spotComp = LRDebug_SpotLightAt(entity, activeIndex);
         }
         else {
-            lightParams = params;
-            if (params) {
-                pointParams = params.GetPointLightParams(activeIndex);
-                if (pointParams) {
-                    mergedPoint = new CLightRewriteComponentLightParams in this;
-                    params.ApplyBaseTo(mergedPoint);
-                    pointParams.ApplyBaseTo(mergedPoint);
-                    lightParams = mergedPoint;
-                }
-            }
+            if (params) lightParams = params.GetEffectivePointLightParams(activeIndex);
             light = LRDebug_PointLightAt(entity, activeIndex);
         }
 
@@ -182,11 +172,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                     if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                     else valF = 0.0;
                 }
-                else if (pointParams && pointParams.offset.has) {
-                    valF = pointParams.offset.value.Z;
-                }
-                else if (params && params.offset.has) {
-                    valF = params.offset.value.Z;
+                else if (lightParams && lightParams.offset.has) {
+                    valF = lightParams.offset.value.Z;
                 }
                 else if (light) {
                     position = light.GetLocalPosition();
