@@ -3,44 +3,23 @@ function ParseLightRewriteMatchRules(
     node: SCustomNode,
     target: CLightRewriteMatchAll
 ) {
-    var childNode: SCustomNode;
+    ParseLightRewriteRulesInto(target, dm, node, target.rules);
+}
+
+function ParseLightRewriteRulesInto(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    node: SCustomNode,
+    out rules: array<ILightRewriteMatchRule>
+) {
     var rule: ILightRewriteMatchRule;
-    var group: CLightRewriteMatchAny;
     var i, count: int;
 
     count = node.subNodes.Size();
     for (i = 0; i < count; i += 1) {
-        childNode = node.subNodes[i];
-
-        if (childNode.nodeName == 'any') {
-            group = ParseLightRewriteMatchGroup(target, dm, childNode);
-            if (group.rules.Size() > 0) target.rules.PushBack(group);
-        }
-        else {
-            rule = ParseLightRewriteRule(target, dm, childNode);
-            if (rule) target.rules.PushBack(rule);
-        }
+        rule = ParseLightRewriteRule(owner, dm, node.subNodes[i]);
+        if (rule) rules.PushBack(rule);
     }
-}
-
-function ParseLightRewriteMatchGroup(
-    owner: CObject,
-    dm: CDefinitionsManagerAccessor,
-    groupNode: SCustomNode
-): CLightRewriteMatchAny {
-    var group: CLightRewriteMatchAny;
-    var rule: ILightRewriteMatchRule;
-    var i, count: int;
-
-    group = new CLightRewriteMatchAny in owner;
-
-    count = groupNode.subNodes.Size();
-    for (i = 0; i < count; i += 1) {
-        rule = ParseLightRewriteRule(group, dm, groupNode.subNodes[i]);
-        if (rule) group.rules.PushBack(rule);
-    }
-
-    return group;
 }
 
 function ParseLightRewriteRule(
@@ -48,8 +27,16 @@ function ParseLightRewriteRule(
     dm: CDefinitionsManagerAccessor,
     node: SCustomNode
 ): ILightRewriteMatchRule {
+    var group: CLightRewriteMatchAny;
+
     if (node.nodeName == 'match') return ParseLightRewriteMatchRule(owner, dm, node);
     if (node.nodeName == 'match_scale') return ParseLightRewriteScaleRule(owner, dm, node);
+    if (node.nodeName == 'any') {
+        group = new CLightRewriteMatchAny in owner;
+        ParseLightRewriteRulesInto(group, dm, node, group.rules);
+        if (group.rules.Size() > 0) return group;
+        return NULL;
+    }
     return NULL;
 }
 
