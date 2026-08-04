@@ -35,9 +35,11 @@ abstract class ILightSourceRewriter {
     }
 
     // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
-    public function GetUncappedRadius(pointLight: CPointLightComponent): float {
+    public function GetUncappedRadius(pointLight: CPointLightComponent, index: int): float {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
+        var perIndex: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
 
+        if (perIndex && perIndex.radius.has) return perIndex.radius.value;
         if (p.radius.has) return p.radius.value;
         if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
             return pointLight.lightRewriteOriginalValues.radius;
@@ -274,7 +276,7 @@ abstract class ILightSourceRewriter {
             wasEnabled = pointLight.IsEnabled();
             if (wasEnabled) pointLight.SetEnabled(false);
 
-            SetPointLightSettings(pointLight, effective);
+            SetPointLightSettings(pointLight, effective, index);
             SetPointLightColour(pointLight, effective, spotLight);
 
             if (wasEnabled) pointLight.SetEnabled(true);
@@ -293,15 +295,14 @@ abstract class ILightSourceRewriter {
 
     protected function SetPointLightSettings(
         pointLight: CPointLightComponent,
-        effective: ILightRewriteParams
+        effective: ILightRewriteParams,
+        index: int
     ) {
-        var uncapped: float;
+        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
+        var uncapped: float = GetUncappedRadius(pointLight, index);
 
         ApplyLightParams(pointLight, effective);
 
-        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
-        if (effective.radius.has) uncapped = effective.radius.value;
-        else uncapped = GetUncappedRadius(pointLight);
         pointLight.radius = uncapped;
         if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) pointLight.radius = maxSafeRadius;
     }

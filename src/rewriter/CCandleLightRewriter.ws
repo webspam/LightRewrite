@@ -71,7 +71,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             if (wasEnabled) pointLight.SetEnabled(false);
 
             effective = p.GetEffectivePointLightParams(i);
-            SetPointLightSettings(pointLight, effective);
+            SetPointLightSettings(pointLight, effective, i);
             SetPointLightColour(pointLight, effective, spotLight);
 
             if (p.alignPointLights.has && p.alignPointLights.value) {

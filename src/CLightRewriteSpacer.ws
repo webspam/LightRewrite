@@ -203,7 +203,7 @@ class CLightRewriteSpacer {
             if (light.shadowCastingMode == LSCM_None) continue;
             if (!lightHasSchedule && !light.IsEnabled()) continue;
 
-            uncapped = rewriter.GetUncappedRadius(light);
+            uncapped = rewriter.GetUncappedRadius(light, i);
             if (uncapped > radius) {
                 radius = uncapped;
                 centre = light.GetWorldPosition();

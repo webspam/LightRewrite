@@ -187,7 +187,7 @@ class CLightRewriteShadowReducer {
             if (light.shadowCastingMode == LSCM_None) continue;
             if (!hasSchedule && !light.IsEnabled()) continue;
 
-            uncapped = rewriter.GetUncappedRadius(light);
+            uncapped = rewriter.GetUncappedRadius(light, i);
             if (uncapped > best) {
                 best = uncapped;
                 outLight = light;
