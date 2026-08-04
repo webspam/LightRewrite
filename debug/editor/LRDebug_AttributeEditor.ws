@@ -171,16 +171,16 @@ class LRDebug_AttributeEditor {
     }
 
     /** Edits always land in the per-index arrays; entity-wide fields stay an XML-authoring layer */
-    private function GetSharedParams(
+    private function GetActiveLightParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
         type: name
     ): ILightRewriteParams {
-        if (type == 'spot') return EnsureSpotParams(params, target);
+        if (type == 'spot') return GetActiveSpotParams(params, target);
         return params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
     }
 
-    private function EnsureSpotParams(
+    private function GetActiveSpotParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity
     ): CLightRewriteSpotlightParams {
@@ -255,7 +255,7 @@ class LRDebug_AttributeEditor {
 
         switch (attr) {
             case 'brightness':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.brightness.has) {
                     lightParams.brightness.has = true;
                     if (light) lightParams.brightness.value = light.brightness;
@@ -267,7 +267,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'radius':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.radius.has) {
                     lightParams.radius.has = true;
                     if (light) lightParams.radius.value = light.radius;
@@ -279,7 +279,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'attenuation':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.attenuation.has) {
                     lightParams.attenuation.has = true;
                     if (light) lightParams.attenuation.value = light.attenuation;
@@ -291,7 +291,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'shadowFadeDistance':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.shadowFadeDistance.has) {
                     lightParams.shadowFadeDistance.has = true;
                     if (light) {
@@ -305,7 +305,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'shadowFadeRange':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.shadowFadeRange.has) {
                     lightParams.shadowFadeRange.has = true;
                     if (light) {
@@ -319,7 +319,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'shadowBlendFactor':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.shadowBlendFactor.has) {
                     lightParams.shadowBlendFactor.has = true;
                     if (light) {
@@ -344,7 +344,7 @@ class LRDebug_AttributeEditor {
                     );
                 }
                 else {
-                    lightParams = GetSharedParams(params, target, type);
+                    lightParams = GetActiveLightParams(params, target, type);
                     SeedComponentOffset(lightParams, light);
                     lightParams.offset.value.Z = ClampAttributeValue(
                         attr,
@@ -354,7 +354,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'innerAngle':
-                spotParams = EnsureSpotParams(params, target);
+                spotParams = GetActiveSpotParams(params, target);
                 if (!spotParams.innerAngle.has) {
                     spotParams.innerAngle.has = true;
                     if (spot) spotParams.innerAngle.value = spot.innerAngle;
@@ -366,7 +366,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'outerAngle':
-                spotParams = EnsureSpotParams(params, target);
+                spotParams = GetActiveSpotParams(params, target);
                 if (!spotParams.outerAngle.has) {
                     spotParams.outerAngle.has = true;
                     if (spot) spotParams.outerAngle.value = spot.outerAngle;
@@ -378,7 +378,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'softness':
-                spotParams = EnsureSpotParams(params, target);
+                spotParams = GetActiveSpotParams(params, target);
                 if (!spotParams.softness.has) {
                     spotParams.softness.has = true;
                     if (spot) spotParams.softness.value = spot.softness;
@@ -390,7 +390,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'colourR':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
@@ -399,7 +399,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'colourG':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
@@ -408,7 +408,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'colourB':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 if (!lightParams.color.has) {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
@@ -448,7 +448,7 @@ class LRDebug_AttributeEditor {
         dx *= scale;
         dy *= scale;
 
-        lightParams = GetSharedParams(params, target, type);
+        lightParams = GetActiveLightParams(params, target, type);
         SeedComponentOffset(lightParams, GetLight(target, type));
         lightParams.offset.value.X += dx;
         lightParams.offset.value.Y += dy;
@@ -543,7 +543,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'overrideColour':
-                lightParams = GetSharedParams(params, target, type);
+                lightParams = GetActiveLightParams(params, target, type);
                 lightParams.color.has = !lightParams.color.has;
                 if (lightParams.color.has && light) {
                     lightParams.color.value = light.color;
@@ -575,7 +575,7 @@ class LRDebug_AttributeEditor {
         params = target.LRDebug_GetParams(rewriter);
         type = GetSelectedLightType(target);
         light = GetLight(target, type);
-        lightParams = GetSharedParams(params, target, type);
+        lightParams = GetActiveLightParams(params, target, type);
 
         if (!lightParams.castShadows.has) {
             lightParams.castShadows.has = true;
