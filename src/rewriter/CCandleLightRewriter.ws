@@ -34,6 +34,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight: CSpotLightComponent;
         var pointLight, mainLight: CPointLightComponent;
+        var pointParams: CLightRewriteComponentLightParams;
         var centralSlot: name;
         var i: int;
         var wasEnabled, forceSingle: bool;
@@ -64,7 +65,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 continue;
             }
 
-            if (IsPointLightForceDisabled(i)) {
+            pointParams = p.GetPointLightParams(i);
+            if (IsPointLightForceDisabled(pointParams)) {
                 pointLight.SetEnabled(false);
                 continue;
             }
@@ -72,8 +74,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             wasEnabled = pointLight.IsEnabled();
             if (wasEnabled) pointLight.SetEnabled(false);
 
-            SetPointLightSettings(pointLight, i);
-            SetPointLightColour(pointLight, i, spotLight);
+            SetPointLightSettings(pointLight, pointParams);
+            SetPointLightColour(pointLight, pointParams, spotLight);
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
@@ -83,7 +85,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                     AlignPointLight(i, pointLight);
                 }
             }
-            ApplyPointLightParamsOffset(pointLight, i);
+            ApplyPointLightParamsOffset(pointLight, pointParams);
 
             if (wasEnabled) pointLight.SetEnabled(true);
         }

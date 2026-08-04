@@ -256,14 +256,14 @@ abstract class ILightSourceRewriter {
 
     protected function RewritePointLight(
         pointLight: CPointLightComponent,
-        index: int,
+        pointParams: CLightRewriteComponentLightParams,
         optional spotLight: CSpotLightComponent
     ) {
         var wasEnabled: bool;
 
         pointLight.SaveLightRewriteOriginalValues();
 
-        if (IsPointLightForceDisabled(index)) {
+        if (IsPointLightForceDisabled(pointParams)) {
             pointLight.SetEnabled(false);
             return;
         }
@@ -271,32 +271,33 @@ abstract class ILightSourceRewriter {
         wasEnabled = pointLight.IsEnabled();
         if (wasEnabled) pointLight.SetEnabled(false);
 
-        SetPointLightSettings(pointLight, index);
-        SetPointLightColour(pointLight, index, spotLight);
+        SetPointLightSettings(pointLight, pointParams);
+        SetPointLightColour(pointLight, pointParams, spotLight);
 
         if (wasEnabled) pointLight.SetEnabled(true);
     }
 
-    protected function ApplyPointLightParamsOffset(pointLight: CPointLightComponent, index: int) {
-        var pointParams: CLightRewriteComponentLightParams = GetEffectiveParams().GetPointLightParams(index);
-
+    protected function ApplyPointLightParamsOffset(
+        pointLight: CPointLightComponent,
+        pointParams: CLightRewriteComponentLightParams
+    ) {
         if (pointParams && pointParams.offset.has) pointLight.SetPosition(pointParams.offset.value);
     }
 
-    protected function IsPointLightForceDisabled(index: int): bool {
-        var pointParams: CLightRewriteComponentLightParams = GetEffectiveParams().GetPointLightParams(index);
-
+    protected function IsPointLightForceDisabled(
+        pointParams: CLightRewriteComponentLightParams
+    ): bool {
         if (pointParams) return pointParams.enabled.has && !pointParams.enabled.value;
         return false;
     }
 
-    protected function SetPointLightSettings(pointLight: CPointLightComponent, index: int) {
+    protected function SetPointLightSettings(
+        pointLight: CPointLightComponent,
+        pointParams: CLightRewriteComponentLightParams
+    ) {
         var uncapped: float;
-        var pointParams: CLightRewriteComponentLightParams;
 
         ApplyLightParams(pointLight, GetEffectiveParams());
-
-        pointParams = GetEffectiveParams().GetPointLightParams(index);
         if (pointParams) ApplyLightParams(pointLight, pointParams);
 
         // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
@@ -309,11 +310,10 @@ abstract class ILightSourceRewriter {
     // Sets point light colour to the specified override, spotlight, or original colour
     protected function SetPointLightColour(
         pointLight: CPointLightComponent,
-        index: int,
+        pointParams: CLightRewriteComponentLightParams,
         optional spotLight: CSpotLightComponent
     ) {
         var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
-        var pointParams: CLightRewriteComponentLightParams = pamparams.GetPointLightParams(index);
 
         if (pointParams && pointParams.color.has) {
             pointLight.color = pointParams.color.value;
