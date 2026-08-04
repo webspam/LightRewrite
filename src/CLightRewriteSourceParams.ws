@@ -86,11 +86,11 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    // The entity-wide spotlight applies to component 0 only
+    // The entity-wide spotlight is the base for every component; a spawn spotlight edits no component
     public function GetEffectiveSpotLightParams(index: int): CLightRewriteSpotlightParams {
         var entityWide, spotParams, merged: CLightRewriteSpotlightParams;
 
-        if (index == 0 && spotlight && !spotlight.spawn) entityWide = spotlight;
+        if (spotlight && !spotlight.spawn) entityWide = spotlight;
         spotParams = GetSpotLightParams(index);
 
         if (!entityWide) return spotParams;
