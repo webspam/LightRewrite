@@ -194,6 +194,14 @@ class LRDebug_AttributeEditor {
         return params.spotlight;
     }
 
+    /** Which field an offset edit lands in; single-light entities keep writing entity-wide fields */
+    private function ClassifyOffsetTarget(target: CGameplayEntity, type: name): name {
+        if (type == 'spot') return 'spot';
+        if (LRDebug_IsCandle(target)) return 'candle';
+        if (LRDebug_PointLightCount(target) > 1) return 'multi';
+        return 'single';
+    }
+
     /** Seed offset from the live position; it's absolute, so starting at 0 would teleport the light */
     private function SeedComponentOffset(
         params: CLightRewriteComponentLightParams,
@@ -344,40 +352,40 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                if (type == 'spot') {
-                    spotParams = EnsureSpotParams(params, target);
-                    SeedComponentOffset(spotParams, spot);
-                    spotParams.offset.value.Z = ClampAttributeValue(
-                        attr,
-                        spotParams.offset.value.Z + delta
-                    );
-                }
-                else if (LRDebug_IsCandle(target)) {
-                    if (!params.alignPointLights.has) {
-                        params.alignPointLights.has = true;
-                        params.alignPointLights.value = true;
-                    }
-                    params.pointLightOffset.Z = ClampAttributeValue(
-                        attr,
-                        params.pointLightOffset.Z + delta
-                    );
-                }
-                else if (LRDebug_PointLightCount(target) > 1) {
-                    pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
-                    SeedComponentOffset(pointParams, light);
-                    pointParams.offset.value.Z = ClampAttributeValue(
-                        attr,
-                        pointParams.offset.value.Z + delta
-                    );
-                }
-                else {
-                    if (!params.pointLightOffsetPos.has) {
+                switch (ClassifyOffsetTarget(target, type)) {
+                    case 'spot':
+                        spotParams = EnsureSpotParams(params, target);
+                        SeedComponentOffset(spotParams, spot);
+                        spotParams.offset.value.Z = ClampAttributeValue(
+                            attr,
+                            spotParams.offset.value.Z + delta
+                        );
+                        break;
+                    case 'candle':
+                        if (!params.alignPointLights.has) {
+                            params.alignPointLights.has = true;
+                            params.alignPointLights.value = true;
+                        }
+                        params.pointLightOffset.Z = ClampAttributeValue(
+                            attr,
+                            params.pointLightOffset.Z + delta
+                        );
+                        break;
+                    case 'multi':
+                        pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
+                        SeedComponentOffset(pointParams, light);
+                        pointParams.offset.value.Z = ClampAttributeValue(
+                            attr,
+                            pointParams.offset.value.Z + delta
+                        );
+                        break;
+                    default:
                         params.pointLightOffsetPos.has = true;
-                    }
-                    params.pointLightOffsetPos.value.Z = ClampAttributeValue(
-                        attr,
-                        params.pointLightOffsetPos.value.Z + delta
-                    );
+                        params.pointLightOffsetPos.value.Z = ClampAttributeValue(
+                            attr,
+                            params.pointLightOffsetPos.value.Z + delta
+                        );
+                        break;
                 }
                 break;
 
@@ -480,27 +488,26 @@ class LRDebug_AttributeEditor {
         dx *= scale;
         dy *= scale;
 
-        if (type == 'spot') {
-            spotParams = EnsureSpotParams(params, target);
-            SeedComponentOffset(spotParams, spot);
-            spotParams.offset.value.X += dx;
-            spotParams.offset.value.Y += dy;
-        }
-        else if (LRDebug_IsCandle(target)) {
-            return false;
-        }
-        else if (LRDebug_PointLightCount(target) > 1) {
-            pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
-            SeedComponentOffset(pointParams, point);
-            pointParams.offset.value.X += dx;
-            pointParams.offset.value.Y += dy;
-        }
-        else {
-            if (!params.pointLightOffsetPos.has) {
+        switch (ClassifyOffsetTarget(target, type)) {
+            case 'spot':
+                spotParams = EnsureSpotParams(params, target);
+                SeedComponentOffset(spotParams, spot);
+                spotParams.offset.value.X += dx;
+                spotParams.offset.value.Y += dy;
+                break;
+            case 'candle':
+                return false;
+            case 'multi':
+                pointParams = params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
+                SeedComponentOffset(pointParams, point);
+                pointParams.offset.value.X += dx;
+                pointParams.offset.value.Y += dy;
+                break;
+            default:
                 params.pointLightOffsetPos.has = true;
-            }
-            params.pointLightOffsetPos.value.X += dx;
-            params.pointLightOffsetPos.value.Y += dy;
+                params.pointLightOffsetPos.value.X += dx;
+                params.pointLightOffsetPos.value.Y += dy;
+                break;
         }
 
         ApplyParams(target, rewriter, params);
