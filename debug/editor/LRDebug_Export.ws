@@ -89,8 +89,8 @@ function LRDebug_BuildSpotlightSegment(
 }
 
 function LRDebug_BuildOffsetSegment(
-    cur: CLightRewriteComponentLightParams,
-    base: CLightRewriteComponentLightParams,
+    cur: ILightRewriteParams,
+    base: ILightRewriteParams,
     prefix: string
 ): string {
     var line: string;
@@ -127,7 +127,7 @@ function LRDebug_BuildEditedFields(
     baseline: CLightRewriteSourceParams
 ): string {
     var line, prefix: string;
-    var pBase: CLightRewriteComponentLightParams;
+    var pBase: ILightRewriteParams;
     var sBase: CLightRewriteSpotlightParams;
     var i, pointCount, spotCount: int;
 
@@ -166,8 +166,7 @@ function LRDebug_BuildEditedFields(
 
     pointCount = params.pointLights.Size();
     for (i = 0; i < pointCount; i += 1) {
-        pBase = baseline.GetPointLightParams(params.pointLights[i].index);
-        if (!pBase) pBase = new CLightRewriteComponentLightParams in baseline;
+        pBase = baseline.GetEffectivePointLightParams(params.pointLights[i].index);
         prefix = "p" + params.pointLights[i].index + "_";
         line += LRDebug_BuildLightFieldSegment(params.pointLights[i], pBase, prefix);
         line += LRDebug_BuildOffsetSegment(params.pointLights[i], pBase, prefix);
@@ -175,7 +174,7 @@ function LRDebug_BuildEditedFields(
 
     spotCount = params.spotLights.Size();
     for (i = 0; i < spotCount; i += 1) {
-        sBase = baseline.GetSpotLightParams(params.spotLights[i].index);
+        sBase = baseline.GetEffectiveSpotLightParams(params.spotLights[i].index);
         if (!sBase) sBase = new CLightRewriteSpotlightParams in baseline;
         line += LRDebug_BuildSpotlightSegment(
             params.spotLights[i],
