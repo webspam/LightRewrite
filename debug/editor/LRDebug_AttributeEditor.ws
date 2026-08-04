@@ -125,11 +125,13 @@ class LRDebug_AttributeEditor {
         if (type == 'spot') {
             count = LRDebug_SpotLightCount(target);
             if (count < 2) return false;
+
             spotLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;
         }
         else {
             count = LRDebug_PointLightCount(target);
             if (count < 2) return false;
+
             pointLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;
         }
         return true;
