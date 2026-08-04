@@ -122,37 +122,16 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Disables all spotlight components on the entity
-    public function DisableAllSpotlightComponents() {
-        var lightComponent: CSpotLightComponent;
-        var i: int;
-
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-        var count: int = components.Size();
-
-        for (i = 0; i < count; i += 1) {
-            lightComponent = (CSpotLightComponent)components[i];
-
-            // Keep the spotlight enabled if it has per-component params
-            if (GetEffectiveParams().GetSpotLightParams(i)) continue;
-
-            if (lightComponent) {
-                lightComponent.SaveLightRewriteOriginalValues();
-                lightComponent.SetEnabled(false);
-            }
-        }
-    }
-
-    protected function ApplyPerLightSpotOverrides() {
+    // disableUnconfigured switches off spotlights without an override, so candles emit only via point lights
+    protected function ApplyPerLightSpotOverrides(optional disableUnconfigured: bool) {
         var spotLight: CSpotLightComponent;
         var spotParams: CLightRewriteSpotlightParams;
-        var wasEnabled: bool;
         var i, count: int;
         var components: array<CComponent>;
 
         var p: CLightRewriteSourceParams = GetEffectiveParams();
 
-        if (p.spotLights.Size() == 0) return;
+        if (!disableUnconfigured && p.spotLights.Size() == 0) return;
 
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -161,9 +140,13 @@ abstract class ILightSourceRewriter {
             if (!spotLight) continue;
 
             spotParams = p.GetSpotLightParams(i);
-            if (!spotParams) continue;
-
-            ApplySpotOverride(spotLight, spotParams);
+            if (spotParams) {
+                ApplySpotOverride(spotLight, spotParams);
+            }
+            else if (disableUnconfigured) {
+                spotLight.SaveLightRewriteOriginalValues();
+                spotLight.SetEnabled(false);
+            }
         }
     }
 

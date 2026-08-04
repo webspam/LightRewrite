@@ -23,11 +23,11 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         if (p.spotlight) {
             RewriteSpotlight(p.spotlight);
+            ApplyPerLightSpotOverrides();
         }
         else {
-            DisableAllSpotlightComponents();
+            ApplyPerLightSpotOverrides(true);
         }
-        ApplyPerLightSpotOverrides();
     }
 
     public function RewriteLight() {
@@ -93,12 +93,15 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         if (count > 0) {
             if (p.spotlight) {
                 RewriteSpotlight(p.spotlight);
+                ApplyPerLightSpotOverrides();
             }
             else {
-                DisableAllSpotlightComponents();
+                ApplyPerLightSpotOverrides(true);
             }
         }
-        ApplyPerLightSpotOverrides();
+        else {
+            ApplyPerLightSpotOverrides();
+        }
 
         ApplyForceCastShadows();
     }
