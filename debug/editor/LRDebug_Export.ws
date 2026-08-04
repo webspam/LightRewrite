@@ -131,8 +131,6 @@ function LRDebug_BuildEditedFields(
     var sBase: CLightRewriteSpotlightParams;
     var i, pointCount, spotCount: int;
 
-    line = LRDebug_BuildLightFieldSegment(params, baseline, "");
-
     if (
         params.alignPointLights.has &&
         (!baseline.alignPointLights.has || params.alignPointLights.value != baseline.alignPointLights.value || params.pointLightOffset.Z != baseline.pointLightOffset.Z)
@@ -140,16 +138,6 @@ function LRDebug_BuildEditedFields(
         if (params.alignPointLights.value) line += " alignPointLights=1";
         else line += " alignPointLights=0";
         line += " alignOffsetZ=" + FloatToString(params.pointLightOffset.Z);
-    }
-
-    if (
-        params.offset.has &&
-        (!baseline.offset.has || params.offset.value.X != baseline.offset.value.X || params.offset.value.Y != baseline.offset.value.Y || params.offset.value.Z != baseline.offset.value.Z)
-    ) {
-        line += " pointLightOffset=1";
-        line += " pointLightOffsetX=" + FloatToString(params.offset.value.X);
-        line += " pointLightOffsetY=" + FloatToString(params.offset.value.Y);
-        line += " pointLightOffsetZ=" + FloatToString(params.offset.value.Z);
     }
 
     if (
