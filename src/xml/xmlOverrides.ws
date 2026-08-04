@@ -183,22 +183,29 @@ function ParseLightRewriteRule(
     dm: CDefinitionsManagerAccessor,
     node: SCustomNode
 ): ILightRewriteMatchRule {
-    var scaleRule: CLightRewriteScaleRule;
+    if (node.nodeName == 'match') return ParseLightRewriteMatchRule(owner, dm, node);
+    if (node.nodeName == 'match_scale') return ParseLightRewriteScaleRule(owner, dm, node);
+    return NULL;
+}
+
+function ParseLightRewriteScaleRule(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    scaleNode: SCustomNode
+): CLightRewriteScaleRule {
+    var rule: CLightRewriteScaleRule;
     var strVal: string;
 
-    if (node.nodeName == 'match') return ParseLightRewriteMatchRule(owner, dm, node);
-    if (node.nodeName != 'match_scale') return NULL;
-
-    if (!dm.GetCustomNodeAttributeValueString(node, 'mode', strVal)) {
+    if (!dm.GetCustomNodeAttributeValueString(scaleNode, 'mode', strVal)) {
         LogLightRewriteXml("Skipping invalid scale filter - missing mode attribute.");
         return NULL;
     }
 
-    scaleRule = new CLightRewriteScaleRule in owner;
-    if (strVal == "larger") scaleRule.matchValue = LR_Scale_Larger;
-    else if (strVal == "smaller") scaleRule.matchValue = LR_Scale_Smaller;
+    rule = new CLightRewriteScaleRule in owner;
+    if (strVal == "larger") rule.matchValue = LR_Scale_Larger;
+    else if (strVal == "smaller") rule.matchValue = LR_Scale_Smaller;
 
-    return scaleRule;
+    return rule;
 }
 
 function ParseLightRewriteMatchRule(
