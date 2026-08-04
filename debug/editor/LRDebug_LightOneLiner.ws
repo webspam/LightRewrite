@@ -88,8 +88,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 spotParams = params.GetSpotLightParams(activeIndex);
                 if (spotParams) {
                     mergedSpot = new CLightRewriteSpotlightParams in this;
-                    if (spotlight) spotlight.ApplyTo(mergedSpot);
-                    spotParams.ApplyTo(mergedSpot);
+                    if (spotlight) spotlight.ApplySpotlightTo(mergedSpot);
+                    spotParams.ApplySpotlightTo(mergedSpot);
                     spotlight = mergedSpot;
                 }
                 lightParams = spotlight;

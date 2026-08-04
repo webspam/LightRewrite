@@ -8,17 +8,12 @@ class CLightRewriteSpotlightParams extends CLightRewriteComponentLightParams {
     // When set, a spotlight entity is spawned for the match rather than editing an existing component
     public var spawn: bool;  default spawn = false;
 
-    public function ApplyTo(target: CLightRewriteComponentLightParams) {
-        var spot: CLightRewriteSpotlightParams;
+    public function ApplySpotlightTo(target: CLightRewriteSpotlightParams) {
+        ApplyBaseTo(target);
 
-        super.ApplyTo(target);
-
-        spot = (CLightRewriteSpotlightParams)target;
-        if (!spot) return;
-
-        if (innerAngle.has) spot.innerAngle = innerAngle;
-        if (outerAngle.has) spot.outerAngle = outerAngle;
-        if (softness.has) spot.softness = softness;
-        spot.spawn = spawn;
+        if (innerAngle.has) target.innerAngle = innerAngle;
+        if (outerAngle.has) target.outerAngle = outerAngle;
+        if (softness.has) target.softness = softness;
+        target.spawn = spawn;
     }
 }
