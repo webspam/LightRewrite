@@ -62,7 +62,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
     private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
-        var spotlight, spotParams, mergedSpot: CLightRewriteSpotlightParams;
+        var spotlight: CLightRewriteSpotlightParams;
         var pointParams, mergedPoint: CLightRewriteComponentLightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
@@ -84,14 +84,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
         if (type == 'spot') {
             if (params) {
-                spotlight = params.spotlight;
-                spotParams = params.GetSpotLightParams(activeIndex);
-                if (spotParams) {
-                    mergedSpot = new CLightRewriteSpotlightParams in this;
-                    if (spotlight) spotlight.ApplySpotlightTo(mergedSpot);
-                    spotParams.ApplySpotlightTo(mergedSpot);
-                    spotlight = mergedSpot;
-                }
+                spotlight = params.GetEffectiveSpotLightParams(activeIndex);
                 lightParams = spotlight;
             }
             light = LRDebug_SpotLightAt(entity, activeIndex);
