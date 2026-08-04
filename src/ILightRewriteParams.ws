@@ -26,6 +26,9 @@ abstract class ILightRewriteParams {
 
     public var color: SLightRewriteOptionalColour;
 
+    // Local-space position override for the light
+    public var offset: SLightRewriteOptionalVector;
+
     public function ApplyBaseTo(target: ILightRewriteParams) {
         if (enabled.has) target.enabled = enabled;
         if (brightness.has) target.brightness = brightness;
@@ -36,5 +39,6 @@ abstract class ILightRewriteParams {
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (castShadows.has) target.castShadows = castShadows;
         if (color.has) target.color = color;
+        if (offset.has) target.offset = offset;
     }
 }

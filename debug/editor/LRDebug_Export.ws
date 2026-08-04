@@ -143,13 +143,13 @@ function LRDebug_BuildEditedFields(
     }
 
     if (
-        params.pointLightOffsetPos.has &&
-        (!baseline.pointLightOffsetPos.has || params.pointLightOffsetPos.value.X != baseline.pointLightOffsetPos.value.X || params.pointLightOffsetPos.value.Y != baseline.pointLightOffsetPos.value.Y || params.pointLightOffsetPos.value.Z != baseline.pointLightOffsetPos.value.Z)
+        params.offset.has &&
+        (!baseline.offset.has || params.offset.value.X != baseline.offset.value.X || params.offset.value.Y != baseline.offset.value.Y || params.offset.value.Z != baseline.offset.value.Z)
     ) {
         line += " pointLightOffset=1";
-        line += " pointLightOffsetX=" + FloatToString(params.pointLightOffsetPos.value.X);
-        line += " pointLightOffsetY=" + FloatToString(params.pointLightOffsetPos.value.Y);
-        line += " pointLightOffsetZ=" + FloatToString(params.pointLightOffsetPos.value.Z);
+        line += " pointLightOffsetX=" + FloatToString(params.offset.value.X);
+        line += " pointLightOffsetY=" + FloatToString(params.offset.value.Y);
+        line += " pointLightOffsetZ=" + FloatToString(params.offset.value.Z);
     }
 
     if (

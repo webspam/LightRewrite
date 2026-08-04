@@ -112,8 +112,8 @@ function LoadLightRewriteOverrideGroup(
         }
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
-        if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffsetPos.value)) {
-            override.pointLightOffsetPos.has = true;
+        if (ParseLightRewriteVector(dm, alignNode, override.offset.value)) {
+            override.offset.has = true;
         }
 
         ParseLightRewritePerLightNodes(override, dm, entryNode);

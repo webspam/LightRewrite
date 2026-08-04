@@ -266,7 +266,7 @@ class LRDebug_AttributeEditor {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotParams: CLightRewriteSpotlightParams;
-        var pointParams: CLightRewriteComponentLightParams;
+        var componentParams: CLightRewriteComponentLightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
 
@@ -372,11 +372,11 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                pointParams = GetComponentOffsetParams(params, target, type);
-                if (pointParams) {
-                    pointParams.offset.value.Z = ClampAttributeValue(
+                componentParams = GetComponentOffsetParams(params, target, type);
+                if (componentParams) {
+                    componentParams.offset.value.Z = ClampAttributeValue(
                         attr,
-                        pointParams.offset.value.Z + delta
+                        componentParams.offset.value.Z + delta
                     );
                 }
                 else if (LRDebug_IsCandle(target)) {
@@ -390,10 +390,10 @@ class LRDebug_AttributeEditor {
                     );
                 }
                 else {
-                    params.pointLightOffsetPos.has = true;
-                    params.pointLightOffsetPos.value.Z = ClampAttributeValue(
+                    params.offset.has = true;
+                    params.offset.value.Z = ClampAttributeValue(
                         attr,
-                        params.pointLightOffsetPos.value.Z + delta
+                        params.offset.value.Z + delta
                     );
                 }
                 break;
@@ -473,7 +473,7 @@ class LRDebug_AttributeEditor {
     /** Candles are excluded because their offset auto-aligns to FX slots and only its Z value can be exported */
     public function MoveOffsetXY(dx: float, dy: float, target: CGameplayEntity): bool {
         var params: CLightRewriteSourceParams;
-        var pointParams: CLightRewriteComponentLightParams;
+        var lightParams: CLightRewriteComponentLightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
         var scale: float;
@@ -492,18 +492,18 @@ class LRDebug_AttributeEditor {
         dx *= scale;
         dy *= scale;
 
-        pointParams = GetComponentOffsetParams(params, target, type);
-        if (pointParams) {
-            pointParams.offset.value.X += dx;
-            pointParams.offset.value.Y += dy;
+        lightParams = GetComponentOffsetParams(params, target, type);
+        if (lightParams) {
+            lightParams.offset.value.X += dx;
+            lightParams.offset.value.Y += dy;
         }
         else if (LRDebug_IsCandle(target)) {
             return false;
         }
         else {
-            params.pointLightOffsetPos.has = true;
-            params.pointLightOffsetPos.value.X += dx;
-            params.pointLightOffsetPos.value.Y += dy;
+            params.offset.has = true;
+            params.offset.value.X += dx;
+            params.offset.value.Y += dy;
         }
 
         ApplyParams(target, rewriter, params);
