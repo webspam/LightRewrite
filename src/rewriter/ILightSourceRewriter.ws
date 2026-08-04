@@ -124,7 +124,8 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    protected function ApplySpotOverrides() {
+    /** disableUnconfigured switches off any spotlight without an override - candles emit via their point lights */
+    protected function ApplySpotOverrides(optional disableUnconfigured: bool) {
         var spotLight: CSpotLightComponent;
         var spotParams: CLightRewriteSpotlightParams;
         var i, count: int;
@@ -135,7 +136,9 @@ abstract class ILightSourceRewriter {
         // A spawn override creates its own spotlight entity rather than editing a component
         if (p.spotlight && p.spotlight.spawn) RewriteSpawnedSpotlight(p.spotlight);
 
-        if (p.spotLights.Size() == 0 && (!p.spotlight || p.spotlight.spawn)) return;
+        if (!disableUnconfigured && p.spotLights.Size() == 0 && (!p.spotlight || p.spotlight.spawn)) {
+            return;
+        }
 
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -144,27 +147,13 @@ abstract class ILightSourceRewriter {
             if (!spotLight) continue;
 
             spotParams = p.GetEffectiveSpotLightParams(i);
-            if (spotParams) ApplySpotOverride(spotLight, spotParams);
-        }
-    }
-
-    /** Candles emit via their point lights, so any spotlight left without an override is switched off */
-    protected function DisableUnconfiguredSpotlights() {
-        var spotLight: CSpotLightComponent;
-        var i, count: int;
-        var components: array<CComponent>;
-
-        var p: CLightRewriteSourceParams = GetEffectiveParams();
-
-        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-        count = components.Size();
-        for (i = 0; i < count; i += 1) {
-            spotLight = (CSpotLightComponent)components[i];
-            if (!spotLight) continue;
-            if (p.GetEffectiveSpotLightParams(i)) continue;
-
-            spotLight.SaveLightRewriteOriginalValues();
-            spotLight.SetEnabled(false);
+            if (spotParams) {
+                ApplySpotOverride(spotLight, spotParams);
+            }
+            else if (disableUnconfigured) {
+                spotLight.SaveLightRewriteOriginalValues();
+                spotLight.SetEnabled(false);
+            }
         }
     }
 

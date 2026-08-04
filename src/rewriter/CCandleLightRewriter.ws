@@ -21,8 +21,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         super.ProcessDeferredActions();
 
-        ApplySpotOverrides();
-        if (!p.spotlight) DisableUnconfiguredSpotlights();
+        ApplySpotOverrides(!p.spotlight);
     }
 
     public function RewriteLight() {
@@ -92,8 +91,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         // Remove spotlights from candles that have point lights (should be all candles),
         // unless a spotlight override is configured - in that case, apply it instead.
-        ApplySpotOverrides();
-        if (count > 0 && !p.spotlight) DisableUnconfiguredSpotlights();
+        ApplySpotOverrides(count > 0 && !p.spotlight);
 
         ApplyForceCastShadows();
     }
