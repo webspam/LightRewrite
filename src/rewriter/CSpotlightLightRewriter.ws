@@ -38,6 +38,6 @@ class CSpotlightLightRewriter extends ILightSourceRewriter {
             if (wasEnabled) spotLight.SetEnabled(true);
         }
 
-        ApplyPerLightSpotOverrides();
+        ApplySpotOverrides();
     }
 }

@@ -25,7 +25,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
             if (pointLight) RewritePointLight(pointLight, i, spotLight);
         }
 
-        ApplyPerLightSpotOverrides();
+        ApplySpotOverrides();
 
         ApplyForceCastShadows();
     }
