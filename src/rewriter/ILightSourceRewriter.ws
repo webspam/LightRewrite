@@ -131,7 +131,12 @@ abstract class ILightSourceRewriter {
 
         var p: CLightRewriteSourceParams = GetEffectiveParams();
 
-        if (!disableUnconfigured && p.spotLights.Size() == 0) return;
+        // A spawn override creates its own spotlight entity rather than editing a component
+        if (p.spotlight && p.spotlight.spawn) RewriteSpawnedSpotlight(p.spotlight);
+
+        if (!disableUnconfigured && p.spotLights.Size() == 0 && (!p.spotlight || p.spotlight.spawn)) {
+            return;
+        }
 
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -139,7 +144,7 @@ abstract class ILightSourceRewriter {
             spotLight = (CSpotLightComponent)components[i];
             if (!spotLight) continue;
 
-            spotParams = p.GetSpotLightParams(i);
+            spotParams = ResolveSpotParams(p, i);
             if (spotParams) {
                 ApplySpotOverride(spotLight, spotParams);
             }
@@ -148,6 +153,25 @@ abstract class ILightSourceRewriter {
                 spotLight.SetEnabled(false);
             }
         }
+    }
+
+    // The entity-wide spotlight applies to component 0 only; a per-index override layers on top of it
+    private function ResolveSpotParams(
+        p: CLightRewriteSourceParams,
+        index: int
+    ): CLightRewriteSpotlightParams {
+        var entityWide, perIndex, merged: CLightRewriteSpotlightParams;
+
+        if (index == 0 && p.spotlight && !p.spotlight.spawn) entityWide = p.spotlight;
+        perIndex = p.GetSpotLightParams(index);
+
+        if (!entityWide) return perIndex;
+        if (!perIndex) return entityWide;
+
+        merged = new CLightRewriteSpotlightParams in parentEntity;
+        entityWide.ApplySpotlightTo(merged);
+        perIndex.ApplySpotlightTo(merged);
+        return merged;
     }
 
     protected function ApplySpotOverride(
@@ -184,20 +208,6 @@ abstract class ILightSourceRewriter {
         }
         if (pamparams.castShadows.has) light.shadowCastingMode = pamparams.castShadows.value;
         if (pamparams.color.has) light.color = pamparams.color.value;
-    }
-
-    protected function RewriteSpotlight(spotParams: CLightRewriteSpotlightParams) {
-        var spotLight: CSpotLightComponent;
-
-        if (spotParams.spawn) {
-            RewriteSpawnedSpotlight(spotParams);
-            return;
-        }
-
-        spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
-        if (!spotLight) return;
-
-        ApplySpotOverride(spotLight, spotParams);
     }
 
     protected function ApplySpotlightParams(
