@@ -300,7 +300,10 @@ abstract class ILightSourceRewriter {
         index: int
     ) {
         // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
-        var uncapped: float = GetUncappedRadius(pointLight, index);
+        var uncapped: float;
+
+        if (effective.radius.has) uncapped = effective.radius.value;
+        else uncapped = GetUncappedRadius(pointLight, index);
 
         ApplyLightParams(pointLight, effective);
 
