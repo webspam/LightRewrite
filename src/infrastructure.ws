@@ -3,6 +3,10 @@ function LogLightRewrite(msg: string) {
     LogChannel('LightRewrite', msg);
 }
 
+function LogLightRewriteXml(message: string) {
+    LogChannel('LightRewriteXml', message);
+}
+
 // Sets the "disabled" state of a flash menu option, via a "disabled" tag in the dataArray.
 function LR_SetMenuOptionDisabled(
     flashValueStorage: CScriptedFlashValueStorage,

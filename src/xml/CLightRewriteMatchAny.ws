@@ -1,6 +1,4 @@
-class CLightRewriteMatchAny extends ILightRewriteMatchRule {
-    public var rules: array<ILightRewriteMatchRule>;
-
+class CLightRewriteMatchAny extends CLightRewriteMatchGroup {
     public function Matches(entity: CGameplayEntity): bool {
         var i, count: int;
 
