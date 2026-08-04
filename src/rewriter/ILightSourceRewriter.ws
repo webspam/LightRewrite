@@ -264,13 +264,13 @@ abstract class ILightSourceRewriter {
         optional spotLight: CSpotLightComponent
     ) {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
-        var perIndex: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
-        var effective: ILightRewriteParams = p.MergePointLightParams(perIndex);
+        var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
+        var effective: ILightRewriteParams = p.MergePointLightParams(pointParams);
         var wasEnabled: bool;
 
         pointLight.SaveLightRewriteOriginalValues();
 
-        if (IsPointLightForceDisabled(perIndex)) {
+        if (IsPointLightForceDisabled(pointParams)) {
             pointLight.SetEnabled(false);
         }
         else {
