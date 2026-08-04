@@ -70,6 +70,22 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
+    // The entity-wide spotlight applies to component 0 only; a per-index override layers on top of it
+    public function GetEffectiveSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var entityWide, perIndex, merged: CLightRewriteSpotlightParams;
+
+        if (index == 0 && spotlight && !spotlight.spawn) entityWide = spotlight;
+        perIndex = GetSpotLightParams(index);
+
+        if (!entityWide) return perIndex;
+        if (!perIndex) return entityWide;
+
+        merged = new CLightRewriteSpotlightParams in this;
+        entityWide.ApplySpotlightTo(merged);
+        perIndex.ApplySpotlightTo(merged);
+        return merged;
+    }
+
     public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
         var params: CLightRewriteSpotlightParams = GetSpotLightParams(index);
 

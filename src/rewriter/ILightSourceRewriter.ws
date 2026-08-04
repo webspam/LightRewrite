@@ -144,7 +144,7 @@ abstract class ILightSourceRewriter {
             spotLight = (CSpotLightComponent)components[i];
             if (!spotLight) continue;
 
-            spotParams = ResolveSpotParams(p, i);
+            spotParams = p.GetEffectiveSpotLightParams(i);
             if (spotParams) {
                 ApplySpotOverride(spotLight, spotParams);
             }
@@ -153,25 +153,6 @@ abstract class ILightSourceRewriter {
                 spotLight.SetEnabled(false);
             }
         }
-    }
-
-    // The entity-wide spotlight applies to component 0 only; a per-index override layers on top of it
-    private function ResolveSpotParams(
-        p: CLightRewriteSourceParams,
-        index: int
-    ): CLightRewriteSpotlightParams {
-        var entityWide, perIndex, merged: CLightRewriteSpotlightParams;
-
-        if (index == 0 && p.spotlight && !p.spotlight.spawn) entityWide = p.spotlight;
-        perIndex = p.GetSpotLightParams(index);
-
-        if (!entityWide) return perIndex;
-        if (!perIndex) return entityWide;
-
-        merged = new CLightRewriteSpotlightParams in parentEntity;
-        entityWide.ApplySpotlightTo(merged);
-        perIndex.ApplySpotlightTo(merged);
-        return merged;
     }
 
     protected function ApplySpotOverride(
