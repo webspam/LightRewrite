@@ -278,9 +278,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         if (this.highlighted) {
             type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
 
-            pSeg = CountToHtml("P", pointLights);
-            sSeg = CountToHtml("S", spotLights);
             if (type == 'spot') {
+                pSeg = CountToHtml("P", pointLights);
                 sSeg = ActiveCountToHtml(
                     "S",
                     spotLights,
@@ -289,6 +288,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
             }
             else {
+                sSeg = CountToHtml("S", spotLights);
                 pSeg = ActiveCountToHtml(
                     "P",
                     pointLights,
