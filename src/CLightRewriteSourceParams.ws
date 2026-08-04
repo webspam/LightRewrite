@@ -43,7 +43,9 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     public function GetPointLightParams(index: int): CLightRewriteComponentLightParams {
         var i: int;
-        for (i = 0; i < pointLights.Size(); i += 1) {
+        var count: int = pointLights.Size();
+
+        for (i = 0; i < count; i += 1) {
             if (pointLights[i].index == index) return pointLights[i];
         }
         return NULL;
@@ -63,16 +65,17 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     public function GetSpotLightParams(index: int): CLightRewriteSpotlightParams {
         var i: int;
-        for (i = 0; i < spotLights.Size(); i += 1) {
+        var count: int = spotLights.Size();
+
+        for (i = 0; i < count; i += 1) {
             if (spotLights[i].index == index) return spotLights[i];
         }
         return NULL;
     }
 
     public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
-        var params: CLightRewriteSpotlightParams;
+        var params: CLightRewriteSpotlightParams = GetSpotLightParams(index);
 
-        params = GetSpotLightParams(index);
         if (!params) {
             params = new CLightRewriteSpotlightParams in this;
             params.index = index;
@@ -84,6 +87,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
         var i: int;
+        var pointCount: int = pointLights.Size();
+        var spotCount: int = spotLights.Size();
 
         ApplyBaseTo(target);
         if (rewriterType.has) target.rewriterType = rewriterType;
@@ -99,10 +104,10 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             if (!target.spotlight) target.spotlight = new CLightRewriteSpotlightParams in target;
             spotlight.ApplyTo(target.spotlight);
         }
-        for (i = 0; i < pointLights.Size(); i += 1) {
+        for (i = 0; i < pointCount; i += 1) {
             pointLights[i].ApplyTo(target.GetOrCreatePointLightParams(pointLights[i].index));
         }
-        for (i = 0; i < spotLights.Size(); i += 1) {
+        for (i = 0; i < spotCount; i += 1) {
             spotLights[i].ApplyTo(target.GetOrCreateSpotLightParams(spotLights[i].index));
         }
     }
