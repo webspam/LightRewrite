@@ -62,9 +62,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     }
 
     public function GetOrCreatePointLightParams(index: int): CLightRewriteComponentLightParams {
-        var params: CLightRewriteComponentLightParams;
+        var params: CLightRewriteComponentLightParams = GetPointLightParams(index);
 
-        params = GetPointLightParams(index);
         if (!params) {
             params = new CLightRewriteComponentLightParams in this;
             params.index = index;
