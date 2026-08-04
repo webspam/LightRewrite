@@ -100,6 +100,8 @@
           <xs:documentation>An any-match group ANDed into every override in this group. Same behaviour as a top-level override any group.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="match_scale"
+                  type="matchScaleType" />
     </xs:choice>
   </xs:complexType>
 
@@ -120,6 +122,8 @@
           <xs:documentation>The group as a whole is ANDed with the entry's other match filters and groups, so the override applies when every top-level match and every group is satisfied.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="match_scale"
+                  type="matchScaleType" />
       <xs:element name="shadows"
                   type="shadowsType">
         <xs:annotation>
@@ -256,19 +260,36 @@
     </xs:simpleContent>
   </xs:complexType>
 
+  <xs:complexType name="matchScaleType">
+    <xs:annotation>
+      <xs:documentation>Match against the scale of the entity.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="mode"
+                  type="scaleModeEnum"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>Match mode: Larger, smaller, or same-size entities.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="scale"
+                  type="xs:float"
+                  default="1.0">
+      <xs:annotation>
+        <xs:documentation>The reference scale to compare against. Default: `1.0`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
   <xs:complexType name="anyMatchType">
     <xs:annotation>
       <xs:documentation>A disjunction of match filters; satisfied when at least one child match succeeds.</xs:documentation>
     </xs:annotation>
-    <xs:sequence>
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="match"
-                  type="matchType"
-                  maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation>One alternative in the group. Has the same attributes and behaviour as a top-level match.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
+                  type="matchType" />
+      <xs:element name="match_scale"
+                  type="matchScaleType" />
+    </xs:choice>
   </xs:complexType>
 
   <xs:simpleType name="nonEmptyString">
@@ -289,6 +310,14 @@
           <xs:documentation>Match against the layer path of an entity, e.g. levels\prolog_village\some\layer.w2l</xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="scaleModeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="unscaled" />
+      <xs:enumeration value="larger" />
+      <xs:enumeration value="smaller" />
     </xs:restriction>
   </xs:simpleType>
 
