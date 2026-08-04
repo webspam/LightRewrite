@@ -194,39 +194,8 @@ class LRDebug_AttributeEditor {
         return params.spotlight;
     }
 
-    /** Seeded per-component offset params for spot and multi-light edits; NULL when the offset uses an entity-wide field */
-    private function GetComponentOffsetParams(
-        params: CLightRewriteSourceParams,
-        target: CGameplayEntity,
-        type: name
-    ): CLightRewriteComponentLightParams {
-        var spotParams: CLightRewriteSpotlightParams;
-        var pointParams: CLightRewriteComponentLightParams;
-        var index: int;
-
-        if (type == 'spot') {
-            spotParams = EnsureSpotParams(params, target);
-            SeedComponentOffset(
-                spotParams,
-                LRDebug_SpotLightAt(target, GetActiveLightIndex(target, 'spot'))
-            );
-            return spotParams;
-        }
-        if (LRDebug_IsCandle(target)) return NULL;
-        if (LRDebug_PointLightCount(target) > 1) {
-            index = GetActiveLightIndex(target, type);
-            pointParams = params.GetOrCreatePointLightParams(index);
-            SeedComponentOffset(pointParams, LRDebug_PointLightAt(target, index));
-            return pointParams;
-        }
-        return NULL;
-    }
-
     /** Seed offset from the live position; it's absolute, so starting at 0 would teleport the light */
-    private function SeedComponentOffset(
-        params: CLightRewriteComponentLightParams,
-        light: CLightComponent
-    ) {
+    private function SeedComponentOffset(params: ILightRewriteParams, light: CLightComponent) {
         if (params.offset.has) return;
         params.offset.has = true;
         if (light) params.offset.value = light.GetLocalPosition();
@@ -266,7 +235,6 @@ class LRDebug_AttributeEditor {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotParams: CLightRewriteSpotlightParams;
-        var componentParams: CLightRewriteComponentLightParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
 
@@ -372,14 +340,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                componentParams = GetComponentOffsetParams(params, target, type);
-                if (componentParams) {
-                    componentParams.offset.value.Z = ClampAttributeValue(
-                        attr,
-                        componentParams.offset.value.Z + delta
-                    );
-                }
-                else if (LRDebug_IsCandle(target)) {
+                if (type != 'spot' && LRDebug_IsCandle(target)) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
@@ -390,10 +351,11 @@ class LRDebug_AttributeEditor {
                     );
                 }
                 else {
-                    params.offset.has = true;
-                    params.offset.value.Z = ClampAttributeValue(
+                    lightParams = GetSharedParams(params, target, type);
+                    SeedComponentOffset(lightParams, light);
+                    lightParams.offset.value.Z = ClampAttributeValue(
                         attr,
-                        params.offset.value.Z + delta
+                        lightParams.offset.value.Z + delta
                     );
                 }
                 break;
@@ -473,7 +435,7 @@ class LRDebug_AttributeEditor {
     /** Candles are excluded because their offset auto-aligns to FX slots and only its Z value can be exported */
     public function MoveOffsetXY(dx: float, dy: float, target: CGameplayEntity): bool {
         var params: CLightRewriteSourceParams;
-        var lightParams: CLightRewriteComponentLightParams;
+        var lightParams: ILightRewriteParams;
         var rewriter: ILightSourceRewriter;
         var type: name;
         var scale: float;
@@ -486,25 +448,17 @@ class LRDebug_AttributeEditor {
         params = target.LRDebug_GetParams(rewriter);
 
         type = GetSelectedLightType(target);
+        if (type != 'spot' && LRDebug_IsCandle(target)) return false;
 
         // Normalise using the same value as Z-axis adjustment
         scale = GetAxisScale('alignOffsetZ');
         dx *= scale;
         dy *= scale;
 
-        lightParams = GetComponentOffsetParams(params, target, type);
-        if (lightParams) {
-            lightParams.offset.value.X += dx;
-            lightParams.offset.value.Y += dy;
-        }
-        else if (LRDebug_IsCandle(target)) {
-            return false;
-        }
-        else {
-            params.offset.has = true;
-            params.offset.value.X += dx;
-            params.offset.value.Y += dy;
-        }
+        lightParams = GetSharedParams(params, target, type);
+        SeedComponentOffset(lightParams, GetLight(target, type));
+        lightParams.offset.value.X += dx;
+        lightParams.offset.value.Y += dy;
 
         ApplyParams(target, rewriter, params);
         adjustChanged = true;
