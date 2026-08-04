@@ -32,7 +32,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var effective: ILightRewriteParams;
         var centralSlot: name;
         var i: int;
-        var wasEnabled, forceSingle: bool;
+        var forceSingle: bool;
 
         var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count: int = components.Size();
@@ -61,17 +61,8 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             }
 
             pointParams = p.GetPointLightParams(i);
-            if (IsPointLightForceDisabled(pointParams)) {
-                pointLight.SetEnabled(false);
-                continue;
-            }
-
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
             effective = p.MergePointLightParams(pointParams);
-            SetPointLightSettings(pointLight, effective, i);
-            SetPointLightColour(pointLight, effective, spotLight);
+            if (!ApplyPointLightRewrite(pointLight, pointParams, effective, i, spotLight)) continue;
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
@@ -85,8 +76,6 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             if (pointParams && pointParams.offset.has) {
                 pointLight.SetPosition(pointParams.offset.value);
             }
-
-            if (wasEnabled) pointLight.SetEnabled(true);
         }
 
         // Remove spotlights from candles that have point lights (should be all candles),

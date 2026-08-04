@@ -255,24 +255,36 @@ abstract class ILightSourceRewriter {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
         var effective: ILightRewriteParams = p.MergePointLightParams(pointParams);
-        var wasEnabled: bool;
 
         pointLight.SaveLightRewriteOriginalValues();
+        ApplyPointLightRewrite(pointLight, pointParams, effective, index, spotLight);
+
+        if (effective.offset.has) pointLight.SetPosition(effective.offset.value);
+    }
+
+    /** Returns false when the light was force-disabled, so callers can skip positioning */
+    protected function ApplyPointLightRewrite(
+        pointLight: CPointLightComponent,
+        pointParams: CLightRewriteComponentLightParams,
+        effective: ILightRewriteParams,
+        index: int,
+        optional spotLight: CSpotLightComponent
+    ): bool {
+        var wasEnabled: bool;
 
         if (IsPointLightForceDisabled(pointParams)) {
             pointLight.SetEnabled(false);
-        }
-        else {
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
-            SetPointLightSettings(pointLight, effective, index);
-            SetPointLightColour(pointLight, effective, spotLight);
-
-            if (wasEnabled) pointLight.SetEnabled(true);
+            return false;
         }
 
-        if (effective.offset.has) pointLight.SetPosition(effective.offset.value);
+        wasEnabled = pointLight.IsEnabled();
+        if (wasEnabled) pointLight.SetEnabled(false);
+
+        SetPointLightSettings(pointLight, effective, index);
+        SetPointLightColour(pointLight, effective, spotLight);
+
+        if (wasEnabled) pointLight.SetEnabled(true);
+        return true;
     }
 
     /** Entity-wide enabled gates the whole rewriter, so only a component override may disable one light */
