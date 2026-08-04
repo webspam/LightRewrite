@@ -122,7 +122,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // disableUnconfigured switches off spotlights without an override, so candles emit only via point lights
+    /** disableUnconfigured switches off spotlights without an override, so candles emit only via point lights */
     protected function ApplyPerLightSpotOverrides(optional disableUnconfigured: bool) {
         var spotLight: CSpotLightComponent;
         var spotParams: CLightRewriteSpotlightParams;
@@ -330,7 +330,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Enables shadow casting on all drawable (mesh) components - for noshadow entities
+    /** Enables shadow casting on all drawable (mesh) components - for noshadow entities */
     protected function ApplyForceCastShadows() {
         var drawable: CDrawableComponent;
         var components: array<CComponent>;

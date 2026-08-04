@@ -272,8 +272,8 @@ function AddOffsetChild {
     $Parent.AppendChild($off) | Out-Null
 }
 
-# Builds a <spotlight> element from prefixed params ('spot_' entity-wide, 'sN_' per-component).
-# Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD.
+# Builds a <spotlight> element from prefixed params ('spot_' entity-wide, 'sN_' per-component)
+# Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD
 function BuildSpotlightElement {
     param(
         [System.Xml.XmlDocument] $Doc,
