@@ -1,7 +1,3 @@
-function LogLightRewriteXml(message: string) {
-    LogChannel('LightRewriteXml', message);
-}
-
 function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideGroup> {
     var groups: array<CLightRewriteOverrideGroup>;
     var group: CLightRewriteOverrideGroup;
