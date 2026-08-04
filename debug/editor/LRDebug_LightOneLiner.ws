@@ -86,8 +86,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 spotlight = params.GetEffectiveSpotLightParams(activeIndex);
                 lightParams = spotlight;
             }
-            light = LRDebug_SpotLightAt(entity, activeIndex);
             spotComp = LRDebug_SpotLightAt(entity, activeIndex);
+            light = spotComp;
         }
         else {
             if (params) lightParams = params.GetEffectivePointLightParams(activeIndex);
@@ -278,8 +278,10 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         if (this.highlighted) {
             type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
 
+            pSeg = CountToHtml("P", pointLights);
+            sSeg = CountToHtml("S", spotLights);
+
             if (type == 'spot') {
-                pSeg = CountToHtml("P", pointLights);
                 sSeg = ActiveCountToHtml(
                     "S",
                     spotLights,
@@ -288,7 +290,6 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
             }
             else {
-                sSeg = CountToHtml("S", spotLights);
                 pSeg = ActiveCountToHtml(
                     "P",
                     pointLights,
