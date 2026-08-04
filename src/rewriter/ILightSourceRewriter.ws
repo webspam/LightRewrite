@@ -37,9 +37,9 @@ abstract class ILightSourceRewriter {
     // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
     public function GetUncappedRadius(pointLight: CPointLightComponent, index: int): float {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
-        var perIndex: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
+        var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
 
-        if (perIndex && perIndex.radius.has) return perIndex.radius.value;
+        if (pointParams && pointParams.radius.has) return pointParams.radius.value;
         if (p.radius.has) return p.radius.value;
         if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
             return pointLight.lightRewriteOriginalValues.radius;
@@ -286,7 +286,7 @@ abstract class ILightSourceRewriter {
         if (effective.offset.has) pointLight.SetPosition(effective.offset.value);
     }
 
-    /** Entity-wide enabled gates the whole rewriter, so only a per-index override may disable one light */
+    /** Entity-wide enabled gates the whole rewriter, so only a component override may disable one light */
     protected function IsPointLightForceDisabled(
         pointParams: CLightRewriteComponentLightParams
     ): bool {

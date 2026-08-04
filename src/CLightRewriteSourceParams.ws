@@ -48,21 +48,20 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    // Entity-wide base fields with any per-index override layered on top; the source itself is the base
     public function GetEffectivePointLightParams(index: int): ILightRewriteParams {
         return MergePointLightParams(GetPointLightParams(index));
     }
 
     public function MergePointLightParams(
-        perIndex: CLightRewriteComponentLightParams
+        lightParams: CLightRewriteComponentLightParams
     ): ILightRewriteParams {
         var merged: CLightRewriteComponentLightParams;
 
-        if (!perIndex) return this;
+        if (!lightParams) return this;
 
         merged = new CLightRewriteComponentLightParams in this;
         ApplyBaseTo(merged);
-        perIndex.ApplyBaseTo(merged);
+        lightParams.ApplyBaseTo(merged);
         return merged;
     }
 
@@ -87,19 +86,19 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    // The entity-wide spotlight applies to component 0 only; a per-index override layers on top of it
+    // The entity-wide spotlight applies to component 0 only
     public function GetEffectiveSpotLightParams(index: int): CLightRewriteSpotlightParams {
-        var entityWide, perIndex, merged: CLightRewriteSpotlightParams;
+        var entityWide, spotParams, merged: CLightRewriteSpotlightParams;
 
         if (index == 0 && spotlight && !spotlight.spawn) entityWide = spotlight;
-        perIndex = GetSpotLightParams(index);
+        spotParams = GetSpotLightParams(index);
 
-        if (!entityWide) return perIndex;
-        if (!perIndex) return entityWide;
+        if (!entityWide) return spotParams;
+        if (!spotParams) return entityWide;
 
         merged = new CLightRewriteSpotlightParams in this;
         entityWide.ApplySpotlightTo(merged);
-        perIndex.ApplySpotlightTo(merged);
+        spotParams.ApplySpotlightTo(merged);
         return merged;
     }
 

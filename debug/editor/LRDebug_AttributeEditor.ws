@@ -170,7 +170,7 @@ class LRDebug_AttributeEditor {
         return LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));
     }
 
-    /** Edits always land in the per-index arrays; entity-wide fields stay an XML-authoring layer */
+    /** Edits always land in the per-component arrays; entity-wide fields stay an XML-authoring layer */
     private function GetActiveLightParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
