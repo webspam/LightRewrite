@@ -50,9 +50,14 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
 
     // Entity-wide base fields with any per-index override layered on top; the source itself is the base
     public function GetEffectivePointLightParams(index: int): ILightRewriteParams {
-        var perIndex, merged: CLightRewriteComponentLightParams;
+        return MergePointLightParams(GetPointLightParams(index));
+    }
 
-        perIndex = GetPointLightParams(index);
+    public function MergePointLightParams(
+        perIndex: CLightRewriteComponentLightParams
+    ): ILightRewriteParams {
+        var merged: CLightRewriteComponentLightParams;
+
         if (!perIndex) return this;
 
         merged = new CLightRewriteComponentLightParams in this;
