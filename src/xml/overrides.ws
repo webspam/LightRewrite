@@ -64,7 +64,7 @@ function LoadLightRewriteOverrideGroup(
 
     matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
     if (matchesNode.nodeName == 'matches') {
-        ParseLightRewriteMatchRules(dm, matchesNode, group.filter);
+        ParseLightRewriteMatchRules(dm, matchesNode, group.filter, true);
     }
 
     count = overridesNode.subNodes.Size();
@@ -104,7 +104,7 @@ function LoadLightRewriteOverrideGroup(
             override.forceCastShadows.value = (strVal == "true");
         }
 
-        ParseLightRewriteMatchRules(dm, entryNode, override.condition);
+        ParseLightRewriteMatchRules(dm, entryNode, override.condition, true);
 
         alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'fire_fx_offset');
         if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffset)) {
