@@ -163,20 +163,29 @@ abstract class ILightSourceRewriter {
             spotParams = p.GetSpotLightParams(i);
             if (!spotParams) continue;
 
-            spotLight.SaveLightRewriteOriginalValues();
-
-            if (spotParams.enabled.has && !spotParams.enabled.value) {
-                spotLight.SetEnabled(false);
-                continue;
-            }
-
-            wasEnabled = spotLight.IsEnabled();
-            if (wasEnabled) spotLight.SetEnabled(false);
-
-            ApplySpotlightParams(spotLight, spotParams);
-
-            if (wasEnabled) spotLight.SetEnabled(true);
+            ApplySpotOverride(spotLight, spotParams);
         }
+    }
+
+    protected function ApplySpotOverride(
+        spotLight: CSpotLightComponent,
+        spotParams: CLightRewriteSpotlightParams
+    ) {
+        var wasEnabled: bool;
+
+        spotLight.SaveLightRewriteOriginalValues();
+
+        if (spotParams.enabled.has && !spotParams.enabled.value) {
+            spotLight.SetEnabled(false);
+            return;
+        }
+
+        wasEnabled = spotLight.IsEnabled();
+        if (wasEnabled) spotLight.SetEnabled(false);
+
+        ApplySpotlightParams(spotLight, spotParams);
+
+        if (wasEnabled) spotLight.SetEnabled(true);
     }
 
     protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
@@ -196,7 +205,6 @@ abstract class ILightSourceRewriter {
 
     protected function RewriteSpotlight(spotParams: CLightRewriteSpotlightParams) {
         var spotLight: CSpotLightComponent;
-        var wasEnabled: bool;
 
         if (spotParams.spawn) {
             RewriteSpawnedSpotlight(spotParams);
@@ -206,19 +214,7 @@ abstract class ILightSourceRewriter {
         spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
         if (!spotLight) return;
 
-        spotLight.SaveLightRewriteOriginalValues();
-
-        if (spotParams.enabled.has && !spotParams.enabled.value) {
-            spotLight.SetEnabled(false);
-            return;
-        }
-
-        wasEnabled = spotLight.IsEnabled();
-        if (wasEnabled) spotLight.SetEnabled(false);
-
-        ApplySpotlightParams(spotLight, spotParams);
-
-        if (wasEnabled) spotLight.SetEnabled(true);
+        ApplySpotOverride(spotLight, spotParams);
     }
 
     protected function ApplySpotlightParams(
