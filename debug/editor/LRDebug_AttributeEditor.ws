@@ -170,30 +170,21 @@ class LRDebug_AttributeEditor {
         return LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));
     }
 
-    /** Single-light entities keep writing entity-wide params, so their exports stay as before */
+    /** Edits always land in the per-index arrays; entity-wide fields stay an XML-authoring layer */
     private function GetSharedParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
         type: name
     ): ILightRewriteParams {
         if (type == 'spot') return EnsureSpotParams(params, target);
-        if (LRDebug_PointLightCount(target) > 1) {
-            return params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
-        }
-        return params;
+        return params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
     }
 
     private function EnsureSpotParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity
     ): CLightRewriteSpotlightParams {
-        if (LRDebug_SpotLightCount(target) > 1) {
-            return params.GetOrCreateSpotLightParams(GetActiveLightIndex(target, 'spot'));
-        }
-        if (!params.spotlight) {
-            params.spotlight = new CLightRewriteSpotlightParams in target;
-        }
-        return params.spotlight;
+        return params.GetOrCreateSpotLightParams(GetActiveLightIndex(target, 'spot'));
     }
 
     /** Seed offset from the live position; it's absolute, so starting at 0 would teleport the light */
