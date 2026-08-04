@@ -1,24 +1,15 @@
 function ParseLightRewriteMatchRules(
     dm: CDefinitionsManagerAccessor,
     node: SCustomNode,
-    target: CLightRewriteMatchAll
-) {
-    ParseLightRewriteRulesInto(target, dm, node, target.rules);
-}
-
-function ParseLightRewriteRulesInto(
-    owner: CObject,
-    dm: CDefinitionsManagerAccessor,
-    node: SCustomNode,
-    out rules: array<ILightRewriteMatchRule>
+    group: CLightRewriteMatchGroup
 ) {
     var rule: ILightRewriteMatchRule;
     var i, count: int;
 
     count = node.subNodes.Size();
     for (i = 0; i < count; i += 1) {
-        rule = ParseLightRewriteRule(owner, dm, node.subNodes[i]);
-        if (rule) rules.PushBack(rule);
+        rule = ParseLightRewriteRule(group, dm, node.subNodes[i]);
+        if (rule) group.rules.PushBack(rule);
     }
 }
 
@@ -33,7 +24,7 @@ function ParseLightRewriteRule(
     if (node.nodeName == 'match_scale') return ParseLightRewriteScaleRule(owner, dm, node);
     if (node.nodeName == 'any') {
         group = new CLightRewriteMatchAny in owner;
-        ParseLightRewriteRulesInto(group, dm, node, group.rules);
+        ParseLightRewriteMatchRules(dm, node, group);
         if (group.rules.Size() > 0) return group;
         return NULL;
     }
