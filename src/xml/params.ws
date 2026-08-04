@@ -5,7 +5,7 @@ function ParseLightRewriteBaseParams(
     node: SCustomNode
 ) {
     var strVal: string;
-    var shadowsNode, colourNode: SCustomNode;
+    var shadowsNode, colourNode, offsetNode: SCustomNode;
 
     if (dm.GetCustomNodeAttributeValueString(node, 'enabled', strVal)) {
         params.enabled.has = true;
@@ -51,6 +51,11 @@ function ParseLightRewriteBaseParams(
         dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
         params.color.value.Blue = StringToInt(strVal, params.color.value.Blue);
     }
+
+    offsetNode = dm.GetCustomDefinitionSubNode(node, 'offset');
+    if (ParseLightRewriteVector(dm, offsetNode, params.offset.value)) {
+        params.offset.has = true;
+    }
 }
 
 function ParseLightRewritePerLightNodes(
@@ -58,7 +63,7 @@ function ParseLightRewritePerLightNodes(
     dm: CDefinitionsManagerAccessor,
     entryNode: SCustomNode
 ) {
-    var childNode, offsetNode: SCustomNode;
+    var childNode: SCustomNode;
     var spotParams: CLightRewriteSpotlightParams;
     var pointParams: CLightRewriteComponentLightParams;
     var index, i, count: int;
@@ -74,11 +79,6 @@ function ParseLightRewritePerLightNodes(
             }
             pointParams = override.GetOrCreatePointLightParams(index);
             ParseLightRewriteBaseParams(pointParams, dm, childNode);
-
-            offsetNode = dm.GetCustomDefinitionSubNode(childNode, 'offset');
-            if (ParseLightRewriteVector(dm, offsetNode, pointParams.offset.value)) {
-                pointParams.offset.has = true;
-            }
         }
         else if (childNode.nodeName == 'spotlight') {
             spotParams = ParseLightRewriteSpotlightParams(override, dm, childNode);
@@ -100,7 +100,6 @@ function ParseLightRewriteSpotlightParams(
     spotlightNode: SCustomNode
 ): CLightRewriteSpotlightParams {
     var spotlight: CLightRewriteSpotlightParams;
-    var offsetNode: SCustomNode;
     var strVal: string;
 
     spotlight = new CLightRewriteSpotlightParams in owner;
@@ -120,11 +119,6 @@ function ParseLightRewriteSpotlightParams(
     }
     if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'spawn', strVal)) {
         spotlight.spawn = (strVal == "true");
-    }
-
-    offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
-    if (ParseLightRewriteVector(dm, offsetNode, spotlight.offset.value)) {
-        spotlight.offset.has = true;
     }
 
     return spotlight;
