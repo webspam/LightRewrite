@@ -93,16 +93,11 @@ function ParseExportLines {
 
 # ---- Grouping ----
 
-$floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', 'alignOffsetZ', `
-    'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ', `
-    'spot_brightness', 'spot_radius', 'spot_attenuation', 'spot_shadowFadeDistance', 'spot_shadowFadeRange', 'spot_shadowBlendFactor', `
-    'spot_innerAngle', 'spot_outerAngle', 'spot_softness', 'spot_offsetX', 'spot_offsetY', 'spot_offsetZ'
-$intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', 'spot_colorR', 'spot_colorG', 'spot_colorB'
-
-# Per-light fields arrive as pN_/sN_ prefixed variants of the base names
-$perLightFloatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
-    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ'
-$perLightIntFields = 'colorR', 'colorG', 'colorB'
+# Canonical base field names; spot_/pN_/sN_ prefixed variants are stripped before lookup
+$floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
+    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', `
+    'alignOffsetZ', 'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ'
+$intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor'
 
 function CoerceEntry {
     param([hashtable] $raw)
@@ -111,12 +106,10 @@ function CoerceEntry {
     foreach ($kv in $raw.GetEnumerator()) {
         $k = $kv.Key
         $v = $kv.Value
-        $isFloat = $k -in $floatFields
-        $isInt = $k -in $intFields
-        if ($k -match '^(?:p|s)\d+_(\w+)$') {
-            $isFloat = $Matches[1] -in $perLightFloatFields
-            $isInt = $Matches[1] -in $perLightIntFields
-        }
+        $base = $k
+        if ($k -match '^(?:spot_|p\d+_|s\d+_)(\w+)$') { $base = $Matches[1] }
+        $isFloat = $base -in $floatFields
+        $isInt = $base -in $intFields
         if ($isFloat) {
             $out[$k] = [double]::Parse($v, [System.Globalization.CultureInfo]::InvariantCulture)
         }
