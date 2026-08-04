@@ -29,6 +29,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var spotLight: CSpotLightComponent;
         var pointLight, mainLight: CPointLightComponent;
         var pointParams: CLightRewriteComponentLightParams;
+        var effective: ILightRewriteParams;
         var centralSlot: name;
         var i: int;
         var wasEnabled, forceSingle: bool;
@@ -68,8 +69,9 @@ class CCandleLightRewriter extends ILightSourceRewriter {
             wasEnabled = pointLight.IsEnabled();
             if (wasEnabled) pointLight.SetEnabled(false);
 
-            SetPointLightSettings(pointLight, pointParams);
-            SetPointLightColour(pointLight, pointParams, spotLight);
+            effective = p.GetEffectivePointLightParams(i);
+            SetPointLightSettings(pointLight, effective);
+            SetPointLightColour(pointLight, effective, spotLight);
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
@@ -79,7 +81,10 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                     AlignPointLight(i, pointLight);
                 }
             }
-            ApplyPointLightParamsOffset(pointLight, pointParams);
+            // Per-index offset wins over flame alignment; the entity-wide offset stays ignored on candles
+            if (pointParams && pointParams.offset.has) {
+                pointLight.SetPosition(pointParams.offset.value);
+            }
 
             if (wasEnabled) pointLight.SetEnabled(true);
         }

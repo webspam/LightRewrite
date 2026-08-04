@@ -11,7 +11,6 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight: CSpotLightComponent;
         var pointLight: CPointLightComponent;
-        var pointParams: CLightRewriteComponentLightParams;
         var i: int;
 
         var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
@@ -23,12 +22,7 @@ class CGenericLightRewriter extends ILightSourceRewriter {
 
         for (i = 0; i < count; i += 1) {
             pointLight = (CPointLightComponent)components[i];
-            if (pointLight) {
-                pointParams = p.GetPointLightParams(i);
-                RewritePointLight(pointLight, pointParams, spotLight);
-                if (p.offset.has) pointLight.SetPosition(p.offset.value);
-                ApplyPointLightParamsOffset(pointLight, pointParams);
-            }
+            if (pointLight) RewritePointLight(pointLight, i, spotLight);
         }
 
         ApplyPerLightSpotOverrides();
