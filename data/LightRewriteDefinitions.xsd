@@ -268,7 +268,14 @@
                   type="scaleModeEnum"
                   use="required">
       <xs:annotation>
-        <xs:documentation>Matches when the entity has been scaled up or down (against an average XYZ scale of 1.0).</xs:documentation>
+        <xs:documentation>Match mode: Larger, smaller, or same-size entities.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="scale"
+                  type="xs:float"
+                  default="1.0">
+      <xs:annotation>
+        <xs:documentation>The reference scale to compare against. Default: `1.0`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>

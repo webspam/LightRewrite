@@ -205,6 +205,10 @@ function ParseLightRewriteScaleRule(
     if (strVal == "larger") rule.matchValue = LR_Scale_Larger;
     else if (strVal == "smaller") rule.matchValue = LR_Scale_Smaller;
 
+    if (dm.GetCustomNodeAttributeValueString(scaleNode, 'scale', strVal)) {
+        rule.scale = StringToFloat(strVal, 1.0);
+    }
+
     return rule;
 }
 
