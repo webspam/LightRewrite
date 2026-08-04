@@ -117,7 +117,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             spotlight.ApplySpotlightTo(target.spotlight);
         }
         for (i = 0; i < pointCount; i += 1) {
-            pointLights[i].ApplyTo(target.GetOrCreatePointLightParams(pointLights[i].index));
+            pointLights[i].ApplyBaseTo(target.GetOrCreatePointLightParams(pointLights[i].index));
         }
         for (i = 0; i < spotCount; i += 1) {
             spotLights[i].ApplySpotlightTo(target.GetOrCreateSpotLightParams(spotLights[i].index));

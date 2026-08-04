@@ -97,7 +97,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 if (pointParams) {
                     mergedPoint = new CLightRewriteComponentLightParams in this;
                     params.ApplyBaseTo(mergedPoint);
-                    pointParams.ApplyTo(mergedPoint);
+                    pointParams.ApplyBaseTo(mergedPoint);
                     lightParams = mergedPoint;
                 }
             }
