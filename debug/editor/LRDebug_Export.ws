@@ -63,7 +63,7 @@ function LRDebug_BuildLightFieldSegment(
     return line;
 }
 
-/** Changed spotlight fields (prefix "spot_" for the entity-wide params, "sN_" for per-component) */
+/** Changed spotlight fields, per-component (prefix "sN_") */
 function LRDebug_BuildSpotlightSegment(
     cur: CLightRewriteSpotlightParams,
     base: CLightRewriteSpotlightParams,
@@ -146,10 +146,6 @@ function LRDebug_BuildEditedFields(
     ) {
         if (params.useSpotlightColor.value) line += " useSpotlightColor=1";
         else line += " useSpotlightColor=0";
-    }
-
-    if (params.spotlight) {
-        line += LRDebug_BuildSpotlightSegment(params.spotlight, baseline.spotlight, "spot_");
     }
 
     pointCount = params.pointLights.Size();

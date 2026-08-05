@@ -93,7 +93,7 @@ function ParseExportLines {
 
 # ---- Grouping ----
 
-# Canonical base field names; spot_/pN_/sN_ prefixed variants are stripped before lookup
+# Canonical base field names; pN_/sN_ prefixed variants are stripped before lookup
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
     'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', `
     'alignOffsetZ', 'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ'
@@ -107,7 +107,7 @@ function CoerceEntry {
         $k = $kv.Key
         $v = $kv.Value
         $base = $k
-        if ($k -match '^(?:spot_|p\d+_|s\d+_)(\w+)$') { $base = $Matches[1] }
+        if ($k -match '^(?:p\d+_|s\d+_)(\w+)$') { $base = $Matches[1] }
         $isFloat = $base -in $floatFields
         $isInt = $base -in $intFields
         if ($isFloat) {
@@ -265,7 +265,7 @@ function AddOffsetChild {
     $Parent.AppendChild($off) | Out-Null
 }
 
-# Builds a <spotlight> element from prefixed params ('spot_' entity-wide, 'sN_' per-component)
+# Builds a <spotlight> element from per-component prefixed params ('sN_')
 # Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD
 function BuildSpotlightElement {
     param(
@@ -367,12 +367,6 @@ function BuildOverrideElement {
         $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey('pointLightOffsetY') ? $Params['pointLightOffsetY'] : 0.0)))
         $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey('pointLightOffsetZ') ? $Params['pointLightOffsetZ'] : 0.0)))
         $override.AppendChild($off) | Out-Null
-    }
-
-    # <spotlight> - only when at least one spot_ field is present
-    $hasSpot = @($Params.Keys | Where-Object { $_ -like 'spot_*' }).Count -gt 0
-    if ($hasSpot) {
-        $override.AppendChild((BuildSpotlightElement $Doc $Params 'spot_')) | Out-Null
     }
 
     $pointIndices = @($Params.Keys | ForEach-Object { if ($_ -match '^p(\d+)_') { [int]$Matches[1] } }) | Sort-Object -Unique
