@@ -7,6 +7,7 @@ class LRDebug_LabelManager {
     private var tagSeq        : int;
     private var toast         : LRDebug_ToastOneLiner;
     private var groupLabel    : LRDebug_ScreenLabel;
+    private var scaleLabel    : LRDebug_ScreenLabel;
     private var pathLabel     : LRDebug_PathLabel;
     private var showPathLabels: bool;
 
@@ -17,6 +18,8 @@ class LRDebug_LabelManager {
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
+        scaleLabel = new LRDebug_ScreenLabel in this;
+        scaleLabel.Init(0x40006002, 0.6, 0.98);
     }
 
     private function ShowToast(text: string) {
@@ -52,6 +55,7 @@ class LRDebug_LabelManager {
     public function HideScreenLabels() {
         pathLabel.Hide();
         groupLabel.Hide();
+        scaleLabel.Hide();
     }
 
     public function TogglePathLabels() {
@@ -66,10 +70,22 @@ class LRDebug_LabelManager {
     private function UpdatePathLabel(target: CGameplayEntity) {
         if (!showPathLabels || !target) {
             pathLabel.Hide();
+            scaleLabel.Hide();
             return;
         }
 
         pathLabel.ShowPath(target);
+        scaleLabel.SetText(BuildScaleLabel(target));
+        scaleLabel.Show();
+    }
+
+    private function BuildScaleLabel(target: CGameplayEntity): string {
+        var s: Vector = target.GetLocalScale();
+
+        return "<font size='14' color='#dd88ff'>Scale: ("
+            + FloatToString(s.X) + ", "
+            + FloatToString(s.Y) + ", "
+            + FloatToString(s.Z) + ")</font>";
     }
 
     public function RegenerateNearbyOneliners() {
