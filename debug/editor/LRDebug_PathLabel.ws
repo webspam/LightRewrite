@@ -39,7 +39,36 @@ class LRDebug_PathLabel extends LRDebug_ScreenLabel {
         html = AppendPathLine(html, fileName, fontSize + 3);
         html = AppendPathLine(html, filePath, fontSize - 1);
         html = AppendPathLine(html, levelPath, fontSize + 2);
+        html = AppendPathLine(html, BuildActiveLightLine(entity), fontSize + 1);
         return html;
+    }
+
+    /** The component being edited */
+    private function BuildActiveLightLine(entity: CGameplayEntity): string {
+        var light: CLightComponent;
+        var type: name;
+        var count, index: int;
+        var prefix: string;
+
+        if (!thePlayer.lrDebugAttrEditor) return "";
+
+        type = thePlayer.lrDebugAttrEditor.GetSelectedLightType(entity);
+        index = thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type);
+
+        if (type == 'spot') {
+            count = LRDebug_SpotLightCount(entity);
+            light = LRDebug_SpotLightAt(entity, index);
+            prefix = "S";
+        }
+        else {
+            count = LRDebug_PointLightCount(entity);
+            light = LRDebug_PointLightAt(entity, index);
+            prefix = "P";
+        }
+
+        if (!light) return "";
+
+        return light.GetName() + " " + prefix + (index + 1) + "/" + count;
     }
 
     private function AppendPathLine(html: string, text: string, size: int): string {

@@ -59,6 +59,10 @@ class LRDebug_LabelManager {
         UpdatePathLabel(thePlayer.lrDebugTargeting.GetTarget());
     }
 
+    public function RefreshPathLabel() {
+        UpdatePathLabel(thePlayer.lrDebugTargeting.GetTarget());
+    }
+
     private function UpdatePathLabel(target: CGameplayEntity) {
         if (!showPathLabels || !target) {
             pathLabel.Hide();

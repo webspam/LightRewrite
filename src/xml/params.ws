@@ -5,7 +5,7 @@ function ParseLightRewriteBaseParams(
     node: SCustomNode
 ) {
     var strVal: string;
-    var shadowsNode, colourNode: SCustomNode;
+    var shadowsNode, colourNode, offsetNode: SCustomNode;
 
     if (dm.GetCustomNodeAttributeValueString(node, 'enabled', strVal)) {
         params.enabled.has = true;
@@ -51,6 +51,46 @@ function ParseLightRewriteBaseParams(
         dm.GetCustomNodeAttributeValueString(colourNode, 'b', strVal);
         params.color.value.Blue = StringToInt(strVal, params.color.value.Blue);
     }
+
+    offsetNode = dm.GetCustomDefinitionSubNode(node, 'offset');
+    if (ParseLightRewriteVector(dm, offsetNode, params.offset.value)) {
+        params.offset.has = true;
+    }
+}
+
+function ParseLightRewritePerLightNodes(
+    override: CLightRewriteSourceParams,
+    dm: CDefinitionsManagerAccessor,
+    entryNode: SCustomNode
+) {
+    var childNode: SCustomNode;
+    var spotParams: CLightRewriteSpotlightParams;
+    var pointParams: CLightRewriteComponentLightParams;
+    var index, i, count: int;
+
+    count = entryNode.subNodes.Size();
+    for (i = 0; i < count; i += 1) {
+        childNode = entryNode.subNodes[i];
+
+        if (childNode.nodeName == 'light') {
+            if (!dm.GetCustomNodeAttributeValueInt(childNode, 'index', index)) {
+                LogLightRewriteXml("Skipping invalid light element - missing index attribute.");
+                continue;
+            }
+            pointParams = override.GetOrCreatePointLightParams(index);
+            ParseLightRewriteBaseParams(pointParams, dm, childNode);
+        }
+        else if (childNode.nodeName == 'spotlight') {
+            spotParams = ParseLightRewriteSpotlightParams(override, dm, childNode);
+            if (dm.GetCustomNodeAttributeValueInt(childNode, 'index', index)) {
+                spotParams.index = index;
+                override.spotLights.PushBack(spotParams);
+            }
+            else {
+                override.spotlight = spotParams;
+            }
+        }
+    }
 }
 
 /** Parses a <spotlight> node into a new CLightRewriteSpotlightParams. */
@@ -60,7 +100,6 @@ function ParseLightRewriteSpotlightParams(
     spotlightNode: SCustomNode
 ): CLightRewriteSpotlightParams {
     var spotlight: CLightRewriteSpotlightParams;
-    var offsetNode: SCustomNode;
     var strVal: string;
 
     spotlight = new CLightRewriteSpotlightParams in owner;
@@ -80,11 +119,6 @@ function ParseLightRewriteSpotlightParams(
     }
     if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'spawn', strVal)) {
         spotlight.spawn = (strVal == "true");
-    }
-
-    offsetNode = dm.GetCustomDefinitionSubNode(spotlightNode, 'offset');
-    if (ParseLightRewriteVector(dm, offsetNode, spotlight.offset.value)) {
-        spotlight.offset.has = true;
     }
 
     return spotlight;

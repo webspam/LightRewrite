@@ -23,9 +23,6 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     public var alignPointLights: SLightRewriteOptionalBool;
     public var pointLightOffset: Vector;
 
-    // Direct point-light position offset (non-candle lights)
-    public var pointLightOffsetPos: SLightRewriteOptionalVector;
-
     // Copy the spotlight colour to point lights instead of using an explicit colour
     public var useSpotlightColor: SLightRewriteOptionalBool;
 
@@ -37,29 +34,109 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
+    // Per-component overrides, applied on top of the entity-wide fields above
+    public var pointLights: array<CLightRewriteComponentLightParams>;
+    public var spotLights : array<CLightRewriteSpotlightParams>;
+
+    public function GetPointLightParams(index: int): CLightRewriteComponentLightParams {
+        var i: int;
+        var count: int = pointLights.Size();
+
+        for (i = 0; i < count; i += 1) {
+            if (pointLights[i].index == index) return pointLights[i];
+        }
+        return NULL;
+    }
+
+    public function GetEffectivePointLightParams(index: int): ILightRewriteParams {
+        return MergePointLightParams(GetPointLightParams(index));
+    }
+
+    public function MergePointLightParams(
+        lightParams: CLightRewriteComponentLightParams
+    ): ILightRewriteParams {
+        var merged: CLightRewriteComponentLightParams;
+
+        if (!lightParams) return this;
+
+        merged = new CLightRewriteComponentLightParams in this;
+        ApplyBaseTo(merged);
+        lightParams.ApplyBaseTo(merged);
+        return merged;
+    }
+
+    public function GetOrCreatePointLightParams(index: int): CLightRewriteComponentLightParams {
+        var params: CLightRewriteComponentLightParams = GetPointLightParams(index);
+
+        if (!params) {
+            params = new CLightRewriteComponentLightParams in this;
+            params.index = index;
+            pointLights.PushBack(params);
+        }
+        return params;
+    }
+
+    public function GetSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var i: int;
+        var count: int = spotLights.Size();
+
+        for (i = 0; i < count; i += 1) {
+            if (spotLights[i].index == index) return spotLights[i];
+        }
+        return NULL;
+    }
+
+    // The entity-wide spotlight is the base merged into every component
+    public function GetEffectiveSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var entityWide, spotParams, merged: CLightRewriteSpotlightParams;
+
+        if (spotlight && !spotlight.spawn) entityWide = spotlight;
+        spotParams = GetSpotLightParams(index);
+
+        if (!entityWide) return spotParams;
+        if (!spotParams) return entityWide;
+
+        merged = new CLightRewriteSpotlightParams in this;
+        entityWide.ApplySpotlightTo(merged);
+        spotParams.ApplySpotlightTo(merged);
+        return merged;
+    }
+
+    public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var params: CLightRewriteSpotlightParams = GetSpotLightParams(index);
+
+        if (!params) {
+            params = new CLightRewriteSpotlightParams in this;
+            params.index = index;
+            spotLights.PushBack(params);
+        }
+        return params;
+    }
+
     // Applies every set field from this object onto target, overwriting its values.
     public function ApplyTo(target: CLightRewriteSourceParams) {
-        if (enabled.has) target.enabled = enabled;
+        var i: int;
+        var pointCount: int = pointLights.Size();
+        var spotCount: int = spotLights.Size();
+
+        ApplyBaseTo(target);
         if (rewriterType.has) target.rewriterType = rewriterType;
-        if (brightness.has) target.brightness = brightness;
-        if (radius.has) target.radius = radius;
-        if (attenuation.has) target.attenuation = attenuation;
-        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
-        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
-        if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
-        if (castShadows.has) target.castShadows = castShadows;
-        if (color.has) target.color = color;
         if (alignPointLights.has) {
             target.alignPointLights = alignPointLights;
             target.pointLightOffset = pointLightOffset;
         }
-        if (pointLightOffsetPos.has) target.pointLightOffsetPos = pointLightOffsetPos;
         if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
         if (forceSingleLight.has) target.forceSingleLight = forceSingleLight;
         if (forceCastShadows.has) target.forceCastShadows = forceCastShadows;
         if (spotlight) {
             if (!target.spotlight) target.spotlight = new CLightRewriteSpotlightParams in target;
-            spotlight.ApplyTo(target.spotlight);
+            spotlight.ApplySpotlightTo(target.spotlight);
+        }
+        for (i = 0; i < pointCount; i += 1) {
+            pointLights[i].ApplyBaseTo(target.GetOrCreatePointLightParams(pointLights[i].index));
+        }
+        for (i = 0; i < spotCount; i += 1) {
+            spotLights[i].ApplySpotlightTo(target.GetOrCreateSpotLightParams(spotLights[i].index));
         }
     }
 }

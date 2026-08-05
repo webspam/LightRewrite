@@ -21,21 +21,18 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
         super.ProcessDeferredActions();
 
-        if (p.spotlight) {
-            RewriteSpotlight(p.spotlight);
-        }
-        else {
-            DisableAllSpotlightComponents();
-        }
+        ApplySpotOverrides(!p.spotlight);
     }
 
     public function RewriteLight() {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
         var spotLight: CSpotLightComponent;
         var pointLight, mainLight: CPointLightComponent;
+        var pointParams: CLightRewriteComponentLightParams;
+        var effective: ILightRewriteParams;
         var centralSlot: name;
         var i: int;
-        var wasEnabled, forceSingle: bool;
+        var forceSingle: bool;
 
         var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
         var count: int = components.Size();
@@ -63,11 +60,9 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                 continue;
             }
 
-            wasEnabled = pointLight.IsEnabled();
-            if (wasEnabled) pointLight.SetEnabled(false);
-
-            SetPointLightSettings(pointLight);
-            SetPointLightColour(pointLight, spotLight);
+            pointParams = p.GetPointLightParams(i);
+            effective = p.MergePointLightParams(pointParams);
+            if (!ApplyPointLightRewrite(pointLight, pointParams, effective, i, spotLight)) continue;
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {
@@ -77,20 +72,15 @@ class CCandleLightRewriter extends ILightSourceRewriter {
                     AlignPointLight(i, pointLight);
                 }
             }
-
-            if (wasEnabled) pointLight.SetEnabled(true);
+            // Per-index offset wins over flame alignment; the entity-wide offset stays ignored on candles
+            if (pointParams && pointParams.offset.has) {
+                pointLight.SetPosition(pointParams.offset.value);
+            }
         }
 
         // Remove spotlights from candles that have point lights (should be all candles),
         // unless a spotlight override is configured - in that case, apply it instead.
-        if (count > 0) {
-            if (p.spotlight) {
-                RewriteSpotlight(p.spotlight);
-            }
-            else {
-                DisableAllSpotlightComponents();
-            }
-        }
+        ApplySpotOverrides(count > 0 && !p.spotlight);
 
         ApplyForceCastShadows();
     }

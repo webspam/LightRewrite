@@ -35,9 +35,11 @@ abstract class ILightSourceRewriter {
     }
 
     // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
-    public function GetUncappedRadius(pointLight: CPointLightComponent): float {
+    public function GetUncappedRadius(pointLight: CPointLightComponent, index: int): float {
         var p: CLightRewriteSourceParams = GetEffectiveParams();
+        var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
 
+        if (pointParams && pointParams.radius.has) return pointParams.radius.value;
         if (p.radius.has) return p.radius.value;
         if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
             return pointLight.lightRewriteOriginalValues.radius;
@@ -96,7 +98,7 @@ abstract class ILightSourceRewriter {
             }
         }
 
-        // Restore the original state of any spotlights.
+        // Restore the original state of any spotlights
         components.Clear();
         components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
         count = components.Size();
@@ -122,53 +124,44 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Disables all spotlight components on the entity.
-    public function DisableAllSpotlightComponents() {
-        var lightComponent: CSpotLightComponent;
-        var i: int;
+    /** disableUnconfigured switches off any spotlight without an override - candles emit via their point lights */
+    protected function ApplySpotOverrides(optional disableUnconfigured: bool) {
+        var spotLight: CSpotLightComponent;
+        var spotParams: CLightRewriteSpotlightParams;
+        var i, count: int;
+        var components: array<CComponent>;
 
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
-        var count: int = components.Size();
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
 
+        // A spawn override creates its own spotlight entity rather than editing a component
+        if (p.spotlight && p.spotlight.spawn) RewriteSpawnedSpotlight(p.spotlight);
+
+        if (!disableUnconfigured && p.spotLights.Size() == 0 && (!p.spotlight || p.spotlight.spawn)) {
+            return;
+        }
+
+        components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        count = components.Size();
         for (i = 0; i < count; i += 1) {
-            lightComponent = (CSpotLightComponent)components[i];
+            spotLight = (CSpotLightComponent)components[i];
+            if (!spotLight) continue;
 
-            if (lightComponent) {
-                lightComponent.SaveLightRewriteOriginalValues();
-                lightComponent.SetEnabled(false);
+            spotParams = p.GetEffectiveSpotLightParams(i);
+            if (spotParams) {
+                ApplySpotOverride(spotLight, spotParams);
+            }
+            else if (disableUnconfigured) {
+                spotLight.SaveLightRewriteOriginalValues();
+                spotLight.SetEnabled(false);
             }
         }
     }
 
-    // Shared application of ILightRewriteParams onto any light component - avoids duplicating
-    // the same property block for both CPointLightComponent and CSpotLightComponent.
-    protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
-        if (pamparams.brightness.has) light.brightness = pamparams.brightness.value;
-        if (pamparams.radius.has) light.radius = pamparams.radius.value;
-        if (pamparams.attenuation.has) light.attenuation = pamparams.attenuation.value;
-        if (pamparams.shadowFadeDistance.has) {
-            light.shadowFadeDistance = pamparams.shadowFadeDistance.value;
-        }
-        if (pamparams.shadowFadeRange.has) light.shadowFadeRange = pamparams.shadowFadeRange.value;
-        if (pamparams.shadowBlendFactor.has) {
-            light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
-        }
-        if (pamparams.castShadows.has) light.shadowCastingMode = pamparams.castShadows.value;
-        if (pamparams.color.has) light.color = pamparams.color.value;
-    }
-
-    // Rewrites the spotlight component on the entity with the given params.
-    protected function RewriteSpotlight(spotParams: CLightRewriteSpotlightParams) {
-        var spotLight: CSpotLightComponent;
+    protected function ApplySpotOverride(
+        spotLight: CSpotLightComponent,
+        spotParams: CLightRewriteSpotlightParams
+    ) {
         var wasEnabled: bool;
-
-        if (spotParams.spawn) {
-            RewriteSpawnedSpotlight(spotParams);
-            return;
-        }
-
-        spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName('CSpotLightComponent');
-        if (!spotLight) return;
 
         spotLight.SaveLightRewriteOriginalValues();
 
@@ -183,6 +176,21 @@ abstract class ILightSourceRewriter {
         ApplySpotlightParams(spotLight, spotParams);
 
         if (wasEnabled) spotLight.SetEnabled(true);
+    }
+
+    protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
+        if (pamparams.brightness.has) light.brightness = pamparams.brightness.value;
+        if (pamparams.radius.has) light.radius = pamparams.radius.value;
+        if (pamparams.attenuation.has) light.attenuation = pamparams.attenuation.value;
+        if (pamparams.shadowFadeDistance.has) {
+            light.shadowFadeDistance = pamparams.shadowFadeDistance.value;
+        }
+        if (pamparams.shadowFadeRange.has) light.shadowFadeRange = pamparams.shadowFadeRange.value;
+        if (pamparams.shadowBlendFactor.has) {
+            light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
+        }
+        if (pamparams.castShadows.has) light.shadowCastingMode = pamparams.castShadows.value;
+        if (pamparams.color.has) light.color = pamparams.color.value;
     }
 
     protected function ApplySpotlightParams(
@@ -232,7 +240,6 @@ abstract class ILightSourceRewriter {
         return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
     }
 
-    // Destroy the spawned spotlight entity when this rewriter is discarded, rather than orphan it
     public function DestroySpawnedSpotlight() {
         if (spawnedSpotlight) {
             spawnedSpotlight.Destroy();
@@ -240,32 +247,67 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Rewrites the specified point light with the rewriter's params.
     protected function RewritePointLight(
         pointLight: CPointLightComponent,
+        index: int,
         optional spotLight: CSpotLightComponent
     ) {
-        var wasEnabled: bool;
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+        var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
+        var effective: ILightRewriteParams = p.MergePointLightParams(pointParams);
 
         pointLight.SaveLightRewriteOriginalValues();
+        ApplyPointLightRewrite(pointLight, pointParams, effective, index, spotLight);
+
+        if (effective.offset.has) pointLight.SetPosition(effective.offset.value);
+    }
+
+    /** Returns false when the light was force-disabled, so callers can skip positioning */
+    protected function ApplyPointLightRewrite(
+        pointLight: CPointLightComponent,
+        pointParams: CLightRewriteComponentLightParams,
+        effective: ILightRewriteParams,
+        index: int,
+        optional spotLight: CSpotLightComponent
+    ): bool {
+        var wasEnabled: bool;
+
+        if (IsPointLightForceDisabled(pointParams)) {
+            pointLight.SetEnabled(false);
+            return false;
+        }
 
         wasEnabled = pointLight.IsEnabled();
         if (wasEnabled) pointLight.SetEnabled(false);
 
-        SetPointLightSettings(pointLight);
-        SetPointLightColour(pointLight, spotLight);
+        SetPointLightSettings(pointLight, effective, index);
+        SetPointLightColour(pointLight, effective, spotLight);
 
         if (wasEnabled) pointLight.SetEnabled(true);
+        return true;
     }
 
-    // Sets basic point light settings
-    protected function SetPointLightSettings(pointLight: CPointLightComponent) {
+    /** Entity-wide enabled gates the whole rewriter, so only a component override may disable one light */
+    protected function IsPointLightForceDisabled(
+        pointParams: CLightRewriteComponentLightParams
+    ): bool {
+        if (pointParams) return pointParams.enabled.has && !pointParams.enabled.value;
+        return false;
+    }
+
+    protected function SetPointLightSettings(
+        pointLight: CPointLightComponent,
+        effective: ILightRewriteParams,
+        index: int
+    ) {
+        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
         var uncapped: float;
 
-        ApplyLightParams(pointLight, GetEffectiveParams());
+        if (effective.radius.has) uncapped = effective.radius.value;
+        else uncapped = GetUncappedRadius(pointLight, index);
 
-        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
-        uncapped = GetUncappedRadius(pointLight);
+        ApplyLightParams(pointLight, effective);
+
         pointLight.radius = uncapped;
         if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) pointLight.radius = maxSafeRadius;
     }
@@ -273,12 +315,11 @@ abstract class ILightSourceRewriter {
     // Sets point light colour to the specified override, spotlight, or original colour
     protected function SetPointLightColour(
         pointLight: CPointLightComponent,
+        effective: ILightRewriteParams,
         optional spotLight: CSpotLightComponent
     ) {
-        var pamparams: CLightRewriteSourceParams = GetEffectiveParams();
-
-        if (pamparams.color.has) {
-            pointLight.color = pamparams.color.value;
+        if (effective.color.has) {
+            pointLight.color = effective.color.value;
         }
         else if (spotLight) {
             pointLight.color = spotLight.color;
@@ -289,7 +330,7 @@ abstract class ILightSourceRewriter {
         }
     }
 
-    // Enables shadow casting on all drawable (mesh) components - for noshadow entities.
+    /** Enables shadow casting on all drawable (mesh) components - for noshadow entities */
     protected function ApplyForceCastShadows() {
         var drawable: CDrawableComponent;
         var components: array<CComponent>;

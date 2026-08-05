@@ -54,15 +54,21 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return html + "'>" + prefix + " " + count + "</font>";
     }
 
+    private function ActiveCountToHtml(prefix: string, count: int, activeIndex: int): string {
+        if (count < 2) return CountToHtml(prefix, count);
+        return "<font color='#00ff00'>" + prefix + " " + (activeIndex + 1) + "/" + count + "</font>";
+    }
+
     private function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
-        var spotP: CLightRewriteSpotlightParams;
+        var spotlight: CLightRewriteSpotlightParams;
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
         var position: Vector;
         var valF: float;
         var valI: int;
+        var activeIndex: int;
 
         if (!entity) return "?";
 
@@ -73,17 +79,19 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
             params = NULL;
         }
 
+        activeIndex = thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type);
+
         if (type == 'spot') {
             if (params) {
-                lightParams = params.spotlight;
-                spotP = params.spotlight;
+                spotlight = params.GetEffectiveSpotLightParams(activeIndex);
+                lightParams = spotlight;
             }
-            light = LRDebug_FirstSpotLight(entity);
-            spotComp = LRDebug_FirstSpotLight(entity);
+            spotComp = LRDebug_SpotLightAt(entity, activeIndex);
+            light = spotComp;
         }
         else {
-            lightParams = params;
-            light = LRDebug_FirstPointLight(entity);
+            if (params) lightParams = params.GetEffectivePointLightParams(activeIndex);
+            light = LRDebug_PointLightAt(entity, activeIndex);
         }
 
         switch (attr) {
@@ -151,8 +159,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             case 'alignOffsetZ':
                 if (type == 'spot') {
-                    if (spotP && spotP.offset.has) {
-                        valF = spotP.offset.value.Z;
+                    if (spotlight && spotlight.offset.has) {
+                        valF = spotlight.offset.value.Z;
                     }
                     else if (spotComp) {
                         position = spotComp.GetLocalPosition();
@@ -164,8 +172,8 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                     if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                     else valF = 0.0;
                 }
-                else if (params && params.pointLightOffsetPos.has) {
-                    valF = params.pointLightOffsetPos.value.Z;
+                else if (lightParams && lightParams.offset.has) {
+                    valF = lightParams.offset.value.Z;
                 }
                 else if (light) {
                     position = light.GetLocalPosition();
@@ -174,17 +182,17 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 return FloatToString(valF);
 
             case 'innerAngle':
-                if (spotP && spotP.innerAngle.has) valF = spotP.innerAngle.value;
+                if (spotlight && spotlight.innerAngle.has) valF = spotlight.innerAngle.value;
                 else if (spotComp) valF = spotComp.innerAngle;
                 return FloatToString(valF);
 
             case 'outerAngle':
-                if (spotP && spotP.outerAngle.has) valF = spotP.outerAngle.value;
+                if (spotlight && spotlight.outerAngle.has) valF = spotlight.outerAngle.value;
                 else if (spotComp) valF = spotComp.outerAngle;
                 return FloatToString(valF);
 
             case 'softness':
-                if (spotP && spotP.softness.has) valF = spotP.softness.value;
+                if (spotlight && spotlight.softness.has) valF = spotlight.softness.value;
                 else if (spotComp) valF = spotComp.softness;
                 return FloatToString(valF);
 
@@ -272,10 +280,21 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
 
             pSeg = CountToHtml("P", pointLights);
             sSeg = CountToHtml("S", spotLights);
+
             if (type == 'spot') {
+                sSeg = ActiveCountToHtml(
+                    "S",
+                    spotLights,
+                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
+                );
                 sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
             }
             else {
+                pSeg = ActiveCountToHtml(
+                    "P",
+                    pointLights,
+                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
+                );
                 pSeg = "<font color='#dd88ff'>[</font>" + pSeg + "<font color='#dd88ff'>]</font>";
             }
             countString = marker + pSeg + " / " + sSeg + " <font color='#dd88ff'>-</font>";

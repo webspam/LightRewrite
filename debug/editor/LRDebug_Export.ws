@@ -63,32 +63,45 @@ function LRDebug_BuildLightFieldSegment(
     return line;
 }
 
-/** Changed spotlight fields, spot_-prefixed */
+/** Changed spotlight fields, per-component (prefix "sN_") */
 function LRDebug_BuildSpotlightSegment(
     cur: CLightRewriteSpotlightParams,
-    base: CLightRewriteSpotlightParams
+    base: CLightRewriteSpotlightParams,
+    prefix: string
 ): string {
     var line: string;
 
-    line = LRDebug_BuildLightFieldSegment(cur, base, "spot_");
+    line = LRDebug_BuildLightFieldSegment(cur, base, prefix);
 
     if (LRDebug_FloatEdited(cur.innerAngle, base.innerAngle)) {
-        line += " spot_innerAngle=" + FloatToString(cur.innerAngle.value);
+        line += " " + prefix + "innerAngle=" + FloatToString(cur.innerAngle.value);
     }
     if (LRDebug_FloatEdited(cur.outerAngle, base.outerAngle)) {
-        line += " spot_outerAngle=" + FloatToString(cur.outerAngle.value);
+        line += " " + prefix + "outerAngle=" + FloatToString(cur.outerAngle.value);
     }
     if (LRDebug_FloatEdited(cur.softness, base.softness)) {
-        line += " spot_softness=" + FloatToString(cur.softness.value);
+        line += " " + prefix + "softness=" + FloatToString(cur.softness.value);
     }
+
+    line += LRDebug_BuildOffsetSegment(cur, base, prefix);
+
+    return line;
+}
+
+function LRDebug_BuildOffsetSegment(
+    cur: ILightRewriteParams,
+    base: ILightRewriteParams,
+    prefix: string
+): string {
+    var line: string;
 
     if (
         cur.offset.has &&
         (!base.offset.has || cur.offset.value.X != base.offset.value.X || cur.offset.value.Y != base.offset.value.Y || cur.offset.value.Z != base.offset.value.Z)
     ) {
-        line += " spot_offsetX=" + FloatToString(cur.offset.value.X);
-        line += " spot_offsetY=" + FloatToString(cur.offset.value.Y);
-        line += " spot_offsetZ=" + FloatToString(cur.offset.value.Z);
+        line += " " + prefix + "offsetX=" + FloatToString(cur.offset.value.X);
+        line += " " + prefix + "offsetY=" + FloatToString(cur.offset.value.Y);
+        line += " " + prefix + "offsetZ=" + FloatToString(cur.offset.value.Z);
     }
 
     return line;
@@ -113,9 +126,10 @@ function LRDebug_BuildEditedFields(
     params: CLightRewriteSourceParams,
     baseline: CLightRewriteSourceParams
 ): string {
-    var line: string;
-
-    line = LRDebug_BuildLightFieldSegment(params, baseline, "");
+    var line, prefix: string;
+    var pBase: ILightRewriteParams;
+    var sBase: CLightRewriteSpotlightParams;
+    var i, pointCount, spotCount: int;
 
     if (
         params.alignPointLights.has &&
@@ -127,16 +141,6 @@ function LRDebug_BuildEditedFields(
     }
 
     if (
-        params.pointLightOffsetPos.has &&
-        (!baseline.pointLightOffsetPos.has || params.pointLightOffsetPos.value.X != baseline.pointLightOffsetPos.value.X || params.pointLightOffsetPos.value.Y != baseline.pointLightOffsetPos.value.Y || params.pointLightOffsetPos.value.Z != baseline.pointLightOffsetPos.value.Z)
-    ) {
-        line += " pointLightOffset=1";
-        line += " pointLightOffsetX=" + FloatToString(params.pointLightOffsetPos.value.X);
-        line += " pointLightOffsetY=" + FloatToString(params.pointLightOffsetPos.value.Y);
-        line += " pointLightOffsetZ=" + FloatToString(params.pointLightOffsetPos.value.Z);
-    }
-
-    if (
         params.useSpotlightColor.has &&
         (!baseline.useSpotlightColor.has || params.useSpotlightColor.value != baseline.useSpotlightColor.value)
     ) {
@@ -144,8 +148,23 @@ function LRDebug_BuildEditedFields(
         else line += " useSpotlightColor=0";
     }
 
-    if (params.spotlight) {
-        line += LRDebug_BuildSpotlightSegment(params.spotlight, baseline.spotlight);
+    pointCount = params.pointLights.Size();
+    for (i = 0; i < pointCount; i += 1) {
+        pBase = baseline.GetEffectivePointLightParams(params.pointLights[i].index);
+        prefix = "p" + params.pointLights[i].index + "_";
+        line += LRDebug_BuildLightFieldSegment(params.pointLights[i], pBase, prefix);
+        line += LRDebug_BuildOffsetSegment(params.pointLights[i], pBase, prefix);
+    }
+
+    spotCount = params.spotLights.Size();
+    for (i = 0; i < spotCount; i += 1) {
+        sBase = baseline.GetEffectiveSpotLightParams(params.spotLights[i].index);
+        if (!sBase) sBase = new CLightRewriteSpotlightParams in baseline;
+        line += LRDebug_BuildSpotlightSegment(
+            params.spotLights[i],
+            sBase,
+            "s" + params.spotLights[i].index + "_"
+        );
     }
 
     return line;

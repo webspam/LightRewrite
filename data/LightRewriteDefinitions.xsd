@@ -157,6 +157,12 @@
           <xs:documentation>Optional spotlight override for this light source group. When present, customises the spotlight independently of the point lights.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="light"
+                  type="lightIndexOverrideType">
+        <xs:annotation>
+          <xs:documentation>Override for a single point-light component, applied on top of this entry's entity-wide values. Only fields present here differ from the entity-wide ones.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:choice>
     <xs:attribute name="tag_name"
                   type="lightTagType"
@@ -411,6 +417,58 @@
     </xs:attribute>
   </xs:complexType>
 
+  <xs:complexType name="lightIndexOverrideType">
+    <xs:annotation>
+      <xs:documentation>Per-component point-light override. Attributes and children have the same meaning as on the parent override, but apply to one component only.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="shadows"
+                  type="shadowsType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Shadow fade parameters for this point light.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="colour"
+                  type="overrideColourType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If present, overrides this point light's colour.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="offset"
+                  type="vectorType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>When present, moves this point light to this local-space offset from the entity origin. Wins over the entry-level offset and candle flame alignment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="index"
+                  type="xs:nonNegativeInteger"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>0-based position of the target component among the entity's point-light components. Component order is assumed stable per entity template.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="enabled"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When false, disables this point light in game. Default: `true`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="brightness"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="radius"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="attenuation"
+                  type="xs:decimal"
+                  use="optional" />
+  </xs:complexType>
+
   <xs:complexType name="spotlightOverrideType">
     <xs:annotation>
       <xs:documentation>Spotlight-specific overrides for a light source group. Brightness, radius, attenuation, shadows, and colour have the same meaning and constraints as on the parent override. Tag name and label are inherited from the parent override in code.</xs:documentation>
@@ -438,6 +496,14 @@
         </xs:annotation>
       </xs:element>
     </xs:all>
+    <xs:attribute name="index"
+                  type="xs:nonNegativeInteger"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When present, this element overrides only the spotlight component at this 0-based position among the entity's spotlight components, on top of any entity-wide spotlight element. A per-component spotlight is exempt from the candle rewriter's spotlight disabling.</xs:documentation>
+        <xs:documentation>When absent, the element keeps its entity-wide meaning. Component order is assumed stable per entity template.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="enabled"
                   type="xs:boolean"
                   use="optional">

@@ -16,6 +16,8 @@
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad0=(Action=LRDebug_Undo)
+ * IK_NumPad1=(Action=LRDebug_CycleLightDown)
+ * IK_NumPad3=(Action=LRDebug_CycleLightUp)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
  * IK_5=(Action=LRDebug_SoftnessModifier)
@@ -67,6 +69,8 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLightUp', 'LRDebug_CycleLightUp');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLightDown', 'LRDebug_CycleLightDown');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleGroupEdit', 'LRDebug_GroupEdit');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleShadowMode', 'LRDebug_CycleShadowMode');
@@ -253,6 +257,27 @@ public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
 
     lrDebugAttrEditor.SwapLightSelection(lrDebugTargeting.GetTarget());
     lrDebugLabelManager.RefreshTargetOneliner();
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLightUp(action: SInputAction): bool {
+    return LRDebug_CycleActiveLight(action, 1);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLightDown(action: SInputAction): bool {
+    return LRDebug_CycleActiveLight(action, -1);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_CycleActiveLight(action: SInputAction, delta: int): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugAttrEditor.CycleActiveLight(lrDebugTargeting.GetTarget(), delta)) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+        lrDebugLabelManager.RefreshPathLabel();
+    }
     return true;
 }
 

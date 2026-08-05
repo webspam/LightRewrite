@@ -47,7 +47,6 @@ function LoadLightRewriteOverrideGroup(
     var strVal: string;
     var nameVal: name;
     var i, count: int;
-    var spotlightNode: SCustomNode;
     var matchesNode: SCustomNode;
     var inheritsNode: SCustomNode;
 
@@ -112,15 +111,7 @@ function LoadLightRewriteOverrideGroup(
             override.alignPointLights.value = true;
         }
 
-        alignNode = dm.GetCustomDefinitionSubNode(entryNode, 'offset');
-        if (ParseLightRewriteVector(dm, alignNode, override.pointLightOffsetPos.value)) {
-            override.pointLightOffsetPos.has = true;
-        }
-
-        spotlightNode = dm.GetCustomDefinitionSubNode(entryNode, 'spotlight');
-        if (spotlightNode.nodeName == 'spotlight') {
-            override.spotlight = ParseLightRewriteSpotlightParams(override, dm, spotlightNode);
-        }
+        ParseLightRewritePerLightNodes(override, dm, entryNode);
 
         LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + override.tag + ", rules=" + override.condition.rules.Size() + ")");
         group.overrides.PushBack(override);

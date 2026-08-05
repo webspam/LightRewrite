@@ -18,18 +18,26 @@ public function HasSpotLight(): bool {
     return GetComponentsCountByClassName('CSpotLightComponent') > 0;
 }
 
-function LRDebug_FirstPointLight(entity: CGameplayEntity): CPointLightComponent {
+function LRDebug_PointLightAt(entity: CGameplayEntity, index: int): CPointLightComponent {
     var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CPointLightComponent');
-    if (components.Size() > 0) return (CPointLightComponent)components[0];
+    if (index >= 0 && index < components.Size()) return (CPointLightComponent)components[index];
     return NULL;
 }
 
-function LRDebug_FirstSpotLight(entity: CGameplayEntity): CSpotLightComponent {
+function LRDebug_SpotLightAt(entity: CGameplayEntity, index: int): CSpotLightComponent {
     var components: array<CComponent>;
     components = entity.GetComponentsByClassName('CSpotLightComponent');
-    if (components.Size() > 0) return (CSpotLightComponent)components[0];
+    if (index >= 0 && index < components.Size()) return (CSpotLightComponent)components[index];
     return NULL;
+}
+
+function LRDebug_PointLightCount(entity: CGameplayEntity): int {
+    return entity.GetComponentsCountByClassName('CPointLightComponent');
+}
+
+function LRDebug_SpotLightCount(entity: CGameplayEntity): int {
+    return entity.GetComponentsCountByClassName('CSpotLightComponent');
 }
 
 // ---- Entity classification ----
