@@ -199,7 +199,10 @@ function LRDebug_ExportEditedLights() {
         layerPath = LRDebug_ParseLayerDir(descriptor);
         if (entityFile == "") continue;
 
-        line = "entityFile=" + entityFile + " layerPath=" + layerPath + fields;
+        line = "entityFile=" + entityFile + " layerPath=" + layerPath +
+            " pointLightCount=" + IntToString(LRDebug_PointLightCount(entity)) +
+            " spotLightCount=" + IntToString(LRDebug_SpotLightCount(entity)) +
+            fields;
         if (loggedLines.Contains(line)) continue;
         loggedLines.PushBack(line);
 
