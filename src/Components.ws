@@ -62,6 +62,39 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.color = color;
 }
 
+struct SLightRewriteSpotOriginalValues {
+    var hasBeenSaved: bool;
+
+    var innerAngle: float;
+    var outerAngle: float;
+    var softness  : float;
+}
+
+@addField(CSpotLightComponent) public var lightRewriteSpotOriginalValues: SLightRewriteSpotOriginalValues;
+
+@addMethod(CSpotLightComponent)
+public function SaveLightRewriteOriginalValues() {
+    super.SaveLightRewriteOriginalValues();
+
+    if (lightRewriteSpotOriginalValues.hasBeenSaved) return;
+
+    lightRewriteSpotOriginalValues.hasBeenSaved = true;
+    lightRewriteSpotOriginalValues.innerAngle = innerAngle;
+    lightRewriteSpotOriginalValues.outerAngle = outerAngle;
+    lightRewriteSpotOriginalValues.softness = softness;
+}
+
+@addMethod(CSpotLightComponent)
+public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional enabled: bool) {
+    if (lightRewriteSpotOriginalValues.hasBeenSaved) {
+        innerAngle = lightRewriteSpotOriginalValues.innerAngle;
+        outerAngle = lightRewriteSpotOriginalValues.outerAngle;
+        softness = lightRewriteSpotOriginalValues.softness;
+    }
+
+    super.RestoreLightRewriteOriginalValues(useEnabled, enabled);
+}
+
 function LR_ShadowCastWeight(mode: ELightShadowCastingMode): int {
     switch (mode) {
         case LSCM_Normal:       return 3;
