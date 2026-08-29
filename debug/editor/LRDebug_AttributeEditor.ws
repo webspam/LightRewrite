@@ -200,16 +200,16 @@ class LRDebug_AttributeEditor {
 
         // alignOffsetZ is the only attribute that can go negative.
         switch (attr) {
-            case 'brightness':          clamped = ClampF(value, 0.0, 100.0);  break;
-            case 'radius':              clamped = ClampF(value, 0.0, 50.0);   break;
-            case 'attenuation':         clamped = ClampF(value, 0.0, 1.0);    break;
-            case 'shadowFadeDistance':  clamped = ClampF(value, 0.0, 100.0);  break;
-            case 'shadowFadeRange':     clamped = ClampF(value, 0.0, 100.0);  break;
-            case 'shadowBlendFactor':   clamped = ClampF(value, 0.0, 1.0);    break;
-            case 'alignOffsetZ':        clamped = ClampF(value, -3.0, 3.0);   break;
-            case 'innerAngle':          clamped = ClampF(value, 0.0, 360.0);  break;
-            case 'outerAngle':          clamped = ClampF(value, 0.0, 360.0);  break;
-            case 'softness':            clamped = ClampF(value, 0.0, 255.0);  break;
+            case 'brightness':          clamped = ClampF(value, 0.0, 400.0);   break;
+            case 'radius':              clamped = ClampF(value, 0.0, 50.0);    break;
+            case 'attenuation':         clamped = ClampF(value, 0.0, 1.0);     break;
+            case 'shadowFadeDistance':  clamped = ClampF(value, 0.0, 100.0);   break;
+            case 'shadowFadeRange':     clamped = ClampF(value, 0.0, 100.0);   break;
+            case 'shadowBlendFactor':   clamped = ClampF(value, 0.0, 1.0);     break;
+            case 'alignOffsetZ':        clamped = ClampF(value, -30.0, 30.0);  break;
+            case 'innerAngle':          clamped = ClampF(value, 0.0, 360.0);   break;
+            case 'outerAngle':          clamped = ClampF(value, 0.0, 360.0);   break;
+            case 'softness':            clamped = ClampF(value, 0.0, 255.0);   break;
             default:                    return value;
         }
 
