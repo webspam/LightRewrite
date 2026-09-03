@@ -19,6 +19,14 @@ function LRDebug_FloatEdited(
     return cur.has && (!base.has || cur.value != base.value);
 }
 
+/** Set this session and not matching the baseline (absent there, or a different value) */
+function LRDebug_ShadowModeEdited(
+    cur: SLightRewriteOptionalShadowMode,
+    base: SLightRewriteOptionalShadowMode
+): bool {
+    return cur.has && (!base.has || cur.value != base.value);
+}
+
 function LRDebug_ColourEdited(cur: ILightRewriteParams, base: ILightRewriteParams): bool {
     if (!cur.color.has) return false;
     if (!base.color.has) return true;
@@ -52,6 +60,9 @@ function LRDebug_BuildLightFieldSegment(
     }
     if (LRDebug_FloatEdited(cur.shadowBlendFactor, base.shadowBlendFactor)) {
         line += " " + prefix + "shadowBlendFactor=" + FloatToString(cur.shadowBlendFactor.value);
+    }
+    if (LRDebug_ShadowModeEdited(cur.castShadows, base.castShadows)) {
+        line += " " + prefix + "castingMode=" + LR_LightShadowCastingModeToString(cur.castShadows.value);
     }
 
     if (LRDebug_ColourEdited(cur, base)) {
