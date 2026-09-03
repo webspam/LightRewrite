@@ -1,3 +1,5 @@
+#Requires -Version 7.0
+
 <#
 .SYNOPSIS
     Converts LRDebug export log lines into a LightRewrite XML override file.
@@ -9,14 +11,14 @@
     and writes a valid UTF-16 XML file compatible with the data/ override format.
 
 .PARAMETER LogFile
-    Path to the game log file containing [LREXPORT] lines.
+    Path to the game log file containing [LRDebug_Export] lines.
     If omitted, the value of the WITCHER_SCRIPTSLOG_PATH environment variable is used.
 
 .PARAMETER OutputFile
     Path to write the generated XML file. Default: exported_lights.xml
 
 .PARAMETER Profile
-    The profile_name attribute for the <overrides> block. Default: Default
+    The profile_name attribute for the <overrides> block. Default: Exported
 
 .PARAMETER Weight
     The weight attribute for the <overrides> block (0-255). Default: 75
@@ -95,9 +97,11 @@ function ParseExportLines {
 
 # Canonical base field names; pN_/sN_ prefixed variants are stripped before lookup
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
-    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', `
-    'alignOffsetZ', 'pointLightOffsetX', 'pointLightOffsetY', 'pointLightOffsetZ'
+    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetZ'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor'
+
+# Structural metadata only used for bookkeeping; skipped during entry comparison and attribute output.
+$metaFields = 'entityFile', 'layerPath', 'pointLightCount', 'spotLightCount'
 
 function CoerceEntry {
     param([hashtable] $raw)
@@ -126,11 +130,11 @@ function CoerceEntry {
 function EntriesIdentical {
     param([hashtable] $A, [hashtable] $B)
     foreach ($kv in $A.GetEnumerator()) {
-        if ($kv.Key -in 'entityFile', 'layerPath') { continue }
+        if ($kv.Key -in $metaFields) { continue }
         if (-not $B.ContainsKey($kv.Key) -or $B[$kv.Key] -ne $kv.Value) { return $false }
     }
     foreach ($kv in $B.GetEnumerator()) {
-        if ($kv.Key -in 'entityFile', 'layerPath') { continue }
+        if ($kv.Key -in $metaFields) { continue }
         if (-not $A.ContainsKey($kv.Key)) { return $false }
     }
     return $true
@@ -202,8 +206,7 @@ function AssignTagNames {
 function FmtFloat {
     param([double] $Value)
     if ([math]::Abs($Value) -lt 1e-4) { return '0' }
-    # 'G' removes trailing zeros; use InvariantCulture to guarantee dot as separator.
-    return $Value.ToString('G', [System.Globalization.CultureInfo]::InvariantCulture)
+    return $Value.ToString('0.######', [System.Globalization.CultureInfo]::InvariantCulture)
 }
 
 # ---- XML generation ----
@@ -311,12 +314,45 @@ function BuildLightElement {
     return $light
 }
 
+# Distinct 0-based indices of prefixed component keys (e.g. 'p' -> 0,1 from p0_/p1_)
+function ComponentIndices {
+    param([hashtable] $Params, [string] $Letter)
+    $indices = @($Params.Keys | ForEach-Object { if ($_ -match "^$Letter(\d+)_") { [int]$Matches[1] } } | Sort-Object -Unique)
+    return , $indices
+}
+
+# For a lone point light (single component), rewrite its p0_ keys to entity-wide so it
+# emits as plain <override> attributes instead of a redundant <light index="0"> child.
+function CollapseSinglePointLight {
+    param([hashtable] $Params)
+
+    if ([int]$Params['pointLightCount'] -ne 1) { return }
+
+    $indices = ComponentIndices $Params 'p'
+    if ($indices.Count -ne 1 -or $indices[0] -ne 0) { return }
+
+    foreach ($k in @($Params.Keys)) {
+        if ($k -match '^p0_(\w+)$') {
+            $Params[$Matches[1]] = $Params[$k]
+            $Params.Remove($k)
+        }
+    }
+}
+
+# True when a lone spotlight makes index="N" redundant (single component, index 0)
+function SpotlightIndexRedundant {
+    param([hashtable] $Params, [int] $Index, [int] $Count)
+    return $Index -eq 0 -and $Count -eq 1 -and [int]$Params['spotLightCount'] -eq 1
+}
+
 function BuildOverrideElement {
     param(
         [System.Xml.XmlDocument] $Doc,
         [hashtable]              $Params,
         [string]                 $TagName
     )
+
+    CollapseSinglePointLight $Params
 
     $entityFile = $Params['entityFile']
     $layerPath = if ($Params.ContainsKey('layerPath')) { $Params['layerPath'] } else { '' }
@@ -350,6 +386,7 @@ function BuildOverrideElement {
 
     AddShadowsChild $Doc $override $Params ''
     AddColourChild $Doc $override $Params ''
+    AddOffsetChild $Doc $override $Params ''
 
     # <fire_fx_offset> - only when alignPointLights is present
     if ($Params.ContainsKey('alignPointLights')) {
@@ -360,24 +397,16 @@ function BuildOverrideElement {
         $override.AppendChild($align) | Out-Null
     }
 
-    # <offset> - only when pointLightOffset is present
-    if ($Params.ContainsKey('pointLightOffset')) {
-        $off = $Doc.CreateElement('offset')
-        $off.SetAttribute('x', (FmtFloat ($Params.ContainsKey('pointLightOffsetX') ? $Params['pointLightOffsetX'] : 0.0)))
-        $off.SetAttribute('y', (FmtFloat ($Params.ContainsKey('pointLightOffsetY') ? $Params['pointLightOffsetY'] : 0.0)))
-        $off.SetAttribute('z', (FmtFloat ($Params.ContainsKey('pointLightOffsetZ') ? $Params['pointLightOffsetZ'] : 0.0)))
-        $override.AppendChild($off) | Out-Null
-    }
-
-    $pointIndices = @($Params.Keys | ForEach-Object { if ($_ -match '^p(\d+)_') { [int]$Matches[1] } }) | Sort-Object -Unique
-    foreach ($idx in $pointIndices) {
+    foreach ($idx in (ComponentIndices $Params 'p')) {
         $override.AppendChild((BuildLightElement $Doc $Params $idx)) | Out-Null
     }
 
-    $spotIndices = @($Params.Keys | ForEach-Object { if ($_ -match '^s(\d+)_') { [int]$Matches[1] } }) | Sort-Object -Unique
+    $spotIndices = ComponentIndices $Params 's'
     foreach ($idx in $spotIndices) {
         $spotEl = BuildSpotlightElement $Doc $Params "s${idx}_"
-        $spotEl.SetAttribute('index', [string]$idx)
+        if (!(SpotlightIndexRedundant $Params $idx $spotIndices.Count)) {
+            $spotEl.SetAttribute('index', [string]$idx)
+        }
         $override.AppendChild($spotEl) | Out-Null
     }
 
@@ -492,7 +521,7 @@ if ((Test-Path $OutputFile) -and -not $Force) {
 $records, $doneCount = ParseExportLines $LogFile
 
 if ($records.Count -eq 0) {
-    Write-Host 'No [LREXPORT] entity lines found in the log.'
+    Write-Host 'No [LRDebug_Export] entity lines found in the log.'
     exit 0
 }
 
