@@ -11,7 +11,7 @@
  *   CLayer "levels\skellige\spikeroog\village_buildings.w2w"::levels\skellige\spikeroog\village_buildings\braziers_floor_square_bounce.w2ent
  */
 
-/** Set this session and not matching the baseline (absent there, or a different value) */
+/** `true` if edited, and different from the default value. */
 function LRDebug_FloatEdited(
     cur: SLightRewriteOptionalFloat,
     base: SLightRewriteOptionalFloat
@@ -19,7 +19,7 @@ function LRDebug_FloatEdited(
     return cur.has && (!base.has || cur.value != base.value);
 }
 
-/** Set this session and not matching the baseline (absent there, or a different value) */
+/** `true` if edited, and different from the default value. */
 function LRDebug_ShadowModeEdited(
     cur: SLightRewriteOptionalShadowMode,
     base: SLightRewriteOptionalShadowMode
