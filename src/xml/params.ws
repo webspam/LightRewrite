@@ -156,3 +156,13 @@ function LR_StringToLightShadowCastingMode(str: string): ELightShadowCastingMode
         default:             return LSCM_None;
     }
 }
+
+function LR_LightShadowCastingModeToString(mode: ELightShadowCastingMode): string {
+    switch (mode) {
+        case LSCM_None:         return "None";
+        case LSCM_Normal:       return "Normal";
+        case LSCM_OnlyDynamic:  return "OnlyDynamic";
+        case LSCM_OnlyStatic:   return "OnlyStatic";
+        default:                return "None";
+    }
+}

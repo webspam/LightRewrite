@@ -222,10 +222,12 @@ function AddShadowsChild {
 
     $hasShadows = $Params.ContainsKey("${Prefix}shadowFadeDistance") -or
     $Params.ContainsKey("${Prefix}shadowFadeRange") -or
-    $Params.ContainsKey("${Prefix}shadowBlendFactor")
+    $Params.ContainsKey("${Prefix}shadowBlendFactor") -or
+    $Params.ContainsKey("${Prefix}castingMode")
     if (-not $hasShadows) { return }
 
     $shadows = $Doc.CreateElement('shadows')
+    if ($Params.ContainsKey("${Prefix}castingMode")) { $shadows.SetAttribute('casting_mode', [string]$Params["${Prefix}castingMode"]) }
     if ($Params.ContainsKey("${Prefix}shadowFadeDistance")) { $shadows.SetAttribute('fade_distance', (FmtFloat $Params["${Prefix}shadowFadeDistance"])) }
     if ($Params.ContainsKey("${Prefix}shadowFadeRange")) { $shadows.SetAttribute('fade_range', (FmtFloat $Params["${Prefix}shadowFadeRange"])) }
     if ($Params.ContainsKey("${Prefix}shadowBlendFactor")) { $shadows.SetAttribute('blend_factor', (FmtFloat $Params["${Prefix}shadowBlendFactor"])) }
