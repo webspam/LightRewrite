@@ -458,6 +458,46 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
+    /** Clears the offset override. */
+    public function ResetOffset(target: CGameplayEntity): bool {
+        var params: CLightRewriteSourceParams;
+        var lightParams: ILightRewriteParams;
+        var rewriter: ILightSourceRewriter;
+        var type: name;
+        var scope: array<CGameplayEntity>;
+        var changed: bool;
+
+        var vectorZero: Vector = Vector(0, 0, 0);
+
+        if (!target || !target.lrdebugOneliner) return false;
+
+        GetEditScope(target, scope);
+        history.StartEdit(scope, "reset offset");
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        type = GetSelectedLightType(target);
+
+        if (type != 'spot' && LRDebug_IsCandle(target)) {
+            changed = params.pointLightOffset != vectorZero || !params.alignPointLights.has;
+
+            params.pointLightOffset = vectorZero;
+            params.alignPointLights.has = true;
+            params.alignPointLights.value = true;
+        }
+        else {
+            lightParams = GetActiveLightParams(params, target, type);
+            changed = lightParams.offset.value != vectorZero || !lightParams.offset.has;
+
+            lightParams.offset.has = true;
+            lightParams.offset.value = vectorZero;
+        }
+
+        if (changed) ApplyParams(target, rewriter, params);
+        history.Commit(changed);
+        return changed;
+    }
+
     private function ResetAdjustAccumulator() {
         adjustAccumulator = 0.0;
     }

@@ -10,13 +10,14 @@
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
- * IK_NumPad9=(Action=LRDebug_ExportEdited)
+ * IK_NumPad9=(Action=)
  * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
- * IK_NumPad4=(Action=LRDebug_ResetLight)
+ * IK_NumStar=(Action=LRDebug_ResetOffset)
  * IK_NumPad0=(Action=LRDebug_Undo)
  * IK_NumPad1=(Action=LRDebug_CycleLightDown)
+ * IK_NumPad2=(Action=LRDebug_ExportEdited)
  * IK_NumPad3=(Action=LRDebug_CycleLightUp)
  * IK_Q=(Action=LRDebug_BrightnessModifier)
  * IK_1=(Action=LRDebug_RadiusModifier)
@@ -76,6 +77,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleShadowMode', 'LRDebug_CycleShadowMode');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
+    theInput.RegisterListener(this, 'LRDebug_OnInputResetOffset', 'LRDebug_ResetOffset');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
@@ -336,6 +338,16 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
     if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ResetTarget();
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputResetOffset(action: SInputAction): bool {
+    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+
+    if (lrDebugAttrEditor.ResetOffset(lrDebugTargeting.GetTarget())) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+    }
     return true;
 }
 
