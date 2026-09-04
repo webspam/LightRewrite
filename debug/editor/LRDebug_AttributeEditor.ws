@@ -646,6 +646,14 @@ class LRDebug_AttributeEditor {
         return groupEdit;
     }
 
+    /** Group size is the target plus every matched member (CacheGroupMembers excludes the target) */
+    public function GetGroupMemberCount(target: CGameplayEntity): int {
+        if (!target) return 0;
+
+        CacheGroupMembers(target);
+        return groupMembers.Size() + 1;
+    }
+
     public function Toggle(target: CGameplayEntity): bool {
         var changed: bool;
         var scope: array<CGameplayEntity>;

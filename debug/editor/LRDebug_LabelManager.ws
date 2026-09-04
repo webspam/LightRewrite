@@ -4,13 +4,14 @@
  * fiddly setup in one place.
  */
 class LRDebug_LabelManager {
-    private var tagSeq        : int;
-    private var toast         : LRDebug_ToastOneLiner;
-    private var groupLabel    : LRDebug_ScreenLabel;
-    private var scaleLabel    : LRDebug_ScreenLabel;
-    private var pathLabel     : LRDebug_PathLabel;
-    private var attrLabels    : LRDebug_AttributeLabels;
-    private var showPathLabels: bool;
+    private var tagSeq         : int;
+    private var toast          : LRDebug_ToastOneLiner;
+    private var groupLabel     : LRDebug_ScreenLabel;
+    private var groupCountLabel: LRDebug_ScreenLabel;
+    private var scaleLabel     : LRDebug_ScreenLabel;
+    private var pathLabel      : LRDebug_PathLabel;
+    private var attrLabels     : LRDebug_AttributeLabels;
+    private var showPathLabels : bool;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
@@ -19,6 +20,8 @@ class LRDebug_LabelManager {
         groupLabel = new LRDebug_ScreenLabel in this;
         groupLabel.Init(0x40006001, 0.5, 0.98);
         groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
+        groupCountLabel = new LRDebug_ScreenLabel in this;
+        groupCountLabel.Init(0x40006003, 0.5, 0.85);
         scaleLabel = new LRDebug_ScreenLabel in this;
         scaleLabel.Init(0x40006002, 0.6, 0.98);
         attrLabels = new LRDebug_AttributeLabels in this;
@@ -52,12 +55,16 @@ class LRDebug_LabelManager {
         }
 
         targetChanged = targeting.Scan(entities);
-        if (targetChanged) UpdatePathLabel(targeting.GetTarget());
+        if (targetChanged) {
+            UpdatePathLabel(targeting.GetTarget());
+            RefreshGroupCount();
+        }
     }
 
     public function HideScreenLabels() {
         pathLabel.Hide();
         groupLabel.Hide();
+        groupCountLabel.Hide();
         scaleLabel.Hide();
         attrLabels.Hide();
     }
@@ -128,10 +135,32 @@ class LRDebug_LabelManager {
 
     public function ShowGroupLabel() {
         groupLabel.Show();
+        RefreshGroupCount();
     }
 
     public function HideGroupLabel() {
         groupLabel.Hide();
+        groupCountLabel.Hide();
+    }
+
+    /** Sets the group edit light-count label. */
+    private function RefreshGroupCount() {
+        var count: int;
+
+        if (!thePlayer.lrDebugAttrEditor.IsGroupEditing()) {
+            groupCountLabel.Hide();
+            return;
+        }
+
+        count = thePlayer.lrDebugAttrEditor.GetGroupMemberCount(thePlayer.lrDebugTargeting.GetTarget());
+
+        if (count > 0) {
+            groupCountLabel.SetText("<font size='20' color='#dddddd'>" + count + "</font>");
+            groupCountLabel.Show();
+        }
+        else {
+            groupCountLabel.Hide();
+        }
     }
 
     /**
