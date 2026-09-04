@@ -9,6 +9,7 @@ class LRDebug_LabelManager {
     private var groupLabel    : LRDebug_ScreenLabel;
     private var scaleLabel    : LRDebug_ScreenLabel;
     private var pathLabel     : LRDebug_PathLabel;
+    private var attrLabels    : LRDebug_AttributeLabels;
     private var showPathLabels: bool;
 
     public function Init() {
@@ -20,6 +21,8 @@ class LRDebug_LabelManager {
         groupLabel.SetText("<font size='40' color='#dd88ff'>&#8734;</font>");
         scaleLabel = new LRDebug_ScreenLabel in this;
         scaleLabel.Init(0x40006002, 0.6, 0.98);
+        attrLabels = new LRDebug_AttributeLabels in this;
+        attrLabels.Init();
     }
 
     private function ShowToast(text: string) {
@@ -56,6 +59,7 @@ class LRDebug_LabelManager {
         pathLabel.Hide();
         groupLabel.Hide();
         scaleLabel.Hide();
+        attrLabels.Hide();
     }
 
     public function TogglePathLabels() {
@@ -71,12 +75,21 @@ class LRDebug_LabelManager {
         if (!showPathLabels || !target) {
             pathLabel.Hide();
             scaleLabel.Hide();
+            attrLabels.Hide();
             return;
         }
 
         pathLabel.ShowPath(target);
         scaleLabel.SetText(BuildScaleLabel(target));
         scaleLabel.Show();
+        attrLabels.Update(target);
+    }
+
+    /** Only while path labels are shown. */
+    private function RefreshAttributeLabels() {
+        if (!showPathLabels) return;
+
+        attrLabels.Update(thePlayer.lrDebugTargeting.GetTarget());
     }
 
     private function BuildScaleLabel(target: CGameplayEntity): string {
@@ -100,6 +113,8 @@ class LRDebug_LabelManager {
 
             entities[i].lrdebugOneliner.RegenerateText();
         }
+
+        RefreshAttributeLabels();
     }
 
     public function RefreshTargetOneliner() {
@@ -108,6 +123,7 @@ class LRDebug_LabelManager {
         if (!target || !target.lrdebugOneliner) return;
 
         target.lrdebugOneliner.RegenerateText();
+        RefreshAttributeLabels();
     }
 
     public function ShowGroupLabel() {
@@ -159,6 +175,7 @@ class LRDebug_LabelManager {
             }
         }
 
+        RefreshAttributeLabels();
         ShowToast("Undo: " + record.label);
     }
 
