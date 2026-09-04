@@ -59,7 +59,7 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
         return "<font color='#00ff00'>" + prefix + " " + (activeIndex + 1) + "/" + count + "</font>";
     }
 
-    private function GetAttributeValueString(attr: name, type: name): string {
+    public function GetAttributeValueString(attr: name, type: name): string {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
         var spotlight: CLightRewriteSpotlightParams;
@@ -214,6 +214,15 @@ statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
                 if (lightParams && lightParams.color.has) valI = lightParams.color.value.Blue;
                 else if (light) valI = light.color.Blue;
                 return IntToString(valI);
+
+            case 'shadowMode':
+                if (lightParams && lightParams.castShadows.has) {
+                    return ShadowModeLabel(lightParams.castShadows.value);
+                }
+                else if (light) {
+                    return ShadowModeLabel(light.shadowCastingMode);
+                }
+                return "?";
         }
 
         return "?";
