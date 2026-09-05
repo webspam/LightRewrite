@@ -347,17 +347,31 @@ function SpotlightIndexRedundant {
     return $Index -eq 0 -and $Count -eq 1 -and [int]$Params['spotLightCount'] -eq 1
 }
 
+# <match type="layer" mode="exact"> for a layer path
+function BuildLayerMatch {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [string]                 $Layer
+    )
+
+    $match = $Doc.CreateElement('match')
+    $match.SetAttribute('type', 'layer')
+    $match.SetAttribute('mode', 'exact')
+    $match.InnerText = $Layer
+    return $match
+}
+
 function BuildOverrideElement {
     param(
         [System.Xml.XmlDocument] $Doc,
         [hashtable]              $Params,
-        [string]                 $TagName
+        [string]                 $TagName,
+        [string]                 $LayerPath = ''
     )
 
     CollapseSinglePointLight $Params
 
     $entityFile = $Params['entityFile']
-    $layerPath = if ($Params.ContainsKey('layerPath')) { $Params['layerPath'] } else { '' }
 
     $override = $Doc.CreateElement('override')
     $override.SetAttribute('tag_name', $TagName)
@@ -377,13 +391,9 @@ function BuildOverrideElement {
     $matchEntity.InnerText = $entityFile
     $override.AppendChild($matchEntity) | Out-Null
 
-    # <match type="layer" mode="exact"> for layer file
-    if ($layerPath -ne '') {
-        $matchLayer = $Doc.CreateElement('match')
-        $matchLayer.SetAttribute('type', 'layer')
-        $matchLayer.SetAttribute('mode', 'exact')
-        $matchLayer.InnerText = $layerPath
-        $override.AppendChild($matchLayer) | Out-Null
+    # Inline layer match for a lone override
+    if ($LayerPath -ne '') {
+        $override.AppendChild((BuildLayerMatch $Doc $LayerPath)) | Out-Null
     }
 
     AddShadowsChild $Doc $override $Params ''
@@ -413,6 +423,51 @@ function BuildOverrideElement {
     }
 
     return $override
+}
+
+# Emits one <overrides> block per distinct layer path
+function AppendGroupedOverrides {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [System.Collections.Specialized.OrderedDictionary] $Entries,
+        [hashtable]              $TagNames,
+        [string]                 $ProfileName,
+        [int]                    $WeightValue
+    )
+
+    $byLayer = [ordered]@{}
+    foreach ($key in $Entries.Keys) {
+        $entry = $Entries[$key]
+        $layer = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
+        if (-not $byLayer.Contains($layer)) {
+            $byLayer[$layer] = [System.Collections.Generic.List[string]]::new()
+        }
+        $byLayer[$layer].Add($key)
+    }
+
+    foreach ($layer in $byLayer.Keys) {
+        $keys = $byLayer[$layer]
+        $soleOverride = $keys.Count -eq 1
+
+        $overridesEl = $Doc.CreateElement('overrides')
+        $overridesEl.SetAttribute('profile_name', $ProfileName)
+        $overridesEl.SetAttribute('weight', [string]$WeightValue)
+        $Parent.AppendChild($overridesEl) | Out-Null
+
+        # Shared <matches> with the exact layer filter, ANDed into every override in the block
+        if ($layer -ne '' -and -not $soleOverride) {
+            $matchesEl = $Doc.CreateElement('matches')
+            $matchesEl.AppendChild((BuildLayerMatch $Doc $layer)) | Out-Null
+            $overridesEl.AppendChild($matchesEl) | Out-Null
+        }
+
+        foreach ($key in $keys) {
+            $inlineLayer = if ($soleOverride) { $layer } else { '' }
+            $el = BuildOverrideElement $Doc $Entries[$key] $TagNames[$key] $inlineLayer
+            $overridesEl.AppendChild($el) | Out-Null
+        }
+    }
 }
 
 function BuildXml {
@@ -449,31 +504,15 @@ function BuildXml {
     $custom.AppendChild($lr) | Out-Null
 
     if ($Overflow.Count -gt 0) {
-        $lr.AppendChild($doc.CreateComment(" WARNING: $($Overflow.Count) conflicting duplicate(s) were found. They are stored in the ${ProfileName}_Duplicates overrides block below. ")) | Out-Null
+        $lr.AppendChild($doc.CreateComment(" WARNING: $($Overflow.Count) conflicting duplicate(s) were found. All duplicates are in ${ProfileName}_Duplicates overrides block(s) below. ")) | Out-Null
     }
 
-    $overridesEl = $doc.CreateElement('overrides')
-    $overridesEl.SetAttribute('profile_name', $ProfileName)
-    $overridesEl.SetAttribute('weight', [string]$WeightValue)
-    $lr.AppendChild($overridesEl) | Out-Null
-
-    foreach ($key in $Groups.Keys) {
-        $el = BuildOverrideElement $doc $Groups[$key] $TagNames[$key]
-        $overridesEl.AppendChild($el) | Out-Null
-    }
+    AppendGroupedOverrides $doc $lr $Groups $TagNames $ProfileName $WeightValue
 
     if ($Overflow.Count -gt 0) {
-        $lr.AppendChild($doc.CreateComment(" Duplicates: these entries share an entity file and layer path with an entry above but had conflicting field values. Review and merge manually. ")) | Out-Null
+        $lr.AppendChild($doc.CreateComment(" Duplicates: these entries share an entity file and layer path with an entry above, but had conflicting field values. Review and merge manually. ")) | Out-Null
 
-        $dupEl = $doc.CreateElement('overrides')
-        $dupEl.SetAttribute('profile_name', "${ProfileName}_Duplicates")
-        $dupEl.SetAttribute('weight', [string]$WeightValue)
-        $lr.AppendChild($dupEl) | Out-Null
-
-        foreach ($key in $Overflow.Keys) {
-            $el = BuildOverrideElement $doc $Overflow[$key] $TagNames[$key]
-            $dupEl.AppendChild($el) | Out-Null
-        }
+        AppendGroupedOverrides $doc $lr $Overflow $TagNames "${ProfileName}_Duplicates" $WeightValue
     }
 
     return $doc
