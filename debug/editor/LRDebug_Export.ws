@@ -181,8 +181,8 @@ function LRDebug_BuildEditedFields(
     return line;
 }
 
-// Scans all tagged light entities globally and logs any that carry session edits.
-function LRDebug_ExportEditedLights() {
+// Scans all tagged light entities globally and logs any that carry session edits
+function LRDebug_ExportEditedLights(optional channel: name) {
     var entities: array<CEntity>;
     var entity: CGameplayEntity;
     var params, baseline: CLightRewriteSourceParams;
@@ -190,6 +190,8 @@ function LRDebug_ExportEditedLights() {
     var loggedLines: array<string>;
     var i, count, exported: int;
     var toast: LRDebug_ToastOneLiner;
+
+    if (channel == '') channel = 'LRDebug_Export';
 
     theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
     count = entities.Size();
@@ -217,11 +219,12 @@ function LRDebug_ExportEditedLights() {
         if (loggedLines.Contains(line)) continue;
         loggedLines.PushBack(line);
 
-        LogChannel('LRDebug_Export', line);
+        LogChannel(channel, line);
         exported += 1;
     }
 
-    LogChannel('LRDebug_Export', "done exported=" + IntToString(exported));
+    LogChannel(channel, "done exported=" + IntToString(exported));
+    if (channel == 'LRDebug_AutoExport') return;
 
     toast = new LRDebug_ToastOneLiner in thePlayer;
     toast.Init("<font size='14'>Exported " + IntToString(exported) + " light(s)</font>", 2.0);
