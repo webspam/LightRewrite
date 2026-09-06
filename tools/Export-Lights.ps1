@@ -10,6 +10,8 @@
     It parses every LRDebug_Export channel line, groups entries by entity file and layer path,
     and writes a valid UTF-16 XML file compatible with the data/ override format.
 
+    Automatically checks for auto-exported lines if there are no manually exported log lines.
+
 .PARAMETER LogFile
     Path to the game log file containing [LRDebug_Export] lines.
     If omitted, the value of the WITCHER_SCRIPTSLOG_PATH environment variable is used.
@@ -22,6 +24,9 @@
 
 .PARAMETER Weight
     The weight attribute for the <overrides> block (0-255). Default: 75
+
+.PARAMETER AutoExports
+    Only export the automatic (on exit) lines.
 
 .PARAMETER Force
     Overwrite the output file if it already exists.
@@ -48,6 +53,8 @@ param(
     [ValidateRange(0, 255)]
     [int] $Weight = 75,
 
+    [switch] $AutoExports,
+
     [switch] $Force
 )
 
@@ -57,7 +64,7 @@ $ErrorActionPreference = 'Stop'
 # ---- Log parsing ----
 
 function ParseExportLines {
-    param([string] $Path)
+    param([string] $Path, [string] $Tag)
 
     $records = [System.Collections.Generic.List[hashtable]]::new()
     $doneCount = $null
@@ -65,10 +72,9 @@ function ParseExportLines {
     $sr = [System.IO.StreamReader]::new([System.IO.File]::Open($Path, 'Open', 'Read', 'ReadWrite'))
     try { $lines = $sr.ReadToEnd() -split "`r?`n" } finally { $sr.Dispose() }
     foreach ($line in $lines) {
-        $tag = '[LRDebug_Export]'
-        if (-not $line.StartsWith($tag)) { continue }
+        if (-not $line.StartsWith($Tag)) { continue }
 
-        $fragment = $line.Substring($tag.Length).Trim()
+        $fragment = $line.Substring($Tag.Length).Trim()
         $pairs = [regex]::Matches($fragment, '(\w+)=(\S+)')
 
         if ($pairs.Count -eq 0) { continue }
@@ -559,10 +565,25 @@ if ((Test-Path $OutputFile) -and -not $Force) {
     exit 1
 }
 
-$records, $doneCount = ParseExportLines $LogFile
+$manualTag = '[LRDebug_Export]'
+$autoTag = '[LRDebug_AutoExport]'
+
+if ($AutoExports) {
+    $activeTag = $autoTag
+    $records, $doneCount = ParseExportLines $LogFile $autoTag
+}
+else {
+    $activeTag = $manualTag
+    $records, $doneCount = ParseExportLines $LogFile $manualTag
+    if ($records.Count -eq 0) {
+        Write-Host "No $manualTag entity lines found; falling back to $autoTag (quit-to-menu backup)."
+        $activeTag = $autoTag
+        $records, $doneCount = ParseExportLines $LogFile $autoTag
+    }
+}
 
 if ($records.Count -eq 0) {
-    Write-Host 'No [LRDebug_Export] entity lines found in the log.'
+    Write-Host "No $activeTag entity lines found in the log."
     exit 0
 }
 
