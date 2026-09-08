@@ -10,7 +10,7 @@ class LRDebug_AttributeLabels {
 
     private const var COLS   : int;  default COLS = 4;
     private const var ROWS   : int;  default ROWS = 5;
-    private const var BASE_ID: int;  default BASE_ID = 0x40006100;
+    private const var BASE_ID: int;  default BASE_ID = 1073766656;
 
     private const var RIGHT_X : float;  default RIGHT_X = 0.40;
     private const var COL_STEP: float;  default COL_STEP = 0.03;
