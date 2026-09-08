@@ -7,7 +7,10 @@ export default defineConfig({
   cleanUrls: true,
   srcExclude: ["CLAUDE.md"],
   themeConfig: {
-    nav: [{ text: "Screenshots", link: "/gallery" }],
+    nav: [
+      { text: "Screenshots", link: "/gallery" },
+      { text: "Oneliner Symbols", link: "/oneliner-symbols" },
+    ],
     socialLinks: [
       { icon: "github", link: "https://github.com/webspam/LightRewrite" },
     ],
