@@ -3,9 +3,13 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION       : int;     default CONFIG_VERSION = 12;
+    private const var CONFIG_VERSION       : int;     default CONFIG_VERSION = 13;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP        : name;    default GENERAL_GROUP = 'LightRewrite_General';
+    private const var ADVANCED_GROUP       : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
+    // Submenu ids (must match last segment of XML Group displayName)
+    private const var GENERAL_SUBMENU      : string;  default GENERAL_SUBMENU = "LightRewrite";
+    private const var ADVANCED_SUBMENU     : string;  default ADVANCED_SUBMENU = ADVANCED_GROUP;
     // Label key constants (must match XML Var id values)
     private const var CURRENT_PROFILE_LABEL: string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
     private const var NONE_PROFILE_LABEL   : name;    default NONE_PROFILE_LABEL = 'LightRewrite_None';
@@ -18,8 +22,9 @@ class CLightRewriteSettings {
     private const var SPACING_BUDGET       : name;    default SPACING_BUDGET = 'SpacingBudget';
 
     // Internal group IDs resolved at init time
-    private var generalGroupId: int;
-    private var gameConfig    : CInGameConfigWrapper;
+    private var generalGroupId : int;
+    private var advancedGroupId: int;
+    private var gameConfig     : CInGameConfigWrapper;
 
     // Light rewrite parameters
     public var isEnabled: bool;  default isEnabled = true;
@@ -50,6 +55,7 @@ class CLightRewriteSettings {
     public function Init() {
         gameConfig = theGame.GetInGameConfigWrapper();
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
+        advancedGroupId = gameConfig.GetGroupIdx(ADVANCED_GROUP);
 
         overrideGroups = LoadLightRewriteOverrides(this);
         profiles = new CLightRewriteProfileSet in this;
@@ -91,7 +97,11 @@ class CLightRewriteSettings {
     // Returns true if groupId belongs to one of this mod's settings groups.
     // Used to filter out option-change events fired by other mods.
     public function IsMyModSettingsGroup(groupId: int): bool {
-        return groupId == generalGroupId;
+        return groupId == generalGroupId || groupId == advancedGroupId;
+    }
+
+    public function IsLightRewriteSubmenu(submenuId: string): bool {
+        return submenuId == GENERAL_SUBMENU || submenuId == ADVANCED_SUBMENU;
     }
 
     // If mod config has never been initialised, set the default values and save them.
@@ -105,13 +115,28 @@ class CLightRewriteSettings {
         // Never initialised - write defaults for the current settings.
         if (initVersion == 0) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
-            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_MODE, spacingMode);
-            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_COUNT, spacingCount);
-            gameConfig.SetVarValue(GENERAL_GROUP, SPACING_BUDGET, spacingBudget);
+            gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_MODE, spacingMode);
+            gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_COUNT, spacingCount);
+            gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
+        }
+        // v13: Added LightRewrite_Advanced, moved spacing config
+        else if (initVersion < 13) {
+            MigrateVar(GENERAL_GROUP, ADVANCED_GROUP, SPACING_MODE, spacingMode);
+            MigrateVar(GENERAL_GROUP, ADVANCED_GROUP, SPACING_COUNT, spacingCount);
+            MigrateVar(GENERAL_GROUP, ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
+    }
+
+    // Copies between groups, using the default if not present.
+    private function MigrateVar(fromGroup: name, toGroup: name, varId: name, defaultValue: string) {
+        var value: string = gameConfig.GetVarValue(fromGroup, varId);
+        if (value == "") value = defaultValue;
+
+        LogLightRewrite("Migrating " + fromGroup + "." + varId + " -> " + toGroup + "." + varId + " = " + value);
+        gameConfig.SetVarValue(toGroup, varId, value);
     }
 
     public function ReadGameConfig() {
@@ -125,13 +150,16 @@ class CLightRewriteSettings {
             currentProfile = NONE_PROFILE_LABEL;
         }
 
-        spacingMode = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, SPACING_MODE), spacingMode);
+        spacingMode = StringToInt(
+            gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_MODE),
+            spacingMode
+        );
         spacingCount = StringToFloat(
-            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_COUNT),
+            gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_COUNT),
             spacingCount
         );
         spacingBudget = StringToFloat(
-            gameConfig.GetVarValue(GENERAL_GROUP, SPACING_BUDGET),
+            gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_BUDGET),
             spacingBudget
         );
     }
@@ -144,10 +172,8 @@ class CLightRewriteSettings {
         if (IsMyModSettingsGroup(groupId)) {
             ReadGameConfig();
 
-            if (optionName == SPACING_MODE) {
+            if (groupId == advancedGroupId && optionName == SPACING_MODE) {
                 UpdateSpacingMenuDisabledState();
-                // UpdateSpacingMenuDisabledState's flash reset wipes the dynamic profile list
-                ReplaceProfileMenuOptions();
             }
 
             // We've just turned the mod off
@@ -173,15 +199,19 @@ class CLightRewriteSettings {
             || GetSpacingAmount() != previousSpacingAmount;
     }
 
-    // Configures the active game settings menu. Should be called after the menu is opened.
-    public function ConfigureModMenu() {
-        // Change detection: record the profile and spacing settings when the menu is opened
+    // Configures one of this mod's settings submenus. Should be called after the menu is opened.
+    public function ConfigureModMenu(submenuId: string, recordBaseline: bool) {
+        if (recordBaseline) RecordMenuBaseline();
+
+        if (submenuId == GENERAL_SUBMENU) ReplaceProfileMenuOptions();
+        else if (submenuId == ADVANCED_SUBMENU) UpdateSpacingMenuDisabledState();
+    }
+
+    // Change detection: record the profile and spacing settings when the menu is opened
+    private function RecordMenuBaseline() {
         previousProfile = profileIndex;
         previousSpacingMode = spacingMode;
         previousSpacingAmount = GetSpacingAmount();
-
-        UpdateSpacingMenuDisabledState();
-        ReplaceProfileMenuOptions();
     }
 
     public function ShouldWarnInvalidProfile(): bool {

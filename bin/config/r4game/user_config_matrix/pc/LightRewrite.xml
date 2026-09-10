@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <UserConfig>
-    <Group id="LightRewrite_General" displayName="Mods.LightRewrite">
+    <Group id="LightRewrite_General" displayName="Mods.LightRewrite.LightRewrite">
         <VisibleVars>
             <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" />
             <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS">
@@ -20,6 +20,22 @@
                 <Option id="9"><Entry varId="CurrentProfile" value="9" /></Option>
               </OptionsArray>
             </Var>
+
+            <!-- Internal: Tracks the version of the config that was last initialised. -->
+            <Var id="InitVersion" displayName="LightRewrite_InitVersion"
+                displayType="SLIDER;0;99;99" visibilityCondition="hideAlways" />
+
+            <!-- <= v13 -->
+            <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" 
+                displayType="SLIDER;0;99;99" visibilityCondition="hideAlways"/>
+            <Var id="SpacingCount" displayName="LightRewrite_Spacing_Count"
+                displayType="SLIDER;0;10;10" visibilityCondition="hideAlways" />
+            <Var id="SpacingBudget" displayName="LightRewrite_Spacing_Budget"
+                displayType="SLIDER;0.5;10;19" visibilityCondition="hideAlways" />
+        </VisibleVars>
+    </Group>
+    <Group id="LightRewrite_Advanced" displayName="Mods.LightRewrite.LightRewrite_Advanced">
+        <VisibleVars>
             <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" displayType="OPTIONS">
               <OptionsArray>
                 <Option id="0" displayName="LightRewrite_None">
@@ -40,10 +56,6 @@
                 displayType="SLIDER;0;10;10" tags="indent" />
             <Var id="SpacingBudget" displayName="LightRewrite_Spacing_Budget"
                 displayType="SLIDER;0.5;10;19" tags="indent" />
-
-            <!-- Internal: Tracks the version of the config that was last initialised. -->
-            <Var id="InitVersion" displayName="LightRewrite_InitVersion"
-                displayType="SLIDER;0;9;9" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
 </UserConfig>
