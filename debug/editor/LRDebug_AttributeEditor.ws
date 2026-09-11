@@ -654,6 +654,15 @@ class LRDebug_AttributeEditor {
         return groupMembers.Size() + 1;
     }
 
+    /** Every group member except the target, for marking their positions */
+    public function GetGroupMembers(target: CGameplayEntity, out members: array<CGameplayEntity>) {
+        members.Clear();
+        if (!target) return;
+
+        CacheGroupMembers(target);
+        members = groupMembers;
+    }
+
     public function Toggle(target: CGameplayEntity): bool {
         var changed: bool;
         var scope: array<CGameplayEntity>;
