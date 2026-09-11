@@ -8,7 +8,7 @@ function OnTick(timeDelta: float) {
 }
 
 /**
- * Diamonds on the other members of the current group edit.
+ * Section markers on the other members of the current group edit.
  *
  * On-screen members are marked in-world; off-screen members are pinned to the screen
  * edge in the direction they lie from the camera, so the whole group stays locatable.
@@ -16,8 +16,8 @@ function OnTick(timeDelta: float) {
 class LRDebug_GroupMarkers extends LRDebug_MarkerPool {
     private const var MAX_MARKERS: int;     default MAX_MARKERS = 192;
     private const var FONT_SIZE  : int;     default FONT_SIZE = 20;
-    private const var GLYPH      : string;  default GLYPH = "&#9671;";
-    private const var COLOUR     : string;  default COLOUR = "#61e5c7";
+    private const var GLYPH      : string;  default GLYPH = "&#167;";
+    private const var COLOUR     : string;  default COLOUR = "#63fcd9";
 
     private var members: array<CGameplayEntity>;
 
