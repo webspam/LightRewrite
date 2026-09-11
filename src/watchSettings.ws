@@ -41,13 +41,17 @@ function OnConfigUI() {
 // Configure the LightRewrite settings menu when it is opened.
 @wrapMethod(CR4IngameMenu)
 function OnShowOptionSubmenu(actionType: int, menuTag: int, id: string) {
+    var recordBaseline: bool;
+
     wrappedMethod(actionType, menuTag, id);
 
-    lightRewriteLastSubmenuId = id;
-    if (id == "LightRewrite") {
+    if (lightRewriteSettings.IsLightRewriteSubmenu(id)) {
         lightRewriteSettings.ReadGameConfig();
-        lightRewriteSettings.ConfigureModMenu();
+        recordBaseline = !lightRewriteSettings.IsLightRewriteSubmenu(lightRewriteLastSubmenuId);
+
+        lightRewriteSettings.ConfigureModMenu(id, recordBaseline);
     }
+    lightRewriteLastSubmenuId = id;
 }
 
 // Forward every option-change event to the settings object for filtering.
@@ -65,8 +69,9 @@ function OnOptionValueChanged(groupId: int, optionName: name, optionValue: strin
 // Apply any deferred Light Rewrite menu changes when exiting the menu
 @wrapMethod(CR4IngameMenu)
 function OnOptionPanelNavigateBack() {
-    if (lightRewriteLastSubmenuId == "LightRewrite") {
+    if (lightRewriteSettings.IsLightRewriteSubmenu(lightRewriteLastSubmenuId)) {
         lightRewriteSettings.ApplyPendingChanges();
     }
+    lightRewriteLastSubmenuId = "";
     return wrappedMethod();
 }
