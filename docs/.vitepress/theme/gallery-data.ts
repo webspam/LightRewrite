@@ -104,4 +104,18 @@ export const GALLERY: GalleryItem[] = [
     before: IMG + "white-orchard-inn-cozy-before-219.jpg",
     after: IMG + "white-orchard-inn-cozy-afer-219.jpg",
   },
+  {
+    id: "white-orchard-encampment",
+    title: "White Orchard",
+    tag: "Encampment",
+    before: IMG + "white-orchard-encampment-before.jpg",
+    after: IMG + "white-orchard-encampment-afer.jpg",
+  },
+  {
+    id: "crach",
+    title: "Kaer Trolde",
+    tag: "Crach's room",
+    before: IMG + "crach-before.jpg",
+    after: IMG + "crach-after.jpg",
+  },
 ];
