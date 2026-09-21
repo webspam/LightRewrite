@@ -186,18 +186,25 @@ function Sanitize {
     return [regex]::Replace($Name, '[^A-Za-z0-9_]', '_')
 }
 
+function NewRandomToken {
+    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    return -join (1..8 | ForEach-Object { $alphabet[(Get-Random -Maximum $alphabet.Length)] })
+}
+
 function AssignTagNames {
     param(
         [System.Collections.Specialized.OrderedDictionary] $Primary,
         [System.Collections.Specialized.OrderedDictionary] $Overflow
     )
 
+    $token = NewRandomToken
     $seenBases = @{}
     $tagNames = @{}
 
     foreach ($dict in $Primary, $Overflow) {
         foreach ($key in $dict.Keys) {
-            $base = 'LR_Edited_' + (Sanitize $dict[$key]['entityFile'])
+            $entity = [regex]::Replace((Sanitize $dict[$key]['entityFile']), '_w2ent$', '')
+            $base = "LR_${token}_${entity}"
             $seenBases[$base] = ($seenBases[$base] ?? 0) + 1
             $n = $seenBases[$base]
             $tagNames[$key] = if ($n -eq 1) { $base } else { "${base}_${n}" }
