@@ -41,6 +41,18 @@
 @addField(CR4Player) public var lrDebugGroupMarkers: LRDebug_GroupMarkers;
 @addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
+@addField(CR4Player) public var lrDebugClock: LRDebug_Clock;
+
+function LRDebug_IsCtrlAltPressed(): bool {
+    return theInput.lr.IsCtrlHeld()
+        && theInput.lr.IsAltHeld();
+}
+
+function LRDebug_IsNormalKeydown(action: SInputAction): bool {
+    return IsPressed(action)
+        && !theInput.lr.IsCtrlHeld()
+        && !theInput.lr.IsAltHeld();
+}
 
 /*
  * Lifecycle
@@ -71,6 +83,9 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugGroupMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
     lrDebugUnknownMarkers.Init();
+    lrDebugClock = new LRDebug_Clock in this;
+    lrDebugClock.RegisterListeners();
+
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
@@ -179,7 +194,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabels = !lrDebugLabels;
     LogChannel('LRDebug', "LRDebug_Toggle: " + lrDebugLabels);
@@ -233,7 +248,7 @@ public function LRDebug_OnAltPressed(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.TogglePathLabels();
     return true;
@@ -245,7 +260,7 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SwapLightSelection(lrDebugTargeting.GetTarget());
     lrDebugLabelManager.RefreshTargetOneliner();
@@ -275,7 +290,7 @@ public function LRDebug_CycleActiveLight(action: SInputAction, delta: int): bool
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     if (lrDebugAttrEditor.ToggleGroupEdit()) lrDebugLabelManager.ShowGroupLabel();
     else lrDebugLabelManager.HideGroupLabel();
@@ -301,7 +316,7 @@ function OnConfigUI() {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
@@ -311,7 +326,7 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
 public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
     var target: CGameplayEntity;
 
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     target = lrDebugTargeting.GetTarget();
     if (!target || !target.lrdebugOneliner) return true;
@@ -323,7 +338,7 @@ public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     LRDebug_ExportEditedLights();
     return true;
@@ -331,7 +346,7 @@ public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputResetLight(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ResetTarget();
     return true;
@@ -339,7 +354,7 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputResetOffset(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     if (lrDebugAttrEditor.ResetOffset(lrDebugTargeting.GetTarget())) {
         lrDebugLabelManager.RefreshTargetOneliner();
@@ -366,7 +381,7 @@ public function LRDebug_OnInputUndo(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     theGame.lightRewrite.ApplySpacing();
     LogChannel('LRDebug', "LRDebug spacing: re-spaced all lights");
