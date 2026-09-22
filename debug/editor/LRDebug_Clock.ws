@@ -2,12 +2,13 @@
  * Forces the visual environment time without moving the game clock.
  */
 class LRDebug_Clock {
-    private var usePmTime: bool;  default usePmTime = true;
-    private var baseHour: int;
-    private var minute: int;
+    private var fakeEnvTime       : float;
+    private var forcingFakeEnvTime: bool;
+    private var scrubbing         : bool;
     private var hasFakeTime: bool;
 
     public function RegisterListeners() {
+        theInput.RegisterListener(this, 'OnModifierKey', 'LRDebug_ModifierKey');
         theInput.RegisterListener(this, 'OnClock12', 'LRDebug_Clock12');
         theInput.RegisterListener(this, 'OnClock130', 'LRDebug_Clock130');
         theInput.RegisterListener(this, 'OnClock3', 'LRDebug_Clock3');
@@ -16,7 +17,7 @@ class LRDebug_Clock {
         theInput.RegisterListener(this, 'OnClock730', 'LRDebug_Clock730');
         theInput.RegisterListener(this, 'OnClock9', 'LRDebug_Clock9');
         theInput.RegisterListener(this, 'OnClock1030', 'LRDebug_Clock1030');
-        theInput.RegisterListener(this, 'OnToggleMeridiem', 'LRDebug_ToggleMeridiem');
+        theInput.RegisterListener(this, 'OnResetClock', 'LRDebug_ResetClock');
     }
 
     event OnClock12(action: SInputAction) {
@@ -51,42 +52,93 @@ class LRDebug_Clock {
         return SetClock(action, 10, 30);
     }
 
-    private function OnToggleMeridiem(action: SInputAction): bool {
-        if (!ShouldHandleKeyPress(action)) return false;
+    event OnResetClock(action: SInputAction) {
+        if (
+            !thePlayer.lrDebugLabels ||
+            !IsPressed(action) ||
+            theInput.lr.IsNormalKeydown(action)
+        ) {
+            return false;
+        }
 
-        usePmTime = !usePmTime;
-        ApplyTime();
+        forcingFakeEnvTime = false;
+        DisableFakeEnvTime();
         return true;
     }
 
-    private function SetClock(action: SInputAction, newBaseHour: int, optional newMinute: int): bool {
-        if (!ShouldHandleKeyPress(action)) return false;
+    event OnModifierKey(action: SInputAction) {
+        if (!thePlayer.lrDebugLabels) return false;
 
-        baseHour = newBaseHour;
-        minute = newMinute;
-        ApplyTime();
+        if (IsPressed(action) && theInput.lr.IsAltHeld()) {
+            theInput.lr.CaptureMouseMovement(this, 'OnMouseAxisX', 'OnMouseAxisY');
+            SetEnvLightingTime(GameTimeHours(theGame.GetGameTime()));
+            scrubbing = true;
+        }
+        else if (IsReleased(action) && scrubbing) {
+            theInput.lr.ReleaseMouseMovement(this);
+            scrubbing = false;
+        }
+    }
+
+    event OnMouseAxisX(action: SInputAction) {
+        if (action.value) ScrubClock(action.value);
+    }
+
+    event OnMouseAxisY(action: SInputAction) {
+        if (action.value) ScrubClock(-action.value);
+    }
+
+    private function ScrubClock(value: float) {
+        var modifier: float = 1.f;
+        var hour: float;
+
+        if (scrubbing) {
+            if (theInput.lr.IsCtrlHeld()) modifier = 0.1f;
+
+            hour = fakeEnvTime + value * modifier * theInput.lr.CLOCK_SCRUB_SENSITIVITY;
+            SetEnvLightingTime(FloatOverflow24(hour));
+        }
+    }
+
+    private function SetClock(action: SInputAction, baseHour: int, optional minute: int): bool {
+        var ctrlHeld: bool = theInput.lr.IsCtrlHeld();
+        var altHeld: bool = theInput.lr.IsAltHeld();
+        var hour: int;
+
+        if (!thePlayer.lrDebugLabels || !IsPressed(action) || ctrlHeld == altHeld) return false;
+
+        hour = baseHour;
+        if (altHeld) hour += 12;
+
+        SetEnvLightingTime((float)hour + (float)minute / 60.0);
         return true;
     }
 
     public function Enable() {
-        if (hasFakeTime) ApplyTime();
+        if (forcingFakeEnvTime) ForceFakeEnvTime(fakeEnvTime);
     }
 
     public function Disable() {
+        if (scrubbing) {
+            thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
+            scrubbing = false;
+        }
         DisableFakeEnvTime();
     }
 
-    private function ApplyTime() {
-        var hour: int = baseHour;
-        if (usePmTime) hour += 12;
-
-        hasFakeTime = true;
-        ForceFakeEnvTime((float)hour + (float)minute / 60.0);
+    private function SetEnvLightingTime(hour: float) {
+        fakeEnvTime = hour;
+        forcingFakeEnvTime = true;
+        ForceFakeEnvTime(hour);
     }
 
-    private function ShouldHandleKeyPress(action: SInputAction): bool {
-        return thePlayer.lrDebugLabels
-            && IsPressed(action)
-            && LRDebug_IsCtrlAltPressed();
+    private function FloatOverflow24(hour: float): float {
+        while (hour >= 24.0) {
+            hour -= 24.0;
+        }
+        while (hour < 0.0) {
+            hour += 24.0;
+        }
+        return hour;
     }
 }
