@@ -43,17 +43,6 @@
 @addField(CR4Player) public var lrDebugAdjusting: bool;
 @addField(CR4Player) public var lrDebugClock: LRDebug_Clock;
 
-function LRDebug_IsCtrlAltPressed(): bool {
-    return theInput.lr.IsCtrlHeld()
-        && theInput.lr.IsAltHeld();
-}
-
-function LRDebug_IsNormalKeydown(action: SInputAction): bool {
-    return IsPressed(action)
-        && !theInput.lr.IsCtrlHeld()
-        && !theInput.lr.IsAltHeld();
-}
-
 /*
  * Lifecycle
  */
