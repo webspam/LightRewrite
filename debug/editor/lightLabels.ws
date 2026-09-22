@@ -213,7 +213,7 @@ function PostStateChange() {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputLock(action: SInputAction): bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugTargeting.ToggleLock();
     return true;
