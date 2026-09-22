@@ -11,7 +11,7 @@ class LRDebug_LabelManager {
     private var scaleLabel     : LRDebug_ScreenLabel;
     private var pathLabel      : LRDebug_PathLabel;
     private var attrLabels     : LRDebug_AttributeLabels;
-    private var showPathLabels : bool;
+    private var showPathLabels: bool;  default showPathLabels = true;
 
     public function Init() {
         toast = new LRDebug_ToastOneLiner in this;
