@@ -2,10 +2,9 @@
  * Forces the visual environment time without moving the game clock.
  */
 class LRDebug_Clock {
-    private var fakeEnvTime       : float;
-    private var forcingFakeEnvTime: bool;
-    private var scrubbing         : bool;
-    private var hasFakeTime: bool;
+    private var fakeEnvTime: SLightRewriteOptionalFloat;
+    private var scrubbing  : bool;
+    private var useRealTime: bool;
 
     public function RegisterListeners() {
         theInput.RegisterListener(this, 'OnModifierKey', 'LRDebug_ModifierKey');
@@ -18,6 +17,8 @@ class LRDebug_Clock {
         theInput.RegisterListener(this, 'OnClock9', 'LRDebug_Clock9');
         theInput.RegisterListener(this, 'OnClock1030', 'LRDebug_Clock1030');
         theInput.RegisterListener(this, 'OnResetClock', 'LRDebug_ResetClock');
+
+        theInput.RegisterListener(this, 'OnToggleUseRealTime', 'LRDebug_ToggleUseRealTime');
     }
 
     event OnClock12(action: SInputAction) {
@@ -61,8 +62,19 @@ class LRDebug_Clock {
             return false;
         }
 
-        forcingFakeEnvTime = false;
+        fakeEnvTime.has = false;
         DisableFakeEnvTime();
+        return true;
+    }
+
+    event OnToggleUseRealTime(action: SInputAction) {
+        if (!thePlayer.lrDebugLabels || !IsPressed(action)) return false;
+
+        useRealTime = !useRealTime;
+
+        if (useRealTime) DisableFakeEnvTime();
+        else if (fakeEnvTime.has) ForceFakeEnvTime(fakeEnvTime.value);
+
         return true;
     }
 
@@ -71,7 +83,7 @@ class LRDebug_Clock {
 
         if (IsPressed(action) && theInput.lr.IsAltHeld()) {
             theInput.lr.CaptureMouseMovement(this, 'OnMouseAxisX', 'OnMouseAxisY');
-            SetEnvLightingTime(GameTimeHours(theGame.GetGameTime()));
+            SetEnvLightingTime(CurrentTimeAsHours());
             scrubbing = true;
         }
         else if (IsReleased(action) && scrubbing) {
@@ -95,8 +107,8 @@ class LRDebug_Clock {
         if (scrubbing) {
             if (theInput.lr.IsCtrlHeld()) modifier = 0.1f;
 
-            hour = fakeEnvTime + value * modifier * theInput.lr.CLOCK_SCRUB_SENSITIVITY;
-            SetEnvLightingTime(FloatOverflow24(hour));
+            hour = CurrentTimeAsHours() + value * modifier * theInput.lr.CLOCK_SCRUB_SENSITIVITY;
+            SetEnvLightingTime(hour);
         }
     }
 
@@ -115,7 +127,7 @@ class LRDebug_Clock {
     }
 
     public function Enable() {
-        if (forcingFakeEnvTime) ForceFakeEnvTime(fakeEnvTime);
+        if (!useRealTime && fakeEnvTime.has) ForceFakeEnvTime(fakeEnvTime.value);
     }
 
     public function Disable() {
@@ -127,9 +139,49 @@ class LRDebug_Clock {
     }
 
     private function SetEnvLightingTime(hour: float) {
-        fakeEnvTime = hour;
-        forcingFakeEnvTime = true;
-        ForceFakeEnvTime(hour);
+        if (useRealTime) {
+            WindGameClock(hour);
+            return;
+        }
+
+        fakeEnvTime.value = FloatOverflow24(hour);
+        fakeEnvTime.has = true;
+        ForceFakeEnvTime(fakeEnvTime.value);
+    }
+
+    private function WindGameClock(hour: float) {
+        var day: int;
+        var hours: int;
+        var minutes: int;
+
+        day = GameTimeDays(theGame.GetGameTime());
+
+        while (hour >= 24.0) {
+            hour -= 24.0;
+            day += 1;
+        }
+        while (hour < 0.0) {
+            hour += 24.0;
+            day -= 1;
+        }
+        day = Clamp(day, 0, 99999);
+
+        hours = (int)hour;
+        minutes = (int)((hour - (float)hours) * 60.0);
+
+        theGame.SetGameTime(GameTimeCreate(day, hours, minutes, 0), true);
+    }
+
+    private function CurrentTimeAsHours(): float {
+        var time: GameTime;
+
+        if (!useRealTime && fakeEnvTime.has) return fakeEnvTime.value;
+
+        time = theGame.GetGameTime();
+
+        return (float)GameTimeHours(time)
+            + (float)GameTimeMinutes(time) / 60.0
+            + (float)GameTimeSeconds(time) / 3600.0;
     }
 
     private function FloatOverflow24(hour: float): float {
