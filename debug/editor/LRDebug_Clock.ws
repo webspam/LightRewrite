@@ -1,8 +1,11 @@
 /**
- * Instantly adjusts game time to the specified time, keeping the current day.
+ * Forces the visual environment time without moving the game clock.
  */
 class LRDebug_Clock {
     private var usePmTime: bool;  default usePmTime = true;
+    private var baseHour: int;
+    private var minute: int;
+    private var hasFakeTime: bool;
 
     public function RegisterListeners() {
         theInput.RegisterListener(this, 'OnClock12', 'LRDebug_Clock12');
@@ -49,37 +52,36 @@ class LRDebug_Clock {
     }
 
     private function OnToggleMeridiem(action: SInputAction): bool {
-        var time: GameTime;
-        var hour: int;
-
         if (!ShouldHandleKeyPress(action)) return false;
 
         usePmTime = !usePmTime;
-
-        time = theGame.GetGameTime();
-        hour = GameTimeHours(time);
-
-        ApplyTime(hour % 12, GameTimeMinutes(time), GameTimeSeconds(time));
+        ApplyTime();
         return true;
     }
 
-    private function SetClock(action: SInputAction, baseHour: int, optional baseMinute: int): bool {
+    private function SetClock(action: SInputAction, newBaseHour: int, optional newMinute: int): bool {
         if (!ShouldHandleKeyPress(action)) return false;
 
-        ApplyTime(baseHour, baseMinute);
+        baseHour = newBaseHour;
+        minute = newMinute;
+        ApplyTime();
         return true;
     }
 
-    private function ApplyTime(baseHour: int, minute: int, optional second: int) {
-        var currentDay: int;
-        var time: GameTime;
+    public function Enable() {
+        if (hasFakeTime) ApplyTime();
+    }
 
+    public function Disable() {
+        DisableFakeEnvTime();
+    }
+
+    private function ApplyTime() {
         var hour: int = baseHour;
         if (usePmTime) hour += 12;
 
-        currentDay = GameTimeDays(theGame.GetGameTime());
-        time = GameTimeCreate(currentDay, hour, minute, second);
-        theGame.SetGameTime(time, true);
+        hasFakeTime = true;
+        ForceFakeEnvTime((float)hour + (float)minute / 60.0);
     }
 
     private function ShouldHandleKeyPress(action: SInputAction): bool {

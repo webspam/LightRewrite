@@ -205,6 +205,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
         if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
         else lrDebugLabelManager.HideGroupLabel();
+        lrDebugClock.Enable();
     }
     else {
         theInput.RestoreContext('LRDebug', true);
@@ -212,6 +213,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
         lrDebugTargetMarkers.Hide();
         lrDebugGroupMarkers.Hide();
         lrDebugUnknownMarkers.Hide();
+        lrDebugClock.Disable();
     }
 
     return true;
