@@ -9,8 +9,11 @@ class LRDebug_LabelManager {
     private var groupLabel     : LRDebug_ScreenLabel;
     private var groupCountLabel: LRDebug_ScreenLabel;
     private var scaleLabel     : LRDebug_ScreenLabel;
+    private var timeLabel      : LRDebug_ScreenLabel;
+    private var timeModeLabel  : LRDebug_ScreenLabel;
     private var pathLabel      : LRDebug_PathLabel;
     private var attrLabels     : LRDebug_AttributeLabels;
+    private var clockFace      : LRDebug_ClockFace;
     private var showPathLabels: bool;  default showPathLabels = true;
 
     public function Init() {
@@ -24,6 +27,12 @@ class LRDebug_LabelManager {
         groupCountLabel.Init(0x40006003, 0.5, 0.85);
         scaleLabel = new LRDebug_ScreenLabel in this;
         scaleLabel.Init(0x40006002, 0.6, 0.98);
+        timeLabel = new LRDebug_ScreenLabel in this;
+        timeLabel.Init(0x40006004, 0.65, 0.98);
+        timeModeLabel = new LRDebug_ScreenLabel in this;
+        timeModeLabel.Init(0x40006005, 0.65, 0.95);
+        clockFace = new LRDebug_ClockFace in this;
+        clockFace.Init();
         attrLabels = new LRDebug_AttributeLabels in this;
         attrLabels.Init();
     }
@@ -66,7 +75,54 @@ class LRDebug_LabelManager {
         groupLabel.Hide();
         groupCountLabel.Hide();
         scaleLabel.Hide();
+        timeLabel.Hide();
+        timeModeLabel.Hide();
+        clockFace.Hide();
         attrLabels.Hide();
+    }
+
+    public function ShowClockFace(hours: float) {
+        clockFace.Show(hours);
+    }
+
+    public function HideClockFace() {
+        clockFace.Hide();
+    }
+
+    public function RefreshTimeLabels() {
+        var clock: LRDebug_Clock = thePlayer.lrDebugClock;
+
+        if (!clock) return;
+
+        timeModeLabel.SetText(BuildTimeModeLabel(clock));
+        timeModeLabel.Show();
+        timeLabel.SetText(BuildTimeLabel(clock));
+        timeLabel.Show();
+    }
+
+    private function BuildTimeModeLabel(clock: LRDebug_Clock): string {
+        if (!clock.IsUsingRealTime()) return "";
+
+        return "<font size='18' color='#ff6a1a'>Scrubbing Real Time</font>";
+    }
+
+    private function BuildTimeLabel(clock: LRDebug_Clock): string {
+        var fakeEnvTime: SLightRewriteOptionalFloat = clock.GetFakeEnvTime();
+        var hours, minutes: int;
+
+        if (!fakeEnvTime.has) return "";
+
+        hours = (int)fakeEnvTime.value;
+        minutes = (int)((fakeEnvTime.value - hours) * 60.0);
+
+        return "<font size='14' color='#dd88ff'>Env Time: "
+            + Pad2(hours) + ":" + Pad2(minutes)
+            + "</font>";
+    }
+
+    private function Pad2(value: int): string {
+        if (value < 10) return "0" + value;
+        return "" + value;
     }
 
     public function TogglePathLabels() {

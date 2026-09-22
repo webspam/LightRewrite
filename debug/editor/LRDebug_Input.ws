@@ -16,6 +16,7 @@ class LRDebug_Input {
     // Hold-to-edit: holding a modifier locks the camera and feeds mouse-Y into the value.
     public const var CAMERA_LOCK_SOURCE: name;   default CAMERA_LOCK_SOURCE = 'LRDebug';
     public var ADJUST_AXIS_SENSITIVITY : float;  default ADJUST_AXIS_SENSITIVITY = 0.15;
+    public var CLOCK_SCRUB_SENSITIVITY : float;  default CLOCK_SCRUB_SENSITIVITY = 0.05;
 
     public function Init() {
         theInput.RegisterListener(this, 'OnModifierKey', 'LRDebug_ModifierKey');
@@ -37,6 +38,20 @@ class LRDebug_Input {
         return IsPressed(action)
             && !IsCtrlHeld()
             && !IsAltHeld();
+    }
+
+    public function CaptureMouseMovement(listener: IScriptable, handlerX: name, handlerY: name) {
+        theInput.RegisterListener(listener, handlerX, 'GI_MouseDampX');
+        theInput.RegisterListener(listener, handlerY, 'GI_MouseDampY');
+
+        thePlayer.EnableManualCameraControl(false, CAMERA_LOCK_SOURCE);
+    }
+
+    public function ReleaseMouseMovement(listener: IScriptable) {
+        theInput.UnregisterListener(listener, 'GI_MouseDampX');
+        theInput.UnregisterListener(listener, 'GI_MouseDampY');
+
+        thePlayer.EnableManualCameraControl(true, CAMERA_LOCK_SOURCE);
     }
 
     event OnModifierKey(action: SInputAction) {

@@ -41,6 +41,7 @@
 @addField(CR4Player) public var lrDebugGroupMarkers: LRDebug_GroupMarkers;
 @addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
+@addField(CR4Player) public var lrDebugClock: LRDebug_Clock;
 
 /*
  * Lifecycle
@@ -71,6 +72,9 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugGroupMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
     lrDebugUnknownMarkers.Init();
+    lrDebugClock = new LRDebug_Clock in this;
+    lrDebugClock.RegisterListeners();
+
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
@@ -179,7 +183,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabels = !lrDebugLabels;
     LogChannel('LRDebug', "LRDebug_Toggle: " + lrDebugLabels);
@@ -190,6 +194,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
         if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
         else lrDebugLabelManager.HideGroupLabel();
+        lrDebugClock.Enable();
     }
     else {
         theInput.RestoreContext('LRDebug', true);
@@ -197,6 +202,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
         lrDebugTargetMarkers.Hide();
         lrDebugGroupMarkers.Hide();
         lrDebugUnknownMarkers.Hide();
+        lrDebugClock.Disable();
     }
 
     return true;
@@ -233,7 +239,7 @@ public function LRDebug_OnAltPressed(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.TogglePathLabels();
     return true;
@@ -245,7 +251,7 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputCycleLight(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugAttrEditor.SwapLightSelection(lrDebugTargeting.GetTarget());
     lrDebugLabelManager.RefreshTargetOneliner();
@@ -275,7 +281,7 @@ public function LRDebug_CycleActiveLight(action: SInputAction, delta: int): bool
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     if (lrDebugAttrEditor.ToggleGroupEdit()) lrDebugLabelManager.ShowGroupLabel();
     else lrDebugLabelManager.HideGroupLabel();
@@ -301,7 +307,7 @@ function OnConfigUI() {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ToggleRewriterOnTarget();
     return true;
@@ -311,7 +317,7 @@ public function LRDebug_OnInputToggleRewriter(action: SInputAction): bool {
 public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
     var target: CGameplayEntity;
 
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     target = lrDebugTargeting.GetTarget();
     if (!target || !target.lrdebugOneliner) return true;
@@ -323,7 +329,7 @@ public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     LRDebug_ExportEditedLights();
     return true;
@@ -331,7 +337,7 @@ public function LRDebug_OnInputExportEdited(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputResetLight(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.ResetTarget();
     return true;
@@ -339,7 +345,7 @@ public function LRDebug_OnInputResetLight(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputResetOffset(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     if (lrDebugAttrEditor.ResetOffset(lrDebugTargeting.GetTarget())) {
         lrDebugLabelManager.RefreshTargetOneliner();
@@ -366,7 +372,7 @@ public function LRDebug_OnInputUndo(action: SInputAction): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputSolveSpacing(action: SInputAction): bool {
-    if (!lrDebugLabels || !IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     theGame.lightRewrite.ApplySpacing();
     LogChannel('LRDebug', "LRDebug spacing: re-spaced all lights");
@@ -465,22 +471,18 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (!lrDebugLabels || !thePlayer) return false;
 
     if (IsPressed(action)) {
-        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
-        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
+        theInput.lr.CaptureMouseMovement(this, 'LRDebug_OnMouseAxisX', 'LRDebug_OnMouseAxisY');
 
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
         lrDebugAttrEditor.BeginAdjust(lrDebugTargeting.GetTarget());
         lrDebugLabelManager.RefreshTargetOneliner();
-        thePlayer.EnableManualCameraControl(false, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
         return true;
     }
 
     if (IsReleased(action)) {
-        theInput.UnregisterListener(this, 'GI_MouseDampX');
-        theInput.UnregisterListener(this, 'GI_MouseDampY');
+        theInput.lr.ReleaseMouseMovement(this);
 
-        thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = false;
         lrDebugAttrEditor.EndAdjust();
         return true;
