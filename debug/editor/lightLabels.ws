@@ -482,22 +482,18 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (!lrDebugLabels || !thePlayer) return false;
 
     if (IsPressed(action)) {
-        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
-        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
+        theInput.lr.CaptureMouseMovement(this, 'LRDebug_OnMouseAxisX', 'LRDebug_OnMouseAxisY');
 
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
         lrDebugAttrEditor.BeginAdjust(lrDebugTargeting.GetTarget());
         lrDebugLabelManager.RefreshTargetOneliner();
-        thePlayer.EnableManualCameraControl(false, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
         return true;
     }
 
     if (IsReleased(action)) {
-        theInput.UnregisterListener(this, 'GI_MouseDampX');
-        theInput.UnregisterListener(this, 'GI_MouseDampY');
+        theInput.lr.ReleaseMouseMovement(this);
 
-        thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = false;
         lrDebugAttrEditor.EndAdjust();
         return true;

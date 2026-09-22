@@ -39,6 +39,20 @@ class LRDebug_Input {
             && !IsAltHeld();
     }
 
+    public function CaptureMouseMovement(listener: IScriptable, handlerX: name, handlerY: name) {
+        theInput.RegisterListener(listener, handlerX, 'GI_MouseDampX');
+        theInput.RegisterListener(listener, handlerY, 'GI_MouseDampY');
+
+        thePlayer.EnableManualCameraControl(false, CAMERA_LOCK_SOURCE);
+    }
+
+    public function ReleaseMouseMovement(listener: IScriptable) {
+        theInput.UnregisterListener(listener, 'GI_MouseDampX');
+        theInput.UnregisterListener(listener, 'GI_MouseDampY');
+
+        thePlayer.EnableManualCameraControl(true, CAMERA_LOCK_SOURCE);
+    }
+
     event OnModifierKey(action: SInputAction) {
         if (
             thePlayer.lrDebugLabels &&
