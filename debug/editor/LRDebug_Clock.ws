@@ -1,5 +1,6 @@
 /**
- * Forces the visual environment time without moving the game clock.
+ * Can use either fake env time to temporarily change the time of day,
+ * or fast-forward/rewind the real game clock.
  */
 class LRDebug_Clock {
     private var fakeEnvTime: SLightRewriteOptionalFloat;
@@ -64,6 +65,7 @@ class LRDebug_Clock {
 
         fakeEnvTime.has = false;
         DisableFakeEnvTime();
+        RefreshTimeLabels();
         return true;
     }
 
@@ -75,6 +77,7 @@ class LRDebug_Clock {
         if (useRealTime) DisableFakeEnvTime();
         else if (fakeEnvTime.has) ForceFakeEnvTime(fakeEnvTime.value);
 
+        RefreshTimeLabels();
         return true;
     }
 
@@ -85,10 +88,12 @@ class LRDebug_Clock {
             theInput.lr.CaptureMouseMovement(this, 'OnMouseAxisX', 'OnMouseAxisY');
             SetEnvLightingTime(CurrentTimeAsHours());
             scrubbing = true;
+            ShowClockFace();
         }
         else if (IsReleased(action) && scrubbing) {
             theInput.lr.ReleaseMouseMovement(this);
             scrubbing = false;
+            HideClockFace();
         }
     }
 
@@ -109,6 +114,7 @@ class LRDebug_Clock {
 
             hour = CurrentTimeAsHours() + value * modifier * theInput.lr.CLOCK_SCRUB_SENSITIVITY;
             SetEnvLightingTime(hour);
+            ShowClockFace();
         }
     }
 
@@ -128,6 +134,7 @@ class LRDebug_Clock {
 
     public function Enable() {
         if (!useRealTime && fakeEnvTime.has) ForceFakeEnvTime(fakeEnvTime.value);
+        RefreshTimeLabels();
     }
 
     public function Disable() {
@@ -135,7 +142,20 @@ class LRDebug_Clock {
             thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
             scrubbing = false;
         }
+        HideClockFace();
         DisableFakeEnvTime();
+    }
+
+    private function ShowClockFace() {
+        if (thePlayer.lrDebugLabelManager) {
+            thePlayer.lrDebugLabelManager.ShowClockFace(CurrentTimeAsHours());
+        }
+    }
+
+    private function HideClockFace() {
+        if (thePlayer.lrDebugLabelManager) {
+            thePlayer.lrDebugLabelManager.HideClockFace();
+        }
     }
 
     private function SetEnvLightingTime(hour: float) {
@@ -144,15 +164,17 @@ class LRDebug_Clock {
             return;
         }
 
-        fakeEnvTime.value = FloatOverflow24(hour);
+        fakeEnvTime.value = LRDebug_FloatOverflow(hour, 24.0);
         fakeEnvTime.has = true;
         ForceFakeEnvTime(fakeEnvTime.value);
+        RefreshTimeLabels();
     }
 
     private function WindGameClock(hour: float) {
         var day: int;
         var hours: int;
         var minutes: int;
+        var seconds: int;
 
         day = GameTimeDays(theGame.GetGameTime());
 
@@ -168,8 +190,9 @@ class LRDebug_Clock {
 
         hours = (int)hour;
         minutes = (int)((hour - (float)hours) * 60.0);
+        seconds = (int)((hour - (float)hours - (float)minutes / 60.0) * 3600.0);
 
-        theGame.SetGameTime(GameTimeCreate(day, hours, minutes, 0), true);
+        theGame.SetGameTime(GameTimeCreate(day, hours, minutes, seconds), true);
     }
 
     private function CurrentTimeAsHours(): float {
@@ -184,13 +207,26 @@ class LRDebug_Clock {
             + (float)GameTimeSeconds(time) / 3600.0;
     }
 
-    private function FloatOverflow24(hour: float): float {
-        while (hour >= 24.0) {
-            hour -= 24.0;
-        }
-        while (hour < 0.0) {
-            hour += 24.0;
-        }
-        return hour;
+    public function IsUsingRealTime(): bool {
+        return useRealTime;
     }
+
+    public function GetFakeEnvTime(): SLightRewriteOptionalFloat {
+        return fakeEnvTime;
+    }
+
+    private function RefreshTimeLabels() {
+        if (thePlayer.lrDebugLabelManager) thePlayer.lrDebugLabelManager.RefreshTimeLabels();
+    }
+}
+
+/** Simulates float overflow in a range of 0.0 to `maximum`. */
+function LRDebug_FloatOverflow(value: float, maximum: float): float {
+    while (value >= maximum) {
+        value -= maximum;
+    }
+    while (value < 0.0) {
+        value += maximum;
+    }
+    return value;
 }
