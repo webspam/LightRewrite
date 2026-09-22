@@ -57,6 +57,8 @@ function OnSpawned(spawnData: SEntitySpawnData) {
 timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     if (!theGame || !thePlayer) return;
 
+    theInput.LRDebug_EnsureInit();
+
     lrDebugLabelManager = new LRDebug_LabelManager in this;
     lrDebugLabelManager.Init();
     lrDebugTargeting = new LRDebug_Targeting in this;
@@ -82,7 +84,6 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetOffset', 'LRDebug_ResetOffset');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
-    theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
@@ -126,10 +127,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnColourGModifier', 'LRDebug_ColourGModifier');
     theInput.RegisterListener(this, 'LRDebug_OnColourBModifier', 'LRDebug_ColourBModifier');
     theInput.RegisterListener(this, 'LRDebug_OnSoftnessModifier', 'LRDebug_SoftnessModifier');
-    theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
-    theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
 
-    theInput.RegisterListener(this, 'LRDebug_OnModifierKeyPressed', 'LRDebug_ModifierKey');
     theInput.RegisterListener(this, 'LRDebug_OnAltPressed', 'ShowDeveloperModeAlt');
 }
 
@@ -215,22 +213,10 @@ function PostStateChange() {
 
 @addMethod(CR4Player)
 public function LRDebug_OnInputLock(action: SInputAction): bool {
-    if (!IsPressed(action) || !thePlayer) return false;
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugTargeting.ToggleLock();
     return true;
-}
-
-@addMethod(CR4Player)
-public function LRDebug_OnModifierKeyPressed(action: SInputAction): bool {
-    if (
-        lrDebugLabels &&
-        (IsPressed(action) || IsReleased(action))
-    ) {
-        lrDebugLabelManager.RegenerateNearbyOneliners();
-    }
-
-    return false;
 }
 
 @addMethod(CR4Player)
@@ -296,15 +282,21 @@ public function LRDebug_OnInputToggleGroupEdit(action: SInputAction): bool {
     return true;
 }
 
-@addField(CInputManager) public var lrDebug: LRDebug_Input;
+@addField(CInputManager) public var lr: LRDebug_Input;
+
+@addMethod(CInputManager)
+function LRDebug_EnsureInit() {
+    if (!lr) {
+        lr = new LRDebug_Input in this;
+        lr.Init();
+    }
+}
 
 @wrapMethod(CR4IngameMenu)
 function OnConfigUI() {
-    var iManager: CInputManager = theInput;
-
     wrappedMethod();
 
-    iManager.lrDebug = new LRDebug_Input in iManager;
+    theInput.LRDebug_EnsureInit();
 }
 
 @addMethod(CR4Player)
@@ -473,16 +465,22 @@ public function LRDebug_EnterAdjust(action: SInputAction, attrIndex: int): bool 
     if (!lrDebugLabels || !thePlayer) return false;
 
     if (IsPressed(action)) {
+        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisX', 'GI_MouseDampX');
+        theInput.RegisterListener(this, 'LRDebug_OnMouseAxisY', 'GI_MouseDampY');
+
         lrDebugAttrEditor.SetAttributeIndex(attrIndex);
         lrDebugAttrEditor.BeginAdjust(lrDebugTargeting.GetTarget());
         lrDebugLabelManager.RefreshTargetOneliner();
-        thePlayer.EnableManualCameraControl(false, theInput.lrDebug.CAMERA_LOCK_SOURCE);
+        thePlayer.EnableManualCameraControl(false, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = true;
         return true;
     }
 
     if (IsReleased(action)) {
-        thePlayer.EnableManualCameraControl(true, theInput.lrDebug.CAMERA_LOCK_SOURCE);
+        theInput.UnregisterListener(this, 'GI_MouseDampX');
+        theInput.UnregisterListener(this, 'GI_MouseDampY');
+
+        thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
         lrDebugAdjusting = false;
         lrDebugAttrEditor.EndAdjust();
         return true;
@@ -520,7 +518,7 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
         modifier = 0.2;
     }
 
-    if (lrDebugAttrEditor.MoveOffsetXY(action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier, 0.0, lrDebugTargeting.GetTarget())) {
+    if (lrDebugAttrEditor.MoveOffsetXY(action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier, 0.0, lrDebugTargeting.GetTarget())) {
         lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;
@@ -540,7 +538,7 @@ public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
     if (LRDebug_MovingOffsetXY()) {
         changeMade = lrDebugAttrEditor.MoveOffsetXY(
             0.0,
-            -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
+            -action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier,
             lrDebugTargeting.GetTarget()
         );
 
@@ -549,7 +547,7 @@ public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
     }
 
     changeMade = lrDebugAttrEditor.AdjustAttributeContinuous(
-        -action.value * theInput.lrDebug.ADJUST_AXIS_SENSITIVITY * modifier,
+        -action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier,
         lrDebugTargeting.GetTarget()
     );
 

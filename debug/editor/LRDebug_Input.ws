@@ -16,4 +16,35 @@ class LRDebug_Input {
     // Hold-to-edit: holding a modifier locks the camera and feeds mouse-Y into the value.
     public const var CAMERA_LOCK_SOURCE: name;   default CAMERA_LOCK_SOURCE = 'LRDebug';
     public var ADJUST_AXIS_SENSITIVITY : float;  default ADJUST_AXIS_SENSITIVITY = 0.15;
+
+    public function Init() {
+        theInput.RegisterListener(this, 'OnModifierKey', 'LRDebug_ModifierKey');
+    }
+
+    public function IsAltHeld(): bool {
+        return theInput.IsActionPressed('ShowDeveloperModeAlt');
+    }
+
+    public function IsCtrlHeld(): bool {
+        return theInput.IsActionPressed('LRDebug_CtrlModifier');
+    }
+
+    public function IsModifierHeld(): bool {
+        return IsCtrlHeld() || IsAltHeld();
+    }
+
+    public function IsNormalKeydown(action: SInputAction): bool {
+        return IsPressed(action)
+            && !IsCtrlHeld()
+            && !IsAltHeld();
+    }
+
+    event OnModifierKey(action: SInputAction) {
+        if (
+            thePlayer.lrDebugLabels &&
+            (IsPressed(action) || IsReleased(action))
+        ) {
+            thePlayer.lrDebugLabelManager.RegenerateNearbyOneliners();
+        }
+    }
 }

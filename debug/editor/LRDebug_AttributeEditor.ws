@@ -12,7 +12,7 @@ class LRDebug_AttributeEditor {
     private var pointLightIndex: int;
     private var spotLightIndex : int;
 
-    private var groupEdit      : bool;
+    private var groupEdit: bool;  default groupEdit = true;
     private var groupEditTarget: CGameplayEntity;
     private var groupMembers   : array<CGameplayEntity>;
 
