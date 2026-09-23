@@ -1,61 +1,94 @@
-/** Three great-circle rings of dots around a point light - an XYZ sphere sized to its radius */
+/** A radius sphere, rendered as a low-ish-poly of oneliner line segments. */
 class LRDebug_RadiusRing extends LRDebug_MarkerPool {
-    private const var dotCount: int;     default dotCount = 48;
-    private const var pastel  : float;   default pastel = 0.5;
-    private const var magenta : string;  default magenta = "#ff00ff";
+    private const var segmentsPerCircle: int;     default segmentsPerCircle = 48;
+    private const var glyphWidth       : float;   default glyphWidth = 13.0;
+    private const var pastel           : float;   default pastel = 0.5;
+    private const var magenta          : string;  default magenta = "#ff00ff";
+    private const var cos45            : float;   default cos45 = 0.7071068;
 
-    private var offsets: array<Vector>;
+    private var starts      : array<Vector>;
+    private var ends        : array<Vector>;
+    private var segmentCount: int;
 
     public function Init(baseId: int) {
+        var x, y, z, diagA, diagB, origin: Vector;
+
+        x = Vector(1.0, 0.0, 0.0);
+        y = Vector(0.0, 1.0, 0.0);
+        z = Vector(0.0, 0.0, 1.0);
+        diagA = Vector(cos45, cos45, 0.0);
+        diagB = Vector(cos45, -cos45, 0.0);
+        origin = Vector(0.0, 0.0, 0.0);
+
         SetBaseId(baseId);
 
-        BuildCircle(0);
-        BuildCircle(1);
-        BuildCircle(2);
+        BuildRing(x, y, origin);
+        BuildRing(x, z, origin);
+        BuildRing(y, z, origin);
 
-        AddDot(Vector(1.0, 0.0, 0.0), magenta);
-        AddDot(Vector(0.0, 1.0, 0.0), magenta);
-        AddDot(Vector(0.0, 0.0, 1.0), magenta);
+        BuildRing(x * cos45, y * cos45, z * cos45);
+        BuildRing(x * cos45, y * cos45, z * -cos45);
+
+        BuildRing(diagA, z, origin);
+        BuildRing(diagB, z, origin);
+
+        segmentCount = markers.Size();
+
+        AddDot(x, magenta);
+        AddDot(y, magenta);
+        AddDot(z, magenta);
     }
 
     public function Update(center: Vector, radius: float) {
         var i, count: int;
-        var position: Vector;
+        var start, end: Vector;
 
         count = markers.Size();
         for (i = 0; i < count; i += 1) {
-            position = center + offsets[i] * radius;
             // Reset W to 1 - Vector operators are basic and operate on all props
-            position.W = 1.0;
-            markers[i].SetWorldPosition(position);
+            start = center + starts[i] * radius;
+            start.W = 1.0;
+
+            if (i < segmentCount) {
+                end = center + ends[i] * radius;
+                end.W = 1.0;
+                markers[i].SetWorldSegment(start, end, glyphWidth);
+            }
+            else {
+                markers[i].SetWorldPosition(start);
+            }
         }
     }
 
-    /** One circle of dots; plane 0=XY, 1=XZ, 2=YZ */
-    private function BuildCircle(plane: int) {
+    /** One circle of line segments */
+    private function BuildRing(u: Vector, v: Vector, center: Vector) {
         var i: int;
-        var v, dir: Vector;
+        var from, to: Vector;
 
-        for (i = 0; i < dotCount; i += 1) {
-            v = VecFromHeading((360.0 / (float)dotCount) * (float)i);
+        for (i = 0; i < segmentsPerCircle; i += 1) {
+            from = RingPoint(u, v, center, i);
+            to = RingPoint(u, v, center, (i + 1) % segmentsPerCircle);
 
-            if (plane == 0) {
-                dir = Vector(v.X, v.Y, 0.0);
-            }
-            else if (plane == 1) {
-                dir = Vector(v.X, 0.0, v.Y);
-            }
-            else {
-                dir = Vector(0.0, v.X, v.Y);
-            }
-
-            AddDot(dir, DirectionColor(dir));
+            AddSegment(from, to, DirectionColor(from));
         }
+    }
+
+    private function RingPoint(u: Vector, v: Vector, center: Vector, step: int): Vector {
+        var h: Vector = VecFromHeading((360.0 / (float)segmentsPerCircle) * (float)step);
+
+        return center + u * h.Y + v * -h.X;
+    }
+
+    private function AddSegment(from: Vector, to: Vector, color: string) {
+        AddMarker("&#8213;", 16, color);
+        starts.PushBack(from);
+        ends.PushBack(to);
     }
 
     private function AddDot(offset: Vector, color: string) {
         AddMarker("&#8226;", 16, color);
-        offsets.PushBack(offset);
+        starts.PushBack(offset);
+        ends.PushBack(offset);
     }
 
     /** Blend the axis colours by direction - saturated toward +axis, pastel toward -axis */
