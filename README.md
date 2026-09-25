@@ -34,7 +34,7 @@ This mod instead edits the properties of lights at runtime. When entities are fi
 
 #### Caveats and other fine print
 
-This isn't perfect. The matching is naïve; a light source named `glowing_altar_without_candles.w2ent` in the editor will be misidentified as a candle / cluster of candles.
+This isn't perfect. It matches by layer & entity paths (so most rules hit more than one light).
 
 I _guarantee_ this will not work with **every** combination of mods.
 
