@@ -538,16 +538,22 @@ function WriteUtf16Xml {
     )
 
     $settings = [System.Xml.XmlWriterSettings]::new()
-    $settings.Encoding = [System.Text.Encoding]::Unicode
     $settings.Indent = $true
 
-    $writer = [System.Xml.XmlWriter]::Create($Path, $settings)
+    $buffer = [System.IO.StringWriter]::new()
+    $writer = [System.Xml.XmlWriter]::Create($buffer, $settings)
     try {
         $Doc.WriteTo($writer)
     }
     finally {
         $writer.Close()
     }
+
+    $spaced = [regex]::Replace(
+        $buffer.ToString(),
+        '(</overrides?>)(\r?\n)(?=[ \t]*<(?:overrides?\b|!--))',
+        '$1$2$2')
+    [System.IO.File]::WriteAllText($Path, $spaced, [System.Text.Encoding]::Unicode)
 }
 
 # ---- Entry point ----
