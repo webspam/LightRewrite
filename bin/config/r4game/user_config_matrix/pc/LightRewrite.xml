@@ -2,8 +2,8 @@
 <UserConfig>
     <Group id="LightRewrite_General" displayName="Mods.LightRewrite.LightRewrite">
         <VisibleVars>
-            <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" />
-            <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS">
+            <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" tags="customDisplayName" />
+            <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS" tags="customNames;customDisplayName">
               <OptionsArray>
                 <Option id="0" displayName="LightRewrite_Preset_Author">
                   <Entry varId="CurrentProfile" value="0" />
@@ -36,7 +36,7 @@
     </Group>
     <Group id="LightRewrite_Advanced" displayName="Mods.LightRewrite.LightRewrite_Advanced">
         <VisibleVars>
-            <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" displayType="OPTIONS">
+            <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" displayType="OPTIONS" tags="customNames;customDisplayName">
               <OptionsArray>
                 <Option id="0" displayName="LightRewrite_None">
                   <Entry varId="SpacingMode" value="0" />
@@ -53,9 +53,9 @@
               </OptionsArray>
             </Var>
             <Var id="SpacingCount" displayName="LightRewrite_Spacing_Count"
-                displayType="SLIDER;0;10;10" tags="indent" />
+                displayType="SLIDER;0;10;10" tags="customDisplayName;indent" />
             <Var id="SpacingBudget" displayName="LightRewrite_Spacing_Budget"
-                displayType="SLIDER;0.5;10;19" tags="indent" />
+                displayType="SLIDER;0.5;10;19" tags="customDisplayName;indent" />
         </VisibleVars>
     </Group>
 </UserConfig>
