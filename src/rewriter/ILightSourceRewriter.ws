@@ -12,7 +12,8 @@ abstract class ILightSourceRewriter {
     protected var overrideParams: CLightRewriteSourceParams;
 
     // Spotlight spawned for a spawn="true" override
-    protected var spawnedSpotlight: CEntity;
+    protected var spawnedSpotlight      : CEntity;
+    protected var spawnedSpotlightActive: bool;
 
     // Upper bound on point-light radius from the spacing pass; 0 means unbounded
     protected var maxSafeRadius: float;
@@ -110,10 +111,9 @@ abstract class ILightSourceRewriter {
             }
         }
 
-        if (spawnedSpotlight) {
-            spotLight = (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
-            if (spotLight) spotLight.SetEnabled(false);
-        }
+        spawnedSpotlightActive = false;
+        spotLight = GetSpawnedSpotlightComponent();
+        if (spotLight) spotLight.SetEnabled(false);
 
         components.Clear();
         components = parentEntity.GetComponentsByClassName('CDrawableComponent');
@@ -210,10 +210,50 @@ abstract class ILightSourceRewriter {
 
         spotLight.SetEnabled(false);
 
-        if (spotParams.enabled.has && !spotParams.enabled.value) return;
+        spawnedSpotlightActive = !spotParams.enabled.has || spotParams.enabled.value;
+        if (!spawnedSpotlightActive) return;
 
         ApplySpotlightParams(spotLight, spotParams);
-        spotLight.SetEnabled(true);
+        if (IsLightOn()) spotLight.SetEnabled(true);
+    }
+
+    public function SyncSpawnedSpotlight() {
+        var shouldEnable: bool;
+        var spotLight: CSpotLightComponent = GetSpawnedSpotlightComponent();
+
+        if (!spotLight) return;
+
+        shouldEnable = spawnedSpotlightActive && IsLightOn();
+        if (spotLight.IsEnabled() != shouldEnable) spotLight.SetEnabled(shouldEnable);
+    }
+
+    // Deterministic for lights with `CGameplayLightComponent`.
+    // Otherwise, returns `true` if any point light is on.
+    private function IsLightOn(): bool {
+        var light: CPointLightComponent;
+        var components: array<CComponent>;
+        var gameplayLight: CGameplayLightComponent;
+        var i, count: int;
+
+        gameplayLight = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
+        if (gameplayLight) return gameplayLight.IsLightOn();
+
+        components = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        count = components.Size();
+        if (count == 0) return true;
+
+        for (i = 0; i < count; i += 1) {
+            light = (CPointLightComponent)components[i];
+            if (light && light.IsEnabled()) return true;
+        }
+
+        return false;
+    }
+
+    private function GetSpawnedSpotlightComponent(): CSpotLightComponent {
+        if (!spawnedSpotlight) return NULL;
+
+        return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
     }
 
     private function GetOrSpawnSpotlight(): CSpotLightComponent {
@@ -235,13 +275,18 @@ abstract class ILightSourceRewriter {
                 LogLightRewrite("Spawn spotlight: failed to spawn entity for " + parentEntity);
                 return NULL;
             }
+
+            SyncSpawnedSpotlight();
+
+            parentEntity.AddTimer('SyncLightRewriteSpawnedSpotlight', 15.0f, true);
         }
 
-        return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
+        return GetSpawnedSpotlightComponent();
     }
 
     public function DestroySpawnedSpotlight() {
         if (spawnedSpotlight) {
+            parentEntity.RemoveTimer('SyncLightRewriteSpawnedSpotlight');
             spawnedSpotlight.Destroy();
             spawnedSpotlight = NULL;
         }

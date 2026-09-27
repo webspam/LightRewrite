@@ -148,3 +148,10 @@ timer function ProcessLightRewriteActions(dt: float, id: int) {
         lightSourceRewriter.ProcessFirstFrameActions();
     }
 }
+
+@addMethod(CGameplayEntity)
+timer function SyncLightRewriteSpawnedSpotlight(dt: float, id: int) {
+    if (!bypassLightRewrite && lightSourceRewriter) {
+        lightSourceRewriter.SyncSpawnedSpotlight();
+    }
+}
