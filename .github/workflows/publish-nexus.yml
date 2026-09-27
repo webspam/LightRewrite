@@ -1,0 +1,41 @@
+name: Publish to Nexus Mods
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  publish-nexus:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+      FILENAME: modLightRewrite-${{ github.event.release.tag_name }}.zip
+
+    steps:
+      - name: Download release asset
+        id: asset
+        run: |
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$FILENAME"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to Nexus Mods
+        # v1.0.0-beta.10
+        uses: Nexus-Mods/upload-action@c96019556046053aa26044b44396cd38929daf23
+        with:
+          api_key: ${{ secrets.NEXUS_API_KEY }}
+          mod_id: 4088808877936
+          file_id: 7362653
+          filename: ${{ env.FILENAME }}
+          version: ${{ steps.asset.outputs.version }}
+          changelog: ${{ github.event.release.html_url }}
+          display_name: Light Rewrite
+          # category: main
+          archive_existing_version: true
+          # primary_mod_manager_download: true
+          allow_mod_manager_download: true
+          # show_requirements_pop_up: false
+          update_mod_version: true
