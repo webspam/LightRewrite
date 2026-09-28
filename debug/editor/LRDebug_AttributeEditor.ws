@@ -165,6 +165,11 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
+    public function GetActiveLight(target: CGameplayEntity): CLightComponent {
+        if (!target) return NULL;
+        return GetLight(target, GetSelectedLightType(target));
+    }
+
     private function GetLight(target: CGameplayEntity, type: name): CLightComponent {
         if (type == 'spot') return LRDebug_SpotLightAt(target, GetActiveLightIndex(target, type));
         return LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));

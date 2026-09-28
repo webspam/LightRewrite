@@ -14,6 +14,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     private const var markersPerType: int;  default markersPerType = 5;
 
     private var components: array<CComponent>;
+    private var target    : CGameplayEntity;
     private var radiusRing: LRDebug_RadiusRing;
 
     public function Init() {
@@ -45,7 +46,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         UpdateRadiusRing();
     }
 
-    /** Show a 2d indicator of the first lights radius (always pointlight if any are present) */
+    /** Show a 2d radius indicator for the active light. */
     private function UpdateRadiusRing() {
         var light: CLightComponent;
 
@@ -53,7 +54,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
             thePlayer.lrDebugAttrEditor &&
             thePlayer.lrDebugAttrEditor.IsEditingRadius()
         ) {
-            light = (CLightComponent)components[0];
+            light = thePlayer.lrDebugAttrEditor.GetActiveLight(target);
         }
 
         if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
@@ -69,6 +70,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     public function SetTarget(entity: CGameplayEntity) {
         Clear();
 
+        target = entity;
         if (!entity) return;
 
         Bind(entity, 'CPointLightComponent', 0);
