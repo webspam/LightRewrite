@@ -22,10 +22,10 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private var pathLabel: LRDebug_PathLabel;
 
     public function Init() {
-        SetBaseId(0x40007000);
+        SetBaseId(0x40007001);
 
         pathLabel = new LRDebug_PathLabel in this;
-        pathLabel.Init(0x40006002, 0.13, 0.9);
+        pathLabel.Init(0x40007000, 0.13, 0.9);
     }
 
     /** Sweep nearby entities for light sources the mod never tagged and flag each one */
