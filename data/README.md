@@ -1,6 +1,6 @@
 # Profiles
 
-Profiles are plain XML files in UTF-16 LE format, each describing lights to edit.
+Profiles are plain XML files in UTF-8 format, each describing lights to edit.
 
 For guidance on creating profiles, check the files in `white_orchard`; they've been thoroughly commented and should serve well as a template.
 

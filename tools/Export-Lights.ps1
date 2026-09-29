@@ -8,7 +8,7 @@
     After running the in-game export (press the LRDebug_ExportEdited key while the
     debug editor is active), locate the game log and run this script against it.
     It parses every LRDebug_Export channel line, groups entries by entity file and layer path,
-    and writes a valid UTF-16 XML file compatible with the data/ override format.
+    and writes a valid UTF-8 XML file compatible with the data/ override format.
 
     Automatically checks for auto-exported lines if there are no manually exported log lines.
 
@@ -493,7 +493,7 @@ function BuildXml {
     )
 
     $doc = [System.Xml.XmlDocument]::new()
-    $decl = $doc.CreateXmlDeclaration('1.0', 'UTF-16', $null)
+    $decl = $doc.CreateXmlDeclaration('1.0', 'UTF-8', $null)
     $doc.AppendChild($decl) | Out-Null
 
     $schemaLocation = 'LightRewriteDefinitions.xsd'
@@ -531,7 +531,7 @@ function BuildXml {
     return $doc
 }
 
-function WriteUtf16Xml {
+function WriteUtf8Xml {
     param(
         [System.Xml.XmlDocument] $Doc,
         [string] $Path
@@ -553,7 +553,7 @@ function WriteUtf16Xml {
         $buffer.ToString(),
         '(</overrides?>)(\r?\n)(?=[ \t]*<(?:overrides?\b|!--))',
         '$1$2$2')
-    [System.IO.File]::WriteAllText($Path, $spaced, [System.Text.Encoding]::Unicode)
+    [System.IO.File]::WriteAllText($Path, $spaced, [System.Text.UTF8Encoding]::new($false))
 }
 
 # ---- Entry point ----
@@ -613,6 +613,6 @@ if ($overflow.Count -gt 0) {
 
 $tagNames = AssignTagNames $primary $overflow
 $doc = BuildXml $primary $overflow $tagNames $Profile $Weight
-WriteUtf16Xml $doc $OutputFile
+WriteUtf8Xml $doc $OutputFile
 
 Write-Host "Written to: $OutputFile"
