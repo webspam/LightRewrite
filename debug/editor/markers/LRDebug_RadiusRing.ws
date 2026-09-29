@@ -1,10 +1,7 @@
 /** A radius sphere, rendered as a low-ish-poly of oneliner line segments. */
 class LRDebug_RadiusRing extends LRDebug_MarkerPool {
-    private const var segmentsPerCircle: int;     default segmentsPerCircle = 48;
-    private const var glyphWidth       : float;   default glyphWidth = 13.0;
-    private const var pastel           : float;   default pastel = 0.5;
-    private const var magenta          : string;  default magenta = "#ff00ff";
-    private const var cos45            : float;   default cos45 = 0.7071068;
+    private const var segmentsPerCircle: int;    default segmentsPerCircle = 48;
+    private const var cos45            : float;  default cos45 = 0.7071068;
 
     private var starts      : array<Vector>;
     private var ends        : array<Vector>;
@@ -34,9 +31,9 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
 
         segmentCount = markers.Size();
 
-        AddDot(x, magenta);
-        AddDot(y, magenta);
-        AddDot(z, magenta);
+        AddDot(x, "#ff0000");
+        AddDot(y, "#00ff00");
+        AddDot(z, "#0000ff");
     }
 
     public function Update(center: Vector, radius: float) {
@@ -52,7 +49,7 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
             if (i < segmentCount) {
                 end = center + ends[i] * radius;
                 end.W = 1.0;
-                markers[i].SetWorldSegment(start, end, glyphWidth);
+                markers[i].SetWorldSegment(start, end);
             }
             else {
                 markers[i].SetWorldPosition(start);
@@ -80,72 +77,14 @@ class LRDebug_RadiusRing extends LRDebug_MarkerPool {
     }
 
     private function AddSegment(from: Vector, to: Vector, color: string) {
-        AddMarker("&#8213;", 16, color);
+        AddSegmentMarker(color);
         starts.PushBack(from);
         ends.PushBack(to);
     }
 
     private function AddDot(offset: Vector, color: string) {
-        AddMarker("&#8226;", 16, color);
+        AddDotMarker(color);
         starts.PushBack(offset);
         ends.PushBack(offset);
-    }
-
-    /** Blend the axis colours by direction - saturated toward +axis, pastel toward -axis */
-    private function DirectionColor(dir: Vector): string {
-        var r, g, b, total: float;
-
-        total = AbsF(dir.X) + AbsF(dir.Y) + AbsF(dir.Z);
-        if (total <= 0.0) return "#ffffff";
-
-        AddAxis(dir.X, 40.0, 100.0, 255.0, r, g, b);
-        AddAxis(dir.Y, 255.0, 230.0, 40.0, r, g, b);
-        AddAxis(dir.Z, 204.0, 85.0, 0.0, r, g, b);
-
-        return RgbToHex(r / total, g / total, b / total);
-    }
-
-    private function AddAxis(
-        comp: float,
-        cr: float,
-        cg: float,
-        cb: float,
-        out r: float,
-        out g: float,
-        out b: float
-    ) {
-        if (comp >= 0.0) {
-            r += comp * cr;
-            g += comp * cg;
-            b += comp * cb;
-        }
-        else {
-            r += -comp * (cr + (255.0 - cr) * pastel);
-            g += -comp * (cg + (255.0 - cg) * pastel);
-            b += -comp * (cb + (255.0 - cb) * pastel);
-        }
-    }
-
-    private function RgbToHex(r: float, g: float, b: float): string {
-        return "#" + HexByte(r) + HexByte(g) + HexByte(b);
-    }
-
-    private function HexByte(v: float): string {
-        var n: int;
-
-        n = Clamp((int)(v + 0.5), 0, 255);
-        return HexDigit(n / 16) + HexDigit(n % 16);
-    }
-
-    private function HexDigit(d: int): string {
-        switch (d) {
-            case 10:  return "a";
-            case 11:  return "b";
-            case 12:  return "c";
-            case 13:  return "d";
-            case 14:  return "e";
-            case 15:  return "f";
-            default:  return "" + d;
-        }
     }
 }

@@ -2,7 +2,8 @@ param(
   [Parameter(Mandatory = $false)]
   [string]$RepoRoot = $PSScriptRoot,
   [switch]$SkipWcc,
-  [switch]$SkipDlc
+  [switch]$SkipDlc,
+  [switch]$DebugEditor
 )
 
 $ErrorActionPreference = "Stop"
@@ -148,6 +149,14 @@ foreach ($profileName in @($profileBases.Keys)) {
 if (!$SkipWcc) {
   Remove-DirectoryIfExists $bundleDir
   New-Directory $bundleDir
+
+  if ($DebugEditor) {
+    $iconColoursFile = Join-Path $RepoRoot "tools/icon-colours.txt"
+    $bundleIconsDir = Join-Path $bundleDir "gameplay/gui_new/icons"
+
+    $iconColours = Get-Content -Raw -LiteralPath $iconColoursFile
+    & "$RepoRoot/tools/New-DebugIconColours.ps1" -Colours $iconColours -OutputDirectory $bundleIconsDir
+  }
 }
 if (!$SkipDlc) {
   Remove-DirectoryIfExists $dlcRoot
