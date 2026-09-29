@@ -3,7 +3,8 @@ param(
   [string]$RepoRoot = $PSScriptRoot,
   [switch]$SkipWcc,
   [switch]$SkipDlc,
-  [switch]$DebugEditor
+  [switch]$DebugEditor,
+  [switch]$NextGen
 )
 
 $ErrorActionPreference = "Stop"
@@ -49,15 +50,9 @@ function Invoke-WccLite {
   }
 }
 
-# Copy an XML file, converting to UTF-16 LE if necessary
 function Copy-XmlAsUtf16Le([string]$Source, [string]$Destination) {
-  $bytes = [System.IO.File]::ReadAllBytes($Source)
-  if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
-    Copy-Item -LiteralPath $Source -Destination $Destination
-    return
-  }
-  Write-Warning "⚠ $(Split-Path -Leaf $Source) is not UTF-16 LE - converting"
-  [System.IO.File]::WriteAllText($Destination, [System.IO.File]::ReadAllText($Source), [System.Text.Encoding]::Unicode)
+  $xml = [System.IO.File]::ReadAllText($Source) -replace '^(\s*<\?xml[^>]*encoding=["''])UTF-8(["''])', '${1}UTF-16${2}'
+  [System.IO.File]::WriteAllText($Destination, $xml, [System.Text.Encoding]::Unicode)
 }
 
 function Find-ProfileInheritanceProblem {
@@ -180,7 +175,13 @@ ForEach-Object {
   $dirName = ($relDir -replace '[\\/]', '_').ToLowerInvariant()
   # Top level files `_` prefix so subdirs can't clash
   $target = if (!$DirName) { "_lightrewrite_$($_.Name)" } else { "lightrewrite_${DirName}_$($_.Name)" }
-  Copy-XmlAsUtf16Le -Source $_.FullName -Destination (Join-Path $xmlDestDir $target)
+  $destination = Join-Path $xmlDestDir $target
+  if ($NextGen) {
+    Copy-XmlAsUtf16Le -Source $_.FullName -Destination $destination
+  }
+  else {
+    Copy-Item -LiteralPath $_.FullName -Destination $destination
+  }
 }
 
 # Copy mod scripts
