@@ -35,6 +35,11 @@ class LRDebug_AttributeEditor {
         return GetCurrentAttrId(selectedLightType) == 'radius';
     }
 
+    public function IsEditingSpotAngle(target: CGameplayEntity): bool {
+        var attr: name = GetCurrentAttrId(GetSelectedLightType(target));
+        return attr == 'innerAngle' || attr == 'outerAngle';
+    }
+
     /** In spot mode slots 6/7/13 are the spotlight cone; every other slot is shared */
     public function GetCurrentAttrId(type: name): name {
         if (type == 'spot') {
@@ -163,6 +168,11 @@ class LRDebug_AttributeEditor {
                 return lightType != 'spot';
         }
         return true;
+    }
+
+    public function GetActiveLight(target: CGameplayEntity): CLightComponent {
+        if (!target) return NULL;
+        return GetLight(target, GetSelectedLightType(target));
     }
 
     private function GetLight(target: CGameplayEntity, type: name): CLightComponent {

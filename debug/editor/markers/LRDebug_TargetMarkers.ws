@@ -14,7 +14,9 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
     private const var markersPerType: int;  default markersPerType = 5;
 
     private var components: array<CComponent>;
+    private var target    : CGameplayEntity;
     private var radiusRing: LRDebug_RadiusRing;
+    private var spotCone  : LRDebug_SpotCone;
 
     public function Init() {
         SetBaseId(0x40004000);
@@ -24,6 +26,9 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
 
         radiusRing = new LRDebug_RadiusRing in this;
         radiusRing.Init(0x40005000);
+
+        spotCone = new LRDebug_SpotCone in this;
+        spotCone.Init(0x40009000);
 
         Update();
     }
@@ -45,30 +50,35 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         UpdateRadiusRing();
     }
 
-    /** Show a 2d indicator of the first lights radius (always pointlight if any are present) */
+    /** Show a 2d radius indicator for the active light. */
     private function UpdateRadiusRing() {
+        var editor: LRDebug_AttributeEditor = thePlayer.lrDebugAttrEditor;
         var light: CLightComponent;
+        var spot: CSpotLightComponent;
 
-        if (
-            thePlayer.lrDebugAttrEditor &&
-            thePlayer.lrDebugAttrEditor.IsEditingRadius()
-        ) {
-            light = (CLightComponent)components[0];
+        if (editor && (editor.IsEditingRadius() || editor.IsEditingSpotAngle(target))) {
+            light = editor.GetActiveLight(target);
         }
+        spot = (CSpotLightComponent)light;
 
-        if (light) radiusRing.Update(light.GetWorldPosition(), light.radius);
+        if (spot) spotCone.Update(spot);
+        else spotCone.Hide();
+
+        if (light && !spot) radiusRing.Update(light.GetWorldPosition(), light.radius);
         else radiusRing.Hide();
     }
 
     public function Hide() {
         super.Hide();
         radiusRing.Hide();
+        spotCone.Hide();
     }
 
     /** Bind the marker pool to the new target's light components (point then spot). */
     public function SetTarget(entity: CGameplayEntity) {
         Clear();
 
+        target = entity;
         if (!entity) return;
 
         Bind(entity, 'CPointLightComponent', 0);
@@ -95,6 +105,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         }
 
         radiusRing.Hide();
+        spotCone.Hide();
     }
 
     private function BuildPool(color: string) {
