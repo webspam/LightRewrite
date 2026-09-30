@@ -189,7 +189,6 @@ function LRDebug_ExportEditedLights(optional channel: name) {
     var descriptor, entityFile, layerPath, fields, line: string;
     var loggedLines: array<string>;
     var i, count, exported: int;
-    var toast: LRDebug_ToastOneLiner;
 
     if (channel == '') channel = 'LRDebug_Export';
 
@@ -226,7 +225,5 @@ function LRDebug_ExportEditedLights(optional channel: name) {
     LogChannel(channel, "done exported=" + IntToString(exported));
     if (channel == 'LRDebug_AutoExport') return;
 
-    toast = new LRDebug_ToastOneLiner in thePlayer;
-    toast.Init("<font size='14'>Exported " + IntToString(exported) + " light(s)</font>", 2.0);
-    toast.Start();
+    thePlayer.lrDebugLabelManager.ShowToast("Exported " + IntToString(exported) + " light(s)", 2.0);
 }

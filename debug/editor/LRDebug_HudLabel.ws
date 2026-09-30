@@ -43,6 +43,17 @@ class LRDebug_HudLabel {
         this.created = false;
     }
 
+    public function SetText(newText: string) {
+        if (newText == this.text) return;
+
+        this.text = newText;
+
+        if (!created) return;
+
+        Remove();
+        Create();
+    }
+
     protected function SetScreenPosition(x: float, y: float) {
         this.sprite.SetPosition(x, y);
     }

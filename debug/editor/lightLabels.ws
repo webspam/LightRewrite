@@ -4,8 +4,6 @@
  * Wires input actions to the label manager and attribute editor.
  * All domain logic lives in the dedicated files in this folder.
  *
- * Requires: mod_sharedutils_oneliners via SU_Oneliner
- *
  * Example input.settings (under [LRDebug]):
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)

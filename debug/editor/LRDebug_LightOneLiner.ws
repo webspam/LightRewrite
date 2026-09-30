@@ -7,30 +7,31 @@
  *
  * Markup is only regenerated on explicit events (highlight change, path-label
  * toggle, attribute cycle). The FollowEntity loop does no markup work per tick.
- *
- * Requires: mod_sharedutils_oneliners (SU_Oneliner)
  */
 
 @addField(CGameplayEntity) public var lrdebugOneliner: LRDebug_LightOneLiner;
 
-statemachine class LRDebug_LightOneLiner extends SU_Oneliner {
+statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
     public var entity     : CGameplayEntity;
     public var pointLights: int;
     public var spotLights : int;
     public var active     : bool;
     public var highlighted: bool;
 
-    public function Init(tracked_entity: CGameplayEntity, pointLights_: int, spotLights_: int) {
+    public function InitForEntity(
+        id: int,
+        tracked_entity: CGameplayEntity,
+        pointLights_: int,
+        spotLights_: int
+    ) {
         this.entity = tracked_entity;
         this.pointLights = pointLights_;
         this.spotLights = spotLights_;
-        this.text = GenerateText();
+        Init(GenerateText(), id);
     }
 
-    // Changes to text require re-registering the oneliner.
     public function RegenerateText() {
-        this.text = GenerateText();
-        this.update();
+        SetText(GenerateText());
     }
 
     public function Start() {
@@ -329,12 +330,11 @@ state Idle in LRDebug_LightOneLiner {}
 state FollowEntity in LRDebug_LightOneLiner {
     event OnEnterState(previous_state_name: name) {
         super.OnEnterState(previous_state_name);
-        parent.register();
         FollowEntity();
     }
 
     event OnLeaveState(next_state_name: name) {
-        parent.unregister();
+        parent.Hide();
         super.OnLeaveState(next_state_name);
     }
 
@@ -345,7 +345,7 @@ state FollowEntity in LRDebug_LightOneLiner {
             thePlayer.lrDebugLabels &&
             VecDistanceSquared(thePlayer.GetWorldPosition(), parent.entity.GetWorldPosition()) <= (maxRange * maxRange)
         ) {
-            parent.position = parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f);
+            parent.SetWorldPosition(parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f));
             SleepOneFrame();
 
             maxRange = thePlayer.lrDebugTargeting.GetMaxRange();

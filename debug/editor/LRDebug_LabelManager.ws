@@ -4,7 +4,10 @@
  * fiddly setup in one place.
  */
 class LRDebug_LabelManager {
-    private var tagSeq         : int;
+    private const var TOAST_ID        : int;  default TOAST_ID = 0x4000A000;
+    private const var ONELINER_BASE_ID: int;  default ONELINER_BASE_ID = 0x4000B000;
+
+    private var lastOnelinerId : int;
     private var toast          : LRDebug_ToastOneLiner;
     private var groupLabel     : LRDebug_ScreenLabel;
     private var groupCountLabel: LRDebug_ScreenLabel;
@@ -17,7 +20,9 @@ class LRDebug_LabelManager {
     private var showPathLabels: bool;  default showPathLabels = true;
 
     public function Init() {
+        lastOnelinerId = ONELINER_BASE_ID;
         toast = new LRDebug_ToastOneLiner in this;
+        toast.Init("", TOAST_ID);
         pathLabel = new LRDebug_PathLabel in this;
         pathLabel.Init(0x40006000, 0.5, 0.92);
         groupLabel = new LRDebug_ScreenLabel in this;
@@ -37,9 +42,10 @@ class LRDebug_LabelManager {
         attrLabels.Init();
     }
 
-    private function ShowToast(text: string) {
-        toast.Init("<font size='14'>" + text + "</font>", 1.0);
-        toast.Start();
+    public function ShowToast(text: string, optional seconds: float) {
+        if (seconds <= 0.0) seconds = 1.0;
+
+        toast.Show("<font size='14'>" + text + "</font>", seconds);
     }
 
     public function Update(targeting: LRDebug_Targeting) {
@@ -304,11 +310,9 @@ class LRDebug_LabelManager {
 
         if (pointLights == 0 && spotLights == 0) return;
 
+        lastOnelinerId += 1;
         label = new LRDebug_LightOneLiner in entity;
-        label.Init(entity, pointLights, spotLights);
-
-        tagSeq += 1;
-        label.setTag("lrdebug-" + tagSeq);
+        label.InitForEntity(lastOnelinerId, entity, pointLights, spotLights);
 
         entity.lrdebugOneliner = label;
         label.Start();

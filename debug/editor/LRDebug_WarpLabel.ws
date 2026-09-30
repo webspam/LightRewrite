@@ -6,17 +6,6 @@ class LRDebug_WarpLabel extends LRDebug_HudLabel {
         AcquireFlash();
     }
 
-    public function SetGlyph(glyph: string) {
-        if (glyph == this.text) return;
-
-        this.text = glyph;
-
-        if (!created) return;
-
-        Remove();
-        Create();
-    }
-
     public function Place(x: float, y: float) {
         EnsureCreated();
 
