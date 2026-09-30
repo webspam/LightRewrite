@@ -162,9 +162,25 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var hasFire: bool = parentEntity.HasSlot('fire');
         var hasFx: bool = parentEntity.HasSlot('fx');
 
+        var hasLightPoint: bool = parentEntity.HasSlot('light_point');
+        var hasFx1: bool = parentEntity.HasSlot('fx1');
+        var hasFx2: bool = parentEntity.HasSlot('fx2');
+        var hasFx3: bool = parentEntity.HasSlot('fx3');
+
         fireFxSlotNames.Clear();
 
-        if (hasFire4) {
+        if (hasLightPoint) {
+            // Toussaint gen_poor
+            if (hasFx3 && hasFx2 && hasFx1) {
+                fireFxSlotNames.PushBack('fx1');
+                fireFxSlotNames.PushBack('fx2');
+                fireFxSlotNames.PushBack('fx3');
+            }
+            else if (hasFx1) {
+                fireFxSlotNames.PushBack('fx1');
+            }
+        }
+        else if (hasFire4) {
             // 3+ candles, with 4, 3 and 2 being lit.  Matches a few configurations of complex candles.
             if (hasFire3 && hasFire2 && hasFire) {
                 fireFxSlotNames.PushBack('fire4');
