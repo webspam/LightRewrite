@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UserConfig>
-    <Group id="LightRewrite_General" displayName="Mods.LightRewrite.LightRewrite">
+    <Group id="LightRewrite_General" displayName="LightRewrite.LightRewrite">
         <VisibleVars>
             <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" tags="customDisplayName" />
             <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS" tags="customNames;customDisplayName">
@@ -34,7 +34,7 @@
                 displayType="SLIDER;0.5;10;19" visibilityCondition="hideAlways" />
         </VisibleVars>
     </Group>
-    <Group id="LightRewrite_Advanced" displayName="Mods.LightRewrite.LightRewrite_Advanced">
+    <Group id="LightRewrite_Advanced" displayName="LightRewrite.LightRewrite_Advanced">
         <VisibleVars>
             <Var id="SpacingMode" displayName="LightRewrite_Spacing_Mode" displayType="OPTIONS" tags="customNames;customDisplayName">
               <OptionsArray>
