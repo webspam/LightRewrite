@@ -22,7 +22,6 @@ All keys are disabled in-game until `LRDebug_ToggleLabels` is toggled on. You ca
 
 ## Requires
 
-- `mod_sharedutils_oneliners` (`SU_Oneliner` base for label and toast oneliners)
 - Main Light Rewrite mod (`CLightRewriteSourceParams`, `ILightSourceRewriter`, `CLightRewriteSettings`, etc.)
 
 ## Files
