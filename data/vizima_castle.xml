@@ -13,13 +13,17 @@
         <override tag_name="LR_Wyzima_Torch"
                   label="wyzima_castle_torch"
                   brightness="30"
-                  radius="7.5">
+                  radius="6.5"
+                  attenuation="1">
           <match>torch</match>
           <shadows fade_distance="20"
                    fade_range="20" />
           <colour r="240"
                   g="245"
                   b="255" />
+          <offset x="-0.276253"
+                  y="0"
+                  z="0.58" />
         </override>
 
         <override tag_name="LR_Wyzima_Brazier"
@@ -32,9 +36,9 @@
 
         <override tag_name="LR_Chandelier"
                   label="chandelier"
-                  brightness="100"
+                  brightness="65"
                   radius="15"
-                  attenuation="0.95">
+                  attenuation="1">
           <match>chandelier</match>
           <shadows fade_distance="25"
                    fade_range="20" />
@@ -43,8 +47,8 @@
         <override tag_name="LR_Wyzima_Candelabra"
                   label="wyzima_castle_candelabra"
                   brightness="30"
-                  radius="7.5"
-                  attenuation="0.95">
+                  radius="6"
+                  attenuation="1">
           <match>candelabra</match>
           <shadows fade_distance="20"
                    fade_range="20" />
@@ -54,7 +58,7 @@
         <override tag_name="LR_Wyzima_Tree_Lantern"
                   label="wyzima_castle_tree_lantern"
                   brightness="100"
-                  attenuation="0.9">
+                  attenuation="1">
           <match mode="exact">hanging_lamp.w2ent</match>
           <!-- levels\wyzima_castle\wyzima_castle\garden_syfilis.w2l -->
           <offset x="0"
