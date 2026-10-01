@@ -11,8 +11,40 @@ export interface GalleryItem {
 export const NATIVE_SIZE = { w: 3840, h: 1440 };
 
 const IMG = "https://webspam.github.io/images/";
+const REMASTERED = "https://webspam.github.io/remastered/";
 
-export const GALLERY: GalleryItem[] = [
+export const REMASTERED_GALLERY: GalleryItem[] = [
+  {
+    id: "vizima-courtyard",
+    title: "Vizima castle",
+    tag: "Courtyard",
+    before: REMASTERED + "vizima-courtyard-before.jpg",
+    after: REMASTERED + "vizima-courtyard-after.jpg",
+  },
+  {
+    id: "vizima-below-throne",
+    title: "Vizima castle",
+    tag: "Below the throne",
+    before: REMASTERED + "vizima-below-throne-before.jpg",
+    after: REMASTERED + "vizima-below-throne-after.jpg",
+  },
+  {
+    id: "vizima-attre",
+    title: "Vizima castle",
+    tag: "Attre",
+    before: REMASTERED + "vizima-attre-before.jpg",
+    after: REMASTERED + "vizima-attre-after.jpg",
+  },
+  {
+    id: "vizima-mage",
+    title: "Vizima castle",
+    tag: "Mage",
+    before: REMASTERED + "vizima-mage-before.jpg",
+    after: REMASTERED + "vizima-mage-after.jpg",
+  },
+];
+
+export const NEXTGEN_GALLERY: GalleryItem[] = [
   {
     id: "white-orchard-road",
     title: "White Orchard",

@@ -56,6 +56,23 @@ body {
   --cs-content-width: 1860px;
 }
 
+.VPFeature[href$="/gallery"] {
+  --tint: var(--vp-c-brand-1);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.4 0 0 0 0 0.4 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background:
+    var(--grain),
+    radial-gradient(
+        150% 180% at 0 0 in oklab,
+        color-mix(in oklab, var(--tint) 11%, transparent) 0%,
+        color-mix(in oklab, var(--tint) 8%, transparent) 20%,
+        color-mix(in oklab, var(--tint) 4.5%, transparent) 42%,
+        color-mix(in oklab, var(--tint) 1.5%, transparent) 65%,
+        transparent 85%
+      )
+      var(--vp-c-bg-soft);
+  border-color: color-mix(in oklab, var(--tint) 15%, transparent);
+}
+
 /* Shared fade for the teleported overlays (lightbox, shortcuts). */
 .fade-enter-active,
 .fade-leave-active {

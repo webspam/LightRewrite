@@ -9,6 +9,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: "Screenshots", link: "/gallery" },
+      { text: "NextGen Screenshots", link: "/gallery-nextgen" },
       { text: "Oneliner Symbols", link: "/oneliner-symbols" },
     ],
     socialLinks: [
