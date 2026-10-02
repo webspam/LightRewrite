@@ -33,9 +33,9 @@ jobs:
           version: ${{ steps.asset.outputs.version }}
           changelog: ${{ github.event.release.html_url }}
           display_name: Light Rewrite
-          # category: main
+          category: main
           archive_existing_version: true
-          # primary_mod_manager_download: true
+          primary_mod_manager_download: true
           allow_mod_manager_download: true
           # show_requirements_pop_up: false
           update_mod_version: true
