@@ -102,7 +102,7 @@ $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
 
 $dlcRoot = Join-Path $buildRoot "dlc"
 $dlcBundleDir = Join-Path $buildRoot "dlcBundle"
-$dlcOutDir = Join-Path $dlcRoot "lightrewrite/content"
+$dlcOutDir = Join-Path $dlcRoot "dlclightrewrite/content"
 $dlcSourceDir = Join-Path $RepoRoot "dlc"
 
 # Main execution
