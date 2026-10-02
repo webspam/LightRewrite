@@ -27,7 +27,7 @@
         <!-- Staircase on railing -->
         <override tag_name="LR_Chameleon_Staircase_Railing_Candle"
                   label="chameleon_staircase_railing_candle"
-                  attenuation="0.95">
+                  brightness="5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\dandelion_brothel\veryrich\interior\lights.w2l</match>
@@ -43,9 +43,9 @@
         <!-- Candelabra -->
         <override tag_name="LR_Chameleon_Candelabra"
                   label="chameleon_candelabra_complex"
-                  brightness="15"
-                  radius="6"
-                  attenuation="0.8">
+                  brightness="6"
+                  radius="5"
+                  attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\dandelion_brothel\veryrich\interior\lights.w2l</match>
@@ -68,9 +68,9 @@
         <!-- Candelabra on a stick -->
         <override tag_name="LR_Chameleon_Candelabra_Standing"
                   label="chameleon_candelabra_standing"
-                  brightness="15"
+                  brightness="6"
                   radius="7"
-                  attenuation="0.8">
+                  attenuation="1">
           <match mode="exact">candelabra_standing_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\dandelion_brothel\veryrich\interior\lights.w2l</match>
@@ -87,40 +87,36 @@
         <!-- Hanging red lantern -->
         <override tag_name="LR_Chameleon_Hanging_Lantern_Red"
                   label="chameleon_hanging_lantern_red"
-                  radius="6.5">
+                  brightness="25"
+                  radius="6.5"
+                  attenuation="1">
           <match mode="exact">hanging_lantern_red.w2ent</match>
           <!-- Centre of the lantern -->
           <offset x="0"
                   y="0"
-                  z="-0.8" />
+                  z="-1.08" />
           <shadows fade_distance="50"
                    fade_range="10"
-                   blend_factor="1"
-                   casting_mode="Normal" />
+                   blend_factor="1" />
         </override>
         <!-- Hanging red lantern - interior only -->
         <override tag_name="LR_Chameleon_Hanging_Lantern_Red_Interior"
                   label="chameleon_hanging_lantern_red_interior"
-                  brightness="35"
-                  radius="2.7"
-                  attenuation="1">
+                  radius="5">
           <match mode="exact">hanging_lantern_red.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\dandelion_brothel\veryrich\interior\lights.w2l</match>
-          <shadows casting_mode="None" />
-          <!-- Spawned spotlight -->
-          <spotlight spawn="true"
-                     brightness="40"
-                     radius="5"
-                     attenuation="1">
-            <shadows casting_mode="None" />
-            <offset x="0"
-                    y="0"
-                    z="-0.8" />
-            <colour r="255"
-                    g="192"
-                    b="163" />
-          </spotlight>
+        </override>
+
+        <!-- Horn chandelier -->
+        <override tag_name="LR_Chameleon_Horn_Chandelier"
+                  label="chameleon_horn_chandelier"
+                  brightness="30"
+                  attenuation="1">
+          <match mode="exact">horn_chandelier.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="-0.85" />
         </override>
 
       </overrides>
