@@ -164,6 +164,8 @@ function GetAllLightSourceTags(): array<name> {
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
 
+    lrDebugUnknownMarkers.Scan();
+
     if (
         lrDebugTargeting.IsLocked() ||
         theInput.IsActionPressed('LRDebug_CtrlModifier')
@@ -172,7 +174,6 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     }
 
     lrDebugLabelManager.Update(lrDebugTargeting);
-    lrDebugUnknownMarkers.Scan();
 }
 
 /*
