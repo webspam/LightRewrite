@@ -21,7 +21,7 @@ class LRDebug_WorldMarker extends LRDebug_HudLabel {
         imageHeight = height;
     }
 
-    public function SetWorldPosition(worldPosition: Vector) {
+    public function SetWorldPosition(worldPosition: Vector, optional screenOffsetY: float) {
         var ndc, screen: Vector;
         var visible: bool;
 
@@ -29,7 +29,7 @@ class LRDebug_WorldMarker extends LRDebug_HudLabel {
 
         if (visible) {
             screen = NdcToScreen(ndc);
-            SetScreenPosition(screen.X, screen.Y + imageHeight * 0.5);
+            SetScreenPosition(screen.X, screen.Y + imageHeight * 0.5 + screenOffsetY);
         }
 
         SetVisible(visible);
