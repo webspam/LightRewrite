@@ -8,7 +8,7 @@
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
- * IK_NumPad9=(Action=)
+ * IK_NumPad9=(Action=LRDebug_GroupEdit)
  * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
