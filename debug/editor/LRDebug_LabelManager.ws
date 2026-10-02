@@ -287,14 +287,31 @@ class LRDebug_LabelManager {
     }
 
     private function FindNearbyLights(out entities: array<CGameplayEntity>) {
+        var candidates: array<CGameplayEntity>;
+        var i, count: int;
+
+        var playerPos: Vector = thePlayer.GetWorldPosition();
+        var maxRange: float = thePlayer.lrDebugTargeting.GetMaxRange();
+        var maxRangeSquared: float = maxRange * maxRange;
+
         FindGameplayEntitiesInRange(
-            entities,
+            candidates,
             thePlayer,
-            thePlayer.lrDebugTargeting.GetMaxRange(),
+            maxRange,
             1024,
             theGame.lightRewrite.TAG_HAS_LIGHT,
             FLAG_ExcludePlayer
         );
+
+        count = candidates.Size();
+        for (i = 0; i < count; i += 1) {
+            if (
+                candidates[i] &&
+                VecDistanceSquared(playerPos, candidates[i].GetWorldPosition()) <= maxRangeSquared
+            ) {
+                entities.PushBack(candidates[i]);
+            }
+        }
     }
 
     private function CountComponents(entity: CGameplayEntity, className: name): int {
