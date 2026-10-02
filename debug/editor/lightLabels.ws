@@ -8,7 +8,7 @@
  *
  * IK_NumPad7=(Action=LRDebug_ToggleLabels)
  * IK_NumPad8=(Action=LRDebug_ToggleLabelPaths)
- * IK_NumPad9=(Action=)
+ * IK_NumPad9=(Action=LRDebug_GroupEdit)
  * IK_NumPad6=(Action=LRDebug_Lock)
  * IK_NumPad4=(Action=LRDebug_ResetLight)
  * IK_NumPad5=(Action=LRDebug_SolveSpacing)
@@ -164,6 +164,8 @@ function GetAllLightSourceTags(): array<name> {
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     if (!lrDebugLabels || !theGame || !thePlayer) return;
 
+    lrDebugUnknownMarkers.Scan();
+
     if (
         lrDebugTargeting.IsLocked() ||
         theInput.IsActionPressed('LRDebug_CtrlModifier')
@@ -172,7 +174,6 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
     }
 
     lrDebugLabelManager.Update(lrDebugTargeting);
-    lrDebugUnknownMarkers.Scan();
 }
 
 /*
@@ -190,8 +191,14 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     if (lrDebugLabels) {
         theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
-        if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
-        else lrDebugLabelManager.HideGroupLabel();
+
+        if (lrDebugAttrEditor.IsGroupEditing()) {
+            lrDebugLabelManager.ShowGroupLabel();
+        }
+        else {
+            lrDebugLabelManager.HideGroupLabel();
+        }
+
         lrDebugClock.Enable();
     }
     else {
