@@ -21,6 +21,8 @@ class CLightRewriteSettings {
     private const var SPACING_COUNT        : name;    default SPACING_COUNT = 'SpacingCount';
     private const var SPACING_BUDGET       : name;    default SPACING_BUDGET = 'SpacingBudget';
 
+    private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
+
     // Internal group IDs resolved at init time
     private var generalGroupId : int;
     private var advancedGroupId: int;
@@ -115,6 +117,7 @@ class CLightRewriteSettings {
         // Never initialised - write defaults for the current settings.
         if (initVersion == 0) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
+            gameConfig.SetVarValue(GENERAL_GROUP, CURRENT_PROFILE, FIRST_PROFILE_INDEX);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_MODE, spacingMode);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_COUNT, spacingCount);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
