@@ -42,6 +42,20 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     before: REMASTERED + "vizima-mage-before.jpg",
     after: REMASTERED + "vizima-mage-after.jpg",
   },
+  {
+    id: "chameleon-suite-bed",
+    title: "The Chameleon",
+    tag: "Suite - bed",
+    before: REMASTERED + "chameleon-suite-bed-before.jpg",
+    after: REMASTERED + "chameleon-suite-bed-after.jpg",
+  },
+  {
+    id: "chameleon-suite-dining",
+    title: "The Chameleon",
+    tag: "Suite - dining",
+    before: REMASTERED + "chameleon-suite-dining-before.jpg",
+    after: REMASTERED + "chameleon-suite-dining-after.jpg",
+  },
 ];
 
 export const NEXTGEN_GALLERY: GalleryItem[] = [
