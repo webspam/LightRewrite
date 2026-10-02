@@ -190,8 +190,14 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
     if (lrDebugLabels) {
         theInput.StoreContext('LRDebug');
         AddTimer('LRDebug_RefreshOnelinersTimer', 0.1f, true);
-        if (lrDebugAttrEditor.IsGroupEditing()) lrDebugLabelManager.ShowGroupLabel();
-        else lrDebugLabelManager.HideGroupLabel();
+
+        if (lrDebugAttrEditor.IsGroupEditing()) {
+            lrDebugLabelManager.ShowGroupLabel();
+        }
+        else {
+            lrDebugLabelManager.HideGroupLabel();
+        }
+
         lrDebugClock.Enable();
     }
     else {
