@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UserConfig>
-    <Group id="LightRewrite_General" displayName="Mods.LightRewrite.LightRewrite">
+    <Group id="LightRewrite_General" displayName="Mods.LightRewrite">
         <VisibleVars>
             <Var id="Enabled" displayName="LightRewrite_Enabled" displayType="TOGGLE" tags="customDisplayName" />
             <Var id="CurrentProfile" displayName="LightRewrite_CurrentProfile" displayType="OPTIONS" tags="customNames;customDisplayName">
