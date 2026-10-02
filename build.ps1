@@ -25,7 +25,7 @@ function Invoke-WccLite {
   $psi = [System.Diagnostics.ProcessStartInfo]::new()
   $psi.FileName = $script:wccLiteExe
   $psi.WorkingDirectory = Split-Path -Parent $script:wccLiteExe
-  $psi.Arguments = $Arguments
+  $psi.Arguments = "$Arguments -agreetoterms"
   $psi.UseShellExecute = $false
   $psi.RedirectStandardOutput = $true
   $psi.RedirectStandardError = $true
