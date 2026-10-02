@@ -38,6 +38,7 @@
 @addField(CR4Player) public var lrDebugTargetMarkers: LRDebug_TargetMarkers;
 @addField(CR4Player) public var lrDebugGroupMarkers: LRDebug_GroupMarkers;
 @addField(CR4Player) public var lrDebugUnknownMarkers: LRDebug_UnknownLightMarkers;
+@addField(CR4Player) public var lrDebugUnalteredMarkers: LRDebug_UnalteredMarkers;
 @addField(CR4Player) public var lrDebugAdjusting: bool;
 @addField(CR4Player) public var lrDebugClock: LRDebug_Clock;
 
@@ -70,11 +71,18 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     lrDebugGroupMarkers.Init();
     lrDebugUnknownMarkers = new LRDebug_UnknownLightMarkers in this;
     lrDebugUnknownMarkers.Init();
+    lrDebugUnalteredMarkers = new LRDebug_UnalteredMarkers in this;
+    lrDebugUnalteredMarkers.Init();
     lrDebugClock = new LRDebug_Clock in this;
     lrDebugClock.RegisterListeners();
 
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabels', 'LRDebug_ToggleLabels');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleLabelPaths', 'LRDebug_ToggleLabelPaths');
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnInputToggleUnalteredMarkers',
+        'LRDebug_ToggleUnalteredMarkers'
+    );
     theInput.RegisterListener(this, 'LRDebug_OnInputLock', 'LRDebug_Lock');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLight', 'LRDebug_CycleLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleLightUp', 'LRDebug_CycleLightUp');
@@ -199,6 +207,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
             lrDebugLabelManager.HideGroupLabel();
         }
 
+        lrDebugUnalteredMarkers.Start();
         lrDebugClock.Enable();
     }
     else {
@@ -207,6 +216,7 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
         lrDebugTargetMarkers.Hide();
         lrDebugGroupMarkers.Hide();
         lrDebugUnknownMarkers.Hide();
+        lrDebugUnalteredMarkers.Stop();
         lrDebugClock.Disable();
     }
 
@@ -247,6 +257,14 @@ public function LRDebug_OnInputToggleLabelPaths(action: SInputAction): bool {
     if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
 
     lrDebugLabelManager.TogglePathLabels();
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputToggleUnalteredMarkers(action: SInputAction): bool {
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
+
+    lrDebugUnalteredMarkers.Toggle();
     return true;
 }
 
