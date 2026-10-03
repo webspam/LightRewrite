@@ -24,12 +24,21 @@
         </override>
 
         <!-- Torch on a stick -->
-        <override tag_name="LR_torch_hand_long_complex"
-                  label="torch_hand_long_complex">
-          <match mode="exact">torch_hand_long_complex.w2ent</match>
+        <override tag_name="LR_torch_hand_long"
+                  label="torch_hand_long">
+          <match>torch_hand_long</match>
           <offset x="0.03"
                   y="0"
-                  z="0.66" />
+                  z="0.56" />
+        </override>
+
+        <!-- Wall Torch - Wood -->
+        <override tag_name="LR_torch_wall_wooden"
+                  label="torch_wall_wooden">
+          <match>torch_wall_wooden</match>
+          <offset x="-0.283"
+                  y="0"
+                  z="0.56" />
         </override>
 
       </overrides>
