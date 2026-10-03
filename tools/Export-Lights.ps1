@@ -186,6 +186,11 @@ function Sanitize {
     return [regex]::Replace($Name, '[^A-Za-z0-9_]', '_')
 }
 
+function Get-EntityName {
+    param([string] $EntityFile)
+    return [regex]::Replace((Sanitize $EntityFile), '_w2ent$', '')
+}
+
 function NewRandomToken {
     $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return -join (1..8 | ForEach-Object { $alphabet[(Get-Random -Maximum $alphabet.Length)] })
@@ -203,7 +208,7 @@ function AssignTagNames {
 
     foreach ($dict in $Primary, $Overflow) {
         foreach ($key in $dict.Keys) {
-            $entity = [regex]::Replace((Sanitize $dict[$key]['entityFile']), '_w2ent$', '')
+            $entity = Get-EntityName $dict[$key]['entityFile']
             $base = "LR_${token}_${entity}"
             $seenBases[$base] = ($seenBases[$base] ?? 0) + 1
             $n = $seenBases[$base]
@@ -391,7 +396,7 @@ function BuildOverrideElement {
 
     $override = $Doc.CreateElement('override')
     $override.SetAttribute('tag_name', $TagName)
-    $override.SetAttribute('label', 'edited_' + (Sanitize $entityFile))
+    $override.SetAttribute('label', 'edited_' + (Get-EntityName $entityFile))
 
     if ($Params.ContainsKey('brightness')) { $override.SetAttribute('brightness', (FmtFloat $Params['brightness'])) }
     if ($Params.ContainsKey('radius')) { $override.SetAttribute('radius', (FmtFloat $Params['radius'])) }
@@ -401,7 +406,7 @@ function BuildOverrideElement {
         $override.SetAttribute('use_spotlight_colour', $val)
     }
 
-    # <match mode="exact"> for entity file stem
+    # <match mode="exact"> for entity file
     $matchEntity = $Doc.CreateElement('match')
     $matchEntity.SetAttribute('mode', 'exact')
     $matchEntity.InnerText = $entityFile
