@@ -11,9 +11,19 @@
                   label="torch_wall_metal"
                   brightness="20"
                   radius="5">
-          <match mode="exact">torch_wall_metal.w2ent</match>
+          <!--
+          torch_wall_metal.w2ent
+          torch_wall_metal_bounce.w2ent
+          torch_wall_metal_noshadow.w2ent
+          torch_wall_metal_staticshadow.w2ent
+          -->
+          <match>torch_wall_metal</match>
+          <offset x="-0.25"
+                  y="0"
+                  z="0.51" />
         </override>
 
+        <!-- Torch on a stick -->
         <override tag_name="LR_torch_hand_long_complex"
                   label="torch_hand_long_complex">
           <match mode="exact">torch_hand_long_complex.w2ent</match>

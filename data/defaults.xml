@@ -9,7 +9,7 @@
         <!-- Candles -->
         <override tag_name="LR_Candle"
                   label="candle"
-                  brightness="8"
+                  brightness="5"
                   radius="4"
                   attenuation="1"
                   rewriter_type="LRT_Candle">
@@ -31,6 +31,14 @@
           <fire_fx_offset x="0"
                           y="0"
                           z="0.12" />
+        </override>
+
+        <!-- Small Group B - Complex -->
+        <!-- Two flames on one point light, brightness calculated as Base=5, coefficient=0.4: 5 * 2^0.4 = 6.6 -->
+        <override tag_name="LR_candle_small_group_melted_b_complex"
+                  label="candle_small_group_melted_b_complex"
+                  brightness="6.6">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
         </override>
 
         <!-- Torches -->

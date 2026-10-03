@@ -20,27 +20,10 @@
           </light>
         </override>
 
-        <!-- Small group C complex -->
-        <override tag_name="LR_candle_small_group_melted_c_complex"
-                  label="candle_small_group_melted_c_complex">
-          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
-          <light index="0">
-            <shadows casting_mode="Normal" />
-          </light>
-          <light index="1"
-                 radius="2.5">
-            <shadows casting_mode="Normal" />
-          </light>
-          <light index="2"
-                 radius="2.5">
-            <shadows casting_mode="Normal" />
-          </light>
-        </override>
-
         <!-- Small group C -->
         <override tag_name="LR_candle_small_group_melted_c"
                   label="candle_small_group_melted_c">
-          <match mode="exact">candle_small_group_melted_c.w2ent</match>
+          <match>candle_small_group_melted_c</match>
           <light index="0">
             <shadows casting_mode="Normal" />
           </light>
@@ -54,11 +37,17 @@
           </light>
         </override>
 
-        <!-- Small group B complex -->
+        <!-- Small group B complex - RT/PT only dual-light -->
+        <!-- Remastered allows the spotlight to be used - can cast RT/PT shadows. -->
         <!-- <override tag_name="LR_candle_small_group_melted_b_complex"
                   label="candle_small_group_melted_b_complex"
                   radius="5">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+          <spotlight brightness="5">
+            <offset x="0.076"
+                    y="-0.0225"
+                    z="0.13" />
+          </spotlight>
         </override> -->
       </overrides>
     </light_rewrite>
