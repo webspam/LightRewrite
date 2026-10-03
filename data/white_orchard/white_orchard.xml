@@ -34,6 +34,9 @@
                   radius="5"
                   attenuation="1">
           <match>hanging_lamp</match>
+          <offset x="0"
+                  y="0"
+                  z="-0.09" />
         </override>
 
         <!-- Campfires -->
@@ -106,7 +109,7 @@
                   label="white_orchard_wall_torches"
                   brightness="20"
                   radius="6"
-                  attenuation="0.9">
+                  attenuation="1">
           <match mode="exact">torch_wall_metal.w2ent</match>
         </override>
 
@@ -122,6 +125,24 @@
                      attenuation="1" />
         </override>
 
+        <!-- Cooking fire -->
+        <override tag_name="LR_WhiteOrchard_CookingFire"
+                  label="white_orchard_cooking_fire"
+                  radius="5.5">
+          <match mode="exact">stand_mw_cooking_</match>
+          <offset x="0"
+                  y="0"
+                  z="0.25" />
+        </override>
+
+        <!-- Forge -->
+        <override tag_name="LR_WhiteOrchard_Forge"
+                  label="white_orchard_forge"
+                  radius="5.5">
+          <match mode="exact">ob_forge_px.w2ent</match>
+          <shadows fade_distance="25"
+                   fade_range="20" />
+        </override>
       </overrides>
     </light_rewrite>
   </custom>
