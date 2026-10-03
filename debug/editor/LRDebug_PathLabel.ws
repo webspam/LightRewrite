@@ -56,12 +56,12 @@ class LRDebug_PathLabel extends LRDebug_ScreenLabel {
         index = thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type);
 
         if (type == 'spot') {
-            count = LRDebug_SpotLightCount(entity);
+            count = entity.LRDebug_SpotLightCount();
             light = LRDebug_SpotLightAt(entity, index);
             prefix = "S";
         }
         else {
-            count = LRDebug_PointLightCount(entity);
+            count = entity.LRDebug_PointLightCount();
             light = LRDebug_PointLightAt(entity, index);
             prefix = "P";
         }

@@ -314,16 +314,11 @@ class LRDebug_LabelManager {
         }
     }
 
-    private function CountComponents(entity: CGameplayEntity, className: name): int {
-        var components: array<CComponent> = entity.GetComponentsByClassName(className);
-        return components.Size();
-    }
-
     private function CreateOnelinerForEntity(entity: CGameplayEntity) {
         var label: LRDebug_LightOneLiner;
 
-        var pointLights: int = CountComponents(entity, 'CPointLightComponent');
-        var spotLights: int = CountComponents(entity, 'CSpotLightComponent');
+        var pointLights: int = entity.LRDebug_PointLightCount();
+        var spotLights: int = entity.LRDebug_SpotLightCount();
 
         if (pointLights == 0 && spotLights == 0) return;
 

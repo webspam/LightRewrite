@@ -8,14 +8,39 @@
 
 // ---- Component helpers ----
 
+@addField(CGameplayEntity) public var lrDebugLightCountsCached: bool;
+@addField(CGameplayEntity) public var lrDebugPointLightCount: int;
+@addField(CGameplayEntity) public var lrDebugSpotLightCount: int;
+
+@addMethod(CGameplayEntity)
+public function LRDebug_CacheLightCounts() {
+    if (lrDebugLightCountsCached) return;
+
+    lrDebugPointLightCount = GetComponentsCountByClassName('CPointLightComponent');
+    lrDebugSpotLightCount = GetComponentsCountByClassName('CSpotLightComponent');
+    lrDebugLightCountsCached = true;
+}
+
+@addMethod(CGameplayEntity)
+public function LRDebug_PointLightCount(): int {
+    LRDebug_CacheLightCounts();
+    return lrDebugPointLightCount;
+}
+
+@addMethod(CGameplayEntity)
+public function LRDebug_SpotLightCount(): int {
+    LRDebug_CacheLightCounts();
+    return lrDebugSpotLightCount;
+}
+
 @addMethod(CGameplayEntity)
 public function HasPointLight(): bool {
-    return GetComponentsCountByClassName('CPointLightComponent') > 0;
+    return LRDebug_PointLightCount() > 0;
 }
 
 @addMethod(CGameplayEntity)
 public function HasSpotLight(): bool {
-    return GetComponentsCountByClassName('CSpotLightComponent') > 0;
+    return LRDebug_SpotLightCount() > 0;
 }
 
 function LRDebug_PointLightAt(entity: CGameplayEntity, index: int): CPointLightComponent {
@@ -30,14 +55,6 @@ function LRDebug_SpotLightAt(entity: CGameplayEntity, index: int): CSpotLightCom
     components = entity.GetComponentsByClassName('CSpotLightComponent');
     if (index >= 0 && index < components.Size()) return (CSpotLightComponent)components[index];
     return NULL;
-}
-
-function LRDebug_PointLightCount(entity: CGameplayEntity): int {
-    return entity.GetComponentsCountByClassName('CPointLightComponent');
-}
-
-function LRDebug_SpotLightCount(entity: CGameplayEntity): int {
-    return entity.GetComponentsCountByClassName('CSpotLightComponent');
 }
 
 // ---- Entity classification ----
