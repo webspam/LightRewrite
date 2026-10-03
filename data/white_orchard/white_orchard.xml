@@ -16,13 +16,10 @@
         <!-- All candles in White Orchard -->
         <override tag_name="LR_WhiteOrchard_Candle"
                   label="white_orchard_candle"
-                  brightness="8"
-                  radius="4"
-                  attenuation="1.0"
-                  use_spotlight_colour="true">
+                  radius="5">
           <!-- Match all entities with a file name starting with "candle" -->
           <match>candle</match>
-          <!-- Set the light colour to a more bluish white -->
+          <!-- Set the light colour to a more bluish white - ENV fight -->
           <colour r="240"
                   g="245"
                   b="255" />
@@ -112,6 +109,19 @@
                   attenuation="0.9">
           <match mode="exact">torch_wall_metal.w2ent</match>
         </override>
+
+        <!-- Stoves -->
+        <override tag_name="LR_WhiteOrchard_Stove"
+                  label="white_orchard_stove">
+          <match mode="exact">coal_small_double_spotlight_complex.w2ent</match>
+          <spotlight index="0"
+                     radius="2.5"
+                     attenuation="1" />
+          <spotlight index="1"
+                     radius="5"
+                     attenuation="1" />
+        </override>
+
       </overrides>
     </light_rewrite>
   </custom>
