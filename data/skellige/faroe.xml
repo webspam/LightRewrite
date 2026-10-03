@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Raw exports -->
+      <overrides profile_name="Default"
+                 weight="10">
+        <override tag_name="LR_qgJbvNSL_horn_chandelier_noshadow"
+                  label="faroe_horn_chandelier_noshadow"
+                  brightness="20"
+                  radius="6"
+                  attenuation="1">
+          <match mode="exact">horn_chandelier_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\skellige\faroe\pirate_harbour\lights_interior.w2l</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default"
+                 weight="10">
+        <override tag_name="LR_qgJbvNSL_coal_smaller"
+                  label="faroe_coal_smaller"
+                  radius="5.5">
+          <match mode="exact">coal_smaller.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\skellige\faroe\village\buildings\pirate_interiors.w2l</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
