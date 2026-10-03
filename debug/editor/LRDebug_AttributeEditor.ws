@@ -108,11 +108,11 @@ class LRDebug_AttributeEditor {
         var count, index: int;
 
         if (type == 'spot') {
-            count = LRDebug_SpotLightCount(target);
+            count = target.LRDebug_SpotLightCount();
             index = spotLightIndex;
         }
         else {
-            count = LRDebug_PointLightCount(target);
+            count = target.LRDebug_PointLightCount();
             index = pointLightIndex;
         }
 
@@ -128,13 +128,13 @@ class LRDebug_AttributeEditor {
 
         type = GetSelectedLightType(target);
         if (type == 'spot') {
-            count = LRDebug_SpotLightCount(target);
+            count = target.LRDebug_SpotLightCount();
             if (count < 2) return false;
 
             spotLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;
         }
         else {
-            count = LRDebug_PointLightCount(target);
+            count = target.LRDebug_PointLightCount();
             if (count < 2) return false;
 
             pointLightIndex = (GetActiveLightIndex(target, type) + delta + count) % count;

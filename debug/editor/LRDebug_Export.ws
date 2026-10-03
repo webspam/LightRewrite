@@ -212,8 +212,8 @@ function LRDebug_ExportEditedLights(optional channel: name) {
         if (entityFile == "") continue;
 
         line = "entityFile=" + entityFile + " layerPath=" + layerPath +
-            " pointLightCount=" + IntToString(LRDebug_PointLightCount(entity)) +
-            " spotLightCount=" + IntToString(LRDebug_SpotLightCount(entity)) +
+            " pointLightCount=" + IntToString(entity.LRDebug_PointLightCount()) +
+            " spotLightCount=" + IntToString(entity.LRDebug_SpotLightCount()) +
             fields;
         if (loggedLines.Contains(line)) continue;
         loggedLines.PushBack(line);
