@@ -289,10 +289,13 @@ function BuildSpotlightElement {
     param(
         [System.Xml.XmlDocument] $Doc,
         [hashtable]              $Params,
-        [string]                 $Prefix
+        [int]                    $Index,
+        [int]                    $Count
     )
 
+    $Prefix = "s${Index}_"
     $spot = $Doc.CreateElement('spotlight')
+    if (!(SpotlightIndexRedundant $Params $Index $Count)) { $spot.SetAttribute('index', [string]$Index) }
     if ($Params.ContainsKey("${Prefix}brightness")) { $spot.SetAttribute('brightness', (FmtFloat $Params["${Prefix}brightness"])) }
     if ($Params.ContainsKey("${Prefix}radius")) { $spot.SetAttribute('radius', (FmtFloat $Params["${Prefix}radius"])) }
     if ($Params.ContainsKey("${Prefix}attenuation")) { $spot.SetAttribute('attenuation', (FmtFloat $Params["${Prefix}attenuation"])) }
@@ -428,11 +431,7 @@ function BuildOverrideElement {
 
     $spotIndices = ComponentIndices $Params 's'
     foreach ($idx in $spotIndices) {
-        $spotEl = BuildSpotlightElement $Doc $Params "s${idx}_"
-        if (!(SpotlightIndexRedundant $Params $idx $spotIndices.Count)) {
-            $spotEl.SetAttribute('index', [string]$idx)
-        }
-        $override.AppendChild($spotEl) | Out-Null
+        $override.AppendChild((BuildSpotlightElement $Doc $Params $idx $spotIndices.Count)) | Out-Null
     }
 
     return $override
