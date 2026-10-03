@@ -37,11 +37,17 @@
           </light>
         </override>
 
-        <!-- Small group B complex -->
+        <!-- Small group B complex - RT/PT only dual-light -->
+        <!-- Remastered allows the spotlight to be used - can cast RT/PT shadows. -->
         <!-- <override tag_name="LR_candle_small_group_melted_b_complex"
                   label="candle_small_group_melted_b_complex"
                   radius="5">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+          <spotlight brightness="5">
+            <offset x="0.076"
+                    y="-0.0225"
+                    z="0.13" />
+          </spotlight>
         </override> -->
       </overrides>
     </light_rewrite>
