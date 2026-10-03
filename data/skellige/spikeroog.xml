@@ -40,6 +40,7 @@
         <!-- Coal fireplace (pair) -->
         <override tag_name="LR_Spikeroog_CoalFireplace"
                   label="spikeroog_coal_fireplace"
+                  brightness="50"
                   radius="7">
           <match mode="exact">coal_small.w2ent</match>
           <match type="layer"
