@@ -43,9 +43,20 @@ class CLightRewriteManager {
         var rewriter: ILightSourceRewriter;
 
         switch (params.rewriterType.value) {
-            case LRT_Candle:     rewriter = new CCandleLightRewriter in entity;     break;
-            case LRT_Spotlight:  rewriter = new CSpotlightLightRewriter in entity;  break;
-            default:             rewriter = new CGenericLightRewriter in entity;    break;
+            case LRT_Candle:
+                if (LR_HasPointLight(entity)) {
+                    rewriter = new CCandleLightRewriter in entity;
+                }
+                else {
+                    rewriter = new CSpotlightLightRewriter in entity;
+                }
+                break;
+            case LRT_Spotlight:
+                rewriter = new CSpotlightLightRewriter in entity;
+                break;
+            default:
+                rewriter = new CGenericLightRewriter in entity;
+                break;
         }
 
         rewriter.Init(entity, params);
