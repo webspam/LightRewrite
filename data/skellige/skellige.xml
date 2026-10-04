@@ -46,7 +46,7 @@
 
       <!-- Skellige fine-tuned entities -->
       <overrides profile_name="Default"
-                 weight="20">
+                 weight="15">
         <matches>
           <match type="layer">levels\skellige\</match>
         </matches>
@@ -80,6 +80,39 @@
           <shadows fade_distance="30"
                    fade_range="20" />
         </override>
+
+        <!-- Candle holder large wood c -->
+        <override tag_name="LR_Skellige_CandleHolderLargeWoodC"
+                  label="skellige_candle_holder_large_wood_c"
+                  brightness="13"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">candle_holder_large_wood_c.w2ent</match>
+        </override>
+
+        <!-- Campfire -->
+        <override tag_name="LR_Skellige_Campfire01"
+                  label="skellige_campfire_01"
+                  brightness="50"
+                  radius="5.5"
+                  attenuation="0.9">
+          <match>campfire_01</match>
+        </override>
+
+        <!-- Cauldron -->
+        <override tag_name="LR_Skellige_Cauldron"
+                  label="skellige_cauldron"
+                  radius="5.5">
+          <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
+        </override>
+
+        <!-- Forge -->
+        <override tag_name="LR_aN4rPuRI_ob_forge_px"
+                  label="edited_ob_forge_px"
+                  radius="5">
+          <match mode="exact">ob_forge_px.w2ent</match>
+        </override>
+
       </overrides>
     </light_rewrite>
   </custom>
