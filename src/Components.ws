@@ -105,7 +105,8 @@ function LR_ShadowCastWeight(mode: ELightShadowCastingMode): int {
 }
 
 function LR_HasPointLight(entity: CGameplayEntity): bool {
-    return entity.GetComponentByClassName('CPointLightComponent') != NULL;
+    if (entity.GetComponentByClassName('CPointLightComponent')) return true;
+    return false;
 }
 
 // Strongest shadow caster, or most central
