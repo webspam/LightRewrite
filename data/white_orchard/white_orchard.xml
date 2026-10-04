@@ -20,9 +20,9 @@
           <!-- Match all entities with a file name starting with "candle" -->
           <match>candle</match>
           <!-- Set the light colour to a more bluish white - ENV fight -->
-          <colour r="240"
-                  g="245"
-                  b="255" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
           <shadows fade_distance="10"
                    fade_range="12.5"
                    casting_mode="Normal" />
