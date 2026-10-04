@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Undvik -->
+      <overrides profile_name="Default"
+                 weight="10">
+        <matches>
+          <match type="layer">levels\skellige\env_global_pbr\undvyk\</match>
+          <match type="layer">levels\skellige\ice_giant_island\</match>
+        </matches>
+
+        <override tag_name="LR_Undvik_WallBrazierChain"
+                  label="undvik_wall_brazier_chain"
+                  radius="6.5"
+                  attenuation="0.9">
+          <match mode="exact">braziers_wall_chain.w2ent</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default"
+                 weight="10">
+        <override tag_name="LR_Undvik_WallBrazierRound"
+                  label="undvik_wall_brazier_round"
+                  radius="6"
+                  attenuation="0.9">
+          <match mode="exact">braziers_wall_round.w2ent</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
