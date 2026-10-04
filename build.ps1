@@ -4,7 +4,8 @@ param(
   [switch]$SkipWcc,
   [switch]$SkipDlc,
   [switch]$DebugEditor,
-  [switch]$NextGen
+  [switch]$NextGen,
+  [switch]$Compile
 )
 
 $ErrorActionPreference = "Stop"
@@ -99,6 +100,15 @@ $bundleDir = Join-Path $buildRoot "bundle"
 $modsRoot = Join-Path $buildRoot "mods"
 $modContentDir = Join-Path $modsRoot "modLightRewrite/content"
 $scriptsDir = Join-Path $modContentDir "scripts/local/modLightRewrite"
+
+$compiledScriptsDir = Join-Path $buildRoot "compiledScripts"
+
+if ($Compile) {
+  $gameContent0Dir = $env:WITCHER_CONTENT0_PATH
+  if (!$gameContent0Dir -or !(Test-Path -LiteralPath $gameContent0Dir)) {
+    throw "Witcher 3 content0 directory not found. Set WITCHER_CONTENT0_PATH. Looked for: $gameContent0Dir"
+  }
+}
 
 $dlcRoot = Join-Path $buildRoot "dlc"
 $dlcBundleDir = Join-Path $buildRoot "dlcBundle"
@@ -209,6 +219,22 @@ else {
   catch {
     throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
   }
+}
+
+if ($Compile) {
+  Remove-DirectoryIfExists $compiledScriptsDir
+  New-Directory $compiledScriptsDir
+
+  $patchDir = Join-Path $RepoRoot "src"
+  try {
+    Invoke-WccLite -Arguments "compilescripts `"$gameContent0Dir`" -out=`"$compiledScriptsDir`" -patch=`"$patchDir`""
+  }
+  catch {
+    throw "Error compiling scripts using wcc_lite:`n`n$($_.Exception.Message)"
+  }
+
+  Move-Item -LiteralPath (Join-Path $compiledScriptsDir "blob.rsblob") -Destination (Join-Path $modContentDir "precompiled.rsblob")
+  Remove-DirectoryIfExists $compiledScriptsDir
 }
 
 if (!$SkipDlc) {
