@@ -124,6 +124,12 @@ function RewriteLight() {
     inOriginalState = false;
 }
 
+@wrapMethod(CSpotlightLightRewriter)
+function RewriteLight() {
+    wrappedMethod();
+    inOriginalState = false;
+}
+
 @wrapMethod(ILightSourceRewriter)
 function RestoreOriginalState() {
     wrappedMethod();
