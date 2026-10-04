@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+
+      <overrides profile_name="Default"
+                 weight="10">
+        <!-- An Skellig - Wall Torch - Wooden -->
+        <override tag_name="LR_AnSkellig_TorchWallWooden"
+                  label="an_skellig_torch_wall_wooden">
+          <match mode="exact">torch_wall_wooden_small_bounce.w2ent</match>
+          <match type="layer">levels\skellige\an_skellig\</match>
+          <shadows fade_distance="30"
+                   fade_range="20" />
+        </override>
+      </overrides>
+
+    </light_rewrite>
+  </custom>
+</redxml>
