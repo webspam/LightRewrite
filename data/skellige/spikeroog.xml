@@ -20,6 +20,9 @@
       <!-- Spikeroog -->
       <overrides profile_name="Default"
                  weight="15">
+        <matches>
+          <match type="layer">levels\skellige\spikeroog\</match>
+        </matches>
 
         <!-- Candles -->
         <override tag_name="LR_SpikeroogInn_Candle"
