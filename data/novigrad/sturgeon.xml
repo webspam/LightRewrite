@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Golden Sturgeon - Raw edits -->
+      
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_lamp_standing_complex" label="edited_lamp_standing_complex" brightness="12">
+          <match mode="exact">lamp_standing_complex.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\_novigrad_brothel_district\lights.w2l</match>
+          <shadows fade_distance="29.86" fade_range="20.05" />
+          <spotlight brightness="0" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_candleholder_small_melted_fake_shadow_complex" label="edited_candleholder_small_melted_fake_shadow_complex" brightness="1" radius="4.5">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\mq3039_bandit_house\building_interior.w2l</match>
+          <spotlight brightness="0" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_hanging_lamp_holder_complex" label="edited_hanging_lamp_holder_complex" brightness="10" radius="5.5">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\mq3039_bandit_house\interior_ns.w2l</match>
+          <spotlight brightness="0" radius="2.66" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_candle_small_group_melted_b_complex" label="edited_candle_small_group_melted_b_complex" radius="6">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\q301_haunted_house\decoration.w2l</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_candle_small_group_melted_c" label="edited_candle_small_group_melted_c">
+          <match mode="exact">candle_small_group_melted_c.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\q301_haunted_house\decoration_ns.w2l</match>
+          <light index="0" radius="5" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <matches>
+          <match type="layer" mode="exact">levels\novigrad\quests\q311_geels\haunted_house\objects\lights\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_D7ugaywW_candle_small_group_melted_b_complex_2" label="edited_candle_small_group_melted_b_complex" radius="6">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_D7ugaywW_candle_med_melted_complex" label="edited_candle_med_melted_complex" radius="6">
+          <match mode="exact">candle_med_melted_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_D7ugaywW_candleholder_small_melted_fake_shadow_complex_2" label="edited_candleholder_small_melted_fake_shadow_complex" radius="6">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <override tag_name="LR_D7ugaywW_shrine_of_ethernal_fire_altar_spot" label="edited_shrine_of_ethernal_fire_altar_spot">
+          <match mode="exact">shrine_of_ethernal_fire_altar_spot.w2ent</match>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\fishmarket\deco.w2l</match>
+          <shadows fade_distance="30.34" fade_range="20.06" />
+          <offset x="0" y="0" z="2.14" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default" weight="10">
+        <matches>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\_harbour_district\golden_sturgeon_inn\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_D7ugaywW_candle_small_group_melted_c_complex" label="edited_candle_small_group_melted_c_complex">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="0" brightness="7.58" />
+        </override>
+
+        <override tag_name="LR_D7ugaywW_candle_holder_large_wood_b_complex" label="edited_candle_holder_large_wood_b_complex" brightness="7.75" radius="5.5" attenuation="1">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_D7ugaywW_candle_small_group_melted_complex" label="edited_candle_small_group_melted_complex">
+          <match mode="exact">candle_small_group_melted_complex.w2ent</match>
+          <light index="0" brightness="6.6" />
+          <light index="1" brightness="5.06" radius="0" />
+        </override>
+
+        <override tag_name="LR_D7ugaywW_chandelier_bright" label="edited_chandelier_bright" brightness="24">
+          <match mode="exact">chandelier_bright.w2ent</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

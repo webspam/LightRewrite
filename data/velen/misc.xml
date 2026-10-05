@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Default"
+                 weight="20">
+        <!-- Keira's Hut -->
+        <override tag_name="LR_KeiraHut_CandleGroupCaves"
+                  label="keira_hut_candle_large_group_caves"
+                  brightness="24">
+          <match mode="exact">candle_large_group_caves_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\nml_villages\keira_metz_house\fx_lights.w2l</match>
+        </override>
+      </overrides>
+
+      <!-- Bald Mountain Cauldron -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_BaldMountain_Cauldron"
+                  label="bald_mountain_cauldron"
+                  radius="5.5">
+          <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
+          <match type="layer">levels\novigrad\quests\q111_imlerith\</match>
+        </override>
+      </overrides>
+
+      <!-- <overrides profile_name="Default"
+                 weight="10">
+        <override tag_name="LR_BaldMountain_Braziers"
+                  label="bald_mountain_braziers">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\nml_surface\q111_imlerith\bg_orgy\hag_tent_kitchen.w2l</match>
+          <spotlight attenuation="1" />
+        </override>
+      </overrides> -->
+    </light_rewrite>
+  </custom>
+</redxml>
