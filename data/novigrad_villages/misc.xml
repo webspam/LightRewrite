@@ -43,6 +43,41 @@
                    fade_range="20" />
         </override>
       </overrides>
+
+      <!-- Honeymead Estate -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\gustfields\gf25_noblemans_estate_2\</match>
+          <!-- interrior.w2l -->
+          <!-- lights.w2l -->
+        </matches>
+
+        <override tag_name="LR_Honeymead_Candelabra"
+                  label="honeymead_candelabra"
+                  brightness="10.24"
+                  radius="6.5"
+                  attenuation="0.95">
+          <match>candelabra</match>
+        </override>
+
+        <override tag_name="LR_Honeymead_CandelabraOnAStick"
+                  label="honeymead_candelabra_on_a_stick"
+                  brightness="9.52"
+                  radius="6.5"
+                  attenuation="0.95">
+          <match>candelabra_standing</match>
+        </override>
+
+        <override tag_name="LR_Honeymead_Chandelier"
+                  label="honeymead_chandelier"
+                  brightness="30"
+                  radius="6.5"
+                  attenuation="0.85">
+          <match>chandelier</match>
+        </override>
+      </overrides>
+
     </light_rewrite>
   </custom>
 </redxml>
