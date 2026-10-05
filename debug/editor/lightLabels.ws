@@ -95,6 +95,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputResetOffset', 'LRDebug_ResetOffset');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
+    theInput.RegisterListener(this, 'LRDebug_OnInputRedo', 'LRDebug_Redo');
     theInput.RegisterListener(this, 'LRDebug_OnBrightnessModifier', 'LRDebug_BrightnessModifier');
     theInput.RegisterListener(this, 'LRDebug_OnRadiusModifier', 'LRDebug_RadiusModifier');
     theInput.RegisterListener(this, 'LRDebug_OnAttenuationModifier', 'LRDebug_AttenuationModifier');
@@ -390,6 +391,21 @@ public function LRDebug_OnInputUndo(action: SInputAction): bool {
     }
 
     lrDebugLabelManager.Undo(lrDebugHistory);
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputRedo(action: SInputAction): bool {
+    if (
+        !lrDebugLabels ||
+        !IsPressed(action) ||
+        lrDebugAdjusting ||
+        !theInput.IsActionPressed('LRDebug_CtrlModifier')
+    ) {
+        return false;
+    }
+
+    lrDebugLabelManager.Redo(lrDebugHistory);
     return true;
 }
 

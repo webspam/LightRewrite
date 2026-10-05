@@ -7,23 +7,13 @@
  * commit at EndAdjust once the whole drag is known.
  */
 class LRDebug_EditHistory {
-    private var entries: array<LRDebug_EditEntry>;
-    private var pending: LRDebug_EditEntry;
+    private var entries    : array<LRDebug_EditEntry>;
+    private var redoEntries: array<LRDebug_EditEntry>;
+    private var pending    : LRDebug_EditEntry;
     private const var MAX_ENTRIES: int;  default MAX_ENTRIES = 100;
 
     public function StartEdit(entities: array<CGameplayEntity>, label: string) {
-        var i, count: int;
-
-        pending = new LRDebug_EditEntry in this;
-        pending.label = label;
-
-        count = entities.Size();
-        for (i = 0; i < count; i += 1) {
-            if (!entities[i]) continue;
-
-            pending.entities.PushBack(entities[i]);
-            pending.snapshots.PushBack(SnapshotParams(entities[i]));
-        }
+        pending = CaptureEntry(entities, label);
     }
 
     /** Drop the snapshot when nothing changed, so a no-op hold leaves no undo step */
@@ -31,8 +21,8 @@ class LRDebug_EditHistory {
         if (!pending) return;
 
         if (keep) {
-            if (entries.Size() >= MAX_ENTRIES) entries.Erase(0);
-            entries.PushBack(pending);
+            PushUndo(pending);
+            redoEntries.Clear();
         }
 
         pending = NULL;
@@ -45,6 +35,19 @@ class LRDebug_EditHistory {
 
         record = entries[entries.Size() - 1];
         entries.PopBack();
+        PushRedo(CaptureEntry(record.entities, record.label));
+        RestoreEntry(record);
+        return record;
+    }
+
+    public function Redo(): LRDebug_EditEntry {
+        var record: LRDebug_EditEntry;
+
+        if (redoEntries.Size() == 0) return NULL;
+
+        record = redoEntries[redoEntries.Size() - 1];
+        redoEntries.PopBack();
+        PushUndo(CaptureEntry(record.entities, record.label));
         RestoreEntry(record);
         return record;
     }
@@ -62,6 +65,43 @@ class LRDebug_EditHistory {
             entries[i].Remove(entity);
             if (entries[i].entities.Size() == 0) entries.Erase(i);
         }
+
+        for (i = redoEntries.Size() - 1; i >= 0; i -= 1) {
+            redoEntries[i].Remove(entity);
+            if (redoEntries[i].entities.Size() == 0) redoEntries.Erase(i);
+        }
+    }
+
+    private function PushUndo(record: LRDebug_EditEntry) {
+        if (entries.Size() >= MAX_ENTRIES) entries.Erase(0);
+        entries.PushBack(record);
+    }
+
+    private function PushRedo(record: LRDebug_EditEntry) {
+        if (redoEntries.Size() >= MAX_ENTRIES) redoEntries.Erase(0);
+        redoEntries.PushBack(record);
+    }
+
+    // TODO: Reimpl. cleanly if undo/redo is slow
+    private function CaptureEntry(
+        entities: array<CGameplayEntity>,
+        label: string
+    ): LRDebug_EditEntry {
+        var record: LRDebug_EditEntry;
+        var i, count: int;
+
+        record = new LRDebug_EditEntry in this;
+        record.label = label;
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            if (!entities[i]) continue;
+
+            record.entities.PushBack(entities[i]);
+            record.snapshots.PushBack(SnapshotParams(entities[i]));
+        }
+
+        return record;
     }
 
     /** Falls back to effective params when unedited, so undoing a no-op leaves no debug params behind */

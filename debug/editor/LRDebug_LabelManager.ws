@@ -252,12 +252,18 @@ class LRDebug_LabelManager {
 
     /** Regenerate the reverted lights' labels so their values reflect the restored state */
     public function Undo(history: LRDebug_EditHistory) {
-        var record: LRDebug_EditEntry;
+        ShowUndoRedoToast(history.Undo(), "Undo");
+    }
+
+    public function Redo(history: LRDebug_EditHistory) {
+        ShowUndoRedoToast(history.Redo(), "Redo");
+    }
+
+    private function ShowUndoRedoToast(record: LRDebug_EditEntry, action: string) {
         var i, count: int;
 
-        record = history.Undo();
         if (!record) {
-            ShowToast("Nothing to undo");
+            ShowToast("Nothing to " + StrLower(action));
             return;
         }
 
@@ -269,7 +275,7 @@ class LRDebug_LabelManager {
         }
 
         RefreshAttributeLabels();
-        ShowToast("Undo: " + record.label);
+        ShowToast(action + ": " + record.label);
     }
 
     public function ResetTarget() {
