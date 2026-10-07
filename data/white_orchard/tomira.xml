@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Tomira's Hut -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <!-- hut_only_to_be_hidden_q505\lights.w2l -->
+          <match type="layer">levels\prolog_village\village\buildings\herbalist_hut\</match>
+        </matches>
+
+        <override tag_name="LR_Tomira_Colour"
+                  label="tomira_colour">
+          <colour r="245"
+                  g="250"
+                  b="255" />
+        </override>
+
+        <!-- <match mode="exact">candleholder_small_melted.w2ent</match> -->
+        <!-- <match mode="exact">candle_small_group_melted_b.w2ent</match> -->
+
+        <override tag_name="LR_Tomira_CoalSmaller"
+                  label="tomira_coal_smaller"
+                  brightness="37.5"
+                  radius="5">
+          <match mode="exact">coal_smaller.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.17" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
