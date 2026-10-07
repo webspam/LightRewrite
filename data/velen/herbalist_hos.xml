@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\white_bridge\herbalist\</match>
+        </matches>
+
+        <!-- Torch Wall Wooden -->
+        <override tag_name="LR_HosHerbalist_TorchWallWooden"
+                  label="hos_herbalist_torch_wall_wooden"
+                  brightness="20">
+          <match mode="exact">torch_wall_wooden_complex.w2ent</match>
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_HosHerbalist_TorchOnAStick"
+                  label="hos_herbalist_torch_on_a_stick"
+                  brightness="19.93"
+                  radius="4.5">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <shadows fade_range="20" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <spotlight radius="0" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

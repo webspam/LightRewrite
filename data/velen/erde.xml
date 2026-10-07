@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <!-- bighouse_interior.w2l -->
+          <!-- lights.w2l -->
+          <match type="layer">dlc\ep1\levels\novigrad\locations\poi\forest_village\</match>
+        </matches>
+
+        <!-- Erde - Colour, Shadows, & Attenuation -->
+        <override tag_name="LR_Erde_Shadows"
+                  label="erde_shadows"
+                  attenuation="1">
+          <shadows fade_distance="20"
+                   fade_range="20" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+        </override>
+
+        <!-- Erde Candle -->
+        <override tag_name="LR_Erde_Candle"
+                  label="erde_candle"
+                  brightness="4"
+                  radius="5">
+          <match>candle</match>
+        </override>
+
+        <!-- Lantern -->
+        <override tag_name="LR_Erde_Lantern"
+                  label="erde_lantern"
+                  brightness="15"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <spotlight radius="0"
+                     attenuation="1" />
+          <shadows fade_distance="30"
+                   fade_range="20"
+                   blend_factor="0.74" />
+        </override>
+
+        <!-- Candleholder -->
+        <override tag_name="LR_Erde_Candleholder"
+                  label="erde_candleholder">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <spotlight radius="0" />
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_Erde_TorchOnAStick"
+                  label="erde_torch_on_a_stick"
+                  brightness="20"
+                  radius="5">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <shadows blend_factor="0.66" />
+          <spotlight radius="0"
+                     attenuation="1" />
+        </override>
+
+        <!-- Stove -->
+        <override tag_name="LR_Erde_Stove"
+                  label="erde_stove">
+          <match mode="exact">coal_small_double_spotlight_complex.w2ent</match>
+          <spotlight index="0"
+                     radius="2.25"
+                     attenuation="1" />
+          <spotlight index="1"
+                     attenuation="1" />
+        </override>
+
+        <!-- Cellar Candles -->
+        <override tag_name="LR_Erde_CandleGroupC"
+                  label="erde_candle_group_c"
+                  brightness="3">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="1"
+                 radius="2" />
+          <light index="2"
+                 radius="2" />
+        </override>
+        <override tag_name="LR_Erde_CandleGroupB"
+                  label="erde_candle_group_b"
+                  brightness="3">
+          <match mode="exact">candle_small_group_melted_b.w2ent</match>
+          <light index="1"
+                 radius="2" />
+        </override>
+        <override tag_name="LR_Erde_CandleGroupD"
+                  label="erde_candle_group_d"
+                  brightness="3">
+          <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
+          <light index="1"
+                 radius="2" />
+        </override>
+        <override tag_name="LR_Erde_CandleMedA"
+                  label="erde_candle_med_a"
+                  brightness="3">
+          <match mode="exact">candle_med_a_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\forest_village\lights.w2l</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
