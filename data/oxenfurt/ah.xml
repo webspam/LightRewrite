@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Auction House -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_Oxenfurt_AuctionHouse"
+                  label="oxenfurt_auction_house"
+                  brightness="7.76"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\q603\interior_lights.w2l</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
