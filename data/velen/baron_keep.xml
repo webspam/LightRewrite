@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Bloody Baron's Keep -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <!-- fx_lights.w2l -->
+          <match type="layer">levels\novigrad\baron_lair\baron_castle\</match>
+        </matches>
+
+        <!-- Candleholder - Large B -->
+        <override tag_name="LR_Baron_Candle_Holder_Large_Wood_B_Complex"
+                  label="baron_candle_holder_large_wood_b_complex"
+                  brightness="7.76"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="2.11" />
+        </override>
+
+        <!-- Candleholder - Large A -->
+        <override tag_name="LR_Baron_Candle_Holder_Large_Wood_A"
+                  label="baron_candle_holder_large_wood_a"
+                  brightness="7.76"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">candle_holder_large_wood_a.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="1.95" />
+        </override>
+
+        <!-- Candle Group B -->
+        <override tag_name="LR_Baron_Candle_Small_Group_Melted_B_Complex"
+                  label="baron_candle_small_group_melted_b_complex"
+                  brightness="4"
+                  radius="5.25">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_Baron_Candle_Holder_Noshadow"
+                  label="baron_candle_holder_noshadow"
+                  brightness="3">
+          <match mode="exact">baron_candle_holder_noshadow.w2ent</match>
+        </override>
+
+        <override tag_name="LR_Baron_Candle_Small_Group_Melted"
+                  label="baron_candle_small_group_melted"
+                  brightness="3.3">
+          <match mode="exact">candle_small_group_melted.w2ent</match>
+          <light index="0">
+            <shadows casting_mode="Normal" />
+          </light>
+        </override>
+
+        <!-- Fireplace -->
+        <override tag_name="LR_Baron_Fireplace"
+                  label="baron_fireplace"
+                  radius="5.5">
+          <match mode="exact">fireplace_grate.w2ent</match>
+          <!-- barons_castle_interior.w2l -->
+          <offset x="0"
+                  y="0"
+                  z="0.65" />
+        </override>
+
+        <!-- Chandelier - Small -->
+        <override tag_name="LR_Baron_ChandelierSmall"
+                  label="baron_castle_chandelier_small"
+                  brightness="40"
+                  radius="4.25">
+          <match mode="exact">chandelier_small_noshadow.w2ent</match>
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_Baron_TorchOnAStick"
+                  label="baron_castle_torch_on_a_stick"
+                  brightness="30">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <shadows fade_range="20" />
+          <spotlight radius="0" />
+        </override>
+
+        <!-- Hanging Lamp -->
+        <override tag_name="LR_Baron_HangingLamp"
+                  label="baron_castle_hanging_lamp"
+                  brightness="15"
+                  radius="0"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <spotlight brightness="15"
+                     radius="5"
+                     attenuation="1"
+                     innerAngle="326"
+                     outerAngle="347">
+            <shadows casting_mode="Normal" />
+            <offset x="0"
+                    y="0"
+                    z="-0.14" />
+          </spotlight>
+        </override>
+
+        <!-- Campfire -->
+        <override tag_name="LR_Baron_Campfire"
+                  label="baron_castle_campfire"
+                  brightness="45"
+                  radius="5"
+                  attenuation="0.9">
+          <match mode="exact">campfire_01.w2ent</match>
+        </override>
+      </overrides>
+
+      <!-- Override Tamara's Room -->
+      <overrides profile_name="Default"
+                 weight="22">
+        <override tag_name="LR_Baron_TamaraRoom_CandleDoorway"
+                  label="baron_tamara_room_candle_doorway"
+                  brightness="4.6">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\baron_lair\baron_castle\baron_castle_interior_lights_nn\entity</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

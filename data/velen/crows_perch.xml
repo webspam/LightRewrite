@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Crows Perch -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_CrowsPerch_ChandelierSmall"
+                  label="crows_perch_chandelier_small"
+                  brightness="40">
+          <match mode="exact">chandelier_small_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\baron_lair\baron_village\lights_exterior.w2l</match>
+          <offset x="0"
+                  y="0"
+                  z="0.25" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
