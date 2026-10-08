@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|고급
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|밝기
+2122144090||LightRewrite_Radius|반경
+2122144091||LightRewrite_Attenuation|감쇠
+2122144095||LightRewrite_PlayerTorch_Enabled|플레이어 횃불
+2122144096||LightRewrite_NpcTorch_Enabled|NPC 횃불

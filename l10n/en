@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|Advanced
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Brightness
+2122144090||LightRewrite_Radius|Radius
+2122144091||LightRewrite_Attenuation|Attenuation
+2122144095||LightRewrite_PlayerTorch_Enabled|Player torch
+2122144096||LightRewrite_NpcTorch_Enabled|NPC torches

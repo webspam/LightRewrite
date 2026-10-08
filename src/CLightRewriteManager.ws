@@ -3,7 +3,8 @@
  */
 class CLightRewriteManager {
     // Tag to identify entities that have a rewritable light.
-    public const var TAG_HAS_LIGHT: name;  default TAG_HAS_LIGHT = "LR_HasLight";
+    public const var TAG_HAS_LIGHT : name;  default TAG_HAS_LIGHT = 'LR_HasLight';
+    public const var TAG_IS_WIELDED: name;  default TAG_IS_WIELDED = 'LR_IsWielded';
 
     // Mod settings, which may be initialised prior to game load.
     public var settings: CLightRewriteSettings;
@@ -108,6 +109,20 @@ class CLightRewriteManager {
             else {
                 entities[i].lightSourceRewriter.RestoreOriginalState();
             }
+        }
+    }
+
+    public function RefreshHeldTorches() {
+        var entities: array<CEntity>;
+        var torch: W3LightSource;
+        var i, count: int;
+
+        theGame.GetEntitiesByTag(TAG_IS_WIELDED, entities);
+
+        count = entities.Size();
+        for (i = 0; i < count; i += 1) {
+            torch = (W3LightSource)entities[i];
+            if (torch) torch.RefreshLightRewriteTorch();
         }
     }
 

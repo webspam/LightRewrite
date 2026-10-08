@@ -3,23 +3,31 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION       : int;     default CONFIG_VERSION = 13;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 14;
     // Group name constants (must match XML Group id values)
-    private const var GENERAL_GROUP        : name;    default GENERAL_GROUP = 'LightRewrite_General';
-    private const var ADVANCED_GROUP       : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
+    private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
+    private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
     // Submenu ids (must match last segment of XML Group displayName)
-    private const var GENERAL_SUBMENU      : string;  default GENERAL_SUBMENU = "LightRewrite";
-    private const var ADVANCED_SUBMENU     : string;  default ADVANCED_SUBMENU = ADVANCED_GROUP;
+    private const var GENERAL_SUBMENU         : string;  default GENERAL_SUBMENU = "LightRewrite";
+    private const var ADVANCED_SUBMENU        : string;  default ADVANCED_SUBMENU = ADVANCED_GROUP;
     // Label key constants (must match XML Var id values)
-    private const var CURRENT_PROFILE_LABEL: string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
-    private const var NONE_PROFILE_LABEL   : name;    default NONE_PROFILE_LABEL = 'LightRewrite_None';
+    private const var CURRENT_PROFILE_LABEL   : string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
+    private const var NONE_PROFILE_LABEL      : name;    default NONE_PROFILE_LABEL = 'LightRewrite_None';
     // Setting name constants (must match XML Var id values)
-    private const var ENABLED              : name;    default ENABLED = 'Enabled';
-    private const var INIT_VERSION         : name;    default INIT_VERSION = 'InitVersion';
-    private const var CURRENT_PROFILE      : name;    default CURRENT_PROFILE = 'CurrentProfile';
-    private const var SPACING_MODE         : name;    default SPACING_MODE = 'SpacingMode';
-    private const var SPACING_COUNT        : name;    default SPACING_COUNT = 'SpacingCount';
-    private const var SPACING_BUDGET       : name;    default SPACING_BUDGET = 'SpacingBudget';
+    private const var ENABLED                 : name;    default ENABLED = 'Enabled';
+    private const var INIT_VERSION            : name;    default INIT_VERSION = 'InitVersion';
+    private const var CURRENT_PROFILE         : name;    default CURRENT_PROFILE = 'CurrentProfile';
+    private const var SPACING_MODE            : name;    default SPACING_MODE = 'SpacingMode';
+    private const var SPACING_COUNT           : name;    default SPACING_COUNT = 'SpacingCount';
+    private const var SPACING_BUDGET          : name;    default SPACING_BUDGET = 'SpacingBudget';
+    private const var PLAYER_TORCH_ENABLED    : name;    default PLAYER_TORCH_ENABLED = 'PlayerTorchEnabled';
+    private const var PLAYER_TORCH_BRIGHTNESS : name;    default PLAYER_TORCH_BRIGHTNESS = 'PlayerTorchBrightness';
+    private const var PLAYER_TORCH_RADIUS     : name;    default PLAYER_TORCH_RADIUS = 'PlayerTorchRadius';
+    private const var PLAYER_TORCH_ATTENUATION: name;    default PLAYER_TORCH_ATTENUATION = 'PlayerTorchAttenuation';
+    private const var NPC_TORCH_ENABLED       : name;    default NPC_TORCH_ENABLED = 'NpcTorchEnabled';
+    private const var NPC_TORCH_BRIGHTNESS    : name;    default NPC_TORCH_BRIGHTNESS = 'NpcTorchBrightness';
+    private const var NPC_TORCH_RADIUS        : name;    default NPC_TORCH_RADIUS = 'NpcTorchRadius';
+    private const var NPC_TORCH_ATTENUATION   : name;    default NPC_TORCH_ATTENUATION = 'NpcTorchAttenuation';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
@@ -36,6 +44,9 @@ class CLightRewriteSettings {
     private var spacingMode  : int;    default spacingMode = 0;
     private var spacingCount : float;  default spacingCount = 2.0;
     private var spacingBudget: float;  default spacingBudget = 4.0;
+
+    public var playerTorch: SLightRewriteTorchLight;
+    public var npcTorch   : SLightRewriteTorchLight;
 
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
@@ -65,6 +76,14 @@ class CLightRewriteSettings {
 
         profileOptions = profiles.GetNames();
         profileOptions.Insert(0, NONE_PROFILE_LABEL);
+
+        playerTorch = SLightRewriteTorchLight(
+            25,
+            25,
+            0.9,
+            SLightRewriteOptionalColour(true, Color(255, 250, 245))
+        );
+        npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
     }
 
     public function GetEnabledOptionId(): name {
@@ -109,6 +128,7 @@ class CLightRewriteSettings {
     // If mod config has never been initialised, set the default values and save them.
     public function EnsureGameConfigIsInitialised() {
         var initVersion: int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
+        var isFreshInstall: bool = initVersion == 0;
 
         if (initVersion == CONFIG_VERSION) return;
 
@@ -129,6 +149,22 @@ class CLightRewriteSettings {
             MigrateVar(GENERAL_GROUP, ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
         }
 
+        // v14: Added held torch sliders
+        if (initVersion < 14) {
+            gameConfig.SetVarValue(GENERAL_GROUP, PLAYER_TORCH_ENABLED, isFreshInstall);
+            gameConfig.SetVarValue(GENERAL_GROUP, PLAYER_TORCH_BRIGHTNESS, playerTorch.brightness);
+            gameConfig.SetVarValue(GENERAL_GROUP, PLAYER_TORCH_RADIUS, playerTorch.radius);
+            gameConfig.SetVarValue(
+                GENERAL_GROUP,
+                PLAYER_TORCH_ATTENUATION,
+                playerTorch.attenuation
+            );
+            gameConfig.SetVarValue(GENERAL_GROUP, NPC_TORCH_ENABLED, isFreshInstall);
+            gameConfig.SetVarValue(GENERAL_GROUP, NPC_TORCH_BRIGHTNESS, npcTorch.brightness);
+            gameConfig.SetVarValue(GENERAL_GROUP, NPC_TORCH_RADIUS, npcTorch.radius);
+            gameConfig.SetVarValue(GENERAL_GROUP, NPC_TORCH_ATTENUATION, npcTorch.attenuation);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -140,6 +176,21 @@ class CLightRewriteSettings {
 
         LogLightRewrite("Migrating " + fromGroup + "." + varId + " -> " + toGroup + "." + varId + " = " + value);
         gameConfig.SetVarValue(toGroup, varId, value);
+    }
+
+    private function ReadFloat(varId: name, fallback: float): float {
+        return StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, varId), fallback);
+    }
+
+    private function IsTorchOption(optionName: name): bool {
+        return optionName == PLAYER_TORCH_ENABLED
+            || optionName == PLAYER_TORCH_BRIGHTNESS
+            || optionName == PLAYER_TORCH_RADIUS
+            || optionName == PLAYER_TORCH_ATTENUATION
+            || optionName == NPC_TORCH_ENABLED
+            || optionName == NPC_TORCH_BRIGHTNESS
+            || optionName == NPC_TORCH_RADIUS
+            || optionName == NPC_TORCH_ATTENUATION;
     }
 
     public function ReadGameConfig() {
@@ -165,6 +216,15 @@ class CLightRewriteSettings {
             gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_BUDGET),
             spacingBudget
         );
+
+        playerTorch.enabled = gameConfig.GetVarValue(GENERAL_GROUP, PLAYER_TORCH_ENABLED);
+        playerTorch.brightness = ReadFloat(PLAYER_TORCH_BRIGHTNESS, playerTorch.brightness);
+        playerTorch.radius = ReadFloat(PLAYER_TORCH_RADIUS, playerTorch.radius);
+        playerTorch.attenuation = ReadFloat(PLAYER_TORCH_ATTENUATION, playerTorch.attenuation);
+        npcTorch.enabled = gameConfig.GetVarValue(GENERAL_GROUP, NPC_TORCH_ENABLED);
+        npcTorch.brightness = ReadFloat(NPC_TORCH_BRIGHTNESS, npcTorch.brightness);
+        npcTorch.radius = ReadFloat(NPC_TORCH_RADIUS, npcTorch.radius);
+        npcTorch.attenuation = ReadFloat(NPC_TORCH_ATTENUATION, npcTorch.attenuation);
     }
 
     // To be called for every option-change event.
@@ -172,21 +232,26 @@ class CLightRewriteSettings {
     public function OptionValueChanged(groupId: int, optionName: name, optionValue: string) {
         var wasEnabled: bool = isEnabled;
 
-        if (IsMyModSettingsGroup(groupId)) {
-            ReadGameConfig();
+        if (!IsMyModSettingsGroup(groupId)) return;
 
-            if (groupId == advancedGroupId && optionName == SPACING_MODE) {
-                UpdateSpacingMenuDisabledState();
-            }
+        ReadGameConfig();
 
-            // We've just turned the mod off
-            if (isEnabled != wasEnabled && !isEnabled) {
-                theGame.lightRewrite.DisableLightRewrite();
-            }
-            // Some change was made, and the mod is enabled
-            else if (isEnabled) {
-                theGame.lightRewrite.RewriteAllLightSources();
-            }
+        if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
+            theGame.lightRewrite.RefreshHeldTorches();
+        }
+        if (IsTorchOption(optionName)) return;
+
+        if (groupId == advancedGroupId && optionName == SPACING_MODE) {
+            UpdateSpacingMenuDisabledState();
+        }
+
+        // We've just turned the mod off
+        if (isEnabled != wasEnabled && !isEnabled) {
+            theGame.lightRewrite.DisableLightRewrite();
+        }
+        // Some change was made, and the mod is enabled
+        else if (isEnabled) {
+            theGame.lightRewrite.RewriteAllLightSources();
         }
     }
 

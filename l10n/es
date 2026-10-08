@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|Avanzado
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Brillo
+2122144090||LightRewrite_Radius|Radio
+2122144091||LightRewrite_Attenuation|Atenuación
+2122144095||LightRewrite_PlayerTorch_Enabled|Antorcha del jugador
+2122144096||LightRewrite_NpcTorch_Enabled|Antorchas de los PNJ
