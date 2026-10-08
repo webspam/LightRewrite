@@ -344,6 +344,7 @@
 
   <xs:simpleType name="rewriterTypeEnum">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="LRT_None" />
       <xs:enumeration value="LRT_Candle" />
       <xs:enumeration value="LRT_Spotlight" />
     </xs:restriction>
