@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|Дополнительно
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Яркость
+2122144090||LightRewrite_Radius|Радиус
+2122144091||LightRewrite_Attenuation|Затухание
+2122144095||LightRewrite_PlayerTorch_Enabled|Факел игрока
+2122144096||LightRewrite_NpcTorch_Enabled|Факелы NPC

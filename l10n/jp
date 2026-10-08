@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|詳細設定
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|明るさ
+2122144090||LightRewrite_Radius|半径
+2122144091||LightRewrite_Attenuation|減衰
+2122144095||LightRewrite_PlayerTorch_Enabled|プレイヤーの松明
+2122144096||LightRewrite_NpcTorch_Enabled|NPCの松明

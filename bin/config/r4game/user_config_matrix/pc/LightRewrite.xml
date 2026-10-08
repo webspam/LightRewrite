@@ -21,6 +21,28 @@
               </OptionsArray>
             </Var>
 
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="PlayerTorchEnabled" displayName="LightRewrite_PlayerTorch_Enabled"
+                displayType="TOGGLE" tags="customDisplayName" />
+            <Var id="PlayerTorchBrightness" displayName="LightRewrite_Brightness"
+                displayType="SLIDER;0;100;200" tags="customDisplayName;indent" />
+            <Var id="PlayerTorchRadius" displayName="LightRewrite_Radius"
+                displayType="SLIDER;0.5;50;99" tags="customDisplayName;indent" />
+            <Var id="PlayerTorchAttenuation" displayName="LightRewrite_Attenuation"
+                displayType="SLIDER;0;1;20" tags="customDisplayName;indent" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="NpcTorchEnabled" displayName="LightRewrite_NpcTorch_Enabled"
+                displayType="TOGGLE" tags="customDisplayName" />
+            <Var id="NpcTorchBrightness" displayName="LightRewrite_Brightness"
+                displayType="SLIDER;0;100;200" tags="customDisplayName;indent" />
+            <Var id="NpcTorchRadius" displayName="LightRewrite_Radius"
+                displayType="SLIDER;0.5;50;99" tags="customDisplayName;indent" />
+            <Var id="NpcTorchAttenuation" displayName="LightRewrite_Attenuation"
+                displayType="SLIDER;0;1;20" tags="customDisplayName;indent" />
+
             <!-- Internal: Tracks the version of the config that was last initialised. -->
             <Var id="InitVersion" displayName="LightRewrite_InitVersion"
                 displayType="SLIDER;0;99;99" visibilityCondition="hideAlways" />

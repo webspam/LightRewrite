@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|Pokročilé
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Jas
+2122144090||LightRewrite_Radius|Poloměr
+2122144091||LightRewrite_Attenuation|Útlum
+2122144095||LightRewrite_PlayerTorch_Enabled|Pochodeň hráče
+2122144096||LightRewrite_NpcTorch_Enabled|Pochodně NPC

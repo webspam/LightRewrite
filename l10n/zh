@@ -88,3 +88,8 @@
 2122144086||panel_LightRewrite_Advanced|進階
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|亮度
+2122144090||LightRewrite_Radius|半徑
+2122144091||LightRewrite_Attenuation|衰減
+2122144095||LightRewrite_PlayerTorch_Enabled|玩家火把
+2122144096||LightRewrite_NpcTorch_Enabled|NPC火把
