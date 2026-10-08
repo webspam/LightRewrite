@@ -267,7 +267,7 @@ abstract class ILightSourceRewriter {
         var template: CEntityTemplate;
 
         if (!spawnedSpotlight) {
-            template = (CEntityTemplate)LoadResource("dlc\dlclightrewrite\lights\spotlight.w2ent", true);
+            template = (CEntityTemplate)LoadResource("dlc\lightrewrite\lights\spotlight.w2ent", true);
             if (!template) {
                 LogLightRewrite("Spawn spotlight: failed to load template for " + parentEntity);
                 return NULL;

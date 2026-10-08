@@ -1,9 +1,27 @@
+@addField(W3LightSource) public var torchRewriter: ITorchRewriter;
+
+@addMethod(W3LightSource)
+public function GetTorchRewriter(owner: CEntity): ITorchRewriter {
+    if (!torchRewriter) {
+        if (owner == thePlayer) torchRewriter = new CPlayerTorchRewriter in this;
+        else torchRewriter = new CNpcTorchRewriter in this;
+        torchRewriter.Init(this);
+    }
+
+    return torchRewriter;
+}
+
+@addMethod(W3LightSource)
+timer function SyncLightRewriteTorch(dt: float, id: int) {
+    ((CPlayerTorchRewriter)torchRewriter).SyncTemporaryLight(dt);
+}
+
 @wrapMethod(W3LightSource)
 function OnUsed(usedBy: CEntity) {
     var wrappedReturnValue: bool;
 
     wrappedReturnValue = wrappedMethod(usedBy);
-    if (usedBy == thePlayer) InitialiseLightRewriteTorch();
+    GetTorchRewriter(usedBy).OnUsed();
 
     return wrappedReturnValue;
 }
@@ -21,7 +39,7 @@ function OnEquippedItem(category: name, slotName: name) {
 
     inventory = GetInventory();
     torch = (W3LightSource)inventory.GetItemEntityUnsafe(inventory.GetItemFromSlot(slotName));
-    if (torch) torch.InitialiseLightRewriteTorch();
+    if (torch) torch.GetTorchRewriter(this).Wield();
 
     return wrappedReturnValue;
 }
@@ -34,53 +52,7 @@ function OnAttachmentUpdate(parentEntity: CEntity, itemName: name) {
     wrappedReturnValue = wrappedMethod(parentEntity, itemName);
 
     torch = (W3LightSource)this;
-    if (torch) torch.InitialiseLightRewriteTorch();
+    if (torch) torch.GetTorchRewriter(parentEntity).Wield();
 
     return wrappedReturnValue;
-}
-
-@addMethod(W3LightSource)
-public function InitialiseLightRewriteTorch() {
-    AddTag(theGame.lightRewrite.TAG_IS_WIELDED);
-
-    RefreshLightRewriteTorch();
-}
-
-@addMethod(W3LightSource)
-public function RefreshLightRewriteTorch() {
-    var settings: CLightRewriteSettings = theGame.GetLightRewriteSettings();
-    var torch: SLightRewriteTorchLight;
-    var light: CPointLightComponent;
-    var wasEnabled: bool;
-
-    light = (CPointLightComponent)GetComponent('CPointLightComponent0');
-    if (!light) return;
-
-    light.SaveLightRewriteOriginalValues();
-
-    if (GetParentEntity() == thePlayer) torch = settings.playerTorch;
-    else torch = settings.npcTorch;
-
-    if (!settings.isEnabled || !torch.enabled) {
-        light.RestoreLightRewriteOriginalValues(false);
-        if (IsEffectActive('light_on')) {
-            DestroyEffect('light_on');
-            PlayEffect('light_on');
-        }
-        if (IsEffectActive('light_on_bob')) {
-            DestroyEffect('light_on_bob');
-            PlayEffect('light_on_bob');
-        }
-        return;
-    }
-
-    wasEnabled = light.IsEnabled();
-    if (wasEnabled) light.SetEnabled(false);
-
-    light.brightness = torch.brightness;
-    light.radius = torch.radius;
-    light.attenuation = torch.attenuation;
-    if (torch.colour.has) light.color = torch.colour.value;
-
-    if (wasEnabled) light.SetEnabled(true);
 }

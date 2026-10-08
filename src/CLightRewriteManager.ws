@@ -122,7 +122,9 @@ class CLightRewriteManager {
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
             torch = (W3LightSource)entities[i];
-            if (torch) torch.RefreshLightRewriteTorch();
+            if (torch && torch.torchRewriter) {
+                torch.torchRewriter.Refresh();
+            }
         }
     }
 
