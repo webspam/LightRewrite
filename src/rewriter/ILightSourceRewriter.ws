@@ -65,7 +65,14 @@ abstract class ILightSourceRewriter {
 
     /** Process actions that must occur after drawable components have loaded */
     public function ProcessFirstFrameActions() {
+        var entityName: string = StrAfterLast(parentEntity.ToString(), StrChar(92));
+
         ApplyForceCastShadows();
+
+        // Fire FX on these entities has identity vector until first frame
+        if (StrStartsWith(entityName, "baron_candle_holder") || entityName == "candle_med_a.w2ent") {
+            RewriteLight();
+        }
     }
 
     // Rewrites the light source with the configured parameters.
