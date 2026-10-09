@@ -3,13 +3,26 @@ class CPlayerTorchRewriter extends ITorchRewriter {
     private var temporaryElapsed: float;
 
     public function OnUsed() {
-        var light: CPointLightComponent = GetLight();
+        var light: CPointLightComponent;
 
+        if (!IsActive()) return;
+
+        light = GetLight();
         if (!light) return;
 
         light.SaveLightRewriteOriginalValues();
         light.radius = 0;
+        hasModifiedLight = true;
         SpawnTemporaryLight();
+    }
+
+    public function OnHidden() {
+        DestroyTemporaryLight();
+    }
+
+    protected function Restore() {
+        DestroyTemporaryLight();
+        super.Restore();
     }
 
     public function SyncTemporaryLight(dt: float) {
@@ -68,11 +81,10 @@ class CPlayerTorchRewriter extends ITorchRewriter {
     }
 
     private function DestroyTemporaryLight() {
-        parentEntity.RemoveTimer('SyncLightRewriteTorch');
+        if (!placeholderLight) return;
 
-        if (placeholderLight) {
-            placeholderLight.Destroy();
-            placeholderLight = NULL;
-        }
+        parentEntity.RemoveTimer('SyncLightRewriteTorch');
+        placeholderLight.Destroy();
+        placeholderLight = NULL;
     }
 }
