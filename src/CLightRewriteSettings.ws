@@ -50,7 +50,7 @@ class CLightRewriteSettings {
     public var playerTorch: SLightRewriteTorchLight;
     public var npcTorch   : SLightRewriteTorchLight;
 
-    public var fogRemoval : float;  default fogRemoval = 75.0;
+    public var fogRemoval : float;  default fogRemoval = 0.0;
     public var fogFadeTime: float;  default fogFadeTime = 2.0;
 
     // All override groups loaded from XML files, sorted by weight
