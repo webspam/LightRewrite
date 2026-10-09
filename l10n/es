@@ -93,3 +93,5 @@
 2122144091||LightRewrite_Attenuation|Atenuación
 2122144095||LightRewrite_PlayerTorch_Enabled|Antorcha del jugador
 2122144096||LightRewrite_NpcTorch_Enabled|Antorchas de los PNJ
+2122144097||LightRewrite_FogRemoval|Eliminación de niebla en interiores
+2122144098||LightRewrite_FogFadeTime|Duración del fundido de la niebla

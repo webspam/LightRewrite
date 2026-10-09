@@ -93,3 +93,5 @@
 2122144091||LightRewrite_Attenuation|Csillapítás
 2122144095||LightRewrite_PlayerTorch_Enabled|Játékos fáklyája
 2122144096||LightRewrite_NpcTorch_Enabled|NPC-fáklyák
+2122144097||LightRewrite_FogRemoval|Beltéri köd eltávolítása
+2122144098||LightRewrite_FogFadeTime|Köd áttűnésének időtartama

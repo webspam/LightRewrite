@@ -93,3 +93,5 @@
 2122144091||LightRewrite_Attenuation|توهين
 2122144095||LightRewrite_PlayerTorch_Enabled|شعلة اللاعب
 2122144096||LightRewrite_NpcTorch_Enabled|شعلات الشخصيات غير اللاعبة
+2122144097||LightRewrite_FogRemoval|إزالة ضباب الأماكن الداخلية
+2122144098||LightRewrite_FogFadeTime|مدة ظهور/اختفاء الضباب
