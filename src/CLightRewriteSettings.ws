@@ -50,7 +50,7 @@ class CLightRewriteSettings {
     public var playerTorch: SLightRewriteTorchLight;
     public var npcTorch   : SLightRewriteTorchLight;
 
-    public var fogRemoval : float;  default fogRemoval = 75.0;
+    public var fogRemoval : float;  default fogRemoval = 0.0;
     public var fogFadeTime: float;  default fogFadeTime = 2.0;
 
     // All override groups loaded from XML files, sorted by weight
@@ -172,8 +172,8 @@ class CLightRewriteSettings {
 
         // v15: Added interior fog sliders
         if (initVersion < 15) {
-            gameConfig.SetVarValue(GENERAL_GROUP, FOG_REMOVAL, isFreshInstall ? fogRemoval : 0.0);
-            gameConfig.SetVarValue(GENERAL_GROUP, FOG_FADE_TIME, fogFadeTime);
+            gameConfig.SetVarValue(ADVANCED_GROUP, FOG_REMOVAL, fogRemoval);
+            gameConfig.SetVarValue(ADVANCED_GROUP, FOG_FADE_TIME, fogFadeTime);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -189,8 +189,8 @@ class CLightRewriteSettings {
         gameConfig.SetVarValue(toGroup, varId, value);
     }
 
-    private function ReadFloat(varId: name, fallback: float): float {
-        return StringToFloat(gameConfig.GetVarValue(GENERAL_GROUP, varId), fallback);
+    private function ReadFloat(group: name, varId: name, fallback: float): float {
+        return StringToFloat(gameConfig.GetVarValue(group, varId), fallback);
     }
 
     private function IsTorchOption(optionName: name): bool {
@@ -223,25 +223,33 @@ class CLightRewriteSettings {
             gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_MODE),
             spacingMode
         );
-        spacingCount = StringToFloat(
-            gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_COUNT),
-            spacingCount
-        );
-        spacingBudget = StringToFloat(
-            gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_BUDGET),
-            spacingBudget
-        );
+        spacingCount = ReadFloat(ADVANCED_GROUP, SPACING_COUNT, spacingCount);
+        spacingBudget = ReadFloat(ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
 
         playerTorch.enabled = gameConfig.GetVarValue(GENERAL_GROUP, PLAYER_TORCH_ENABLED);
-        playerTorch.brightness = ReadFloat(PLAYER_TORCH_BRIGHTNESS, playerTorch.brightness);
-        playerTorch.radius = ReadFloat(PLAYER_TORCH_RADIUS, playerTorch.radius);
-        playerTorch.attenuation = ReadFloat(PLAYER_TORCH_ATTENUATION, playerTorch.attenuation);
+        playerTorch.brightness = ReadFloat(
+            GENERAL_GROUP,
+            PLAYER_TORCH_BRIGHTNESS,
+            playerTorch.brightness
+        );
+        playerTorch.radius = ReadFloat(GENERAL_GROUP, PLAYER_TORCH_RADIUS, playerTorch.radius);
+        playerTorch.attenuation = ReadFloat(
+            GENERAL_GROUP,
+            PLAYER_TORCH_ATTENUATION,
+            playerTorch.attenuation
+        );
+
         npcTorch.enabled = gameConfig.GetVarValue(GENERAL_GROUP, NPC_TORCH_ENABLED);
-        npcTorch.brightness = ReadFloat(NPC_TORCH_BRIGHTNESS, npcTorch.brightness);
-        npcTorch.radius = ReadFloat(NPC_TORCH_RADIUS, npcTorch.radius);
-        npcTorch.attenuation = ReadFloat(NPC_TORCH_ATTENUATION, npcTorch.attenuation);
-        fogRemoval = ReadFloat(FOG_REMOVAL, fogRemoval);
-        fogFadeTime = ReadFloat(FOG_FADE_TIME, fogFadeTime);
+        npcTorch.brightness = ReadFloat(GENERAL_GROUP, NPC_TORCH_BRIGHTNESS, npcTorch.brightness);
+        npcTorch.radius = ReadFloat(GENERAL_GROUP, NPC_TORCH_RADIUS, npcTorch.radius);
+        npcTorch.attenuation = ReadFloat(
+            GENERAL_GROUP,
+            NPC_TORCH_ATTENUATION,
+            npcTorch.attenuation
+        );
+
+        fogRemoval = ReadFloat(ADVANCED_GROUP, FOG_REMOVAL, fogRemoval);
+        fogFadeTime = ReadFloat(ADVANCED_GROUP, FOG_FADE_TIME, fogFadeTime);
     }
 
     // To be called for every option-change event.
