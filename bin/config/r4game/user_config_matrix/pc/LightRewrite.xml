@@ -23,6 +23,13 @@
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
+            <Var id="FogRemoval" displayName="LightRewrite_FogRemoval"
+                displayType="SLIDER;0;100;100" tags="customDisplayName" />
+            <Var id="FogFadeTime" displayName="LightRewrite_FogFadeTime"
+                displayType="SLIDER;0;10;100" tags="customDisplayName;indent" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
             <Var id="PlayerTorchEnabled" displayName="LightRewrite_PlayerTorch_Enabled"
                 displayType="TOGGLE" tags="customDisplayName" />
             <Var id="PlayerTorchBrightness" displayName="LightRewrite_Brightness"

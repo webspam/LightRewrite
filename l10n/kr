@@ -93,3 +93,5 @@
 2122144091||LightRewrite_Attenuation|감쇠
 2122144095||LightRewrite_PlayerTorch_Enabled|플레이어 횃불
 2122144096||LightRewrite_NpcTorch_Enabled|NPC 횃불
+2122144097||LightRewrite_FogRemoval|실내 안개 제거
+2122144098||LightRewrite_FogFadeTime|안개 페이드 인/아웃 시간

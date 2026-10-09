@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 14;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 15;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -28,6 +28,8 @@ class CLightRewriteSettings {
     private const var NPC_TORCH_BRIGHTNESS    : name;    default NPC_TORCH_BRIGHTNESS = 'NpcTorchBrightness';
     private const var NPC_TORCH_RADIUS        : name;    default NPC_TORCH_RADIUS = 'NpcTorchRadius';
     private const var NPC_TORCH_ATTENUATION   : name;    default NPC_TORCH_ATTENUATION = 'NpcTorchAttenuation';
+    private const var FOG_REMOVAL             : name;    default FOG_REMOVAL = 'FogRemoval';
+    private const var FOG_FADE_TIME           : name;    default FOG_FADE_TIME = 'FogFadeTime';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
@@ -47,6 +49,9 @@ class CLightRewriteSettings {
 
     public var playerTorch: SLightRewriteTorchLight;
     public var npcTorch   : SLightRewriteTorchLight;
+
+    public var fogRemoval : float;  default fogRemoval = 75.0;
+    public var fogFadeTime: float;  default fogFadeTime = 2.0;
 
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
@@ -165,6 +170,12 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(GENERAL_GROUP, NPC_TORCH_ATTENUATION, npcTorch.attenuation);
         }
 
+        // v15: Added interior fog sliders
+        if (initVersion < 15) {
+            gameConfig.SetVarValue(GENERAL_GROUP, FOG_REMOVAL, isFreshInstall ? fogRemoval : 0.0);
+            gameConfig.SetVarValue(GENERAL_GROUP, FOG_FADE_TIME, fogFadeTime);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -191,6 +202,10 @@ class CLightRewriteSettings {
             || optionName == NPC_TORCH_BRIGHTNESS
             || optionName == NPC_TORCH_RADIUS
             || optionName == NPC_TORCH_ATTENUATION;
+    }
+
+    private function IsFogOption(optionName: name): bool {
+        return optionName == FOG_REMOVAL || optionName == FOG_FADE_TIME;
     }
 
     public function ReadGameConfig() {
@@ -225,16 +240,25 @@ class CLightRewriteSettings {
         npcTorch.brightness = ReadFloat(NPC_TORCH_BRIGHTNESS, npcTorch.brightness);
         npcTorch.radius = ReadFloat(NPC_TORCH_RADIUS, npcTorch.radius);
         npcTorch.attenuation = ReadFloat(NPC_TORCH_ATTENUATION, npcTorch.attenuation);
+        fogRemoval = ReadFloat(FOG_REMOVAL, fogRemoval);
+        fogFadeTime = ReadFloat(FOG_FADE_TIME, fogFadeTime);
     }
 
     // To be called for every option-change event.
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId: int, optionName: name, optionValue: string) {
         var wasEnabled: bool = isEnabled;
+        var isFogOption: bool;
 
         if (!IsMyModSettingsGroup(groupId)) return;
 
         ReadGameConfig();
+
+        isFogOption = IsFogOption(optionName);
+        if ((isFogOption || isEnabled != wasEnabled) && theGame.lrFogRemover) {
+            theGame.lrFogRemover.ApplySettings(this);
+        }
+        if (isFogOption) return;
 
         if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
             theGame.lightRewrite.RefreshHeldTorches();

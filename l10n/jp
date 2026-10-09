@@ -93,3 +93,5 @@
 2122144091||LightRewrite_Attenuation|減衰
 2122144095||LightRewrite_PlayerTorch_Enabled|プレイヤーの松明
 2122144096||LightRewrite_NpcTorch_Enabled|NPCの松明
+2122144097||LightRewrite_FogRemoval|屋内の霧の除去
+2122144098||LightRewrite_FogFadeTime|霧のフェードイン/アウト時間
