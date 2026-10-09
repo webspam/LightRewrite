@@ -26,6 +26,16 @@ function OnUsed(usedBy: CEntity) {
     return wrappedReturnValue;
 }
 
+@wrapMethod(W3LightSource)
+function OnHidden(usedBy: CEntity) {
+    var wrappedReturnValue: bool;
+
+    if (torchRewriter) torchRewriter.OnHidden();
+    wrappedReturnValue = wrappedMethod(usedBy);
+
+    return wrappedReturnValue;
+}
+
 @wrapMethod(CNewNPC)
 function OnEquippedItem(category: name, slotName: name) {
     var wrappedReturnValue: bool;
