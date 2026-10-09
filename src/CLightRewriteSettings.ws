@@ -269,7 +269,7 @@ class CLightRewriteSettings {
         if (isFogOption) return;
 
         if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
-            theGame.lightRewrite.RefreshHeldTorches();
+            theGame.lightRewrite.RefreshEquippedLights();
         }
         if (IsTorchOption(optionName)) return;
 
