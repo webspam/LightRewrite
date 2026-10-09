@@ -81,10 +81,11 @@ class CPlayerTorchRewriter extends ITorchRewriter {
     }
 
     private function DestroyTemporaryLight() {
-        if (!placeholderLight) return;
-
         parentEntity.RemoveTimer('SyncLightRewriteTorch');
-        placeholderLight.Destroy();
-        placeholderLight = NULL;
+
+        if (placeholderLight) {
+            placeholderLight.Destroy();
+            placeholderLight = NULL;
+        }
     }
 }
