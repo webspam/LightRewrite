@@ -7,8 +7,10 @@
       <overrides profile_name="Default"
                  weight="10">
         <matches>
-          <match type="layer">levels\skellige\env_global_pbr\undvyk\</match>
-          <match type="layer">levels\skellige\ice_giant_island\</match>
+          <any>
+            <match type="layer">levels\skellige\env_global_pbr\undvyk\</match>
+            <match type="layer">levels\skellige\ice_giant_island\</match>
+          </any>
         </matches>
 
         <override tag_name="LR_Undvik_WallBrazierChain"
