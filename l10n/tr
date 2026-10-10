@@ -1,0 +1,112 @@
+;meta[language=tr]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Vanilyaya Yakın
+2122144002||LightRewrite_Preset_Author|Yazar
+2122144003||LightRewrite_Preset_Bright|Parlak
+2122144004||LightRewrite_Enabled|Etkin
+2122144005||LightRewrite_ShadowFadeDistance|Gölge sönümleme mesafesi
+2122144006||LightRewrite_ShadowFadeRange|Gölge sönümleme aralığı
+2122144007||LightRewrite_ShadowBlendFactor|Gölge karışım faktörü
+2122144008||LightRewrite_Candle_Brightness|Mum parlaklığı
+2122144009||LightRewrite_Candle_Radius|Mum yarıçapı
+2122144010||LightRewrite_Candle_Attenuation|Mum sönümlemesi
+2122144011||LightRewrite_Candle_OverrideColour|Mum rengini geçersiz kıl
+2122144012||LightRewrite_Candle_ColorR|Mum rengi: Kırmızı
+2122144013||LightRewrite_Candle_ColorG|Mum rengi: Yeşil
+2122144014||LightRewrite_Candle_ColorB|Mum rengi: Mavi
+2122144015||LightRewrite_Torch_Brightness|Meşale parlaklığı
+2122144016||LightRewrite_Torch_Radius|Meşale yarıçapı
+2122144017||LightRewrite_Torch_Attenuation|Meşale sönümlemesi
+2122144018||LightRewrite_Torch_OverrideColour|Meşale rengini geçersiz kıl
+2122144019||LightRewrite_Torch_ColorR|Meşale rengi: Kırmızı
+2122144020||LightRewrite_Torch_ColorG|Meşale rengi: Yeşil
+2122144021||LightRewrite_Torch_ColorB|Meşale rengi: Mavi
+2122144022||LightRewrite_InitVersion|Başlatma sürümü
+2122144023||LightRewrite_Brazier_Brightness|Mangal parlaklığı
+2122144024||LightRewrite_Brazier_Radius|Mangal yarıçapı
+2122144025||LightRewrite_Brazier_Attenuation|Mangal sönümlemesi
+2122144026||LightRewrite_Brazier_OverrideColour|Mangal rengini geçersiz kıl
+2122144027||LightRewrite_Brazier_ColorR|Mangal rengi: Kırmızı
+2122144028||LightRewrite_Brazier_ColorG|Mangal rengi: Yeşil
+2122144029||LightRewrite_Brazier_ColorB|Mangal rengi: Mavi
+2122144030||LightRewrite_Candelabra_Brightness|Şamdan parlaklığı
+2122144031||LightRewrite_Candelabra_Radius|Şamdan yarıçapı
+2122144032||LightRewrite_Candelabra_Attenuation|Şamdan sönümlemesi
+2122144033||LightRewrite_Candelabra_OverrideColour|Şamdan rengini geçersiz kıl
+2122144034||LightRewrite_Candelabra_ColorR|Şamdan rengi: Kırmızı
+2122144035||LightRewrite_Candelabra_ColorG|Şamdan rengi: Yeşil
+2122144036||LightRewrite_Candelabra_ColorB|Şamdan rengi: Mavi
+2122144037||LightRewrite_Campfire_Brightness|Kamp ateşi parlaklığı
+2122144038||LightRewrite_Campfire_Radius|Kamp ateşi yarıçapı
+2122144039||LightRewrite_Campfire_Attenuation|Kamp ateşi sönümlemesi
+2122144040||LightRewrite_Campfire_OverrideColour|Kamp ateşi rengini geçersiz kıl
+2122144041||LightRewrite_Campfire_ColorR|Kamp ateşi rengi: Kırmızı
+2122144042||LightRewrite_Campfire_ColorG|Kamp ateşi rengi: Yeşil
+2122144043||LightRewrite_Campfire_ColorB|Kamp ateşi rengi: Mavi
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Mum gölge sönümleme mesafesi
+2122144045||LightRewrite_Candle_ShadowFadeRange|Mum gölge sönümleme aralığı
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Mum gölge karışım faktörü
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Meşale gölge sönümleme mesafesi
+2122144048||LightRewrite_Torch_ShadowFadeRange|Meşale gölge sönümleme aralığı
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Meşale gölge karışım faktörü
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Mangal gölge sönümleme mesafesi
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Mangal gölge sönümleme aralığı
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Mangal gölge karışım faktörü
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Şamdan gölge sönümleme mesafesi
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Şamdan gölge sönümleme aralığı
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Şamdan gölge karışım faktörü
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Kamp ateşi gölge sönümleme mesafesi
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Kamp ateşi gölge sönümleme aralığı
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Kamp ateşi gölge karışım faktörü
+2122144059||LightRewrite_Chandelier_Brightness|Avize parlaklığı
+2122144060||LightRewrite_Chandelier_Radius|Avize yarıçapı
+2122144061||LightRewrite_Chandelier_Attenuation|Avize sönümlemesi
+2122144062||LightRewrite_Chandelier_OverrideColour|Avize rengini geçersiz kıl
+2122144063||LightRewrite_Chandelier_ColorR|Avize rengi: Kırmızı
+2122144064||LightRewrite_Chandelier_ColorG|Avize rengi: Yeşil
+2122144065||LightRewrite_Chandelier_ColorB|Avize rengi: Mavi
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Avize gölge sönümleme mesafesi
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Avize gölge sönümleme aralığı
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Avize gölge karışım faktörü
+2122144069||LightRewrite_Candle_Enabled|Mum etkin
+2122144070||LightRewrite_Torch_Enabled|Meşale etkin
+2122144071||LightRewrite_Brazier_Enabled|Mangal etkin
+2122144072||LightRewrite_Candelabra_Enabled|Şamdan etkin
+2122144073||LightRewrite_Chandelier_Enabled|Avize etkin
+2122144074||LightRewrite_Campfire_Enabled|Kamp ateşi etkin
+2122144075||LightRewrite_Candle_AlignPointLights|Mum nokta ışıklarını hizala
+2122144076||LightRewrite_CurrentProfile|Geçerli ön ayar
+2122144077||LightRewrite_Preset_None|Yok
+2122144078||LightRewrite_Spacing_Mode|Işık aralığı modu
+2122144079||LightRewrite_Spacing_Mode_Centres|Merkez örtüşmeleri
+2122144080||LightRewrite_Spacing_Mode_Count|Örtüşme sayısı
+2122144081||LightRewrite_Spacing_Mode_Volume|Örtüşme hacmi
+2122144082||LightRewrite_Spacing_Count|Maks. örtüşme
+2122144083||LightRewrite_Spacing_Budget|Maks. örtüşme alanı
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite: Seçilen ön ayarın devralması bozuk
+2122144086||panel_LightRewrite_Advanced|Gelişmiş
+2122144087||panel_LightRewrite|Light Rewrite
+2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Parlaklık
+2122144090||LightRewrite_Radius|Yarıçap
+2122144091||LightRewrite_Attenuation|Sönümleme
+2122144095||LightRewrite_PlayerTorch_Enabled|Oyuncu meşalesi ve feneri
+2122144096||LightRewrite_NpcTorch_Enabled|NPC meşaleleri
+2122144097||LightRewrite_FogRemoval|İç mekân sis kaldırma
+2122144098||LightRewrite_FogFadeTime|Sis belirme/kaybolma süresi
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite etkin
+2122144100||LightRewrite_MenuDescOff_Enabled|Tüm Light Rewrite özellikleri şu anda devre dışı
+2122144101||LightRewrite_MenuDesc_Enabled|Tüm Light Rewrite ışık ayarlarını açar/kapatır
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Kullanılacak aydınlatma ön ayarı.  Önerilen: Varsayılan
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Oyuncu meşalesi ve fenerinin ışık ayarlarını geçersiz kılar
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Mod varsayılanı: 25     Oyun varsayılanı: neredeyse maksimum
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Mod varsayılanı: 25     Oyun varsayılanı: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Mod varsayılanı: 0.9    Oyun varsayılanı: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Tüm NPC meşalelerinin ışığını geçersiz kılar
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Mod varsayılanı: 25     Oyun varsayılanı: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Mod varsayılanı: 6.5     Oyun varsayılanı: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Mod varsayılanı: 0.9     Oyun varsayılanı: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Ne kadar sisin kaldırılacağı: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Bir iç mekâna girdikten/çıktıktan sonra sis kaldırmanın değişmesi için saniye cinsinden süre.  Önerilen: 1-3
+2122144113||LightRewrite_Preset_Default|Varsayılan

@@ -1,0 +1,112 @@
+;meta[language=ua]
+; id      |key(hex)|key(str)| text
+2122144000||LightRewrite|Light Rewrite
+2122144001||LightRewrite_Preset_VanillaIsh|Близько до оригіналу
+2122144002||LightRewrite_Preset_Author|Авторський
+2122144003||LightRewrite_Preset_Bright|Яскравий
+2122144004||LightRewrite_Enabled|Увімкнено
+2122144005||LightRewrite_ShadowFadeDistance|Дистанція згасання тіні
+2122144006||LightRewrite_ShadowFadeRange|Діапазон згасання тіні
+2122144007||LightRewrite_ShadowBlendFactor|Коефіцієнт змішування тіні
+2122144008||LightRewrite_Candle_Brightness|Яскравість свічки
+2122144009||LightRewrite_Candle_Radius|Радіус свічки
+2122144010||LightRewrite_Candle_Attenuation|Згасання свічки
+2122144011||LightRewrite_Candle_OverrideColour|Перевизначити колір свічки
+2122144012||LightRewrite_Candle_ColorR|Колір свічки: Червоний
+2122144013||LightRewrite_Candle_ColorG|Колір свічки: Зелений
+2122144014||LightRewrite_Candle_ColorB|Колір свічки: Синій
+2122144015||LightRewrite_Torch_Brightness|Яскравість смолоскипа
+2122144016||LightRewrite_Torch_Radius|Радіус смолоскипа
+2122144017||LightRewrite_Torch_Attenuation|Згасання смолоскипа
+2122144018||LightRewrite_Torch_OverrideColour|Перевизначити колір смолоскипа
+2122144019||LightRewrite_Torch_ColorR|Колір смолоскипа: Червоний
+2122144020||LightRewrite_Torch_ColorG|Колір смолоскипа: Зелений
+2122144021||LightRewrite_Torch_ColorB|Колір смолоскипа: Синій
+2122144022||LightRewrite_InitVersion|Версія ініціалізації
+2122144023||LightRewrite_Brazier_Brightness|Яскравість жаровні
+2122144024||LightRewrite_Brazier_Radius|Радіус жаровні
+2122144025||LightRewrite_Brazier_Attenuation|Згасання жаровні
+2122144026||LightRewrite_Brazier_OverrideColour|Перевизначити колір жаровні
+2122144027||LightRewrite_Brazier_ColorR|Колір жаровні: Червоний
+2122144028||LightRewrite_Brazier_ColorG|Колір жаровні: Зелений
+2122144029||LightRewrite_Brazier_ColorB|Колір жаровні: Синій
+2122144030||LightRewrite_Candelabra_Brightness|Яскравість канделябра
+2122144031||LightRewrite_Candelabra_Radius|Радіус канделябра
+2122144032||LightRewrite_Candelabra_Attenuation|Згасання канделябра
+2122144033||LightRewrite_Candelabra_OverrideColour|Перевизначити колір канделябра
+2122144034||LightRewrite_Candelabra_ColorR|Колір канделябра: Червоний
+2122144035||LightRewrite_Candelabra_ColorG|Колір канделябра: Зелений
+2122144036||LightRewrite_Candelabra_ColorB|Колір канделябра: Синій
+2122144037||LightRewrite_Campfire_Brightness|Яскравість багаття
+2122144038||LightRewrite_Campfire_Radius|Радіус багаття
+2122144039||LightRewrite_Campfire_Attenuation|Згасання багаття
+2122144040||LightRewrite_Campfire_OverrideColour|Перевизначити колір багаття
+2122144041||LightRewrite_Campfire_ColorR|Колір багаття: Червоний
+2122144042||LightRewrite_Campfire_ColorG|Колір багаття: Зелений
+2122144043||LightRewrite_Campfire_ColorB|Колір багаття: Синій
+2122144044||LightRewrite_Candle_ShadowFadeDistance|Дистанція згасання тіні свічки
+2122144045||LightRewrite_Candle_ShadowFadeRange|Діапазон згасання тіні свічки
+2122144046||LightRewrite_Candle_ShadowBlendFactor|Коефіцієнт змішування тіні свічки
+2122144047||LightRewrite_Torch_ShadowFadeDistance|Дистанція згасання тіні смолоскипа
+2122144048||LightRewrite_Torch_ShadowFadeRange|Діапазон згасання тіні смолоскипа
+2122144049||LightRewrite_Torch_ShadowBlendFactor|Коефіцієнт змішування тіні смолоскипа
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|Дистанція згасання тіні жаровні
+2122144051||LightRewrite_Brazier_ShadowFadeRange|Діапазон згасання тіні жаровні
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|Коефіцієнт змішування тіні жаровні
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|Дистанція згасання тіні канделябра
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|Діапазон згасання тіні канделябра
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|Коефіцієнт змішування тіні канделябра
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|Дистанція згасання тіні багаття
+2122144057||LightRewrite_Campfire_ShadowFadeRange|Діапазон згасання тіні багаття
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|Коефіцієнт змішування тіні багаття
+2122144059||LightRewrite_Chandelier_Brightness|Яскравість люстри
+2122144060||LightRewrite_Chandelier_Radius|Радіус люстри
+2122144061||LightRewrite_Chandelier_Attenuation|Згасання люстри
+2122144062||LightRewrite_Chandelier_OverrideColour|Перевизначити колір люстри
+2122144063||LightRewrite_Chandelier_ColorR|Колір люстри: Червоний
+2122144064||LightRewrite_Chandelier_ColorG|Колір люстри: Зелений
+2122144065||LightRewrite_Chandelier_ColorB|Колір люстри: Синій
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|Дистанція згасання тіні люстри
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|Діапазон згасання тіні люстри
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|Коефіцієнт змішування тіні люстри
+2122144069||LightRewrite_Candle_Enabled|Свічку увімкнено
+2122144070||LightRewrite_Torch_Enabled|Смолоскип увімкнено
+2122144071||LightRewrite_Brazier_Enabled|Жаровню увімкнено
+2122144072||LightRewrite_Candelabra_Enabled|Канделябр увімкнено
+2122144073||LightRewrite_Chandelier_Enabled|Люстру увімкнено
+2122144074||LightRewrite_Campfire_Enabled|Багаття увімкнено
+2122144075||LightRewrite_Candle_AlignPointLights|Вирівнювати точкові джерела світла свічок
+2122144076||LightRewrite_CurrentProfile|Поточний пресет
+2122144077||LightRewrite_Preset_None|Немає
+2122144078||LightRewrite_Spacing_Mode|Режим розрідження світла
+2122144079||LightRewrite_Spacing_Mode_Centres|Перекриття центрів
+2122144080||LightRewrite_Spacing_Mode_Count|Кількість перекриттів
+2122144081||LightRewrite_Spacing_Mode_Volume|Об'єм перекриття
+2122144082||LightRewrite_Spacing_Count|Макс. перекриттів
+2122144083||LightRewrite_Spacing_Budget|Макс. площа перекриття
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite: У вибраного пресету порушене успадкування
+2122144086||panel_LightRewrite_Advanced|Додатково
+2122144087||panel_LightRewrite|Light Rewrite
+2122144088||option_LightRewrite|Light Rewrite
+2122144089||LightRewrite_Brightness|Яскравість
+2122144090||LightRewrite_Radius|Радіус
+2122144091||LightRewrite_Attenuation|Згасання
+2122144095||LightRewrite_PlayerTorch_Enabled|Смолоскип і ліхтар гравця
+2122144096||LightRewrite_NpcTorch_Enabled|Смолоскипи NPC
+2122144097||LightRewrite_FogRemoval|Видалення туману в приміщеннях
+2122144098||LightRewrite_FogFadeTime|Тривалість появи/зникнення туману
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite увімкнено
+2122144100||LightRewrite_MenuDescOff_Enabled|Усі функції Light Rewrite наразі вимкнено
+2122144101||LightRewrite_MenuDesc_Enabled|Перемикає всі зміни освітлення від Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Пресет освітлення для використання.  Рекомендовано: За замовчуванням
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Перевизначає налаштування світла смолоскипа та ліхтаря гравця
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Стандарт моду: 25     Стандарт гри: майже максимум
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Стандарт моду: 25     Стандарт гри: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Стандарт моду: 0.9    Стандарт гри: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Перевизначає світло всіх смолоскипів NPC
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Стандарт моду: 25     Стандарт гри: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Стандарт моду: 6.5     Стандарт гри: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Стандарт моду: 0.9     Стандарт гри: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Скільки туману буде видалено: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Час у секундах, за який змінюється видалення туману після входу/виходу з приміщення.  Рекомендовано: 1-3
+2122144113||LightRewrite_Preset_Default|За замовчуванням
