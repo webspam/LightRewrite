@@ -119,11 +119,23 @@ $dlcSourceDir = Join-Path $RepoRoot "dlc"
 
 $xmlSourceDir = Join-Path $RepoRoot "data"
 
-# Reject diamond or circular profile inheritance before touching the build dirs
+# Reject min_* exceeding max_*, and diamond / circular profile inheritance, before touching the build dirs
 $profileBases = @{}
 $inheritsDeclaredIn = @{}
+$minMaxErrors = [System.Collections.Generic.List[string]]::new()
 Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
   $doc = [xml][System.IO.File]::ReadAllText($_.FullName)
+  foreach ($element in $doc.SelectNodes('//*')) {
+    foreach ($property in 'brightness', 'radius', 'attenuation') {
+      if (!$element.HasAttribute("min_$property") -or !$element.HasAttribute("max_$property")) { continue }
+
+      $min = [double]$element.GetAttribute("min_$property")
+      $max = [double]$element.GetAttribute("max_$property")
+      if ($min -gt $max) {
+        $minMaxErrors.Add("$($_.FullName): <$($element.Name)> min_$property ($min) exceeds max_$property ($max)")
+      }
+    }
+  }
   foreach ($overrides in $doc.SelectNodes('//overrides')) {
     $profileName = $overrides.GetAttribute('profile_name')
     if (!$profileName) { continue }
@@ -144,6 +156,10 @@ Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
       }
     }
   }
+}
+
+if ($minMaxErrors.Count -gt 0) {
+  throw "min_* exceeds max_*:`n$($minMaxErrors -join "`n")"
 }
 
 foreach ($profileName in @($profileBases.Keys)) {

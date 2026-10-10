@@ -62,7 +62,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
 
             pointParams = p.GetPointLightParams(i);
             effective = p.MergePointLightParams(pointParams);
-            if (!ApplyPointLightRewrite(pointLight, pointParams, effective, i, spotLight)) continue;
+            if (!ApplyPointLightRewrite(pointLight, pointParams, effective, spotLight)) continue;
 
             if (p.alignPointLights.has && p.alignPointLights.value) {
                 if (forceSingle) {

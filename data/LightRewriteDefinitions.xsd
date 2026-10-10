@@ -213,6 +213,7 @@
         <xs:documentation>Light attenuation - how quickly the light fades out with distance.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attributeGroup ref="minMaxAttributes" />
     <xs:attribute name="use_spotlight_colour"
                   type="xs:boolean"
                   use="optional">
@@ -468,6 +469,7 @@
     <xs:attribute name="attenuation"
                   type="xs:decimal"
                   use="optional" />
+    <xs:attributeGroup ref="minMaxAttributes" />
   </xs:complexType>
 
   <xs:complexType name="spotlightOverrideType">
@@ -564,6 +566,32 @@
         <xs:documentation>Range 0-255 (0-2 in practice); 0 is an unrealistic sharp edge, 2 is smooth. Higher values are barely perceptible in-game.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attributeGroup ref="minMaxAttributes" />
   </xs:complexType>
+
+  <xs:attributeGroup name="minMaxAttributes">
+    <xs:annotation>
+      <xs:documentation>Min / max limits for brightness, radius, and attenuation.</xs:documentation>
+      <xs:documentation>Higher-weight overrides always take precedence over min/max from lower weights.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="min_brightness"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="max_brightness"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="min_radius"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="max_radius"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="min_attenuation"
+                  type="xs:decimal"
+                  use="optional" />
+    <xs:attribute name="max_attenuation"
+                  type="xs:decimal"
+                  use="optional" />
+  </xs:attributeGroup>
 
 </xs:schema>

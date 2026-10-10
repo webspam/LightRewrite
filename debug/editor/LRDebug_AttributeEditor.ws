@@ -266,38 +266,35 @@ class LRDebug_AttributeEditor {
         switch (attr) {
             case 'brightness':
                 lightParams = GetActiveLightParams(params, target, type);
-                if (!lightParams.brightness.has) {
-                    lightParams.brightness.has = true;
-                    if (light) lightParams.brightness.value = light.brightness;
+                if (!lightParams.brightness) {
+                    lightParams.brightness = new CLightRewriteClampedFloat in lightParams;
                 }
-                lightParams.brightness.value = ClampAttributeValue(
-                    attr,
-                    lightParams.brightness.value + delta
-                );
+                if (!lightParams.brightness.value.has && light) {
+                    lightParams.brightness.value.value = light.brightness;
+                }
+                lightParams.brightness.SetValue(ClampAttributeValue(attr, lightParams.brightness.value.value + delta));
                 break;
 
             case 'radius':
                 lightParams = GetActiveLightParams(params, target, type);
-                if (!lightParams.radius.has) {
-                    lightParams.radius.has = true;
-                    if (light) lightParams.radius.value = light.radius;
+                if (!lightParams.radius) {
+                    lightParams.radius = new CLightRewriteClampedFloat in lightParams;
                 }
-                lightParams.radius.value = ClampAttributeValue(
-                    attr,
-                    lightParams.radius.value + delta
-                );
+                if (!lightParams.radius.value.has && light) {
+                    lightParams.radius.value.value = light.radius;
+                }
+                lightParams.radius.SetValue(ClampAttributeValue(attr, lightParams.radius.value.value + delta));
                 break;
 
             case 'attenuation':
                 lightParams = GetActiveLightParams(params, target, type);
-                if (!lightParams.attenuation.has) {
-                    lightParams.attenuation.has = true;
-                    if (light) lightParams.attenuation.value = light.attenuation;
+                if (!lightParams.attenuation) {
+                    lightParams.attenuation = new CLightRewriteClampedFloat in lightParams;
                 }
-                lightParams.attenuation.value = ClampAttributeValue(
-                    attr,
-                    lightParams.attenuation.value + delta
-                );
+                if (!lightParams.attenuation.value.has && light) {
+                    lightParams.attenuation.value.value = light.attenuation;
+                }
+                lightParams.attenuation.SetValue(ClampAttributeValue(attr, lightParams.attenuation.value.value + delta));
                 break;
 
             case 'shadowFadeDistance':

@@ -11,18 +11,31 @@ function ParseLightRewriteBaseParams(
         params.enabled.has = true;
         params.enabled.value = (strVal != "false");
     }
-    if (dm.GetCustomNodeAttributeValueString(node, 'brightness', strVal)) {
-        params.brightness.has = true;
-        params.brightness.value = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(node, 'radius', strVal)) {
-        params.radius.has = true;
-        params.radius.value = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(node, 'attenuation', strVal)) {
-        params.attenuation.has = true;
-        params.attenuation.value = StringToFloat(strVal, 0.f);
-    }
+
+    params.brightness = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        node,
+        'brightness',
+        'min_brightness',
+        'max_brightness'
+    );
+    params.radius = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        node,
+        'radius',
+        'min_radius',
+        'max_radius'
+    );
+    params.attenuation = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        node,
+        'attenuation',
+        'min_attenuation',
+        'max_attenuation'
+    );
 
     shadowsNode = dm.GetCustomDefinitionSubNode(node, 'shadows');
     if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
@@ -56,6 +69,37 @@ function ParseLightRewriteBaseParams(
     if (ParseLightRewriteVector(dm, offsetNode, params.offset.value)) {
         params.offset.has = true;
     }
+}
+
+function ParseLightRewriteClampedFloat(
+    owner: CObject,
+    dm: CDefinitionsManagerAccessor,
+    node: SCustomNode,
+    valueAttribute: name,
+    minAttribute: name,
+    maxAttribute: name
+): CLightRewriteClampedFloat {
+    var parsed: CLightRewriteClampedFloat;
+    var valueStr, minStr, maxStr: string;
+    var hasValue: bool = dm.GetCustomNodeAttributeValueString(node, valueAttribute, valueStr);
+    var hasMin: bool = dm.GetCustomNodeAttributeValueString(node, minAttribute, minStr);
+    var hasMax: bool = dm.GetCustomNodeAttributeValueString(node, maxAttribute, maxStr);
+
+    if (!hasValue && !hasMin && !hasMax) return NULL;
+
+    parsed = new CLightRewriteClampedFloat in owner;
+    parsed.min.has = hasMin;
+    parsed.min.value = StringToFloat(minStr, 0.f);
+    parsed.max.has = hasMax;
+    parsed.max.value = StringToFloat(maxStr, 0.f);
+
+    if (hasMin && hasMax && parsed.min.value > parsed.max.value) {
+        LogLightRewriteXml(NameToString(minAttribute) + " exceeds " + NameToString(maxAttribute) + "; max wins.");
+    }
+    if (hasValue) {
+        parsed.SetClampedValue(StringToFloat(valueStr, 0.f));
+    }
+    return parsed;
 }
 
 function ParseLightRewritePerLightNodes(
