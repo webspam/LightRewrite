@@ -112,19 +112,19 @@ class CLightRewriteManager {
         }
     }
 
-    public function RefreshHeldTorches() {
+    public function RefreshEquippedLights() {
         var entities: array<CEntity>;
-        var torch: W3LightSource;
+        var light: W3LightSource;
         var i, count: int;
 
         theGame.GetEntitiesByTag(TAG_IS_WIELDED, entities);
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
-            torch = (W3LightSource)entities[i];
-            if (torch && torch.torchRewriter) {
-                torch.torchRewriter.Refresh();
-            }
+            light = (W3LightSource)entities[i];
+            if (!light || !light.lrEquippableRewriter) continue;
+
+            light.lrEquippableRewriter.Refresh();
         }
     }
 
