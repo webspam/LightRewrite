@@ -95,3 +95,18 @@
 2122144096||LightRewrite_NpcTorch_Enabled|Pochodně NPC
 2122144097||LightRewrite_FogRemoval|Odstranění mlhy v interiérech
 2122144098||LightRewrite_FogFadeTime|Doba prolínání mlhy
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite je povolen
+2122144100||LightRewrite_MenuDescOff_Enabled|Všechny funkce Light Rewrite jsou momentálně zakázány
+2122144101||LightRewrite_MenuDesc_Enabled|Přepíná všechny úpravy světla Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Předvolba osvětlení, která se použije.  Doporučeno: Výchozí
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Přepíše nastavení světla pochodně a lucerny hráče
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Výchozí v modu: 25     Výchozí ve hře: téměř maximum
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Výchozí v modu: 25     Výchozí ve hře: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Výchozí v modu: 0.9    Výchozí ve hře: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Přepíše světlo všech pochodní NPC
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Výchozí v modu: 25     Výchozí ve hře: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Výchozí v modu: 6.5     Výchozí ve hře: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Výchozí v modu: 0.9     Výchozí ve hře: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Kolik mlhy bude odstraněno: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Doba v sekundách, za kterou se změní odstranění mlhy po vstupu/odchodu z interiéru.  Doporučeno: 1-3
+2122144113||LightRewrite_Preset_Default|Výchozí

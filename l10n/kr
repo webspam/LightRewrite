@@ -95,3 +95,18 @@
 2122144096||LightRewrite_NpcTorch_Enabled|NPC 횃불
 2122144097||LightRewrite_FogRemoval|실내 안개 제거
 2122144098||LightRewrite_FogFadeTime|안개 페이드 인/아웃 시간
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite가 활성화되어 있습니다
+2122144100||LightRewrite_MenuDescOff_Enabled|모든 Light Rewrite 기능이 현재 비활성화되어 있습니다
+2122144101||LightRewrite_MenuDesc_Enabled|모든 Light Rewrite 조명 조정을 켜거나 끕니다
+2122144102||LightRewrite_MenuDesc_CurrentProfile|사용할 조명 프리셋.  권장: 기본값
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|플레이어 횃불과 랜턴의 조명 설정을 덮어씁니다
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|모드 기본값: 25     게임 기본값: 거의 최대
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|모드 기본값: 25     게임 기본값: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|모드 기본값: 0.9    게임 기본값: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|모든 NPC 횃불의 빛을 덮어씁니다
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|모드 기본값: 25     게임 기본값: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|모드 기본값: 6.5     게임 기본값: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|모드 기본값: 0.9     게임 기본값: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|제거될 안개의 양: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|실내에 출입한 후 안개 제거가 변경되는 시간(초).  권장: 1-3
+2122144113||LightRewrite_Preset_Default|기본값

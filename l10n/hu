@@ -95,3 +95,18 @@
 2122144096||LightRewrite_NpcTorch_Enabled|NPC-fáklyák
 2122144097||LightRewrite_FogRemoval|Beltéri köd eltávolítása
 2122144098||LightRewrite_FogFadeTime|Köd áttűnésének időtartama
+2122144099||LightRewrite_MenuDescOn_Enabled|A Light Rewrite engedélyezve van
+2122144100||LightRewrite_MenuDescOff_Enabled|A Light Rewrite összes funkciója jelenleg le van tiltva
+2122144101||LightRewrite_MenuDesc_Enabled|Be- és kikapcsolja a Light Rewrite összes fénybeállítását
+2122144102||LightRewrite_MenuDesc_CurrentProfile|A használni kívánt megvilágítási előbeállítás.  Ajánlott: Alapértelmezett
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Felülírja a játékos fáklyájának és lámpásának fénybeállításait
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Mod alapértelmezett: 25     Játék alapértelmezett: közel maximum
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Mod alapértelmezett: 25     Játék alapértelmezett: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Mod alapértelmezett: 0.9    Játék alapértelmezett: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Felülírja az összes NPC-fáklya fényét
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Mod alapértelmezett: 25     Játék alapértelmezett: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Mod alapértelmezett: 6.5     Játék alapértelmezett: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Mod alapértelmezett: 0.9     Játék alapértelmezett: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Mennyi köd lesz eltávolítva: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Másodpercben az az idő, amely alatt a ködeltávolítás megváltozik, beltérbe való belépés/kilépés után.  Ajánlott: 1-3
+2122144113||LightRewrite_Preset_Default|Alapértelmezett

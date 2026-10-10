@@ -95,3 +95,18 @@
 2122144096||LightRewrite_NpcTorch_Enabled|Tochas dos NPCs
 2122144097||LightRewrite_FogRemoval|Remoção de névoa em interiores
 2122144098||LightRewrite_FogFadeTime|Duração da transição da névoa
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite está ativado
+2122144100||LightRewrite_MenuDescOff_Enabled|Todos os recursos do Light Rewrite estão desativados no momento
+2122144101||LightRewrite_MenuDesc_Enabled|Ativa ou desativa todos os ajustes de luz do Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Predefinição de iluminação a ser usada.  Recomendado: Padrão
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Substitui as configurações de luz da tocha e da lanterna do jogador
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Padrão do mod: 25     Padrão do jogo: quase máximo
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Padrão do mod: 25     Padrão do jogo: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Padrão do mod: 0.9    Padrão do jogo: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Substitui a luz de todas as tochas dos NPCs
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Padrão do mod: 25     Padrão do jogo: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Padrão do mod: 6.5     Padrão do jogo: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Padrão do mod: 0.9     Padrão do jogo: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Quanta névoa será removida: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Tempo em segundos para a remoção de névoa mudar, após entrar/sair de um interior.  Recomendado: 1-3
+2122144113||LightRewrite_Preset_Default|Padrão
