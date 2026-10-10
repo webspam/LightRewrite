@@ -127,6 +127,9 @@ Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
   foreach ($overrides in $doc.SelectNodes('//overrides')) {
     $profileName = $overrides.GetAttribute('profile_name')
     if (!$profileName) { continue }
+    if ($profileName -eq 'None') {
+      throw "$($_.FullName): profile_name '$profileName' is reserved"
+    }
     if (!$profileBases.ContainsKey($profileName)) { $profileBases[$profileName] = @() }
     foreach ($inherits in $overrides.SelectNodes('inherits')) {
       if ($inheritsDeclaredIn.ContainsKey($profileName)) {

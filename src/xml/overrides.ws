@@ -1,4 +1,7 @@
-function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideGroup> {
+function LoadLightRewriteOverrides(
+    owner: CObject,
+    noneProfile: name
+): array<CLightRewriteOverrideGroup> {
     var groups: array<CLightRewriteOverrideGroup>;
     var group: CLightRewriteOverrideGroup;
     var dm: CDefinitionsManagerAccessor;
@@ -20,6 +23,10 @@ function LoadLightRewriteOverrides(owner: CObject): array<CLightRewriteOverrideG
         }
 
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
+        if (profileName == noneProfile) {
+            LogLightRewriteXml("Skipping overrides group - profile name '" + profileName + "' is reserved.");
+            continue;
+        }
         LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + profileName + ", overrides: " + overridesNode.subNodes.Size());
 
         group = LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName);
