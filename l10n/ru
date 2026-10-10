@@ -91,7 +91,22 @@
 2122144089||LightRewrite_Brightness|Яркость
 2122144090||LightRewrite_Radius|Радиус
 2122144091||LightRewrite_Attenuation|Затухание
-2122144095||LightRewrite_PlayerTorch_Enabled|Факел игрока
+2122144095||LightRewrite_PlayerTorch_Enabled|Факел и фонарь игрока
 2122144096||LightRewrite_NpcTorch_Enabled|Факелы NPC
 2122144097||LightRewrite_FogRemoval|Удаление тумана в помещениях
 2122144098||LightRewrite_FogFadeTime|Длительность появления/исчезновения тумана
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite включён
+2122144100||LightRewrite_MenuDescOff_Enabled|Все функции Light Rewrite сейчас отключены
+2122144101||LightRewrite_MenuDesc_Enabled|Переключает все изменения света от Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Используемый пресет освещения.  Рекомендуется: По умолчанию
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Переопределяет настройки света факела и фонаря игрока
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|По умолчанию в моде: 25     По умолчанию в игре: почти максимум
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|По умолчанию в моде: 25     По умолчанию в игре: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|По умолчанию в моде: 0.9    По умолчанию в игре: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Переопределяет свет всех факелов NPC
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|По умолчанию в моде: 25     По умолчанию в игре: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|По умолчанию в моде: 6.5     По умолчанию в игре: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|По умолчанию в моде: 0.9     По умолчанию в игре: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Сколько тумана будет удалено: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Время в секундах, за которое изменяется удаление тумана после входа/выхода из помещения.  Рекомендуется: 1-3
+2122144113||LightRewrite_Preset_Default|По умолчанию

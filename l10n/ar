@@ -91,7 +91,22 @@
 2122144089||LightRewrite_Brightness|سطوع
 2122144090||LightRewrite_Radius|نطاق
 2122144091||LightRewrite_Attenuation|توهين
-2122144095||LightRewrite_PlayerTorch_Enabled|شعلة اللاعب
+2122144095||LightRewrite_PlayerTorch_Enabled|شعلة وفانوس اللاعب
 2122144096||LightRewrite_NpcTorch_Enabled|شعلات الشخصيات غير اللاعبة
 2122144097||LightRewrite_FogRemoval|إزالة ضباب الأماكن الداخلية
 2122144098||LightRewrite_FogFadeTime|مدة ظهور/اختفاء الضباب
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite مفعّل
+2122144100||LightRewrite_MenuDescOff_Enabled|جميع ميزات Light Rewrite معطّلة حاليًا
+2122144101||LightRewrite_MenuDesc_Enabled|يبدّل جميع تعديلات الإضاءة في Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|الإعداد المسبق للإضاءة المراد استخدامه.  المُوصى به: الافتراضي
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|يتجاوز إعدادات الإضاءة لشعلة وفانوس اللاعب
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|الافتراضي في المود: 25     الافتراضي في اللعبة: قريب من الحد الأقصى
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|الافتراضي في المود: 25     الافتراضي في اللعبة: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|الافتراضي في المود: 0.9    الافتراضي في اللعبة: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|يتجاوز ضوء جميع شعلات الشخصيات غير اللاعبة
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|الافتراضي في المود: 25     الافتراضي في اللعبة: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|الافتراضي في المود: 6.5     الافتراضي في اللعبة: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|الافتراضي في المود: 0.9     الافتراضي في اللعبة: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|مقدار الضباب الذي ستتم إزالته: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|الوقت بالثواني الذي تتغير فيه إزالة الضباب، بعد دخول/مغادرة مكان داخلي.  المُوصى به: 1-3
+2122144113||LightRewrite_Preset_Default|الافتراضي

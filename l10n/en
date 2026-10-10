@@ -91,7 +91,22 @@
 2122144089||LightRewrite_Brightness|Brightness
 2122144090||LightRewrite_Radius|Radius
 2122144091||LightRewrite_Attenuation|Attenuation
-2122144095||LightRewrite_PlayerTorch_Enabled|Player torch
+2122144095||LightRewrite_PlayerTorch_Enabled|Player torch & lantern
 2122144096||LightRewrite_NpcTorch_Enabled|NPC torches
 2122144097||LightRewrite_FogRemoval|Interior fog removal
 2122144098||LightRewrite_FogFadeTime|Fog fade in/out duration
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite is enabled
+2122144100||LightRewrite_MenuDescOff_Enabled|All Light Rewrite features are currently disabled
+2122144101||LightRewrite_MenuDesc_Enabled|Toggles all Light Rewrite light adjustments
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Lighting preset to use.  Recommended: Default
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Overrides the light settings for player torch & lantern
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Mod default: 25     Game default: near-maximum
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Mod default: 25     Game default: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Mod default: 0.9    Game default: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Override the light of all NPC torches
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Mod default: 25     Game default: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Mod default: 6.5     Game default: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Mod default: 0.9     Game default: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|How much fog will be removed: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|The time in seconds for fog removal to change, after entering/leaving an interior.  Recommended: 1-3
+2122144113||LightRewrite_Preset_Default|Default

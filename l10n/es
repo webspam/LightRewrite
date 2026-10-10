@@ -91,7 +91,22 @@
 2122144089||LightRewrite_Brightness|Brillo
 2122144090||LightRewrite_Radius|Radio
 2122144091||LightRewrite_Attenuation|Atenuación
-2122144095||LightRewrite_PlayerTorch_Enabled|Antorcha del jugador
+2122144095||LightRewrite_PlayerTorch_Enabled|Antorcha y farol del jugador
 2122144096||LightRewrite_NpcTorch_Enabled|Antorchas de los PNJ
 2122144097||LightRewrite_FogRemoval|Eliminación de niebla en interiores
 2122144098||LightRewrite_FogFadeTime|Duración del fundido de la niebla
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite está activado
+2122144100||LightRewrite_MenuDescOff_Enabled|Todas las funciones de Light Rewrite están desactivadas actualmente
+2122144101||LightRewrite_MenuDesc_Enabled|Activa o desactiva todos los ajustes de luz de Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Preajuste de iluminación que se usará.  Recomendado: Predeterminado
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Sustituye los ajustes de luz de la antorcha y el farol del jugador
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Predeterminado del mod: 25     Predeterminado del juego: casi máximo
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Predeterminado del mod: 25     Predeterminado del juego: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Predeterminado del mod: 0.9    Predeterminado del juego: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Sustituye la luz de todas las antorchas de los PNJ
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Predeterminado del mod: 25     Predeterminado del juego: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Predeterminado del mod: 6.5     Predeterminado del juego: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Predeterminado del mod: 0.9     Predeterminado del juego: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Cantidad de niebla que se eliminará: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Tiempo en segundos que tarda en cambiar la eliminación de niebla, tras entrar o salir de un interior.  Recomendado: 1-3
+2122144113||LightRewrite_Preset_Default|Predeterminado

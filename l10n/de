@@ -91,7 +91,22 @@
 2122144089||LightRewrite_Brightness|Helligkeit
 2122144090||LightRewrite_Radius|Radius
 2122144091||LightRewrite_Attenuation|Dämpfung
-2122144095||LightRewrite_PlayerTorch_Enabled|Spielerfackel
+2122144095||LightRewrite_PlayerTorch_Enabled|Spielerfackel & Laterne
 2122144096||LightRewrite_NpcTorch_Enabled|NPC-Fackeln
 2122144097||LightRewrite_FogRemoval|Nebelentfernung in Innenräumen
 2122144098||LightRewrite_FogFadeTime|Ein-/Ausblenddauer des Nebels
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite ist aktiviert
+2122144100||LightRewrite_MenuDescOff_Enabled|Alle Light-Rewrite-Funktionen sind derzeit deaktiviert
+2122144101||LightRewrite_MenuDesc_Enabled|Schaltet alle Lichtanpassungen von Light Rewrite um
+2122144102||LightRewrite_MenuDesc_CurrentProfile|Zu verwendende Licht-Voreinstellung.  Empfohlen: Standard
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Überschreibt die Lichteinstellungen für Fackel und Laterne des Spielers
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Mod-Standard: 25     Spiel-Standard: nahezu maximal
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Mod-Standard: 25     Spiel-Standard: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Mod-Standard: 0.9    Spiel-Standard: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Überschreibt das Licht aller NPC-Fackeln
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Mod-Standard: 25     Spiel-Standard: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Mod-Standard: 6.5     Spiel-Standard: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Mod-Standard: 0.9     Spiel-Standard: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|Wie viel Nebel entfernt wird: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|Zeit in Sekunden, in der sich die Nebelentfernung ändert, nach Betreten/Verlassen eines Innenraums.  Empfohlen: 1-3
+2122144113||LightRewrite_Preset_Default|Standard
