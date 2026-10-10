@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Brilho
 2122144090||LightRewrite_Radius|Raio
 2122144091||LightRewrite_Attenuation|Atenuação
-2122144095||LightRewrite_PlayerTorch_Enabled|Tocha do jogador
+2122144095||LightRewrite_PlayerTorch_Enabled|Tocha e lanterna do jogador
 2122144096||LightRewrite_NpcTorch_Enabled|Tochas dos NPCs
 2122144097||LightRewrite_FogRemoval|Remoção de névoa em interiores
 2122144098||LightRewrite_FogFadeTime|Duração da transição da névoa

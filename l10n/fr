@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Luminosité
 2122144090||LightRewrite_Radius|Rayon
 2122144091||LightRewrite_Attenuation|Atténuation
-2122144095||LightRewrite_PlayerTorch_Enabled|Torche du joueur
+2122144095||LightRewrite_PlayerTorch_Enabled|Torche et lanterne du joueur
 2122144096||LightRewrite_NpcTorch_Enabled|Torches des PNJ
 2122144097||LightRewrite_FogRemoval|Suppression du brouillard en intérieur
 2122144098||LightRewrite_FogFadeTime|Durée du fondu du brouillard

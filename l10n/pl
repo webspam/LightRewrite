@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Jasność
 2122144090||LightRewrite_Radius|Promień
 2122144091||LightRewrite_Attenuation|Tłumienie
-2122144095||LightRewrite_PlayerTorch_Enabled|Pochodnia gracza
+2122144095||LightRewrite_PlayerTorch_Enabled|Pochodnia i latarnia gracza
 2122144096||LightRewrite_NpcTorch_Enabled|Pochodnie NPC
 2122144097||LightRewrite_FogRemoval|Usuwanie mgły we wnętrzach
 2122144098||LightRewrite_FogFadeTime|Czas pojawiania/zanikania mgły

@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|亮度
 2122144090||LightRewrite_Radius|半径
 2122144091||LightRewrite_Attenuation|衰减
-2122144095||LightRewrite_PlayerTorch_Enabled|玩家火把
+2122144095||LightRewrite_PlayerTorch_Enabled|玩家火把和提灯
 2122144096||LightRewrite_NpcTorch_Enabled|NPC火把
 2122144097||LightRewrite_FogRemoval|室内雾气消除
 2122144098||LightRewrite_FogFadeTime|雾气淡入/淡出时长

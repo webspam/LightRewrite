@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Brightness
 2122144090||LightRewrite_Radius|Radius
 2122144091||LightRewrite_Attenuation|Attenuation
-2122144095||LightRewrite_PlayerTorch_Enabled|Player torch
+2122144095||LightRewrite_PlayerTorch_Enabled|Player torch & lantern
 2122144096||LightRewrite_NpcTorch_Enabled|NPC torches
 2122144097||LightRewrite_FogRemoval|Interior fog removal
 2122144098||LightRewrite_FogFadeTime|Fog fade in/out duration

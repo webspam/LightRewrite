@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Helligkeit
 2122144090||LightRewrite_Radius|Radius
 2122144091||LightRewrite_Attenuation|Dämpfung
-2122144095||LightRewrite_PlayerTorch_Enabled|Spielerfackel
+2122144095||LightRewrite_PlayerTorch_Enabled|Spielerfackel & Laterne
 2122144096||LightRewrite_NpcTorch_Enabled|NPC-Fackeln
 2122144097||LightRewrite_FogRemoval|Nebelentfernung in Innenräumen
 2122144098||LightRewrite_FogFadeTime|Ein-/Ausblenddauer des Nebels

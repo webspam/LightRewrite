@@ -91,7 +91,7 @@
 2122144089||LightRewrite_Brightness|Luminosità
 2122144090||LightRewrite_Radius|Raggio
 2122144091||LightRewrite_Attenuation|Attenuazione
-2122144095||LightRewrite_PlayerTorch_Enabled|Torcia del giocatore
+2122144095||LightRewrite_PlayerTorch_Enabled|Torcia e lanterna del giocatore
 2122144096||LightRewrite_NpcTorch_Enabled|Torce degli NPC
 2122144097||LightRewrite_FogRemoval|Rimozione della nebbia negli interni
 2122144098||LightRewrite_FogFadeTime|Durata della dissolvenza della nebbia
