@@ -65,6 +65,7 @@
         <!-- Large Candle Holder B -->
         <override tag_name="LR_KaerMorhen_CandleHolderLargeWoodBComplex"
                   label="kaer_morhen_candle_holder_large_wood_b_complex"
+                  brightness="7.76"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
@@ -107,8 +108,8 @@
                  mode="exact">levels\kaer_morhen\kaer_morhen_valley\castle_interior\castle_storage_interior.w2l</match>
         </matches>
 
-        <override tag_name="LR_Edited_torch_wall_metal_fake_shadow_w2ent"
-                  label="edited_torch_wall_metal_fake_shadow_w2ent">
+        <override tag_name="LR_KaerMorhen_torch_wall_metal_fake_shadow_w2ent"
+                  label="kaer_morhen_torch_wall_metal_fake_shadow_w2ent">
           <match mode="exact">torch_wall_metal_fake_shadow.w2ent</match>
           <spotlight attenuation="1">
             <colour r="255"
@@ -117,8 +118,8 @@
           </spotlight>
         </override>
 
-        <override tag_name="LR_Edited_candle_holder_large_wood_a_w2ent"
-                  label="edited_candle_holder_large_wood_a_w2ent"
+        <override tag_name="LR_KaerMorhen_candle_holder_large_wood_a_w2ent"
+                  label="kaer_morhen_candle_holder_large_wood_a_w2ent"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_a.w2ent</match>
           <shadows casting_mode="Normal" />
@@ -126,8 +127,18 @@
                   g="255"
                   b="255" />
         </override>
-      </overrides>
 
+        <!-- Fireplace - Tutorial -->
+        <override tag_name="LR_KaerMorhen_Tutorial_fireplace"
+                  label="kaer_morhen_tutorial_fireplace"
+                  brightness="75"
+                  radius="6.4"
+                  attenuation="1">
+          <match mode="exact">fireplace_grate.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\kaer_morhen\env_global_pbr\castle\bonefire.w2l</match>
+        </override>
+      </overrides>
     </light_rewrite>
   </custom>
 </redxml>
