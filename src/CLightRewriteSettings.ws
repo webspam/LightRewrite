@@ -12,7 +12,7 @@ class CLightRewriteSettings {
     private const var ADVANCED_SUBMENU        : string;  default ADVANCED_SUBMENU = ADVANCED_GROUP;
     // Label key constants (must match XML Var id values)
     private const var CURRENT_PROFILE_LABEL   : string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
-    private const var NONE_PROFILE_LABEL      : name;    default NONE_PROFILE_LABEL = 'LightRewrite_None';
+    private const var NONE_PROFILE            : name;    default NONE_PROFILE = 'None';
     // Setting name constants (must match XML Var id values)
     private const var ENABLED                 : name;    default ENABLED = 'Enabled';
     private const var INIT_VERSION            : name;    default INIT_VERSION = 'InitVersion';
@@ -75,12 +75,12 @@ class CLightRewriteSettings {
         generalGroupId = gameConfig.GetGroupIdx(GENERAL_GROUP);
         advancedGroupId = gameConfig.GetGroupIdx(ADVANCED_GROUP);
 
-        overrideGroups = LoadLightRewriteOverrides(this);
+        overrideGroups = LoadLightRewriteOverrides(this, NONE_PROFILE);
         profiles = new CLightRewriteProfileSet in this;
         profiles.Build(overrideGroups);
 
         profileOptions = profiles.GetNames();
-        profileOptions.Insert(0, NONE_PROFILE_LABEL);
+        profileOptions.Insert(0, NONE_PROFILE);
 
         playerTorch = SLightRewriteTorchLight(
             25,
@@ -216,7 +216,7 @@ class CLightRewriteSettings {
             currentProfile = profileOptions[profileIndex];
         }
         else {
-            currentProfile = NONE_PROFILE_LABEL;
+            currentProfile = NONE_PROFILE;
         }
 
         spacingMode = StringToInt(
@@ -326,7 +326,7 @@ class CLightRewriteSettings {
 
         count = profileOptions.Size();
         for (i = 0; i < count; i += 1) {
-            optionText = GetLocStringByKeyExt(profileOptions[i]);
+            optionText = GetLocStringByKeyExt("LightRewrite_Preset_" + profileOptions[i]);
             if (optionText == "") optionText = profileOptions[i];
 
             if (selectedIsDirty && profileOptions[i] == currentProfile) {
@@ -395,7 +395,7 @@ class CLightRewriteSettings {
         var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
-        if (currentProfile == NONE_PROFILE_LABEL) return NULL;
+        if (currentProfile == NONE_PROFILE) return NULL;
 
         profile = profiles.Find(currentProfile);
         if (!profile) return NULL;
