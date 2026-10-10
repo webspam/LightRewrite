@@ -6,6 +6,13 @@
       <!-- Novigrad Bathhouse -->
       <overrides profile_name="Default"
                  weight="20">
+        <matches>
+          <any>
+            <match type="layer">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\</match>
+            <match type="layer">levels\novigrad\novigrad\bathhouse\</match>
+          </any>
+        </matches>
+
         <!-- Candelabra -->
         <override tag_name="LR_Bathhouse_Candelabra"
                   label="bathhouse_candelabra"
@@ -13,21 +20,7 @@
                   radius="4"
                   attenuation="1">
           <match mode="exact">candelabra_tall_three_point.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights.w2l</match>
         </override>
-
-        <!-- Candelabra L02 -->
-        <override tag_name="LR_Bathhouse_Candelabra_L02"
-                  label="bathhouse_candelabra_l02"
-                  brightness="8"
-                  radius="4"
-                  attenuation="1">
-          <match mode="exact">candelabra_tall_three_point.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights_02.w2l</match>
-        </override>
-
 
         <!-- Candelabra NoShadow -->
         <override tag_name="LR_Bathhouse_Candelabra_NoShadow"
@@ -36,38 +29,41 @@
                   radius="4.5"
                   attenuation="1">
           <match mode="exact">candelabra_tall_three_point_noshadow.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights_02.w2l</match>
         </override>
 
         <!-- Candelabra Standing -->
         <override tag_name="LR_Bathhouse_Candelabra_Standing"
                   label="bathhouse_candelabra_standing"
-                  brightness="8"
+                  brightness="9.52"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candelabra_standing_complex.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\novigrad\bathhouse\lights.w2l</match>
-          <shadows blend_factor="1" />
+          <shadows fade_distance="15"
+                   fade_range="14"
+                   blend_factor="0.8" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <offset x="0"
+                  y="0"
+                  z="1.96" />
+          <spotlight radius="0" />
         </override>
 
         <!-- Floor Brazier -->
         <override tag_name="LR_Bathhouse_Floor_Brazier"
                   label="bathhouse_floor_brazier"
                   brightness="20"
-                  radius="7"
+                  radius="6.5"
                   attenuation="1">
           <match mode="exact">bathhouse_floor_brazier_complex.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\novigrad\bathhouse\lights.w2l</match>
           <shadows fade_distance="7.5"
                    fade_range="20" />
           <offset x="0"
                   y="0"
                   z="0.87" />
           <spotlight brightness="20"
-                     radius="7"
+                     radius="6.5"
                      innerAngle="255"
                      outerAngle="305">
             <offset x="0"
@@ -79,12 +75,16 @@
         <!-- Chandelier -->
         <override tag_name="LR_Bathhouse_Chandelier"
                   label="bathhouse_chandelier"
-                  brightness="10"
-                  radius="7"
-                  attenuation="0.85">
+                  brightness="20"
+                  radius="5"
+                  attenuation="1">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\novigrad\bathhouse\dijkstras_office.w2l</match>
+          <!-- dijkstras_office.w2l -->
+          <shadows fade_distance="20"
+                   fade_range="20" />
+          <offset x="0"
+                  y="0"
+                  z="0.27" />
         </override>
 
         <!-- Torches -->
@@ -93,10 +93,7 @@
                   brightness="20"
                   radius="5"
                   attenuation="0.9">
-          <match mode="exact">torch_wall_metal.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights.w2l</match>
-          <!-- Top of flame -->
+          <match mode="exact">torch_wall_metal.w2ent</match>          <!-- Top of flame -->
           <offset x="-0.4"
                   y="0"
                   z="0.6" />
