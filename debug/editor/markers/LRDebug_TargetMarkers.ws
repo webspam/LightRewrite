@@ -11,7 +11,10 @@ function OnTick(timeDelta: float) {
  * Shows a pinpoint HUD marker for each of an entities lights.
  */
 class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
-    private const var markersPerType: int;  default markersPerType = 5;
+    private const var markersPerType : int;     default markersPerType = 5;
+    private const var GLYPH          : string;  default GLYPH = "+";
+    private const var FONT_SIZE      : int;     default FONT_SIZE = 16;
+    private const var SCREEN_OFFSET_Y: float;   default SCREEN_OFFSET_Y = 7.0;
 
     private var components: array<CComponent>;
     private var target    : CGameplayEntity;
@@ -40,7 +43,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         count = markers.Size();
         for (i = 0; i < count; i += 1) {
             if (components[i]) {
-                markers[i].SetWorldPosition(components[i].GetWorldPosition());
+                markers[i].SetWorldPosition(components[i].GetWorldPosition(), SCREEN_OFFSET_Y);
             }
             else {
                 markers[i].Hide();
@@ -112,7 +115,7 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         var i: int;
 
         for (i = 0; i < markersPerType; i += 1) {
-            AddMarker("+", 16, color);
+            AddMarker(GLYPH, FONT_SIZE, color);
             components.PushBack(NULL);
         }
     }
