@@ -84,6 +84,9 @@ class CLightRewriteManager {
     public function ApplySpacing() {
         var spacer: CLightRewriteSpacer;
 
+        // Spacer is disabled - usefulness in remastered is unknown
+        return;
+
         if (!settings.isEnabled) return;
 
         spacer = new CLightRewriteSpacer in this;

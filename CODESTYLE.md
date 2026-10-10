@@ -67,7 +67,6 @@ for (i = 0; i < count; i += 1) {
 ## Miscellaneous
 
 - A short body sits inline without braces (`if (wasEnabled) light.SetEnabled(false);`); compound bodies take braces
-- Ternaries are not functional in witcherscript
 - Prefer `switch` with `default` when there are more than two branches
 
 ## One return value
