@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\mq6001_merchant_camp\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_UpperMill_CandelabraStanding"
+                  label="upper_mill_candelabra_standing"
+                  brightness="9.52"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">candelabra_standing.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="1.97" />
+        </override>
+
+        <override tag_name="LR_UpperMill_CandelabraNoshadow"
+                  label="upper_mill_candelabra_noshadow"
+                  brightness="10.23"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">candelabra_noshadow.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.82" />
+        </override>
+
+        <override tag_name="LR_UpperMill_LampStanding"
+                  label="upper_mill_lamp_standing"
+                  brightness="15"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">lamp_standing_complex.w2ent</match>
+          <shadows fade_distance="30"
+                   fade_range="20" />
+          <spotlight radius="0"
+                     attenuation="1">
+            <offset x="0"
+                    y="0"
+                    z="-0.12" />
+          </spotlight>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_SouthOfUpperMill_Fireplace"
+                  label="upper_mill_coal_big_fire"
+                  brightness="30"
+                  radius="7.5">
+          <match mode="exact">coal_big_fire_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\village_by_lake\lake_houses_interiors\lights.w2l</match>
+          <offset x="0"
+                  y="0"
+                  z="0.58" />
+          <spotlight radius="0" />
+        </override>
+      </overrides>
+
+
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_UpperMill_HangingLampHolder"
+                  label="upper_mill_hanging_lamp_holder"
+                  brightness="15"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\village_by_lake\stone_windmill\lights.w2l</match>
+          <shadows fade_distance="30"
+                   fade_range="20" />
+          <spotlight brightness="15"
+                     radius="0"
+                     attenuation="1" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
