@@ -543,6 +543,8 @@ function WriteUtf8Xml {
 
     $settings = [System.Xml.XmlWriterSettings]::new()
     $settings.Indent = $true
+    $settings.NewLineChars = "`n"
+    $settings.NewLineHandling = [System.Xml.NewLineHandling]::Replace
 
     $buffer = [System.IO.StringWriter]::new()
     $writer = [System.Xml.XmlWriter]::Create($buffer, $settings)
