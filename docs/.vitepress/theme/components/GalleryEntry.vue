@@ -143,9 +143,11 @@ defineEmits<{
 .tag {
   position: absolute;
   top: 100%;
+  left: 2em;
   right: -1.5rem;
   margin-top: 0.5rem;
   white-space: nowrap;
+  text-align: right;
   font-family: var(--cs-mono);
   font-size: var(--cs-text-sm);
   font-weight: 500;
