@@ -22,15 +22,23 @@
           <match mode="exact">candle_med_b_complex.w2ent</match>
         </override>
 
+        <!-- Candleholder - Large B -->
         <override tag_name="LR_UpperMill_Church_CandleHolderB"
                   label="upper_mill_church_candle_holder_b"
+                  brightness="9"
+                  radius="5.5"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="1.94" />
         </override>
 
+        <!-- Candleholder - Large A -->
         <override tag_name="LR_UpperMill_Church_CandleHolderA"
                   label="upper_mill_church_candle_holder_a"
-                  rewriter_type="LRT_Candle">
+                  rewriter_type="LRT_Candle"
+                  brightness="3.3">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
           <light index="0"
                  radius="4" />
@@ -40,8 +48,25 @@
                  radius="2.5" />
           <spotlight radius="0"
                      attenuation="1" />
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.12" />
+        </override>
+
+        <!-- Hanging Lamp - Pointlight has wrong LUM -->
+        <override tag_name="LR_HoSPoI_Graveyard_HangingLamp"
+                  label="hos_poi_graveyard_hanging_lamp"
+                  brightness="15"
+                  radius="0">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+          <spotlight brightness="15">
+            <offset x="0"
+                    y="0"
+                    z="-0.18" />
+          </spotlight>
         </override>
       </overrides>
+
 
       <overrides profile_name="Default"
                  weight="20">
