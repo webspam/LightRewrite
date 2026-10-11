@@ -7,12 +7,12 @@
 abstract class ILightRewriteParams {
     public var enabled: SLightRewriteOptionalBool;
 
-    public var brightness: SLightRewriteOptionalFloat;
+    public var brightness: CLightRewriteClampedFloat;
 
-    public var radius: SLightRewriteOptionalFloat;
+    public var radius: CLightRewriteClampedFloat;
 
     // Attenuation - how quickly the light fades out with distance
-    public var attenuation: SLightRewriteOptionalFloat;
+    public var attenuation: CLightRewriteClampedFloat;
 
     // Distance at which the player shadow starts to fade
     public var shadowFadeDistance: SLightRewriteOptionalFloat;
@@ -31,14 +31,26 @@ abstract class ILightRewriteParams {
 
     public function ApplyBaseTo(target: ILightRewriteParams) {
         if (enabled.has) target.enabled = enabled;
-        if (brightness.has) target.brightness = brightness;
-        if (radius.has) target.radius = radius;
-        if (attenuation.has) target.attenuation = attenuation;
+        target.brightness = MergeClampedFloat(target, target.brightness, brightness);
+        target.radius = MergeClampedFloat(target, target.radius, radius);
+        target.attenuation = MergeClampedFloat(target, target.attenuation, attenuation);
         if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
         if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (castShadows.has) target.castShadows = castShadows;
         if (color.has) target.color = color;
         if (offset.has) target.offset = offset;
+    }
+
+    private function MergeClampedFloat(
+        target: ILightRewriteParams,
+        lowerWeight: CLightRewriteClampedFloat,
+        higherWeight: CLightRewriteClampedFloat
+    ): CLightRewriteClampedFloat {
+        if (!higherWeight) return lowerWeight;
+
+        if (!lowerWeight) lowerWeight = new CLightRewriteClampedFloat in target;
+        lowerWeight.MergeFrom(higherWeight);
+        return lowerWeight;
     }
 }

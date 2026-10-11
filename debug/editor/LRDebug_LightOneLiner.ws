@@ -97,21 +97,21 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
 
         switch (attr) {
             case 'brightness':
-                if (lightParams && lightParams.brightness.has) valF = lightParams.brightness.value;
-                else if (light) valF = light.brightness;
+                if (light) valF = light.brightness;
+                if (lightParams && lightParams.brightness) {
+                    valF = lightParams.brightness.Resolve(valF);
+                }
                 return FloatToString(valF);
 
             case 'radius':
-                if (lightParams && lightParams.radius.has) valF = lightParams.radius.value;
-                else if (light) valF = light.radius;
+                if (light) valF = light.radius;
+                if (lightParams && lightParams.radius) valF = lightParams.radius.Resolve(valF);
                 return FloatToString(valF);
 
             case 'attenuation':
-                if (lightParams && lightParams.attenuation.has) {
-                    valF = lightParams.attenuation.value;
-                }
-                else if (light) {
-                    valF = light.attenuation;
+                if (light) valF = light.attenuation;
+                if (lightParams && lightParams.attenuation) {
+                    valF = lightParams.attenuation.Resolve(valF);
                 }
                 return FloatToString(valF);
 

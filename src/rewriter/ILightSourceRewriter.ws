@@ -37,15 +37,20 @@ abstract class ILightSourceRewriter {
 
     // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
     public function GetUncappedRadius(pointLight: CPointLightComponent, index: int): float {
-        var p: CLightRewriteSourceParams = GetEffectiveParams();
-        var pointParams: CLightRewriteComponentLightParams = p.GetPointLightParams(index);
+        return ResolveUncappedRadius(pointLight, GetEffectiveParams().GetEffectivePointLightParams(index));
+    }
 
-        if (pointParams && pointParams.radius.has) return pointParams.radius.value;
-        if (p.radius.has) return p.radius.value;
+    private function ResolveUncappedRadius(
+        pointLight: CPointLightComponent,
+        effective: ILightRewriteParams
+    ): float {
+        var baseGameRadius: float = pointLight.radius;
+
         if (pointLight.lightRewriteOriginalValues.hasBeenSaved) {
-            return pointLight.lightRewriteOriginalValues.radius;
+            baseGameRadius = pointLight.lightRewriteOriginalValues.radius;
         }
-        return pointLight.radius;
+        if (effective.radius) return effective.radius.Resolve(baseGameRadius);
+        return baseGameRadius;
     }
 
     protected function GetEffectiveParams(): CLightRewriteSourceParams {
@@ -186,9 +191,18 @@ abstract class ILightSourceRewriter {
     }
 
     protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
-        if (pamparams.brightness.has) light.brightness = pamparams.brightness.value;
-        if (pamparams.radius.has) light.radius = pamparams.radius.value;
-        if (pamparams.attenuation.has) light.attenuation = pamparams.attenuation.value;
+        var original: SLightRewriteOriginalValues;
+
+        light.SaveLightRewriteOriginalValues();
+        original = light.lightRewriteOriginalValues;
+
+        if (pamparams.brightness) {
+            light.brightness = pamparams.brightness.Resolve(original.brightness);
+        }
+        if (pamparams.radius) light.radius = pamparams.radius.Resolve(original.radius);
+        if (pamparams.attenuation) {
+            light.attenuation = pamparams.attenuation.Resolve(original.attenuation);
+        }
         if (pamparams.shadowFadeDistance.has) {
             light.shadowFadeDistance = pamparams.shadowFadeDistance.value;
         }
@@ -309,7 +323,7 @@ abstract class ILightSourceRewriter {
         var effective: ILightRewriteParams = p.MergePointLightParams(pointParams);
 
         pointLight.SaveLightRewriteOriginalValues();
-        ApplyPointLightRewrite(pointLight, pointParams, effective, index, spotLight);
+        ApplyPointLightRewrite(pointLight, pointParams, effective, spotLight);
 
         if (effective.offset.has) pointLight.SetPosition(effective.offset.value);
     }
@@ -319,7 +333,6 @@ abstract class ILightSourceRewriter {
         pointLight: CPointLightComponent,
         pointParams: CLightRewriteComponentLightParams,
         effective: ILightRewriteParams,
-        index: int,
         optional spotLight: CSpotLightComponent
     ): bool {
         var wasEnabled: bool;
@@ -332,7 +345,7 @@ abstract class ILightSourceRewriter {
         wasEnabled = pointLight.IsEnabled();
         if (wasEnabled) pointLight.SetEnabled(false);
 
-        SetPointLightSettings(pointLight, effective, index);
+        SetPointLightSettings(pointLight, effective);
         SetPointLightColour(pointLight, effective, spotLight);
 
         if (wasEnabled) pointLight.SetEnabled(true);
@@ -349,19 +362,16 @@ abstract class ILightSourceRewriter {
 
     protected function SetPointLightSettings(
         pointLight: CPointLightComponent,
-        effective: ILightRewriteParams,
-        index: int
+        effective: ILightRewriteParams
     ) {
-        // Re-establish from source; the spacing cap overwrites the live radius, so it cannot grow back on its own
         var uncapped: float;
-
-        if (effective.radius.has) uncapped = effective.radius.value;
-        else uncapped = GetUncappedRadius(pointLight, index);
 
         ApplyLightParams(pointLight, effective);
 
+        uncapped = ResolveUncappedRadius(pointLight, effective);
+        if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) uncapped = maxSafeRadius;
+
         pointLight.radius = uncapped;
-        if (maxSafeRadius > 0.0 && uncapped > maxSafeRadius) pointLight.radius = maxSafeRadius;
     }
 
     // Sets point light colour to the specified override, spotlight, or original colour

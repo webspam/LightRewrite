@@ -19,6 +19,15 @@ function LRDebug_FloatEdited(
     return cur.has && (!base.has || cur.value != base.value);
 }
 
+function LRDebug_ClampedFloatEdited(
+    cur: CLightRewriteClampedFloat,
+    base: CLightRewriteClampedFloat
+): bool {
+    if (!cur) return false;
+    if (!base) return cur.value.has;
+    return LRDebug_FloatEdited(cur.value, base.value);
+}
+
 /** `true` if edited, and different from the default value. */
 function LRDebug_ShadowModeEdited(
     cur: SLightRewriteOptionalShadowMode,
@@ -43,14 +52,14 @@ function LRDebug_BuildLightFieldSegment(
 ): string {
     var line: string = "";
 
-    if (LRDebug_FloatEdited(cur.brightness, base.brightness)) {
-        line += " " + prefix + "brightness=" + FloatToString(cur.brightness.value);
+    if (LRDebug_ClampedFloatEdited(cur.brightness, base.brightness)) {
+        line += " " + prefix + "brightness=" + FloatToString(cur.brightness.value.value);
     }
-    if (LRDebug_FloatEdited(cur.radius, base.radius)) {
-        line += " " + prefix + "radius=" + FloatToString(cur.radius.value);
+    if (LRDebug_ClampedFloatEdited(cur.radius, base.radius)) {
+        line += " " + prefix + "radius=" + FloatToString(cur.radius.value.value);
     }
-    if (LRDebug_FloatEdited(cur.attenuation, base.attenuation)) {
-        line += " " + prefix + "attenuation=" + FloatToString(cur.attenuation.value);
+    if (LRDebug_ClampedFloatEdited(cur.attenuation, base.attenuation)) {
+        line += " " + prefix + "attenuation=" + FloatToString(cur.attenuation.value.value);
     }
     if (LRDebug_FloatEdited(cur.shadowFadeDistance, base.shadowFadeDistance)) {
         line += " " + prefix + "shadowFadeDistance=" + FloatToString(cur.shadowFadeDistance.value);
