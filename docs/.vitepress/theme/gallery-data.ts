@@ -29,18 +29,18 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     after: REMASTERED + "vizima-below-throne-after.jpg",
   },
   {
+    id: "erde-house",
+    title: "Erde",
+    tag: "Locked house",
+    before: REMASTERED + "erde-house-before.jpg",
+    after: REMASTERED + "erde-house-after.jpg",
+  },
+  {
     id: "vizima-attre",
     title: "Vizima castle",
     tag: "Attre",
     before: REMASTERED + "vizima-attre-before.jpg",
     after: REMASTERED + "vizima-attre-after.jpg",
-  },
-  {
-    id: "vizima-mage",
-    title: "Vizima castle",
-    tag: "Mage",
-    before: REMASTERED + "vizima-mage-before.jpg",
-    after: REMASTERED + "vizima-mage-after.jpg",
   },
   {
     id: "chameleon-suite-bed",
@@ -50,11 +50,32 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     after: REMASTERED + "chameleon-suite-bed-after.jpg",
   },
   {
+    id: "lindenvale-tomb",
+    title: "Lindenvale",
+    tag: "Tomb",
+    before: REMASTERED + "lindenvale-tomb-before.jpg",
+    after: REMASTERED + "lindenvale-tomb-after.jpg",
+  },
+  {
+    id: "vizima-mage",
+    title: "Vizima castle",
+    tag: "Mage",
+    before: REMASTERED + "vizima-mage-before.jpg",
+    after: REMASTERED + "vizima-mage-after.jpg",
+  },
+  {
     id: "chameleon-suite-dining",
     title: "The Chameleon",
     tag: "Suite - dining",
     before: REMASTERED + "chameleon-suite-dining-before.jpg",
     after: REMASTERED + "chameleon-suite-dining-after.jpg",
+  },
+  {
+    id: "kingfisher-ultra",
+    title: "The Kingfisher",
+    tag: "Ultra Preset",
+    before: REMASTERED + "kingfisher-ultra-before.jpg",
+    after: REMASTERED + "kingfisher-ultra-after.jpg",
   },
 ];
 
