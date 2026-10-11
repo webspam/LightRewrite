@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- HoS PoI: Bandit Camps -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\valley_ruin\bandit_camp.w2l</match>
+        </matches>
+        <override tag_name="LR_HoSBanditCamps_CandleholderSmallMelted"
+                  label="hos_poi_bandit_camps_candleholder_small_melted"
+                  use_spotlight_colour="false">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <colour r="255"
+                  g="250"
+                  b="245" />
+        </override>
+
+        <override tag_name="LR_HoSBanditCamps_CandelabraStanding"
+                  label="hos_poi_bandit_camps_candelabra_standing"
+                  brightness="7.76"
+                  radius="5"
+                  use_spotlight_colour="true">
+          <match mode="exact">candelabra_standing_complex.w2ent</match>
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <offset x="0"
+                  y="0"
+                  z="1.93" />
+          <spotlight brightness="7.76"
+                     radius="5" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\valley_ruin\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_HoSBanditCamps_Candelabra"
+                  label="hos_poi_bandit_camps_candelabra"
+                  brightness="7.76"
+                  radius="5"
+                  attenuation="1"
+                  use_spotlight_colour="true">
+          <match mode="exact">candelabra_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.78" />
+          <spotlight brightness="7.76"
+                     radius="5"
+                     attenuation="1">
+            <offset x="0"
+                    y="0"
+                    z="0.54" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_HoSBanditCamps_BraziersFloorSquareBounce"
+                  label="hos_poi_bandit_camps_braziers_floor_square_bounce"
+                  brightness="40.18">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <colour r="255"
+                  g="255"
+                  b="255" />
+          <spotlight>
+            <colour r="255"
+                    g="255"
+                    b="255" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_HoSBanditCamps_TorchHandLong"
+                  label="hos_poi_bandit_camps_torch_hand_long"
+                  brightness="20">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_HoSBanditCamps_CandelabraComplex2"
+                  label="hos_poi_bandit_camps_candelabra_complex_2"
+                  attenuation="1">
+          <match mode="exact">candelabra_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\valley_ruin\ruin.w2l</match>
+          <spotlight radius="0" />
+        </override>
+      </overrides>
+
+    </light_rewrite>
+  </custom>
+</redxml>
