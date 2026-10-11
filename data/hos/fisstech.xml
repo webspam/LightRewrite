@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Fisstech Lab -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\fisstech_lab\fx.w2l</match>
+        </matches>
+
+        <override tag_name="LR_Fisstech_Shadows"
+                  label="fisstech_shadows">
+          <shadows fade_distance="30"
+                   fade_range="20" />
+        </override>
+
+        <!-- Candlestick -->
+        <override tag_name="LR_Fisstech_CandleholderFancyComplex"
+                  label="fisstech_candleholder_fancy_complex"
+                  radius="5">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+        </override>
+
+        <!-- Torch -->
+        <override tag_name="LR_Fisstech_TorchWallWoodenComplex"
+                  label="fisstech_torch_wall_wooden_complex"
+                  brightness="20"
+                  radius="5">
+          <match mode="exact">torch_wall_wooden_complex.w2ent</match>
+        </override>
+
+        <!-- Entry Lantern -->
+        <override tag_name="LR_Fisstech_HangingLamp"
+                  label="fisstech_entry_lantern"
+                  brightness="15"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp.w2ent</match>
+        </override>
+
+        <!-- Lantern -->
+        <override tag_name="LR_Fisstech_HangingLampComplex"
+                  label="fisstech_hanging_lamp_complex"
+                  brightness="20"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <spotlight radius="0"
+                     attenuation="1" />
+        </override>
+
+        <!-- Brazier -->
+        <override tag_name="LR_Fisstech_BraziersFloorSquareBounce"
+                  label="fisstech_braziers_floor_square_bounce">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <colour r="255"
+                  g="255"
+                  b="255" />
+          <spotlight attenuation="1">
+            <colour r="255"
+                    g="255"
+                    b="255" />
+          </spotlight>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
