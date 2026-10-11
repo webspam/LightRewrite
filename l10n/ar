@@ -1,112 +1,112 @@
 ;meta[language=ar]
 ; id      |key(hex)|key(str)| text
 2122144000||LightRewrite|Light Rewrite
-2122144001||LightRewrite_Preset_VanillaIsh|قريب من الأصلي
-2122144002||LightRewrite_Preset_Author|المؤلف
-2122144003||LightRewrite_Preset_Bright|ساطع
-2122144004||LightRewrite_Enabled|مفعّل
-2122144005||LightRewrite_ShadowFadeDistance|مسافة تلاشي الظل
-2122144006||LightRewrite_ShadowFadeRange|نطاق تلاشي الظل
-2122144007||LightRewrite_ShadowBlendFactor|عامل مزج الظل
-2122144008||LightRewrite_Candle_Brightness|سطوع الشمعة
-2122144009||LightRewrite_Candle_Radius|نطاق الشمعة
-2122144010||LightRewrite_Candle_Attenuation|توهين الشمعة
-2122144011||LightRewrite_Candle_OverrideColour|تجاوز لون الشمعة
-2122144012||LightRewrite_Candle_ColorR|لون الشمعة: أحمر
-2122144013||LightRewrite_Candle_ColorG|لون الشمعة: أخضر
-2122144014||LightRewrite_Candle_ColorB|لون الشمعة: أزرق
-2122144015||LightRewrite_Torch_Brightness|سطوع الشعلة
-2122144016||LightRewrite_Torch_Radius|نطاق الشعلة
-2122144017||LightRewrite_Torch_Attenuation|توهين الشعلة
-2122144018||LightRewrite_Torch_OverrideColour|تجاوز لون الشعلة
-2122144019||LightRewrite_Torch_ColorR|لون الشعلة: أحمر
-2122144020||LightRewrite_Torch_ColorG|لون الشعلة: أخضر
-2122144021||LightRewrite_Torch_ColorB|لون الشعلة: أزرق
-2122144022||LightRewrite_InitVersion|إصدار التهيئة
-2122144023||LightRewrite_Brazier_Brightness|سطوع المنقل
-2122144024||LightRewrite_Brazier_Radius|نطاق المنقل
-2122144025||LightRewrite_Brazier_Attenuation|توهين المنقل
-2122144026||LightRewrite_Brazier_OverrideColour|تجاوز لون المنقل
-2122144027||LightRewrite_Brazier_ColorR|لون المنقل: أحمر
-2122144028||LightRewrite_Brazier_ColorG|لون المنقل: أخضر
-2122144029||LightRewrite_Brazier_ColorB|لون المنقل: أزرق
-2122144030||LightRewrite_Candelabra_Brightness|سطوع الشمعدان
-2122144031||LightRewrite_Candelabra_Radius|نطاق الشمعدان
-2122144032||LightRewrite_Candelabra_Attenuation|توهين الشمعدان
-2122144033||LightRewrite_Candelabra_OverrideColour|تجاوز لون الشمعدان
-2122144034||LightRewrite_Candelabra_ColorR|لون الشمعدان: أحمر
-2122144035||LightRewrite_Candelabra_ColorG|لون الشمعدان: أخضر
-2122144036||LightRewrite_Candelabra_ColorB|لون الشمعدان: أزرق
-2122144037||LightRewrite_Campfire_Brightness|سطوع نار المخيم
-2122144038||LightRewrite_Campfire_Radius|نطاق نار المخيم
-2122144039||LightRewrite_Campfire_Attenuation|توهين نار المخيم
-2122144040||LightRewrite_Campfire_OverrideColour|تجاوز لون نار المخيم
-2122144041||LightRewrite_Campfire_ColorR|لون نار المخيم: أحمر
-2122144042||LightRewrite_Campfire_ColorG|لون نار المخيم: أخضر
-2122144043||LightRewrite_Campfire_ColorB|لون نار المخيم: أزرق
-2122144044||LightRewrite_Candle_ShadowFadeDistance|مسافة تلاشي ظل الشمعة
-2122144045||LightRewrite_Candle_ShadowFadeRange|نطاق تلاشي ظل الشمعة
-2122144046||LightRewrite_Candle_ShadowBlendFactor|عامل مزج ظل الشمعة
-2122144047||LightRewrite_Torch_ShadowFadeDistance|مسافة تلاشي ظل الشعلة
-2122144048||LightRewrite_Torch_ShadowFadeRange|نطاق تلاشي ظل الشعلة
-2122144049||LightRewrite_Torch_ShadowBlendFactor|عامل مزج ظل الشعلة
-2122144050||LightRewrite_Brazier_ShadowFadeDistance|مسافة تلاشي ظل المنقل
-2122144051||LightRewrite_Brazier_ShadowFadeRange|نطاق تلاشي ظل المنقل
-2122144052||LightRewrite_Brazier_ShadowBlendFactor|عامل مزج ظل المنقل
-2122144053||LightRewrite_Candelabra_ShadowFadeDistance|مسافة تلاشي ظل الشمعدان
-2122144054||LightRewrite_Candelabra_ShadowFadeRange|نطاق تلاشي ظل الشمعدان
-2122144055||LightRewrite_Candelabra_ShadowBlendFactor|عامل مزج ظل الشمعدان
-2122144056||LightRewrite_Campfire_ShadowFadeDistance|مسافة تلاشي ظل نار المخيم
-2122144057||LightRewrite_Campfire_ShadowFadeRange|نطاق تلاشي ظل نار المخيم
-2122144058||LightRewrite_Campfire_ShadowBlendFactor|عامل مزج ظل نار المخيم
-2122144059||LightRewrite_Chandelier_Brightness|سطوع الثريا
-2122144060||LightRewrite_Chandelier_Radius|نطاق الثريا
-2122144061||LightRewrite_Chandelier_Attenuation|توهين الثريا
-2122144062||LightRewrite_Chandelier_OverrideColour|تجاوز لون الثريا
-2122144063||LightRewrite_Chandelier_ColorR|لون الثريا: أحمر
-2122144064||LightRewrite_Chandelier_ColorG|لون الثريا: أخضر
-2122144065||LightRewrite_Chandelier_ColorB|لون الثريا: أزرق
-2122144066||LightRewrite_Chandelier_ShadowFadeDistance|مسافة تلاشي ظل الثريا
-2122144067||LightRewrite_Chandelier_ShadowFadeRange|نطاق تلاشي ظل الثريا
-2122144068||LightRewrite_Chandelier_ShadowBlendFactor|عامل مزج ظل الثريا
-2122144069||LightRewrite_Candle_Enabled|الشمعة مفعّلة
-2122144070||LightRewrite_Torch_Enabled|الشعلة مفعّلة
-2122144071||LightRewrite_Brazier_Enabled|المنقل مفعّل
-2122144072||LightRewrite_Candelabra_Enabled|الشمعدان مفعّل
-2122144073||LightRewrite_Chandelier_Enabled|الثريا مفعّلة
-2122144074||LightRewrite_Campfire_Enabled|نار المخيم مفعّلة
-2122144075||LightRewrite_Candle_AlignPointLights|محاذاة أضواء نقاط الشموع
-2122144076||LightRewrite_CurrentProfile|الإعداد المسبق الحالي
-2122144077||LightRewrite_Preset_None|لا شيء
-2122144078||LightRewrite_Spacing_Mode|وضع تباعد الإضاءة
-2122144079||LightRewrite_Spacing_Mode_Centres|تداخل المراكز
-2122144080||LightRewrite_Spacing_Mode_Count|عدد التداخلات
-2122144081||LightRewrite_Spacing_Mode_Volume|حجم التداخل
-2122144082||LightRewrite_Spacing_Count|أقصى عدد للتداخلات
-2122144083||LightRewrite_Spacing_Budget|أقصى مساحة للتداخل
-2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite: وراثة الإعداد المسبق المحدد معطوبة
-2122144086||panel_LightRewrite_Advanced|متقدّم
+2122144001||LightRewrite_Preset_VanillaIsh|ﻗﺮﻳﺐ ﻣﻦ ﺍﻷﺻﻠﻲ
+2122144002||LightRewrite_Preset_Author|ﺍﻟﻤﺆﻟﻒ
+2122144003||LightRewrite_Preset_Bright|ﺳﺎﻃﻊ
+2122144004||LightRewrite_Enabled|ﻣﻔﻌّﻞ
+2122144005||LightRewrite_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﺍﻟﻈﻞ
+2122144006||LightRewrite_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﺍﻟﻈﻞ
+2122144007||LightRewrite_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﺍﻟﻈﻞ
+2122144008||LightRewrite_Candle_Brightness|ﺳﻄﻮﻉ ﺍﻟﺸﻤﻌﺔ
+2122144009||LightRewrite_Candle_Radius|ﻧﻄﺎﻕ ﺍﻟﺸﻤﻌﺔ
+2122144010||LightRewrite_Candle_Attenuation|ﺗﻮﻫﻴﻦ ﺍﻟﺸﻤﻌﺔ
+2122144011||LightRewrite_Candle_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﺍﻟﺸﻤﻌﺔ
+2122144012||LightRewrite_Candle_ColorR|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺔ: ﺃﺣﻤﺮ
+2122144013||LightRewrite_Candle_ColorG|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺔ: ﺃﺧﻀﺮ
+2122144014||LightRewrite_Candle_ColorB|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺔ: ﺃﺯﺭﻕ
+2122144015||LightRewrite_Torch_Brightness|ﺳﻄﻮﻉ ﺍﻟﺸﻌﻠﺔ
+2122144016||LightRewrite_Torch_Radius|ﻧﻄﺎﻕ ﺍﻟﺸﻌﻠﺔ
+2122144017||LightRewrite_Torch_Attenuation|ﺗﻮﻫﻴﻦ ﺍﻟﺸﻌﻠﺔ
+2122144018||LightRewrite_Torch_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﺍﻟﺸﻌﻠﺔ
+2122144019||LightRewrite_Torch_ColorR|ﻟﻮﻥ ﺍﻟﺸﻌﻠﺔ: ﺃﺣﻤﺮ
+2122144020||LightRewrite_Torch_ColorG|ﻟﻮﻥ ﺍﻟﺸﻌﻠﺔ: ﺃﺧﻀﺮ
+2122144021||LightRewrite_Torch_ColorB|ﻟﻮﻥ ﺍﻟﺸﻌﻠﺔ: ﺃﺯﺭﻕ
+2122144022||LightRewrite_InitVersion|ﺇﺻﺪﺍﺭ ﺍﻟﺘﻬﻴﺌﺔ
+2122144023||LightRewrite_Brazier_Brightness|ﺳﻄﻮﻉ ﺍﻟﻤﻨﻘﻞ
+2122144024||LightRewrite_Brazier_Radius|ﻧﻄﺎﻕ ﺍﻟﻤﻨﻘﻞ
+2122144025||LightRewrite_Brazier_Attenuation|ﺗﻮﻫﻴﻦ ﺍﻟﻤﻨﻘﻞ
+2122144026||LightRewrite_Brazier_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﺍﻟﻤﻨﻘﻞ
+2122144027||LightRewrite_Brazier_ColorR|ﻟﻮﻥ ﺍﻟﻤﻨﻘﻞ: ﺃﺣﻤﺮ
+2122144028||LightRewrite_Brazier_ColorG|ﻟﻮﻥ ﺍﻟﻤﻨﻘﻞ: ﺃﺧﻀﺮ
+2122144029||LightRewrite_Brazier_ColorB|ﻟﻮﻥ ﺍﻟﻤﻨﻘﻞ: ﺃﺯﺭﻕ
+2122144030||LightRewrite_Candelabra_Brightness|ﺳﻄﻮﻉ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144031||LightRewrite_Candelabra_Radius|ﻧﻄﺎﻕ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144032||LightRewrite_Candelabra_Attenuation|ﺗﻮﻫﻴﻦ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144033||LightRewrite_Candelabra_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144034||LightRewrite_Candelabra_ColorR|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺪﺍﻥ: ﺃﺣﻤﺮ
+2122144035||LightRewrite_Candelabra_ColorG|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺪﺍﻥ: ﺃﺧﻀﺮ
+2122144036||LightRewrite_Candelabra_ColorB|ﻟﻮﻥ ﺍﻟﺸﻤﻌﺪﺍﻥ: ﺃﺯﺭﻕ
+2122144037||LightRewrite_Campfire_Brightness|ﺳﻄﻮﻉ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144038||LightRewrite_Campfire_Radius|ﻧﻄﺎﻕ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144039||LightRewrite_Campfire_Attenuation|ﺗﻮﻫﻴﻦ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144040||LightRewrite_Campfire_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144041||LightRewrite_Campfire_ColorR|ﻟﻮﻥ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ: ﺃﺣﻤﺮ
+2122144042||LightRewrite_Campfire_ColorG|ﻟﻮﻥ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ: ﺃﺧﻀﺮ
+2122144043||LightRewrite_Campfire_ColorB|ﻟﻮﻥ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ: ﺃﺯﺭﻕ
+2122144044||LightRewrite_Candle_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻤﻌﺔ
+2122144045||LightRewrite_Candle_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻤﻌﺔ
+2122144046||LightRewrite_Candle_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﺍﻟﺸﻤﻌﺔ
+2122144047||LightRewrite_Torch_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻌﻠﺔ
+2122144048||LightRewrite_Torch_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻌﻠﺔ
+2122144049||LightRewrite_Torch_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﺍﻟﺸﻌﻠﺔ
+2122144050||LightRewrite_Brazier_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﻤﻨﻘﻞ
+2122144051||LightRewrite_Brazier_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﻤﻨﻘﻞ
+2122144052||LightRewrite_Brazier_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﺍﻟﻤﻨﻘﻞ
+2122144053||LightRewrite_Candelabra_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144054||LightRewrite_Candelabra_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144055||LightRewrite_Candelabra_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﺍﻟﺸﻤﻌﺪﺍﻥ
+2122144056||LightRewrite_Campfire_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144057||LightRewrite_Campfire_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144058||LightRewrite_Campfire_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ
+2122144059||LightRewrite_Chandelier_Brightness|ﺳﻄﻮﻉ ﺍﻟﺜﺮﻳﺎ
+2122144060||LightRewrite_Chandelier_Radius|ﻧﻄﺎﻕ ﺍﻟﺜﺮﻳﺎ
+2122144061||LightRewrite_Chandelier_Attenuation|ﺗﻮﻫﻴﻦ ﺍﻟﺜﺮﻳﺎ
+2122144062||LightRewrite_Chandelier_OverrideColour|ﺗﺠﺎﻭﺯ ﻟﻮﻥ ﺍﻟﺜﺮﻳﺎ
+2122144063||LightRewrite_Chandelier_ColorR|ﻟﻮﻥ ﺍﻟﺜﺮﻳﺎ: ﺃﺣﻤﺮ
+2122144064||LightRewrite_Chandelier_ColorG|ﻟﻮﻥ ﺍﻟﺜﺮﻳﺎ: ﺃﺧﻀﺮ
+2122144065||LightRewrite_Chandelier_ColorB|ﻟﻮﻥ ﺍﻟﺜﺮﻳﺎ: ﺃﺯﺭﻕ
+2122144066||LightRewrite_Chandelier_ShadowFadeDistance|ﻣﺴﺎﻓﺔ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺜﺮﻳﺎ
+2122144067||LightRewrite_Chandelier_ShadowFadeRange|ﻧﻄﺎﻕ ﺗﻼﺷﻲ ﻇﻞ ﺍﻟﺜﺮﻳﺎ
+2122144068||LightRewrite_Chandelier_ShadowBlendFactor|ﻋﺎﻣﻞ ﻣﺰﺝ ﻇﻞ ﺍﻟﺜﺮﻳﺎ
+2122144069||LightRewrite_Candle_Enabled|ﺍﻟﺸﻤﻌﺔ ﻣﻔﻌّﻠﺔ
+2122144070||LightRewrite_Torch_Enabled|ﺍﻟﺸﻌﻠﺔ ﻣﻔﻌّﻠﺔ
+2122144071||LightRewrite_Brazier_Enabled|ﺍﻟﻤﻨﻘﻞ ﻣﻔﻌّﻞ
+2122144072||LightRewrite_Candelabra_Enabled|ﺍﻟﺸﻤﻌﺪﺍﻥ ﻣﻔﻌّﻞ
+2122144073||LightRewrite_Chandelier_Enabled|ﺍﻟﺜﺮﻳﺎ ﻣﻔﻌّﻠﺔ
+2122144074||LightRewrite_Campfire_Enabled|ﻧﺎﺭ ﺍﻟﻤﺨﻴﻢ ﻣﻔﻌّﻠﺔ
+2122144075||LightRewrite_Candle_AlignPointLights|ﻣﺤﺎﺫﺍﺓ ﺃﺿﻮﺍﺀ ﻧﻘﺎﻁ ﺍﻟﺸﻤﻮﻉ
+2122144076||LightRewrite_CurrentProfile|ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ ﺍﻟﺤﺎﻟﻲ
+2122144077||LightRewrite_Preset_None|ﻻ ﺷﻲﺀ
+2122144078||LightRewrite_Spacing_Mode|ﻭﺿﻊ ﺗﺒﺎﻋﺪ ﺍﻹﺿﺎﺀﺓ
+2122144079||LightRewrite_Spacing_Mode_Centres|ﺗﺪﺍﺧﻞ ﺍﻟﻤﺮﺍﻛﺰ
+2122144080||LightRewrite_Spacing_Mode_Count|ﻋﺪﺩ ﺍﻟﺘﺪﺍﺧﻼﺕ
+2122144081||LightRewrite_Spacing_Mode_Volume|ﺣﺠﻢ ﺍﻟﺘﺪﺍﺧﻞ
+2122144082||LightRewrite_Spacing_Count|ﺃﻗﺼﻰ ﻋﺪﺩ ﻟﻠﺘﺪﺍﺧﻼﺕ
+2122144083||LightRewrite_Spacing_Budget|ﺃﻗﺼﻰ ﻣﺴﺎﺣﺔ ﻟﻠﺘﺪﺍﺧﻞ
+2122144085||LightRewrite_InvalidPresetMessage|Light Rewrite: ﻭﺭﺍﺛﺔ ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ ﺍﻟﻤﺤﺪﺩ ﻣﻌﻄﻮﺑﺔ
+2122144086||panel_LightRewrite_Advanced|ﻣﺘﻘﺪّﻡ
 2122144087||panel_LightRewrite|Light Rewrite
 2122144088||option_LightRewrite|Light Rewrite
-2122144089||LightRewrite_Brightness|سطوع
-2122144090||LightRewrite_Radius|نطاق
-2122144091||LightRewrite_Attenuation|توهين
-2122144095||LightRewrite_PlayerTorch_Enabled|شعلة وفانوس اللاعب
-2122144096||LightRewrite_NpcTorch_Enabled|شعلات الشخصيات غير اللاعبة
-2122144097||LightRewrite_FogRemoval|إزالة ضباب الأماكن الداخلية
-2122144098||LightRewrite_FogFadeTime|مدة ظهور/اختفاء الضباب
-2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite مفعّل
-2122144100||LightRewrite_MenuDescOff_Enabled|جميع ميزات Light Rewrite معطّلة حاليًا
-2122144101||LightRewrite_MenuDesc_Enabled|يبدّل جميع تعديلات الإضاءة في Light Rewrite
-2122144102||LightRewrite_MenuDesc_CurrentProfile|الإعداد المسبق للإضاءة المراد استخدامه.  المُوصى به: الافتراضي
-2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|يتجاوز إعدادات الإضاءة لشعلة وفانوس اللاعب
-2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|الافتراضي في المود: 25     الافتراضي في اللعبة: قريب من الحد الأقصى
-2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|الافتراضي في المود: 25     الافتراضي في اللعبة: 8
-2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|الافتراضي في المود: 0.9    الافتراضي في اللعبة: 0.6
-2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|يتجاوز ضوء جميع شعلات الشخصيات غير اللاعبة
-2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|الافتراضي في المود: 25     الافتراضي في اللعبة: 30-40
-2122144109||LightRewrite_MenuDesc_NpcTorchRadius|الافتراضي في المود: 6.5     الافتراضي في اللعبة: 5-6
-2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|الافتراضي في المود: 0.9     الافتراضي في اللعبة: ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|مقدار الضباب الذي ستتم إزالته: 0-100%
-2122144112||LightRewrite_MenuDesc_FogFadeTime|الوقت بالثواني الذي تتغير فيه إزالة الضباب، بعد دخول/مغادرة مكان داخلي.  المُوصى به: 1-3
-2122144113||LightRewrite_Preset_Default|الافتراضي
+2122144089||LightRewrite_Brightness|ﺳﻄﻮﻉ
+2122144090||LightRewrite_Radius|ﻧﻄﺎﻕ
+2122144091||LightRewrite_Attenuation|ﺗﻮﻫﻴﻦ
+2122144095||LightRewrite_PlayerTorch_Enabled|ﺷﻌﻠﺔ ﻭﻓﺎﻧﻮﺱ ﺍﻟﻼﻋﺐ
+2122144096||LightRewrite_NpcTorch_Enabled|ﺷﻌﻼﺕ ﺍﻟﺸﺨﺼﻴﺎﺕ ﻏﻴﺮ ﺍﻟﻼﻋﺒﺔ
+2122144097||LightRewrite_FogRemoval|ﺇﺯﺍﻟﺔ ﺿﺒﺎﺏ ﺍﻷﻣﺎﻛﻦ ﺍﻟﺪﺍﺧﻠﻴﺔ
+2122144098||LightRewrite_FogFadeTime|ﻣﺪﺓ ﻇﻬﻮﺭ/ﺍﺧﺘﻔﺎﺀ ﺍﻟﻀﺒﺎﺏ
+2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite ﻣﻔﻌّﻞ
+2122144100||LightRewrite_MenuDescOff_Enabled|ﺟﻤﻴﻊ ﻣﻴﺰﺍﺕ Light Rewrite ﻣﻌﻄّﻠﺔ ﺣﺎﻟﻴًﺎ
+2122144101||LightRewrite_MenuDesc_Enabled|ﻳﺒﺪّﻝ ﺟﻤﻴﻊ ﺗﻌﺪﻳﻼﺕ ﺍﻹﺿﺎﺀﺓ ﻓﻲ Light Rewrite
+2122144102||LightRewrite_MenuDesc_CurrentProfile|ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ ﻟﻺﺿﺎﺀﺓ ﺍﻟﻤﺮﺍﺩ ﺍﺳﺘﺨﺪﺍﻣﻪ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: ﺍﻻﻓﺘﺮﺍﺿﻲ
+2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|ﻳﺘﺠﺎﻭﺯ ﺇﻋﺪﺍﺩﺍﺕ ﺍﻹﺿﺎﺀﺓ ﻟﺸﻌﻠﺔ ﻭﻓﺎﻧﻮﺱ ﺍﻟﻼﻋﺐ
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: ﻗﺮﻳﺐ ﻣﻦ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 0.9    ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 0.6
+2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|ﻳﺘﺠﺎﻭﺯ ﺿﻮﺀ ﺟﻤﻴﻊ ﺷﻌﻼﺕ ﺍﻟﺸﺨﺼﻴﺎﺕ ﻏﻴﺮ ﺍﻟﻼﻋﺒﺔ
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 6.5     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 0.9     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: ~0.6
+2122144111||LightRewrite_MenuDesc_FogRemoval|ﻣﻘﺪﺍﺭ ﺍﻟﻀﺒﺎﺏ ﺍﻟﺬﻱ ﺳﺘﺘﻢ ﺇﺯﺍﻟﺘﻪ: 0-100%
+2122144112||LightRewrite_MenuDesc_FogFadeTime|ﺍﻟﻮﻗﺖ ﺑﺎﻟﺜﻮﺍﻧﻲ ﺍﻟﺬﻱ ﺗﺘﻐﻴﺮ ﻓﻴﻪ ﺇﺯﺍﻟﺔ ﺍﻟﻀﺒﺎﺏ، ﺑﻌﺪ ﺩﺧﻮﻝ/ﻣﻐﺎﺩﺭﺓ ﻣﻜﺎﻥ ﺩﺍﺧﻠﻲ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: 1-3
+2122144113||LightRewrite_Preset_Default|ﺍﻻﻓﺘﺮﺍﺿﻲ
