@@ -11,10 +11,10 @@
                  mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\lights.w2l</match>
         </matches>
 
-        <!-- Candleabra on a stick -->
+        <!-- Quin-Candleholder - Standing -->
         <override tag_name="LR_Kingfisher_LargeCandleHolderB"
                   label="kingfisher_largecandleholder_b"
-                  brightness="16"
+                  brightness="7.76"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
@@ -64,6 +64,19 @@
                   label="kingfisher_candleholderfancy"
                   radius="3.5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
+        </override>
+
+        <!-- Stage -->
+        <override tag_name="LR_Kingfisher_StageFloorCandles"
+                  label="kingfisher_stage_floor_candles">
+          <any>
+            <match mode="exact">candle_small_group_melted_d.w2ent</match>
+            <match mode="exact">candle_small_group_melted_b.w2ent</match>
+          </any>
+          <light index="0"
+                 radius="5" />
+          <light index="1"
+                 radius="1.5" />
         </override>
       </overrides>
 
