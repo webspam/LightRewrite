@@ -34,15 +34,15 @@
         <!-- Torches -->
         <override tag_name="LR_Novigrad_Morgue_Torch"
                   label="novigrad_morgue_torch"
-                  brightness="30"
+                  brightness="20"
                   radius="5"
-                  attenuation="0.8">
+                  attenuation="1">
           <match mode="exact">torch_wall_metal.w2ent</match>
         </override>
 
         <!-- Candles -->
         <override tag_name="LR_Novigrad_Morgue_Candle"
-                  brightness="11"
+                  brightness="6.6"
                   radius="3"
                   attenuation="1"
                   label="novigrad_morgue_candle">
@@ -50,7 +50,7 @@
         </override>
         <!-- Candles - group of 3 -->
         <override tag_name="LR_Novigrad_Morgue_TriCandle"
-                  brightness="14"
+                  brightness="7.76"
                   label="novigrad_morgue_tricandle">
           <match mode="exact">candle_small_group_melted_c_morgue.w2ent</match>
         </override>
