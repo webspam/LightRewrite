@@ -5,6 +5,7 @@ function OnGameStarting(restored: bool) {
     wrappedMethod(restored);
 
     lrFogRemover = new CLightRewriteFogRemover in this;
+    lrFogRemover.Init();
 }
 
 @wrapMethod(CR4Game)
@@ -31,13 +32,16 @@ class CLightRewriteFogRemover {
     private const var ENV_PATH: string;  default ENV_PATH = "dlc\lightrewrite\env\no_fog.env";
     private const var PRIORITY: int;     default PRIORITY = 10000;
 
-    private var envId: int;  default envId = -1;
-    private var envDefinition    : CEnvironmentDefinition;
-    private var envStrength      : float;
+    private var env              : CLightRewritePrecisionEnv;
     private var fogRemoveStrength: float;
     private var isInterior       : bool;
     private var fadeTime         : float;
     private var isStarted        : bool;
+
+    public function Init() {
+        env = new CLightRewritePrecisionEnv in this;
+        env.Init(ENV_PATH, PRIORITY);
+    }
 
     public function Start(inInterior: bool, settings: CLightRewriteSettings) {
         isStarted = true;
@@ -58,33 +62,6 @@ class CLightRewriteFogRemover {
     }
 
     private function Refresh(blendTime: float) {
-        var previousId: int = envId;
-
-        var rawStrength: float = isInterior ? fogRemoveStrength : 0.0;
-        var strength: float = ClampF(rawStrength, 0.0, 1.0);
-
-        if (strength == envStrength) return;
-
-        if (strength > 0.0) {
-            if (!LoadDefinition()) return;
-
-            envId = ActivateEnvironmentDefinition(envDefinition, PRIORITY, strength, blendTime);
-        }
-        else {
-            envId = -1;
-        }
-
-        if (previousId != -1) DeactivateEnvironment(previousId, blendTime);
-        envStrength = strength;
-    }
-
-    private function LoadDefinition(): bool {
-        if (envDefinition) return true;
-
-        envDefinition = (CEnvironmentDefinition)LoadResource(ENV_PATH, true);
-        if (envDefinition) return true;
-
-        LogLightRewrite("Failed to load " + ENV_PATH);
-        return false;
+        env.SetStrength(isInterior ? fogRemoveStrength : 0.0, blendTime);
     }
 }

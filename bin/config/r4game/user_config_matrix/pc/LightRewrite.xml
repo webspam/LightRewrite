@@ -63,6 +63,9 @@
                 displayType="SLIDER;0;100;100" tags="customDisplayName" />
             <Var id="FogFadeTime" displayName="LightRewrite_FogFadeTime"
                 displayType="SLIDER;0;10;100" tags="customDisplayName;indent" />
+
+            <Var id="GameplayLightRemoval" displayName="LightRewrite_GameplayLightRemoval"
+                displayType="SLIDER;0;100;100" tags="customDisplayName" />
         </VisibleVars>
     </Group>
 </UserConfig>
