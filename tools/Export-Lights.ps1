@@ -149,34 +149,40 @@ function EntriesIdentical {
 function GroupEntities {
     param([System.Collections.Generic.List[hashtable]] $Records)
 
+    $entries = [System.Collections.Generic.List[hashtable]]::new()
+    foreach ($raw in $Records) { $entries.Add((CoerceEntry $raw)) }
+
     $primary = [ordered]@{}
+    foreach ($entry in $entries) {
+        $primary[(EntryKey $entry)] = $entry
+    }
+
     $overflow = [ordered]@{}
+    for ($i = $entries.Count - 1; $i -ge 0; $i--) {
+        $entry = $entries[$i]
+        $key = EntryKey $entry
 
-    foreach ($raw in $Records) {
-        $entry = CoerceEntry $raw
-        $entityFile = $entry['entityFile']
-        $layerPath = if ($entry.ContainsKey('layerPath')) { $entry['layerPath'] } else { '' }
-        $key = "$entityFile|$layerPath"
+        if (EntriesIdentical $primary[$key] $entry) { continue }
 
-        if (-not $primary.Contains($key)) {
-            $primary[$key] = $entry
+        $alreadySeen = $false
+        foreach ($existing in $overflow.Values) {
+            if ((EntryKey $existing) -eq $key -and (EntriesIdentical $existing $entry)) {
+                $alreadySeen = $true
+                break
+            }
         }
-        elseif (-not (EntriesIdentical $primary[$key] $entry)) {
-            $alreadySeen = $false
-            foreach ($existing in $overflow.Values) {
-                $existingLayer = if ($existing.ContainsKey('layerPath')) { $existing['layerPath'] } else { '' }
-                if ($existing['entityFile'] -eq $entityFile -and $existingLayer -eq $layerPath -and (EntriesIdentical $existing $entry)) {
-                    $alreadySeen = $true
-                    break
-                }
-            }
-            if (!$alreadySeen) {
-                $overflow["$key|$($overflow.Count)"] = $entry
-            }
+        if (!$alreadySeen) {
+            $overflow["$key|$($overflow.Count)"] = $entry
         }
     }
 
     return $primary, $overflow
+}
+
+function EntryKey {
+    param([hashtable] $Entry)
+    $layerPath = if ($Entry.ContainsKey('layerPath')) { $Entry['layerPath'] } else { '' }
+    return "$($Entry['entityFile'])|$layerPath"
 }
 
 # ---- Tag name assignment ----
