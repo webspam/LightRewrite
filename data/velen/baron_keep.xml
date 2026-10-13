@@ -72,11 +72,11 @@
         </override>
 
         <!-- Hallway Lamp -->
-        <override tag_name="LR_Baron_HallwayLamp"
+        <!-- <override tag_name="LR_Baron_HallwayLamp"
                   label="baron_hallway_lamp"
                   brightness="5.5">
           <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
-        </override>
+        </override> -->
 
         <!-- Horn Chandelier -->
         <override tag_name="LR_Baron_Chandelier"
@@ -130,7 +130,7 @@
                      attenuation="1"
                      innerAngle="326"
                      outerAngle="347">
-            <shadows casting_mode="Normal" />
+            <shadows casting_mode="None" />
             <offset x="0"
                     y="0"
                     z="-0.14" />
