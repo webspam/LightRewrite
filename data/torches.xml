@@ -18,7 +18,7 @@
           torch_wall_metal_staticshadow.w2ent
           -->
           <match>torch_wall_metal</match>
-          <offset x="-0.25"
+          <offset x="-0.270"
                   y="0"
                   z="0.51" />
         </override>
