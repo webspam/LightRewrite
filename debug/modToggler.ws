@@ -33,7 +33,10 @@ public function OnToggleTestingProfile(action: SInputAction): bool {
     if (!IsPressed(action)) return false;
 
     if (currentProfile == testingProfile) {
-        targetIndex = profileOptions.FindFirst(profileBeforeTesting);
+        targetIndex = -1;
+        if (profileBeforeTesting != '') {
+            targetIndex = profileOptions.FindFirst(profileBeforeTesting);
+        }
         if (targetIndex == -1) targetIndex = FIRST_PROFILE_INDEX;
     }
     else {
