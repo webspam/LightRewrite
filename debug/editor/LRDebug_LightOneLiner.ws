@@ -116,20 +116,16 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
                 return FloatToString(valF);
 
             case 'shadowFadeDistance':
-                if (lightParams && lightParams.shadowFadeDistance.has) {
-                    valF = lightParams.shadowFadeDistance.value;
-                }
-                else if (light) {
-                    valF = light.shadowFadeDistance;
+                if (light) valF = light.shadowFadeDistance;
+                if (lightParams && lightParams.shadowFadeDistance) {
+                    valF = lightParams.shadowFadeDistance.Resolve(valF);
                 }
                 return FloatToString(valF);
 
             case 'shadowFadeRange':
-                if (lightParams && lightParams.shadowFadeRange.has) {
-                    valF = lightParams.shadowFadeRange.value;
-                }
-                else if (light) {
-                    valF = light.shadowFadeRange;
+                if (light) valF = light.shadowFadeRange;
+                if (lightParams && lightParams.shadowFadeRange) {
+                    valF = lightParams.shadowFadeRange.Resolve(valF);
                 }
                 return FloatToString(valF);
 

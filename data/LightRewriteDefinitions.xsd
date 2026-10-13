@@ -387,6 +387,34 @@
                   type="xs:decimal"
                   use="optional">
     </xs:attribute>
+    <xs:attribute name="min_fade_distance"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>See `fade_distance`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="max_fade_distance"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>See `fade_distance`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="min_fade_range"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>See `fade_range`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="max_fade_range"
+                  type="xs:decimal"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>See `fade_range`</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="overrideColourType">

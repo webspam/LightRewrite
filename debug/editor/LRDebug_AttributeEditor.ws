@@ -299,30 +299,24 @@ class LRDebug_AttributeEditor {
 
             case 'shadowFadeDistance':
                 lightParams = GetActiveLightParams(params, target, type);
-                if (!lightParams.shadowFadeDistance.has) {
-                    lightParams.shadowFadeDistance.has = true;
-                    if (light) {
-                        lightParams.shadowFadeDistance.value = light.shadowFadeDistance;
-                    }
+                if (!lightParams.shadowFadeDistance) {
+                    lightParams.shadowFadeDistance = new CLightRewriteClampedFloat in lightParams;
                 }
-                lightParams.shadowFadeDistance.value = ClampAttributeValue(
-                    attr,
-                    lightParams.shadowFadeDistance.value + delta
-                );
+                if (!lightParams.shadowFadeDistance.value.has && light) {
+                    lightParams.shadowFadeDistance.value.value = light.shadowFadeDistance;
+                }
+                lightParams.shadowFadeDistance.SetValue(ClampAttributeValue(attr, lightParams.shadowFadeDistance.value.value + delta));
                 break;
 
             case 'shadowFadeRange':
                 lightParams = GetActiveLightParams(params, target, type);
-                if (!lightParams.shadowFadeRange.has) {
-                    lightParams.shadowFadeRange.has = true;
-                    if (light) {
-                        lightParams.shadowFadeRange.value = light.shadowFadeRange;
-                    }
+                if (!lightParams.shadowFadeRange) {
+                    lightParams.shadowFadeRange = new CLightRewriteClampedFloat in lightParams;
                 }
-                lightParams.shadowFadeRange.value = ClampAttributeValue(
-                    attr,
-                    lightParams.shadowFadeRange.value + delta
-                );
+                if (!lightParams.shadowFadeRange.value.has && light) {
+                    lightParams.shadowFadeRange.value.value = light.shadowFadeRange;
+                }
+                lightParams.shadowFadeRange.SetValue(ClampAttributeValue(attr, lightParams.shadowFadeRange.value.value + delta));
                 break;
 
             case 'shadowBlendFactor':

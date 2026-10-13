@@ -126,7 +126,7 @@ $minMaxErrors = [System.Collections.Generic.List[string]]::new()
 Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
   $doc = [xml][System.IO.File]::ReadAllText($_.FullName)
   foreach ($element in $doc.SelectNodes('//*')) {
-    foreach ($property in 'brightness', 'radius', 'attenuation') {
+    foreach ($property in 'brightness', 'radius', 'attenuation', 'fade_distance', 'fade_range') {
       if (!$element.HasAttribute("min_$property") -or !$element.HasAttribute("max_$property")) { continue }
 
       $min = [double]$element.GetAttribute("min_$property")
