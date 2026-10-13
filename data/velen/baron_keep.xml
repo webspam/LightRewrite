@@ -23,6 +23,19 @@
                   z="2.11" />
         </override>
 
+        <!-- Candleholder - Large B -->
+        <override tag_name="LR_Baron_Candle_Holder_Large_Wood_B"
+                  label="baron_candle_holder_large_wood_b"
+                  brightness="7.76"
+                  radius="4.25">
+          <match mode="exact">candle_holder_large_wood_b.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\baron_lair\baron_castle\fx_lights.w2l</match>
+          <offset x="0"
+                  y="0"
+                  z="2.07" />
+        </override>
+
         <!-- Candleholder - Large A -->
         <override tag_name="LR_Baron_Candle_Holder_Large_Wood_A"
                   label="baron_candle_holder_large_wood_a"
@@ -56,6 +69,25 @@
           <light index="0">
             <shadows casting_mode="Normal" />
           </light>
+        </override>
+
+        <!-- Hallway Lamp -->
+        <override tag_name="LR_Baron_HallwayLamp"
+                  label="baron_hallway_lamp"
+                  brightness="5.5">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+        </override>
+
+        <!-- Horn Chandelier -->
+        <override tag_name="LR_Baron_Chandelier"
+                  label="baron_chandelier"
+                  brightness="10.89"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">horn_chandelier.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="-0.84" />
         </override>
 
         <!-- Fireplace -->
@@ -115,15 +147,31 @@
         </override>
       </overrides>
 
-      <!-- Override Tamara's Room -->
+
+      <!-- Layer-specific -->
       <overrides profile_name="Default"
                  weight="22">
+        <matches>
+          <match type="layer">levels\novigrad\baron_lair\</match>
+        </matches>
+
+        <!-- Tamara's Room - Candle near doorway -->
         <override tag_name="LR_Baron_TamaraRoom_CandleDoorway"
                   label="baron_tamara_room_candle_doorway"
                   brightness="4.6">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\baron_lair\baron_castle\baron_castle_interior_lights_nn\entity</match>
+        </override>
+
+        <!-- Shrine - Chandelier -->
+        <override tag_name="LR_Baron_Shrine_Chandelier"
+                  label="baron_shrine_chandelier"
+                  brightness="15">
+          <match mode="exact">chandelier_small_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\baron_lair\baron_castle\baron_castle_interior_shrine.w2l</match>
+          <shadows casting_mode="Normal" />
         </override>
       </overrides>
     </light_rewrite>
