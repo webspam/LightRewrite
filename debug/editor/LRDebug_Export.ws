@@ -61,11 +61,11 @@ function LRDebug_BuildLightFieldSegment(
     if (LRDebug_ClampedFloatEdited(cur.attenuation, base.attenuation)) {
         line += " " + prefix + "attenuation=" + FloatToString(cur.attenuation.value.value);
     }
-    if (LRDebug_FloatEdited(cur.shadowFadeDistance, base.shadowFadeDistance)) {
-        line += " " + prefix + "shadowFadeDistance=" + FloatToString(cur.shadowFadeDistance.value);
+    if (LRDebug_ClampedFloatEdited(cur.shadowFadeDistance, base.shadowFadeDistance)) {
+        line += " " + prefix + "shadowFadeDistance=" + FloatToString(cur.shadowFadeDistance.value.value);
     }
-    if (LRDebug_FloatEdited(cur.shadowFadeRange, base.shadowFadeRange)) {
-        line += " " + prefix + "shadowFadeRange=" + FloatToString(cur.shadowFadeRange.value);
+    if (LRDebug_ClampedFloatEdited(cur.shadowFadeRange, base.shadowFadeRange)) {
+        line += " " + prefix + "shadowFadeRange=" + FloatToString(cur.shadowFadeRange.value.value);
     }
     if (LRDebug_FloatEdited(cur.shadowBlendFactor, base.shadowBlendFactor)) {
         line += " " + prefix + "shadowBlendFactor=" + FloatToString(cur.shadowBlendFactor.value);

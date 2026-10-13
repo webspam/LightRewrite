@@ -203,10 +203,12 @@ abstract class ILightSourceRewriter {
         if (pamparams.attenuation) {
             light.attenuation = pamparams.attenuation.Resolve(original.attenuation);
         }
-        if (pamparams.shadowFadeDistance.has) {
-            light.shadowFadeDistance = pamparams.shadowFadeDistance.value;
+        if (pamparams.shadowFadeDistance) {
+            light.shadowFadeDistance = pamparams.shadowFadeDistance.Resolve(original.shadowFadeDistance);
         }
-        if (pamparams.shadowFadeRange.has) light.shadowFadeRange = pamparams.shadowFadeRange.value;
+        if (pamparams.shadowFadeRange) {
+            light.shadowFadeRange = pamparams.shadowFadeRange.Resolve(original.shadowFadeRange);
+        }
         if (pamparams.shadowBlendFactor.has) {
             light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
         }

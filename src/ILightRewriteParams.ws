@@ -15,10 +15,10 @@ abstract class ILightRewriteParams {
     public var attenuation: CLightRewriteClampedFloat;
 
     // Distance at which the player shadow starts to fade
-    public var shadowFadeDistance: SLightRewriteOptionalFloat;
+    public var shadowFadeDistance: CLightRewriteClampedFloat;
 
     // Range over which the shadow fades from shadowFadeDistance
-    public var shadowFadeRange: SLightRewriteOptionalFloat;
+    public var shadowFadeRange: CLightRewriteClampedFloat;
 
     public var shadowBlendFactor: SLightRewriteOptionalFloat;
 
@@ -34,8 +34,12 @@ abstract class ILightRewriteParams {
         target.brightness = MergeClampedFloat(target, target.brightness, brightness);
         target.radius = MergeClampedFloat(target, target.radius, radius);
         target.attenuation = MergeClampedFloat(target, target.attenuation, attenuation);
-        if (shadowFadeDistance.has) target.shadowFadeDistance = shadowFadeDistance;
-        if (shadowFadeRange.has) target.shadowFadeRange = shadowFadeRange;
+        target.shadowFadeDistance = MergeClampedFloat(
+            target,
+            target.shadowFadeDistance,
+            shadowFadeDistance
+        );
+        target.shadowFadeRange = MergeClampedFloat(target, target.shadowFadeRange, shadowFadeRange);
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (castShadows.has) target.castShadows = castShadows;
         if (color.has) target.color = color;

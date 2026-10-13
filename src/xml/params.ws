@@ -38,14 +38,22 @@ function ParseLightRewriteBaseParams(
     );
 
     shadowsNode = dm.GetCustomDefinitionSubNode(node, 'shadows');
-    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_distance', strVal)) {
-        params.shadowFadeDistance.has = true;
-        params.shadowFadeDistance.value = StringToFloat(strVal, 0.f);
-    }
-    if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'fade_range', strVal)) {
-        params.shadowFadeRange.has = true;
-        params.shadowFadeRange.value = StringToFloat(strVal, 0.f);
-    }
+    params.shadowFadeDistance = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        shadowsNode,
+        'fade_distance',
+        'min_fade_distance',
+        'max_fade_distance'
+    );
+    params.shadowFadeRange = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        shadowsNode,
+        'fade_range',
+        'min_fade_range',
+        'max_fade_range'
+    );
     if (dm.GetCustomNodeAttributeValueString(shadowsNode, 'blend_factor', strVal)) {
         params.shadowBlendFactor.has = true;
         params.shadowBlendFactor.value = StringToFloat(strVal, 0.f);
