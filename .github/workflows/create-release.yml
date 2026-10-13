@@ -38,6 +38,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Reject version lower than latest
+        shell: pwsh
+        env:
+          NEW_TAG: ${{ inputs.tag }}
+        run: |
+          $latestVersion = git ls-remote --tags --refs origin |
+            ForEach-Object { [semver]($_ -replace '^.*refs/tags/v?', '') } |
+            Sort-Object -Bottom 1
+          if ([semver]$env:NEW_TAG.TrimStart('v') -lt $latestVersion) {
+            throw "$env:NEW_TAG is lower than latest version $latestVersion"
+          }
+
       - name: Restore cached wcc_lite
         uses: actions/cache@v5
         id: wcc_cache
