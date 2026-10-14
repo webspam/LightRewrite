@@ -165,11 +165,16 @@ abstract class IEquippableLightRewriter {
 
     private function ConfigureTemporaryLight(temporary: CLightComponent) {
         var identityRotation: EulerAngles;
+        var source: CLightComponent = GetLight();
 
         temporary.SetEnabled(false);
 
         temporary.SetRotation(identityRotation);
         temporary.envColorGroup = ECG_FX_FireLight;
+        temporary.shadowCastingMode = source.shadowCastingMode;
+        temporary.shadowBlendFactor = source.shadowBlendFactor;
+        temporary.shadowFadeDistance = source.shadowFadeDistance;
+        temporary.shadowFadeRange = source.shadowFadeRange;
         ApplySettings(temporary);
 
         temporary.SetEnabled(true);
