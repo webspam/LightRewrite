@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Kolik mlhy bude odstraněno: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Doba v sekundách, za kterou se změní odstranění mlhy po vstupu/odchodu z interiéru.  Doporučeno: 1-3
 2122144113||LightRewrite_Preset_Default|Výchozí
+2122144114||LightRewrite_GameplayLightRemoval|Odstranění herního světla
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Snižuje intenzitu umělého herního světla, které svítí zpoza kamery: 0-100%

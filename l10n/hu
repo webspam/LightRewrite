@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Mennyi köd lesz eltávolítva: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Másodpercben az az idő, amely alatt a ködeltávolítás megváltozik, beltérbe való belépés/kilépés után.  Ajánlott: 1-3
 2122144113||LightRewrite_Preset_Default|Alapértelmezett
+2122144114||LightRewrite_GameplayLightRemoval|Játékmeneti fény eltávolítása
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Csökkenti a kamera mögül világító mesterséges játékmeneti fény erősségét: 0-100%

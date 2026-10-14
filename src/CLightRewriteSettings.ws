@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 15;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 16;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -30,6 +30,7 @@ class CLightRewriteSettings {
     private const var NPC_TORCH_ATTENUATION   : name;    default NPC_TORCH_ATTENUATION = 'NpcTorchAttenuation';
     private const var FOG_REMOVAL             : name;    default FOG_REMOVAL = 'FogRemoval';
     private const var FOG_FADE_TIME           : name;    default FOG_FADE_TIME = 'FogFadeTime';
+    private const var GAMEPLAY_LIGHT_REMOVAL  : name;    default GAMEPLAY_LIGHT_REMOVAL = 'GameplayLightRemoval';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
@@ -52,6 +53,8 @@ class CLightRewriteSettings {
 
     public var fogRemoval : float;  default fogRemoval = 0.0;
     public var fogFadeTime: float;  default fogFadeTime = 2.0;
+
+    public var gameplayLightRemoval: float;  default gameplayLightRemoval = 0.0;
 
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
@@ -176,6 +179,11 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(ADVANCED_GROUP, FOG_FADE_TIME, fogFadeTime);
         }
 
+        // v16: Added gameplay light removal slider
+        if (initVersion < 16) {
+            gameConfig.SetVarValue(ADVANCED_GROUP, GAMEPLAY_LIGHT_REMOVAL, gameplayLightRemoval);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -250,13 +258,19 @@ class CLightRewriteSettings {
 
         fogRemoval = ReadFloat(ADVANCED_GROUP, FOG_REMOVAL, fogRemoval);
         fogFadeTime = ReadFloat(ADVANCED_GROUP, FOG_FADE_TIME, fogFadeTime);
+
+        gameplayLightRemoval = ReadFloat(
+            ADVANCED_GROUP,
+            GAMEPLAY_LIGHT_REMOVAL,
+            gameplayLightRemoval
+        );
     }
 
     // To be called for every option-change event.
     // Filters to this mod's groups before updating cached settings.
     public function OptionValueChanged(groupId: int, optionName: name, optionValue: string) {
         var wasEnabled: bool = isEnabled;
-        var isFogOption: bool;
+        var isFogOption, isGameplayLightOption: bool;
 
         if (!IsMyModSettingsGroup(groupId)) return;
 
@@ -267,6 +281,12 @@ class CLightRewriteSettings {
             theGame.lrFogRemover.ApplySettings(this);
         }
         if (isFogOption) return;
+
+        isGameplayLightOption = optionName == GAMEPLAY_LIGHT_REMOVAL;
+        if ((isGameplayLightOption || isEnabled != wasEnabled) && theGame.lrGameplayLightRemover) {
+            theGame.lrGameplayLightRemover.ApplySettings(this);
+        }
+        if (isGameplayLightOption) return;
 
         if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
             theGame.lightRewrite.RefreshEquippedLights();

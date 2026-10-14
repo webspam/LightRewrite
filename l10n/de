@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Wie viel Nebel entfernt wird: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Zeit in Sekunden, in der sich die Nebelentfernung ändert, nach Betreten/Verlassen eines Innenraums.  Empfohlen: 1-3
 2122144113||LightRewrite_Preset_Default|Standard
+2122144114||LightRewrite_GameplayLightRemoval|Entfernung des Gameplay-Lichts
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Verringert die Stärke des künstlichen Gameplay-Lichts, das von hinter der Kamera scheint: 0-100%

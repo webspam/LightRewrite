@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|將消除多少霧氣：0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|進入/離開室內後，霧氣消除變化所需的時間（秒）。  推薦：1-3
 2122144113||LightRewrite_Preset_Default|預設值
+2122144114||LightRewrite_GameplayLightRemoval|遊戲光源消除
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|降低從鏡頭後方照射的人造遊戲光源的強度：0-100%

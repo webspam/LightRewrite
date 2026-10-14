@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Quanta névoa será removida: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Tempo em segundos para a remoção de névoa mudar, após entrar/sair de um interior.  Recomendado: 1-3
 2122144113||LightRewrite_Preset_Default|Padrão
+2122144114||LightRewrite_GameplayLightRemoval|Remoção da luz de jogabilidade
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduz a intensidade da luz artificial de jogabilidade que brilha por trás da câmera: 0-100%
