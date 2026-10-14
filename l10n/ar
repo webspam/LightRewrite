@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|ﻣﻘﺪﺍﺭ ﺍﻟﻀﺒﺎﺏ ﺍﻟﺬﻱ ﺳﺘﺘﻢ ﺇﺯﺍﻟﺘﻪ: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|ﺍﻟﻮﻗﺖ ﺑﺎﻟﺜﻮﺍﻧﻲ ﺍﻟﺬﻱ ﺗﺘﻐﻴﺮ ﻓﻴﻪ ﺇﺯﺍﻟﺔ ﺍﻟﻀﺒﺎﺏ، ﺑﻌﺪ ﺩﺧﻮﻝ/ﻣﻐﺎﺩﺭﺓ ﻣﻜﺎﻥ ﺩﺍﺧﻠﻲ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: 1-3
 2122144113||LightRewrite_Preset_Default|ﺍﻻﻓﺘﺮﺍﺿﻲ
+2122144114||LightRewrite_GameplayLightRemoval|ﺇﺯﺍﻟﺔ ﺿﻮﺀ ﺍﻟﻠﻌﺐ
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|ﻳﻘﻠﻞ ﻣﻦ ﺷﺪﺓ ﺿﻮﺀ ﺍﻟﻠﻌﺐ ﺍﻻﺻﻄﻨﺎﻋﻲ ﺍﻟﺬﻱ ﻳﻀﻲﺀ ﻣﻦ ﺧﻠﻒ ﺍﻟﻜﺎﻣﻴﺮﺍ: 0-100%

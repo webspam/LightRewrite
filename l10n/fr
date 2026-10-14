@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Quantité de brouillard supprimée : 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Temps en secondes pour que la suppression du brouillard change, après être entré/sorti d'un intérieur.  Recommandé : 1-3
 2122144113||LightRewrite_Preset_Default|Par défaut
+2122144114||LightRewrite_GameplayLightRemoval|Suppression de la lumière de gameplay
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Réduit l'intensité de la lumière de gameplay artificielle qui brille derrière la caméra : 0-100%

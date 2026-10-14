@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Скільки туману буде видалено: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Час у секундах, за який змінюється видалення туману після входу/виходу з приміщення.  Рекомендовано: 1-3
 2122144113||LightRewrite_Preset_Default|За замовчуванням
+2122144114||LightRewrite_GameplayLightRemoval|Видалення ігрового світла
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Зменшує інтенсивність штучного ігрового світла, що світить із-за камери: 0-100%

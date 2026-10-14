@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Ile mgły zostanie usunięte: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Czas w sekundach, w jakim zmienia się usuwanie mgły po wejściu/wyjściu z wnętrza.  Zalecane: 1-3
 2122144113||LightRewrite_Preset_Default|Domyślne
+2122144114||LightRewrite_GameplayLightRemoval|Usuwanie światła rozgrywki
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Zmniejsza siłę sztucznego światła rozgrywki świecącego zza kamery: 0-100%

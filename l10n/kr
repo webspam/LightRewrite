@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|제거될 안개의 양: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|실내에 출입한 후 안개 제거가 변경되는 시간(초).  권장: 1-3
 2122144113||LightRewrite_Preset_Default|기본값
+2122144114||LightRewrite_GameplayLightRemoval|게임플레이 조명 제거
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|카메라 뒤에서 비추는 인공 게임플레이 조명의 강도를 줄입니다: 0-100%

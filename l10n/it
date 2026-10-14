@@ -110,3 +110,5 @@
 2122144111||LightRewrite_MenuDesc_FogRemoval|Quantità di nebbia che verrà rimossa: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Tempo in secondi per il cambiamento della rimozione della nebbia, dopo essere entrati/usciti da un interno.  Consigliato: 1-3
 2122144113||LightRewrite_Preset_Default|Predefinita
+2122144114||LightRewrite_GameplayLightRemoval|Rimozione della luce di gioco
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Riduce l'intensità della luce di gioco artificiale che brilla da dietro la telecamera: 0-100%
