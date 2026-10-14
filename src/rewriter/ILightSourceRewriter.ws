@@ -197,7 +197,8 @@ abstract class ILightSourceRewriter {
         original = light.lightRewriteOriginalValues;
 
         if (pamparams.brightness) {
-            light.brightness = pamparams.brightness.Resolve(original.brightness);
+            light.brightness = pamparams.brightness.Resolve(original.brightness)
+                * theGame.lightRewrite.settings.brightnessMultiplier;
         }
         if (pamparams.radius) light.radius = pamparams.radius.Resolve(original.radius);
         if (pamparams.attenuation) {
