@@ -19,10 +19,7 @@
                   attenuation="0.9">
           <match mode="exact">braziers_wall_chain.w2ent</match>
         </override>
-      </overrides>
 
-      <overrides profile_name="Default"
-                 weight="10">
         <override tag_name="LR_Undvik_WallBrazierRound"
                   label="undvik_wall_brazier_round"
                   radius="6"
