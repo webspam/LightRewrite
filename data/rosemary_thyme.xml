@@ -120,6 +120,35 @@
         </override>
 
       </overrides>
+
+
+      <!-- Boudoir -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\dandelion_brothel\rich\interior\lights.w2l</match>
+        </matches>
+
+        <override tag_name="LR_ChameleonBoudoir_Chandelier"
+                  label="chameleon_boudoir_chandelier"
+                  radius="5">
+          <match mode="exact">chandelier_small.w2ent</match>
+        </override>
+
+        <override tag_name="LR_ChameleonBoudoir_Candelabra"
+                  label="chameleon_boudoir_candelabra"
+                  brightness="10.23">
+          <match mode="exact">candelabra_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_ChameleonBoudoir_HornChandelier"
+                  label="chameleon_boudoir_horn_chandelier"
+                  brightness="30">
+          <match mode="exact">horn_chandelier.w2ent</match>
+        </override>
+      </overrides>
+
     </light_rewrite>
   </custom>
 </redxml>
