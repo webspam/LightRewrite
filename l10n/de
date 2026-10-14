@@ -112,3 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Standard
 2122144114||LightRewrite_GameplayLightRemoval|Entfernung des Gameplay-Lichts
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Verringert die Stärke des künstlichen Gameplay-Lichts, das von hinter der Kamera scheint: 0-100%
+2122144116||LightRewrite_BrightnessCorrection|Helligkeitskorrektur
+2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Eine Notlösung für alle neu geschriebenen Lichter: -50% bis +100%.  Wird auf 0 zurückgesetzt, wenn die Voreinstellung geändert wird.

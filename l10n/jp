@@ -112,3 +112,5 @@
 2122144113||LightRewrite_Preset_Default|デフォルト
 2122144114||LightRewrite_GameplayLightRemoval|ゲームプレイ光の除去
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|カメラの後ろから照らす人工的なゲームプレイ光の強さを軽減します：0～100%
+2122144116||LightRewrite_BrightnessCorrection|明るさ補正
+2122144117||LightRewrite_MenuDesc_BrightnessCorrection|すべての書き換えられた光に対する回避策：-50%～+100%。  プリセットを変更すると0にリセットされます。
