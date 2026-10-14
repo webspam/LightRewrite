@@ -112,3 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Par défaut
 2122144114||LightRewrite_GameplayLightRemoval|Suppression de la lumière de gameplay
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Réduit l'intensité de la lumière de gameplay artificielle qui brille derrière la caméra : 0-100%
+2122144116||LightRewrite_BrightnessCorrection|Correction de la luminosité
+2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Une solution de contournement pour toutes les lumières réécrites : -50% à +100%.  Réinitialisé à 0 lorsque le préréglage est modifié.

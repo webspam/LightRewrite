@@ -112,3 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Varsayılan
 2122144114||LightRewrite_GameplayLightRemoval|Oynanış ışığı kaldırma
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Kameranın arkasından parlayan yapay oynanış ışığının gücünü azaltır: %0-100
+2122144116||LightRewrite_BrightnessCorrection|Parlaklık düzeltmesi
+2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Tüm yeniden yazılan ışıklar için geçici bir çözüm: -%50 ile +%100 arası.  Ön ayar değiştirildiğinde 0'a sıfırlanır.

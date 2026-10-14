@@ -112,3 +112,5 @@
 2122144113||LightRewrite_Preset_Default|За замовчуванням
 2122144114||LightRewrite_GameplayLightRemoval|Видалення ігрового світла
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Зменшує інтенсивність штучного ігрового світла, що світить із-за камери: 0-100%
+2122144116||LightRewrite_BrightnessCorrection|Корекція яскравості
+2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Обхідне рішення для всіх переписаних джерел світла: від -50% до +100%.  Скидається до 0 під час зміни пресету.

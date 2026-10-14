@@ -66,6 +66,11 @@
 
             <Var id="GameplayLightRemoval" displayName="LightRewrite_GameplayLightRemoval"
                 displayType="SLIDER;0;100;100" tags="customDisplayName" />
+
+            <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
+
+            <Var id="BrightnessCorrection" displayName="LightRewrite_BrightnessCorrection"
+                displayType="SLIDER;-50;100;0" tags="customDisplayName" />
         </VisibleVars>
     </Group>
 </UserConfig>

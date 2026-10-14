@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 16;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 17;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -31,6 +31,7 @@ class CLightRewriteSettings {
     private const var FOG_REMOVAL             : name;    default FOG_REMOVAL = 'FogRemoval';
     private const var FOG_FADE_TIME           : name;    default FOG_FADE_TIME = 'FogFadeTime';
     private const var GAMEPLAY_LIGHT_REMOVAL  : name;    default GAMEPLAY_LIGHT_REMOVAL = 'GameplayLightRemoval';
+    private const var BRIGHTNESS_CORRECTION   : name;    default BRIGHTNESS_CORRECTION = 'BrightnessCorrection';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
@@ -55,6 +56,9 @@ class CLightRewriteSettings {
     public var fogFadeTime: float;  default fogFadeTime = 2.0;
 
     public var gameplayLightRemoval: float;  default gameplayLightRemoval = 0.0;
+
+    private var brightnessCorrection: float;  default brightnessCorrection = 0.0;
+    public var brightnessMultiplier : float;  default brightnessMultiplier = 1.0;
 
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
@@ -184,6 +188,11 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(ADVANCED_GROUP, GAMEPLAY_LIGHT_REMOVAL, gameplayLightRemoval);
         }
 
+        // v17: Added brightness correction slider
+        if (initVersion < 17) {
+            gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_CORRECTION, brightnessCorrection);
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -264,6 +273,13 @@ class CLightRewriteSettings {
             GAMEPLAY_LIGHT_REMOVAL,
             gameplayLightRemoval
         );
+
+        brightnessCorrection = ReadFloat(
+            ADVANCED_GROUP,
+            BRIGHTNESS_CORRECTION,
+            brightnessCorrection
+        );
+        brightnessMultiplier = 1.0 + brightnessCorrection / 100.0;
     }
 
     // To be called for every option-change event.
@@ -273,6 +289,8 @@ class CLightRewriteSettings {
         var isFogOption, isGameplayLightOption: bool;
 
         if (!IsMyModSettingsGroup(groupId)) return;
+
+        if (optionName == CURRENT_PROFILE) ResetBrightnessCorrection();
 
         ReadGameConfig();
 
@@ -305,6 +323,10 @@ class CLightRewriteSettings {
         else if (isEnabled) {
             theGame.lightRewrite.RewriteAllLightSources();
         }
+    }
+
+    private function ResetBrightnessCorrection() {
+        gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_CORRECTION, 0);
     }
 
     // Apples pending settings changes.
