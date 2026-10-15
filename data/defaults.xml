@@ -25,8 +25,8 @@
             <match>candle_jar</match>
             <match>candle_shelf</match>
           </any>
-          <shadows fade_distance="10"
-                   fade_range="7.5"
+          <shadows min_fade_distance="10"
+                   min_fade_range="7.5"
                    blend_factor="1" />
           <fire_fx_offset x="0"
                           y="0"
