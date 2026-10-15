@@ -7,7 +7,7 @@ function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams
     params = wrappedMethod(entity);
 
     if (params) {
-        LogLightRewrite("Found " + params.displayName + ": " + entity.ToString());
+        LogLightRewrite("Found " + params.tag + ": " + entity.ToString());
     }
     else {
         components = entity.GetComponentsByClassName('CPointLightComponent');

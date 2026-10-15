@@ -26,7 +26,6 @@ class CLightRewriteOverrideGroup {
 
             // TODO: Determine if we want tags from all merged overrides
             params.tag = override.tag;
-            params.displayName = override.displayName;
         }
 
         return params;
