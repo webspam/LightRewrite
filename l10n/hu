@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Alapértelmezett
 2122144114||LightRewrite_GameplayLightRemoval|Játékmeneti fény eltávolítása
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Csökkenti a kamera mögül világító mesterséges játékmeneti fény erősségét: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|Fényerő-korrekció
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Áthidaló megoldás minden újraírt fényhez: -50% és +100% között.  Visszaáll 0-ra, amikor az előbeállítás megváltozik.
+2122144116||LightRewrite_BrightnessBoost|Fényerő-növelés
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Áthidaló megoldás minden újraírt fényhez: 0-100%.  Visszaáll 0-ra, amikor az előbeállítás megváltozik.

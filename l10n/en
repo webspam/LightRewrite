@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Default
 2122144114||LightRewrite_GameplayLightRemoval|Gameplay light removal
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduces the strength of the artificial gameplay light that shines from behind the camera: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|Brightness correction
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|A workaround for all rewritten lights: -50% to +100%.  Reset to 0 when the preset is changed.
+2122144116||LightRewrite_BrightnessBoost|Brightness boost
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|A workaround for all rewritten lights: 0-100%.  Reset to 0 when the preset is changed.

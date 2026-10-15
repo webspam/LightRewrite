@@ -69,8 +69,8 @@
 
             <Var id="Separator" displayName="" displayType="SUBTLE_SEPARATOR" />
 
-            <Var id="BrightnessCorrection" displayName="LightRewrite_BrightnessCorrection"
-                displayType="SLIDER;-50;100;0" tags="customDisplayName" />
+            <Var id="BrightnessBoost" displayName="LightRewrite_BrightnessBoost"
+                displayType="SLIDER;0;100;20" tags="customDisplayName" />
         </VisibleVars>
     </Group>
 </UserConfig>
