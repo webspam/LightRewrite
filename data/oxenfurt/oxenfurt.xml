@@ -34,6 +34,7 @@
           <offset x="-1.375"
                   y="0"
                   z="0.54" />
+          <spotlight attenuation="1" />
         </override>
 
         <!-- Hanging lamp holders - exterior -->
@@ -65,9 +66,13 @@
 
         <!-- Braziers - Floor, Square -->
         <override tag_name="LR_Oxenfurt_BraziersFloorSquare"
-                  label="oxenfurt_braziers_floor_square">
+                  label="oxenfurt_braziers_floor_square"
+                  brightness="40"
+                  attenuation="0.9">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <shadows blend_factor="0.66" />
+          <spotlight brightness="30"
+                     attenuation="0.9" />
         </override>
       </overrides>
     </light_rewrite>
