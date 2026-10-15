@@ -168,6 +168,7 @@ abstract class IEquippableLightRewriter {
         temporary.shadowBlendFactor = source.shadowBlendFactor;
         temporary.shadowFadeDistance = source.shadowFadeDistance;
         temporary.shadowFadeRange = source.shadowFadeRange;
+        temporary.lightFlickering = source.lightFlickering;
         ApplySettings(temporary);
 
         temporary.SetEnabled(true);
