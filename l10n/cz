@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Výchozí
 2122144114||LightRewrite_GameplayLightRemoval|Odstranění herního světla
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Snižuje intenzitu umělého herního světla, které svítí zpoza kamery: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|Korekce jasu
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Náhradní řešení pro všechna přepsaná světla: -50% až +100%.  Při změně předvolby se vynuluje na 0.
+2122144116||LightRewrite_BrightnessBoost|Zvýšení jasu
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Náhradní řešení pro všechna přepsaná světla: 0-100%.  Při změně předvolby se vynuluje na 0.

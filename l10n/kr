@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|기본값
 2122144114||LightRewrite_GameplayLightRemoval|게임플레이 조명 제거
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|카메라 뒤에서 비추는 인공 게임플레이 조명의 강도를 줄입니다: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|밝기 보정
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|모든 재작성된 조명에 대한 해결 방법: -50%에서 +100%까지.  프리셋을 변경하면 0으로 재설정됩니다.
+2122144116||LightRewrite_BrightnessBoost|밝기 부스트
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|모든 재작성된 조명에 대한 해결 방법: 0-100%.  프리셋을 변경하면 0으로 재설정됩니다.

@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Predefinita
 2122144114||LightRewrite_GameplayLightRemoval|Rimozione della luce di gioco
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Riduce l'intensità della luce di gioco artificiale che brilla da dietro la telecamera: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|Correzione della luminosità
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Una soluzione alternativa per tutte le luci riscritte: da -50% a +100%.  Reimpostato a 0 quando la preimpostazione viene cambiata.
+2122144116||LightRewrite_BrightnessBoost|Aumento della luminosità
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Una soluzione alternativa per tutte le luci riscritte: 0-100%.  Reimpostato a 0 quando la preimpostazione viene cambiata.

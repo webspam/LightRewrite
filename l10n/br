@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|Padrão
 2122144114||LightRewrite_GameplayLightRemoval|Remoção da luz de jogabilidade
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduz a intensidade da luz artificial de jogabilidade que brilha por trás da câmera: 0-100%
-2122144116||LightRewrite_BrightnessCorrection|Correção de brilho
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|Uma solução alternativa para todas as luzes reescritas: -50% a +100%.  Redefinido para 0 quando a predefinição é alterada.
+2122144116||LightRewrite_BrightnessBoost|Aumento de brilho
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Uma solução alternativa para todas as luzes reescritas: 0-100%.  Redefinido para 0 quando a predefinição é alterada.

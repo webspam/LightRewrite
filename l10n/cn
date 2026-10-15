@@ -112,5 +112,5 @@
 2122144113||LightRewrite_Preset_Default|默认
 2122144114||LightRewrite_GameplayLightRemoval|游戏光源消除
 2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|降低从镜头后方照射的人造游戏光源的强度：0-100%
-2122144116||LightRewrite_BrightnessCorrection|亮度校正
-2122144117||LightRewrite_MenuDesc_BrightnessCorrection|适用于所有重写光源的变通方法：-50% 至 +100%。  更改预设时重置为 0。
+2122144116||LightRewrite_BrightnessBoost|亮度提升
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|适用于所有重写光源的变通方法：0-100%。  更改预设时重置为 0。
