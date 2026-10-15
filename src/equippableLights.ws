@@ -16,8 +16,9 @@ public function GetEquippableLightRewriter(owner: CEntity): IEquippableLightRewr
 }
 
 @addMethod(W3LightSource)
-timer function SyncLightRewriteEquippable(dt: float, id: int) {
-    if (lrEquippableRewriter) lrEquippableRewriter.SyncTemporaryLight(dt);
+timer function RemoveLightRewriteTemporaryLight(dt: float, id: int) {
+    lrEquippableRewriter.DestroyTemporaryLight();
+    lrEquippableRewriter.ItemWielded();
 }
 
 @wrapMethod(W3LightSource)
