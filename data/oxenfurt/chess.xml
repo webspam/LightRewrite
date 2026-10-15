@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Oxenfurt Chess Club -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\white_bridge\chess_club\</match>
+        </matches>
+        <override tag_name="LR_OxenfurtChess_CandleholderFancy"
+                  label="oxenfurt_chess_candleholder_fancy">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+          <colour r="255"
+                  g="250"
+                  b="245" />
+        </override>
+
+        <override tag_name="LR_OxenfurtChess_Candelabra"
+                  label="oxenfurt_chess_candelabra"
+                  brightness="10.23">
+          <match mode="exact">candelabra_complex.w2ent</match>
+          <colour r="255"
+                  g="250"
+                  b="245" />
+        </override>
+
+        <override tag_name="LR_OxenfurtChess_HornChandelier"
+                  label="oxenfurt_chess_horn_chandelier"
+                  brightness="15"
+                  radius="8"
+                  attenuation="1">
+          <match mode="exact">horn_chandelier_noshadow.w2ent</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
