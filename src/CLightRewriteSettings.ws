@@ -93,7 +93,7 @@ class CLightRewriteSettings {
             25,
             25,
             0.9,
-            SLightRewriteOptionalColour(true, Color(255, 250, 245))
+            SLightRewriteOptionalColour(true, Color(255, 250, 245, 255))
         );
         npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
 
