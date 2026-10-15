@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Carsten -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad_suburbian\windmill_village\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_qYQerJKo_coal_small_firepit_complex"
+                  label="edited_coal_small_firepit_complex"
+                  brightness="40"
+                  radius="5.5">
+          <match mode="exact">coal_small_firepit_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.3" />
+          <spotlight radius="0" />
+        </override>
+
+        <override tag_name="LR_qYQerJKo_torch_hand_long_complex"
+                  label="edited_torch_hand_long_complex"
+                  brightness="30">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.56" />
+          <spotlight radius="0" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
