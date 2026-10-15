@@ -47,7 +47,7 @@
                   b="240" />
         </override>
 
-        <!-- Iron chandelier  -->
+        <!-- Iron chandelier -->
         <override tag_name="LR_Oxenfurt_ChandelierSmall"
                   label="oxenfurt_chandelier_small"
                   radius="6">
@@ -56,6 +56,12 @@
                    fade_range="15" />
         </override>
 
+        <!-- Iron chandelier - West archway  -->
+        <override tag_name="LR_Oxenfurt_ChandelierSmallBounce"
+                  label="oxenfurt_chandelier_small_bounce"
+                  radius="4.75">
+          <match mode="exact">chandelier_small_bounce.w2ent</match>
+        </override>
 
         <!-- Braziers - Floor, Square -->
         <override tag_name="LR_Oxenfurt_BraziersFloorSquare"
