@@ -34,6 +34,7 @@
           <offset x="-1.375"
                   y="0"
                   z="0.54" />
+          <spotlight attenuation="1" />
         </override>
 
         <!-- Hanging lamp holders - exterior -->
@@ -47,7 +48,7 @@
                   b="240" />
         </override>
 
-        <!-- Iron chandelier  -->
+        <!-- Iron chandelier -->
         <override tag_name="LR_Oxenfurt_ChandelierSmall"
                   label="oxenfurt_chandelier_small"
                   radius="6">
@@ -56,12 +57,22 @@
                    fade_range="15" />
         </override>
 
+        <!-- Iron chandelier - West archway  -->
+        <override tag_name="LR_Oxenfurt_ChandelierSmallBounce"
+                  label="oxenfurt_chandelier_small_bounce"
+                  radius="4.75">
+          <match mode="exact">chandelier_small_bounce.w2ent</match>
+        </override>
 
         <!-- Braziers - Floor, Square -->
         <override tag_name="LR_Oxenfurt_BraziersFloorSquare"
-                  label="oxenfurt_braziers_floor_square">
+                  label="oxenfurt_braziers_floor_square"
+                  brightness="40"
+                  attenuation="0.9">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <shadows blend_factor="0.66" />
+          <spotlight brightness="30"
+                     attenuation="0.9" />
         </override>
       </overrides>
     </light_rewrite>
