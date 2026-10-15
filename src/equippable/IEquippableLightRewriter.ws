@@ -2,12 +2,13 @@ abstract class IEquippableLightRewriter {
     protected var parentEntity    : W3LightSource;
     protected var wieldedByPlayer : bool;
     protected var hasModifiedLight: bool;
-    protected var temporaryLight  : CEntity;
-    protected var temporaryElapsed: float;
+    protected var temporaryLight  : CLightComponent;
+    protected var isBob           : bool;
 
     public function Init(parentEntity: W3LightSource, wieldedByPlayer: bool) {
         this.parentEntity = parentEntity;
         this.wieldedByPlayer = wieldedByPlayer;
+        isBob = StrFindFirst(theGame.GetWorld().GetDepotPath(), "bob") >= 0;
     }
 
     public function ItemWielded() {
@@ -53,33 +54,20 @@ abstract class IEquippableLightRewriter {
         if (wasEnabled) light.SetEnabled(false);
 
         ApplySettings(light);
+        if (temporaryLight) {
+            light.radius = 0;
+            ConfigureTemporaryLight(temporaryLight);
+        }
 
         if (wasEnabled) light.SetEnabled(true);
 
         hasModifiedLight = true;
     }
 
-    public function SyncTemporaryLight(dt: float) {
-        var light: CLightComponent;
-
-        temporaryElapsed += dt;
-
-        if (temporaryElapsed >= 1.0) {
-            ItemWielded();
-            DestroyTemporaryLight();
-            return;
-        }
-
-        light = GetLight();
-        if (!light || !temporaryLight) return;
-
-        temporaryLight.TeleportWithRotation(light.GetWorldPosition(), light.GetWorldRotation());
-    }
-
     protected function Restore() {
         var light: CLightComponent;
 
-        DestroyTemporaryLight();
+        if (temporaryLight) temporaryLight.SetEnabled(false);
 
         if (!hasModifiedLight) return;
 
@@ -126,6 +114,7 @@ abstract class IEquippableLightRewriter {
     protected function SpawnTemporaryLightEntity(templatePath: string): CEntity {
         var source: CLightComponent = GetLight();
         var template: CEntityTemplate;
+        var entity: CEntity;
 
         template = (CEntityTemplate)LoadResource(templatePath, true);
         if (!template) {
@@ -133,34 +122,38 @@ abstract class IEquippableLightRewriter {
             return NULL;
         }
 
-        temporaryLight = theGame.CreateEntity(
+        entity = theGame.CreateEntity(
             template,
             source.GetWorldPosition(),
             source.GetWorldRotation()
         );
-        if (!temporaryLight) {
+        if (!entity) {
             LogLightRewrite("Temporary equippable light: failed to spawn entity for " + parentEntity);
+            return NULL;
         }
 
-        return temporaryLight;
+        entity.CreateAttachment(
+            parentEntity,
+            ,
+            source.GetLocalPosition(),
+            source.GetLocalRotation()
+        );
+
+        return entity;
     }
 
     private function StartTemporaryLight() {
-        var temporary: CLightComponent;
-
         DestroyTemporaryLight();
 
-        temporary = SpawnTemporaryLight();
-        if (!temporary) {
+        temporaryLight = SpawnTemporaryLight();
+        if (!temporaryLight) {
             LogLightRewrite("Temporary equippable light: no light component for " + parentEntity);
-            DestroyTemporaryLight();
             return;
         }
 
-        ConfigureTemporaryLight(temporary);
+        ConfigureTemporaryLight(temporaryLight);
 
-        temporaryElapsed = 0;
-        parentEntity.AddTimer('SyncLightRewriteEquippable', 0, true);
+        if (!isBob) parentEntity.AddTimer('RemoveLightRewriteTemporaryLight', 1.0, false);
     }
 
     private function ConfigureTemporaryLight(temporary: CLightComponent) {
@@ -175,16 +168,18 @@ abstract class IEquippableLightRewriter {
         temporary.shadowBlendFactor = source.shadowBlendFactor;
         temporary.shadowFadeDistance = source.shadowFadeDistance;
         temporary.shadowFadeRange = source.shadowFadeRange;
+        temporary.lightFlickering = source.lightFlickering;
         ApplySettings(temporary);
 
         temporary.SetEnabled(true);
     }
 
-    private function DestroyTemporaryLight() {
-        parentEntity.RemoveTimer('SyncLightRewriteEquippable');
+    public function DestroyTemporaryLight() {
+        parentEntity.RemoveTimer('RemoveLightRewriteTemporaryLight');
 
         if (temporaryLight) {
-            temporaryLight.Destroy();
+            temporaryLight.GetEntity().BreakAttachment();
+            temporaryLight.GetEntity().Destroy();
             temporaryLight = NULL;
         }
     }
