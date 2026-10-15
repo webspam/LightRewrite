@@ -31,7 +31,7 @@ class CLightRewriteSettings {
     private const var FOG_REMOVAL             : name;    default FOG_REMOVAL = 'FogRemoval';
     private const var FOG_FADE_TIME           : name;    default FOG_FADE_TIME = 'FogFadeTime';
     private const var GAMEPLAY_LIGHT_REMOVAL  : name;    default GAMEPLAY_LIGHT_REMOVAL = 'GameplayLightRemoval';
-    private const var BRIGHTNESS_CORRECTION   : name;    default BRIGHTNESS_CORRECTION = 'BrightnessCorrection';
+    private const var BRIGHTNESS_BOOST        : name;    default BRIGHTNESS_BOOST = 'BrightnessBoost';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
@@ -57,8 +57,8 @@ class CLightRewriteSettings {
 
     public var gameplayLightRemoval: float;  default gameplayLightRemoval = 0.0;
 
-    private var brightnessCorrection: float;  default brightnessCorrection = 0.0;
-    public var brightnessMultiplier : float;  default brightnessMultiplier = 1.0;
+    private var brightnessBoostPercent: float;  default brightnessBoostPercent = 0.0;
+    public var brightnessBoost: CLightRewriteBrightnessBooster;
 
     // All override groups loaded from XML files, sorted by weight
     private var overrideGroups: array<CLightRewriteOverrideGroup>;
@@ -96,6 +96,8 @@ class CLightRewriteSettings {
             SLightRewriteOptionalColour(true, Color(255, 250, 245))
         );
         npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
+
+        brightnessBoost = new CLightRewriteBrightnessBooster in this;
     }
 
     public function GetEnabledOptionId(): name {
@@ -188,9 +190,9 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(ADVANCED_GROUP, GAMEPLAY_LIGHT_REMOVAL, gameplayLightRemoval);
         }
 
-        // v17: Added brightness correction slider
+        // v17: Added brightness boost slider
         if (initVersion < 17) {
-            gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_CORRECTION, brightnessCorrection);
+            gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, brightnessBoostPercent);
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -274,12 +276,11 @@ class CLightRewriteSettings {
             gameplayLightRemoval
         );
 
-        brightnessCorrection = ReadFloat(
-            ADVANCED_GROUP,
-            BRIGHTNESS_CORRECTION,
-            brightnessCorrection
+        brightnessBoostPercent = MaxF(
+            0.0,
+            ReadFloat(ADVANCED_GROUP, BRIGHTNESS_BOOST, brightnessBoostPercent)
         );
-        brightnessMultiplier = 1.0 + brightnessCorrection / 100.0;
+        brightnessBoost.SetBoostPercent(brightnessBoostPercent);
     }
 
     // To be called for every option-change event.
@@ -290,7 +291,7 @@ class CLightRewriteSettings {
 
         if (!IsMyModSettingsGroup(groupId)) return;
 
-        if (optionName == CURRENT_PROFILE) ResetBrightnessCorrection();
+        if (optionName == CURRENT_PROFILE) ResetBrightnessBoost();
 
         ReadGameConfig();
 
@@ -325,8 +326,8 @@ class CLightRewriteSettings {
         }
     }
 
-    private function ResetBrightnessCorrection() {
-        gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_CORRECTION, 0);
+    private function ResetBrightnessBoost() {
+        gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0);
     }
 
     // Apples pending settings changes.

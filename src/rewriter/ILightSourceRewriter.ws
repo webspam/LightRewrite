@@ -192,13 +192,19 @@ abstract class ILightSourceRewriter {
 
     protected function ApplyLightParams(light: CLightComponent, pamparams: ILightRewriteParams) {
         var original: SLightRewriteOriginalValues;
+        var brightnessBoost: CLightRewriteBrightnessBooster;
+        var brightness: float;
 
         light.SaveLightRewriteOriginalValues();
         original = light.lightRewriteOriginalValues;
 
         if (pamparams.brightness) {
-            light.brightness = pamparams.brightness.Resolve(original.brightness)
-                * theGame.lightRewrite.settings.brightnessMultiplier;
+            brightness = pamparams.brightness.Resolve(original.brightness);
+
+            brightnessBoost = theGame.lightRewrite.settings.brightnessBoost;
+            if (brightnessBoost.isActive) brightness = brightnessBoost.Apply(brightness);
+
+            light.brightness = brightness;
         }
         if (pamparams.radius) light.radius = pamparams.radius.Resolve(original.radius);
         if (pamparams.attenuation) {
