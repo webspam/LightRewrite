@@ -75,13 +75,13 @@ function ParseExportLines {
         if (-not $line.StartsWith($Tag)) { continue }
 
         $fragment = $line.Substring($Tag.Length).Trim()
-        $pairs = [regex]::Matches($fragment, '(\w+)=(\S+)')
+        $pairs = [regex]::Matches($fragment, '(?<key>\w+)=(?:"(?<value>[^"]*)"|(?<value>\S*))')
 
         if ($pairs.Count -eq 0) { continue }
 
         $entry = @{}
         foreach ($m in $pairs) {
-            $entry[$m.Groups[1].Value] = $m.Groups[2].Value
+            $entry[$m.Groups['key'].Value] = $m.Groups['value'].Value
         }
 
         if ($entry.ContainsKey('done')) {
