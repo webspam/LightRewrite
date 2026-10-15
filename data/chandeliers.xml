@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Chandelier defaults -->
+      <overrides profile_name="Default"
+                 weight="2">
+
+        <!-- Iron Chandelier - Small -->
+        <override tag_name="LR_IronChandelierSmall"
+                  label="iron_chandelier_small">
+          <match>chandelier_small</match>
+          <offset x="0"
+                  y="0"
+                  z="0.3" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
