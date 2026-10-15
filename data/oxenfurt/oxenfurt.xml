@@ -7,8 +7,7 @@
                  weight="20">
         <!-- Oxenfurt city lights -->
         <matches>
-          <match type="layer"
-                 mode="exact">levels\novigrad\white_bridge\ligths</match>
+          <match type="layer">levels\novigrad\white_bridge\ligths</match>
         </matches>
 
         <!-- Wall torches -->
@@ -32,9 +31,9 @@
         <override tag_name="LR_Oxenfurt_GateInterior_Brazier"
                   label="oxenfurt_gateinterior_brazier">
           <match mode="exact">braziers_wall_wire_bounce.w2ent</match>
-          <offset x="-1.4"
+          <offset x="-1.375"
                   y="0"
-                  z="0.37" />
+                  z="0.54" />
         </override>
 
         <!-- Hanging lamp holders - exterior -->
@@ -48,13 +47,21 @@
                   b="240" />
         </override>
 
-        <!-- ... -->
-        <override tag_name="LR_Edited_chandelier_small_noshadow_w2ent"
-                  label="edited_chandelier_small_noshadow_w2ent"
+        <!-- Iron chandelier  -->
+        <override tag_name="LR_Oxenfurt_ChandelierSmall"
+                  label="oxenfurt_chandelier_small"
                   radius="6">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>
           <shadows fade_distance="20"
                    fade_range="15" />
+        </override>
+
+
+        <!-- Braziers - Floor, Square -->
+        <override tag_name="LR_Oxenfurt_BraziersFloorSquare"
+                  label="oxenfurt_braziers_floor_square">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <shadows blend_factor="0.66" />
         </override>
       </overrides>
     </light_rewrite>
