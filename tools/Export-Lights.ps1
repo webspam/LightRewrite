@@ -402,7 +402,6 @@ function BuildOverrideElement {
 
     $override = $Doc.CreateElement('override')
     $override.SetAttribute('tag_name', $TagName)
-    $override.SetAttribute('label', 'edited_' + (Get-EntityName $entityFile))
 
     if ($Params.ContainsKey('brightness')) { $override.SetAttribute('brightness', (FmtFloat $Params['brightness'])) }
     if ($Params.ContainsKey('radius')) { $override.SetAttribute('radius', (FmtFloat $Params['radius'])) }

@@ -174,7 +174,6 @@ public function LRDebug_GetOrCreateRewriter(): ILightSourceRewriter {
         params.rewriterType.has = true;
         params.rewriterType.value = LRDebug_GuessRewriterType(this);
         params.tag = 'LR_DebugLight';
-        params.displayName = "debug";
     }
 
     bypassLightRewrite = false;

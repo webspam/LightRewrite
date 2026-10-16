@@ -1,17 +1,15 @@
 /*
  * Unified params class for per-light-source configuration.
  *
- * Every field except tag/displayName is optional; a has* guard being false
- * means "do not touch this property - leave it as the engine set it".
+ * Every field except tag is optional; a false has* guard means
+ * "do not touch this property - leave it as the engine set it".
  *
  * When condition is set the object acts as an override: it will only be
  * applied to entities that satisfy all of its rules.
  */
 class CLightRewriteSourceParams extends ILightRewriteParams {
     // Always required
-    public var tag        : name;
-    public var displayName: string;
-    default displayName = "generic";
+    public var tag: name;
 
     // Override match condition - NULL means this is a base-params entry, not an override
     public var condition: CLightRewriteMatchAll;

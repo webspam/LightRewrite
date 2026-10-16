@@ -82,15 +82,10 @@ function LoadLightRewriteOverrideGroup(
             LogLightRewriteXml("Skipping invalid override - missing tag_name attribute.");
             continue;
         }
-        if (!dm.GetCustomNodeAttributeValueString(entryNode, 'label', strVal)) {
-            LogLightRewriteXml("Skipping invalid override - missing label attribute.");
-            continue;
-        }
 
         override = new CLightRewriteSourceParams in group;
         override.condition = new CLightRewriteMatchAll in override;
         override.tag = nameVal;
-        override.displayName = strVal;
 
         ParseLightRewriteBaseParams(override, dm, entryNode);
         if (dm.GetCustomNodeAttributeValueString(entryNode, 'rewriter_type', strVal)) {
@@ -120,7 +115,7 @@ function LoadLightRewriteOverrideGroup(
 
         ParseLightRewritePerLightNodes(override, dm, entryNode);
 
-        LogLightRewriteXml("Loaded override: " + override.displayName + " (tag=" + override.tag + ", rules=" + override.condition.rules.Size() + ")");
+        LogLightRewriteXml("Loaded override: " + override.tag + " (rules=" + override.condition.rules.Size() + ")");
         group.overrides.PushBack(override);
     }
 
