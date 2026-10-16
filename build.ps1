@@ -6,7 +6,8 @@ param(
   [switch]$DebugEditor,
   [switch]$NextGen,
   [switch]$Compile,
-  [string[]]$IncludeScripts = @()
+  [string[]]$IncludeScripts = @(),
+  [switch]$SkipCahirb
 )
 
 $ErrorActionPreference = "Stop"
@@ -108,6 +109,11 @@ if ($Compile) {
   $gameContent0Dir = $env:WITCHER_CONTENT0_PATH
   if (!$gameContent0Dir -or !(Test-Path -LiteralPath $gameContent0Dir)) {
     throw "Witcher 3 content0 directory not found. Set WITCHER_CONTENT0_PATH. Looked for: $gameContent0Dir"
+  }
+
+  $cahirbExe = if ($env:CAHIRB_PATH) { $env:CAHIRB_PATH } else { Join-Path $RepoRoot "tools\tw3-cahirb\target\release\tw3-cahirb.exe" }
+  if (!$SkipCahirb -and (!$cahirbExe -or !(Test-Path -LiteralPath $cahirbExe))) {
+    throw "tw3-cahirb.exe not found. Set CAHIRB_PATH or pass -SkipCahirb. Looked for: $cahirbExe"
   }
 }
 
@@ -263,7 +269,19 @@ if ($Compile) {
     throw "Error compiling scripts using wcc_lite:`n`n$($_.Exception.Message)"
   }
 
-  Move-Item -LiteralPath (Join-Path $compiledScriptsDir "blob.rsblob") -Destination (Join-Path $modContentDir "precompiled.rsblob")
+  # Add rsblob field retargeting to access LUM at runtime
+  $compiledBlob = Join-Path $compiledScriptsDir "blob.rsblob"
+  $precompiledBlob = Join-Path $modContentDir "precompiled.rsblob"
+  if ($SkipCahirb) {
+    Move-Item -LiteralPath $compiledBlob -Destination $precompiledBlob
+  }
+  else {
+    & $cahirbExe retarget-field $compiledBlob $precompiledBlob lrLightUsageMaskProxy lightUsageMask
+    if ($LASTEXITCODE -ne 0) {
+      throw "tw3-cahirb.exe retarget-field exited with code $LASTEXITCODE"
+    }
+  }
+  
   Remove-DirectoryIfExists $compiledScriptsDir
 }
 
