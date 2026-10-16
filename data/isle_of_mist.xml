@@ -28,7 +28,7 @@
         </override>
 
         <!-- Hanging lamps -->
-        <override tag_name="LR_Lantern"
+        <override tag_name="LR_IsleOfMist_Lantern"
                   label="hanging_lamp"
                   radius="9"
                   attenuation="1">

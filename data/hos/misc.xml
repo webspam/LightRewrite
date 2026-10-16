@@ -6,14 +6,12 @@
       <!-- Hearts of Stone Misc / POI -->
       <overrides profile_name="Default"
                  weight="10">
-        <matches>
-          <match type="layer"
-                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\lighthouse\fx.w2l</match>
-        </matches>
 
         <!-- Lighthouse colour default -->
         <override tag_name="LR_HoSLighthouse_Colour"
                   label="HoS_Lighthouse_Colour">
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\poi\lighthouse\fx.w2l</match>
           <colour r="255"
                   g="250"
                   b="245" />
