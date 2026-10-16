@@ -220,6 +220,12 @@ abstract class ILightSourceRewriter {
             light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
         }
         if (pamparams.castShadows.has) light.shadowCastingMode = pamparams.castShadows.value;
+        if (LR_HasUsageMaskEdit(pamparams.usageMask)) {
+            light.LR_SetLightUsageMask(LR_ApplyUsageMaskEdit(
+                original.usageMask,
+                pamparams.usageMask
+            ));
+        }
         if (pamparams.color.has) light.color = pamparams.color.value;
     }
 

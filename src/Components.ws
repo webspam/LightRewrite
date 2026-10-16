@@ -38,6 +38,7 @@ struct SLightRewriteOriginalValues {
     var shadowFadeRange   : float;
     var shadowBlendFactor : float;
     var shadowCastingMode : ELightShadowCastingMode;
+    var usageMask         : int;
     var color             : Color;
 }
 
@@ -59,6 +60,7 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.shadowFadeRange = shadowFadeRange;
     lightRewriteOriginalValues.shadowBlendFactor = shadowBlendFactor;
     lightRewriteOriginalValues.shadowCastingMode = shadowCastingMode;
+    lightRewriteOriginalValues.usageMask = LR_GetLightUsageMask();
     lightRewriteOriginalValues.color = color;
 }
 
@@ -197,6 +199,7 @@ public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional ena
     shadowFadeRange = lightRewriteOriginalValues.shadowFadeRange;
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
     shadowCastingMode = lightRewriteOriginalValues.shadowCastingMode;
+    LR_SetLightUsageMask(lightRewriteOriginalValues.usageMask);
     color = lightRewriteOriginalValues.color;
 
     // The caller provided the parent entity's current enabled state
