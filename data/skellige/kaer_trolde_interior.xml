@@ -32,7 +32,7 @@
         <!-- Candelabra -->
         <override tag_name="LR_KaerTrolde_CandleabraComplex"
                   label="kaer_trolde_candleabra_complex"
-                  brightness="16"
+                  brightness="10.23"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
@@ -90,7 +90,7 @@
                   label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="7"
-                  attenuation="0.85">
+                  attenuation="1">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
           <shadows fade_distance="40" />
           <colour r="255"

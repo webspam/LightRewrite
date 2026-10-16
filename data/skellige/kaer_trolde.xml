@@ -72,6 +72,19 @@
                   radius="5.5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
         </override>
+
+        <!-- Armoury Candle -->
+        <override tag_name="LR_KaerTrolde_ArmouryCandle">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <!-- Interior LUM on all point lights -->
+          <spotlight brightness="7.76"
+                     radius="5"
+                     attenuation="1">
+            <offset x="-0.0555"
+                    y="-0.0228"
+                    z="0.31" />
+          </spotlight>
+        </override>
       </overrides>
     </light_rewrite>
   </custom>
