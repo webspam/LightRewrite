@@ -56,6 +56,28 @@ jobs:
           path: tools/wcc_lite
           lfs: true
 
+      # Required until LUM is made available to scripts
+      - name: Checkout tw3-cahirb
+        id: cahirb-checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          repository: webspam/tw3-cahirb
+          ref: 14afae17c7b369daccbb856024367e7c27187e60
+          path: tools/tw3-cahirb
+
+      - name: Cache tw3-cahirb build
+        id: cahirb-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tools/tw3-cahirb/target/release/tw3-cahirb.exe
+          key: tw3-cahirb-${{ runner.os }}-${{ steps.cahirb-checkout.outputs.commit }}
+
+      - name: Build tw3-cahirb
+        if: steps.cahirb-cache.outputs.cache-hit != 'true'
+        shell: pwsh
+        working-directory: tools/tw3-cahirb
+        run: cargo build --release --locked
+
       - name: Build
         shell: pwsh
         run: ./build.ps1 -Compile
