@@ -77,21 +77,29 @@
         <override tag_name="LR_D7ugaywW_candle_small_group_melted_c_complex" label="edited_candle_small_group_melted_c_complex">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="0" brightness="7.58" />
+          <light index="1" brightness="3.3" />
+          <light index="2" brightness="3.3" />
+          <spotlight radius="0" />
         </override>
 
-        <override tag_name="LR_D7ugaywW_candle_holder_large_wood_b_complex" label="edited_candle_holder_large_wood_b_complex" brightness="7.75" radius="5.5" attenuation="1">
+        <override tag_name="LR_D7ugaywW_candle_holder_large_wood_b_complex" label="edited_candle_holder_large_wood_b_complex" brightness="7.76" radius="5.5" attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
         </override>
 
         <override tag_name="LR_D7ugaywW_candle_small_group_melted_complex" label="edited_candle_small_group_melted_complex">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
-          <light index="0" brightness="6.6" />
-          <light index="1" brightness="5.06" radius="0" />
+          <light index="0" brightness="5" />
+          <light index="1" brightness="5" radius="0" />
         </override>
 
         <override tag_name="LR_D7ugaywW_chandelier_bright" label="edited_chandelier_bright" brightness="24">
           <match mode="exact">chandelier_bright.w2ent</match>
         </override>
+
+        <override tag_name="LR_D3WVLAmY_horn_chandelier" attenuation="1">
+          <match mode="exact">horn_chandelier.w2ent</match>
+        </override>
+
       </overrides>
     </light_rewrite>
   </custom>
