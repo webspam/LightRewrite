@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="LightRewriteDefinitions.xsd">
+  <custom>
+    <!-- Candleholder defaults -->
+    <light_rewrite>
+      <!-- Large wood A complex -->
+      <overrides profile_name="Default"
+                 weight="2">
+        <override tag_name="LR_candle_holder_large_wood_a_complex"
+                  label="candle_holder_large_wood_a_complex"
+                  brightness="4">
+          <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
+          <light index="0"
+                 min_radius="4">
+          </light>
+          <light index="1"
+                 max_radius="2">
+          </light>
+          <light index="2"
+                 max_radius="2">
+          </light>
+          <spotlight radius="0" />
+          <offset x="0"
+                  y="0"
+                  z="2.05" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
