@@ -5,7 +5,8 @@ param(
   [switch]$SkipDlc,
   [switch]$DebugEditor,
   [switch]$NextGen,
-  [switch]$Compile
+  [switch]$Compile,
+  [string[]]$IncludeScripts = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -244,9 +245,19 @@ if ($Compile) {
   Remove-DirectoryIfExists $compiledScriptsDir
   New-Directory $compiledScriptsDir
 
-  $patchDir = Join-Path $RepoRoot "src"
+  $compileSourceDir = Join-Path $buildRoot "scripts"
+  Remove-DirectoryIfExists $compileSourceDir
+  New-Directory $compileSourceDir
+  Copy-Item -Recurse -Filter "*.ws" -Path (Join-Path $RepoRoot "src") -Destination $compileSourceDir
+
+  if ($IncludeScripts) {
+    $includedScriptsDir = Join-Path $compileSourceDir "include"
+    New-Directory $includedScriptsDir
+    Copy-Item -Recurse -LiteralPath $IncludeScripts -Destination $includedScriptsDir
+  }
+
   try {
-    Invoke-WccLite -Arguments "compilescripts `"$gameContent0Dir`" -out=`"$compiledScriptsDir`" -patch=`"$patchDir`""
+    Invoke-WccLite -Arguments "compilescripts `"$gameContent0Dir`" -out=`"$compiledScriptsDir`" -patch=`"$compileSourceDir`""
   }
   catch {
     throw "Error compiling scripts using wcc_lite:`n`n$($_.Exception.Message)"
