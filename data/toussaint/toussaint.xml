@@ -13,8 +13,8 @@
         <!-- All Candles -->
         <override tag_name="LR_Toussaint_Candle"
                   label="toussaint_candle"
-                  brightness="8"
-                  radius="5"
+                  max_brightness="5"
+                  min_radius="4.5"
                   attenuation="1"
                   rewriter_type="LRT_Candle">
           <any>
@@ -27,8 +27,9 @@
             <match>gen_rich_candleholder_c</match>
             <match>gen_rich_candleholder_d</match>
           </any>
-          <shadows fade_distance="10"
-                   fade_range="7.5"
+
+          <shadows min_fade_distance="10"
+                   min_fade_range="7.5"
                    blend_factor="1" />
           <!-- Most Toussaint lights are extremely red (likely a counter for the zones ubiquitous yellow filter) -->
           <colour r="255"
