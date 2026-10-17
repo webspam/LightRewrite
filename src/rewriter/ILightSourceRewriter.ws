@@ -37,7 +37,10 @@ abstract class ILightSourceRewriter {
 
     // The radius this light would have with no spacing cap: the profile's, else the saved vanilla
     public function GetUncappedRadius(pointLight: CPointLightComponent, index: int): float {
-        return ResolveUncappedRadius(pointLight, GetEffectiveParams().GetEffectivePointLightParams(index));
+        return ResolveUncappedRadius(
+            pointLight,
+            GetEffectiveParams().GetEffectivePointLightParams(index)
+        );
     }
 
     private function ResolveUncappedRadius(
@@ -75,7 +78,10 @@ abstract class ILightSourceRewriter {
         ApplyForceCastShadows();
 
         // Fire FX on these entities has identity vector until first frame
-        if (StrStartsWith(entityName, "baron_candle_holder") || entityName == "candle_med_a.w2ent") {
+        if (StrStartsWith(
+            entityName,
+            "baron_candle_holder"
+        ) || entityName == "candle_med_a.w2ent") {
             RewriteLight();
         }
     }
@@ -95,7 +101,9 @@ abstract class ILightSourceRewriter {
         var components: array<CComponent>;
         var count: int;
 
-        interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
+        interactionComponent = (CGameplayLightComponent)parentEntity.GetComponentByClassName(
+            'CGameplayLightComponent'
+        );
         if (interactionComponent) {
             useEntityState = true;
             entityLightState = interactionComponent.IsLightOn();
@@ -211,7 +219,9 @@ abstract class ILightSourceRewriter {
             light.attenuation = pamparams.attenuation.Resolve(original.attenuation);
         }
         if (pamparams.shadowFadeDistance) {
-            light.shadowFadeDistance = pamparams.shadowFadeDistance.Resolve(original.shadowFadeDistance);
+            light.shadowFadeDistance = pamparams.shadowFadeDistance.Resolve(
+                original.shadowFadeDistance
+            );
         }
         if (pamparams.shadowFadeRange) {
             light.shadowFadeRange = pamparams.shadowFadeRange.Resolve(original.shadowFadeRange);
@@ -271,7 +281,9 @@ abstract class ILightSourceRewriter {
         var gameplayLight: CGameplayLightComponent;
         var i, count: int;
 
-        gameplayLight = (CGameplayLightComponent)parentEntity.GetComponentByClassName('CGameplayLightComponent');
+        gameplayLight = (CGameplayLightComponent)parentEntity.GetComponentByClassName(
+            'CGameplayLightComponent'
+        );
         if (gameplayLight) return gameplayLight.IsLightOn();
 
         components = parentEntity.GetComponentsByClassName('CPointLightComponent');
@@ -296,7 +308,10 @@ abstract class ILightSourceRewriter {
         var template: CEntityTemplate;
 
         if (!spawnedSpotlight) {
-            template = (CEntityTemplate)LoadResource("dlc\lightrewrite\lights\spotlight.w2ent", true);
+            template = (CEntityTemplate)LoadResource(
+                "dlc\lightrewrite\lights\spotlight.w2ent",
+                true
+            );
             if (!template) {
                 LogLightRewrite("Spawn spotlight: failed to load template for " + parentEntity);
                 return NULL;

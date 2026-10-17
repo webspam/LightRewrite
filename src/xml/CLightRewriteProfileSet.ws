@@ -25,13 +25,17 @@ class CLightRewriteProfileSet {
         count = profiles.Size();
         for (i = 0; i < count; i += 1) {
             if (!TryResolveChain(profiles[i])) {
-                LogLightRewriteXml("Dropping profile '" + profiles[i].profileName + "' - circular inheritance.");
+                LogLightRewriteXml(
+                    "Dropping profile '" + profiles[i].profileName + "' - circular inheritance."
+                );
                 continue;
             }
 
             inheritance = profiles[i].BasesToString();
             if (inheritance != "") {
-                LogLightRewriteXml("Profile '" + profiles[i].profileName + "' inherits " + inheritance + ".");
+                LogLightRewriteXml(
+                    "Profile '" + profiles[i].profileName + "' inherits " + inheritance + "."
+                );
             }
 
             profiles[i].groups = CollectChainGroups(groups);
@@ -85,7 +89,9 @@ class CLightRewriteProfileSet {
             if (profile.bases.Size() > 0) {
                 duplicateInherits = true;
                 MarkDirty(profile.profileName);
-                LogLightRewriteXml("Profile '" + profile.profileName + "' declares inherits more than once; using the last one read.");
+                LogLightRewriteXml(
+                    "Profile '" + profile.profileName + "' declares inherits more than once; using the last one read."
+                );
                 profile.bases.Clear();
             }
 
@@ -123,7 +129,9 @@ class CLightRewriteProfileSet {
             baseProfile = Find(profile.bases[i]);
             if (!baseProfile) {
                 MarkDirty(profile.profileName);
-                LogLightRewriteXml("Profile '" + profile.profileName + "' inherits unknown profile '" + profile.bases[i] + "'.");
+                LogLightRewriteXml(
+                    "Profile '" + profile.profileName + "' inherits unknown profile '" + profile.bases[i] + "'."
+                );
                 continue;
             }
 

@@ -272,7 +272,10 @@ class LRDebug_AttributeEditor {
                 if (!lightParams.brightness.value.has && light) {
                     lightParams.brightness.value.value = light.brightness;
                 }
-                lightParams.brightness.SetValue(ClampAttributeValue(attr, lightParams.brightness.value.value + delta));
+                lightParams.brightness.SetValue(ClampAttributeValue(
+                    attr,
+                    lightParams.brightness.value.value + delta
+                ));
                 break;
 
             case 'radius':
@@ -283,7 +286,10 @@ class LRDebug_AttributeEditor {
                 if (!lightParams.radius.value.has && light) {
                     lightParams.radius.value.value = light.radius;
                 }
-                lightParams.radius.SetValue(ClampAttributeValue(attr, lightParams.radius.value.value + delta));
+                lightParams.radius.SetValue(ClampAttributeValue(
+                    attr,
+                    lightParams.radius.value.value + delta
+                ));
                 break;
 
             case 'attenuation':
@@ -294,7 +300,10 @@ class LRDebug_AttributeEditor {
                 if (!lightParams.attenuation.value.has && light) {
                     lightParams.attenuation.value.value = light.attenuation;
                 }
-                lightParams.attenuation.SetValue(ClampAttributeValue(attr, lightParams.attenuation.value.value + delta));
+                lightParams.attenuation.SetValue(ClampAttributeValue(
+                    attr,
+                    lightParams.attenuation.value.value + delta
+                ));
                 break;
 
             case 'shadowFadeDistance':
@@ -305,7 +314,10 @@ class LRDebug_AttributeEditor {
                 if (!lightParams.shadowFadeDistance.value.has && light) {
                     lightParams.shadowFadeDistance.value.value = light.shadowFadeDistance;
                 }
-                lightParams.shadowFadeDistance.SetValue(ClampAttributeValue(attr, lightParams.shadowFadeDistance.value.value + delta));
+                lightParams.shadowFadeDistance.SetValue(ClampAttributeValue(
+                    attr,
+                    lightParams.shadowFadeDistance.value.value + delta
+                ));
                 break;
 
             case 'shadowFadeRange':
@@ -316,7 +328,10 @@ class LRDebug_AttributeEditor {
                 if (!lightParams.shadowFadeRange.value.has && light) {
                     lightParams.shadowFadeRange.value.value = light.shadowFadeRange;
                 }
-                lightParams.shadowFadeRange.SetValue(ClampAttributeValue(attr, lightParams.shadowFadeRange.value.value + delta));
+                lightParams.shadowFadeRange.SetValue(ClampAttributeValue(
+                    attr,
+                    lightParams.shadowFadeRange.value.value + delta
+                ));
                 break;
 
             case 'shadowBlendFactor':
@@ -396,7 +411,11 @@ class LRDebug_AttributeEditor {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
                 }
-                lightParams.color.value.Red = (byte)Clamp(lightParams.color.value.Red + (int)delta, 0, 255);
+                lightParams.color.value.Red = (byte)Clamp(
+                    lightParams.color.value.Red + (int)delta,
+                    0,
+                    255
+                );
                 break;
 
             case 'colourG':
@@ -405,7 +424,11 @@ class LRDebug_AttributeEditor {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
                 }
-                lightParams.color.value.Green = (byte)Clamp(lightParams.color.value.Green + (int)delta, 0, 255);
+                lightParams.color.value.Green = (byte)Clamp(
+                    lightParams.color.value.Green + (int)delta,
+                    0,
+                    255
+                );
                 break;
 
             case 'colourB':
@@ -414,7 +437,11 @@ class LRDebug_AttributeEditor {
                     lightParams.color.has = true;
                     if (light) lightParams.color.value = light.color;
                 }
-                lightParams.color.value.Blue = (byte)Clamp(lightParams.color.value.Blue + (int)delta, 0, 255);
+                lightParams.color.value.Blue = (byte)Clamp(
+                    lightParams.color.value.Blue + (int)delta,
+                    0,
+                    255
+                );
                 break;
 
             default:

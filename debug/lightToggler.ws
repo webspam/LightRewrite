@@ -58,7 +58,9 @@ class LRDebug_LightToggler {
         var gameplayLight: CGameplayLightComponent;
         var pointChanged, spotChanged: bool;
 
-        gameplayLight = (CGameplayLightComponent)entity.GetComponentByClassName('CGameplayLightComponent');
+        gameplayLight = (CGameplayLightComponent)entity.GetComponentByClassName(
+            'CGameplayLightComponent'
+        );
         if (gameplayLight) {
             if (gameplayLight.IsLightOn() == on) return false;
 

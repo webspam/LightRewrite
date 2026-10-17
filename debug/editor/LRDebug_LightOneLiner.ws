@@ -406,7 +406,10 @@ state FollowEntity in LRDebug_LightOneLiner {
 
         while (
             thePlayer.lrDebugLabels &&
-            VecDistanceSquared(thePlayer.GetWorldPosition(), parent.entity.GetWorldPosition()) <= (maxRange * maxRange)
+            VecDistanceSquared(
+                thePlayer.GetWorldPosition(),
+                parent.entity.GetWorldPosition()
+            ) <= (maxRange * maxRange)
         ) {
             parent.SetWorldPosition(parent.entity.GetWorldPosition() + Vector(0, 0, 0.25f));
             SleepOneFrame();

@@ -55,7 +55,10 @@ class LRDebug_Targeting {
             if (!entity) continue;
 
             entPos = entity.GetWorldPosition();
-            if (VecDistanceSquared(thePlayer.GetWorldPosition(), entPos) > (visibilityRange * visibilityRange)) {
+            if (VecDistanceSquared(
+                thePlayer.GetWorldPosition(),
+                entPos
+            ) > (visibilityRange * visibilityRange)) {
                 continue;
             }
 

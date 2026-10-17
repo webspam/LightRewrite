@@ -204,7 +204,9 @@ class CLightRewriteSettings {
         var value: string = gameConfig.GetVarValue(fromGroup, varId);
         if (value == "") value = defaultValue;
 
-        LogLightRewrite("Migrating " + fromGroup + "." + varId + " -> " + toGroup + "." + varId + " = " + value);
+        LogLightRewrite(
+            "Migrating " + fromGroup + "." + varId + " -> " + toGroup + "." + varId + " = " + value
+        );
         gameConfig.SetVarValue(toGroup, varId, value);
     }
 

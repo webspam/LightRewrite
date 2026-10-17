@@ -11,7 +11,9 @@ class CLanternRewriter extends IEquippableLightRewriter {
 
     protected function SpawnTemporaryLight(): CLightComponent {
         var source: CSpotLightComponent = GetSpotLight();
-        var entity: CEntity = SpawnTemporaryLightEntity("dlc\lightrewrite\lights\spotlight_all_uses.w2ent");
+        var entity: CEntity = SpawnTemporaryLightEntity(
+            "dlc\lightrewrite\lights\spotlight_all_uses.w2ent"
+        );
         var temporary: CSpotLightComponent;
 
         if (!entity) return NULL;

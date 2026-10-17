@@ -21,7 +21,9 @@ class CSpotlightLightRewriter extends ILightSourceRewriter {
         var wasEnabled: bool;
         var i, count: int;
 
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CSpotLightComponent');
+        var components: array<CComponent> = parentEntity.GetComponentsByClassName(
+            'CSpotLightComponent'
+        );
         count = components.Size();
 
         for (i = 0; i < count; i += 1) {

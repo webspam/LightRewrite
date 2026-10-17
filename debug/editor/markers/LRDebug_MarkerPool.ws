@@ -29,10 +29,12 @@ class LRDebug_MarkerPool {
     private function AddImageMarker(colour: string, width: int, height: int) {
         var marker: LRDebug_WorldMarker;
 
-        marker = AddHtmlMarker("<img src='img://icons/"
-            + StrReplace(colour, "#", "")
-            + ".png'"
-            + " width='" + width + "' height='" + height + "'>");
+        marker = AddHtmlMarker(
+            "<img src='img://icons/"
+                + StrReplace(colour, "#", "")
+                + ".png'"
+                + " width='" + width + "' height='" + height + "'>"
+        );
         marker.SetImageSize(width, height);
     }
 

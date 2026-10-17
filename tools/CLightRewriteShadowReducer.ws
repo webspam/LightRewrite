@@ -318,7 +318,8 @@ class CLightRewriteShadowReducer {
             for (e = 0; e < edgeCount; e += 1) {
                 i = pairI[e];
                 j = pairJ[e];
-                vol = OVERLAP_PENALTY * pairWeight[e] * OverlapVolume(radii[i], radii[j], pairDist[e]);
+                vol = OVERLAP_PENALTY * pairWeight[e] *
+                    OverlapVolume(radii[i], radii[j], pairDist[e]);
                 load[i] += vol;
                 load[j] += vol;
                 total += vol;

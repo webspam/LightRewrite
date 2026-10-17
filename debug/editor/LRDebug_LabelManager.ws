@@ -216,7 +216,9 @@ class LRDebug_LabelManager {
             return;
         }
 
-        count = thePlayer.lrDebugAttrEditor.GetGroupMemberCount(thePlayer.lrDebugTargeting.GetTarget());
+        count = thePlayer.lrDebugAttrEditor.GetGroupMemberCount(
+            thePlayer.lrDebugTargeting.GetTarget()
+        );
 
         if (count > 0) {
             groupCountLabel.SetText("<font size='20' color='#dddddd'>" + count + "</font>");

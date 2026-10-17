@@ -118,7 +118,9 @@ abstract class IEquippableLightRewriter {
 
         template = (CEntityTemplate)LoadResource(templatePath, true);
         if (!template) {
-            LogLightRewrite("Temporary equippable light: failed to load template for " + parentEntity);
+            LogLightRewrite(
+                "Temporary equippable light: failed to load template for " + parentEntity
+            );
             return NULL;
         }
 
@@ -128,7 +130,9 @@ abstract class IEquippableLightRewriter {
             source.GetWorldRotation()
         );
         if (!entity) {
-            LogLightRewrite("Temporary equippable light: failed to spawn entity for " + parentEntity);
+            LogLightRewrite(
+                "Temporary equippable light: failed to spawn entity for " + parentEntity
+            );
             return NULL;
         }
 
