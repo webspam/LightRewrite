@@ -20,7 +20,6 @@
           <offset x="0"
                   y="0"
                   z="-0.14" />
-          <!-- Spotlight: disable by default -->
           <spotlight attenuation="1">
             <offset x="0"
                     y="0"
