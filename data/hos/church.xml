@@ -46,8 +46,9 @@
                  radius="2.5" />
           <light index="2"
                  radius="2.5" />
-          <spotlight radius="0"
-                     attenuation="1" />
+          <spotlight attenuation="1">
+            <lum exclude_scene="true" />
+          </spotlight>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.12" />
@@ -55,9 +56,7 @@
 
         <!-- Hanging Lamp - Pointlight has wrong LUM -->
         <override tag_name="LR_HoSPoI_Graveyard_HangingLamp"
-                  label="hos_poi_graveyard_hanging_lamp"
-                  brightness="15"
-                  radius="0">
+                  label="hos_poi_graveyard_hanging_lamp">
           <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
           <spotlight brightness="15">
             <offset x="0"

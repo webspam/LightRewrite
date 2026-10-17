@@ -91,7 +91,9 @@
         <override tag_name="LR_D7ugaywW_candle_small_group_melted_complex" label="edited_candle_small_group_melted_complex">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
           <light index="0" brightness="5" />
-          <light index="1" brightness="5" radius="0" />
+          <light index="1" brightness="5">
+            <lum exclude_scene="true" />
+          </light>
         </override>
 
         <override tag_name="LR_D7ugaywW_chandelier_bright" label="edited_chandelier_bright" brightness="24">

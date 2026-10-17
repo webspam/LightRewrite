@@ -124,9 +124,10 @@
         <override tag_name="LR_Baron_HangingLamp"
                   label="baron_castle_hanging_lamp"
                   brightness="15"
-                  radius="0"
                   attenuation="1">
           <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <lum exclude_scene="true" />
+
           <spotlight brightness="15"
                      radius="5"
                      attenuation="1"

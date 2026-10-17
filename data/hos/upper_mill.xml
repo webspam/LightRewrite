@@ -40,8 +40,8 @@
           <match mode="exact">lamp_standing_complex.w2ent</match>
           <shadows fade_distance="30"
                    fade_range="20" />
-          <spotlight radius="0"
-                     attenuation="1">
+          <spotlight attenuation="1">
+            <lum exclude_scene="true" />
             <offset x="0"
                     y="0"
                     z="-0.12" />
@@ -81,8 +81,9 @@
           <shadows fade_distance="30"
                    fade_range="20" />
           <spotlight brightness="15"
-                     radius="0"
-                     attenuation="1" />
+                     attenuation="1">
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
     </light_rewrite>
