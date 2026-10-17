@@ -6,19 +6,26 @@
       <!-- Lantern defaults -->
       <overrides profile_name="Default"
                  weight="2">
-        <!-- Hanging Wall Lantern -->
-        <override tag_name="LR_HangingLampHolder"
-                  label="hanging_lamp_holder">
+        <!-- Lanterns -->
+        <override tag_name="LR_Lantern"
+                  label="lantern"
+                  max_brightness="15"
+                  min_radius="5"
+                  attenuation="1">
           <any>
-            <match mode="exact">hanging_lamp_holder.w2ent</match>
-            <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
-            <match mode="exact">lamp_standing_complex.w2ent</match>
-            <match mode="exact">hanging_lamp_complex.w2ent</match>
+            <match>lamp_</match>
+            <match>hanging_lamp_</match>
           </any>
-          <!-- Reset point light to top of lantern -->
+          <!-- Reset point light to top of flame -->
           <offset x="0"
                   y="0"
                   z="-0.14" />
+          <!-- Spotlight: disable by default -->
+          <spotlight attenuation="1">
+            <offset x="0"
+                    y="0"
+                    z="-0.14" />
+          </spotlight>
         </override>
       </overrides>
     </light_rewrite>
