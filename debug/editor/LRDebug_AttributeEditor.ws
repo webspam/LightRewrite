@@ -628,6 +628,57 @@ class LRDebug_AttributeEditor {
         history.Commit(true);
     }
 
+    public function CycleUsageFlag(target: CGameplayEntity, flag: ELightRewriteUsageMask) {
+        var rewriter: ILightSourceRewriter;
+        var params: CLightRewriteSourceParams;
+        var type: name;
+        var index: int;
+        var nextState: ELRDebug_LUM_FlagState;
+        var scope: array<CGameplayEntity>;
+        var i, count: int;
+
+        if (!target) return;
+
+        GetEditScope(target, scope);
+        history.StartEdit(scope, LRDebug_UsageFlagUndoLabel(flag));
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        type = GetSelectedLightType(target);
+        index = GetActiveLightIndex(target, type);
+
+        nextState = LRDebug_NextUsageFlagState(LRDebug_GetUsageFlagState(
+            LRDebug_EffectiveUsageMask(params, type, index),
+            flag
+        ));
+
+        count = scope.Size();
+        for (i = 0; i < count; i += 1) {
+            SetComponentUsageFlag(scope[i], type, index, flag, nextState);
+        }
+
+        ApplyParams(target, rewriter, params);
+        history.Commit(true);
+    }
+
+    private function SetComponentUsageFlag(
+        entity: CGameplayEntity,
+        type: name,
+        index: int,
+        flag: ELightRewriteUsageMask,
+        flagState: ELRDebug_LUM_FlagState
+    ) {
+        var params: CLightRewriteSourceParams = entity.LRDebug_GetParams(
+            entity.LRDebug_GetOrCreateRewriter()
+        );
+        var lightParams: ILightRewriteParams;
+
+        if (type == 'spot') lightParams = params.GetOrCreateSpotLightParams(index);
+        else lightParams = params.GetOrCreatePointLightParams(index);
+
+        lightParams.usageMask = LRDebug_WithUsageFlagState(lightParams.usageMask, flag, flagState);
+    }
+
     private function NextShadowMode(mode: ELightShadowCastingMode): ELightShadowCastingMode {
         switch (mode) {
             case LSCM_None:         return LSCM_OnlyDynamic;

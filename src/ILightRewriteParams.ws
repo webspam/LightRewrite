@@ -24,6 +24,8 @@ abstract class ILightRewriteParams {
 
     public var castShadows: SLightRewriteOptionalShadowMode;
 
+    public var usageMask: SLightRewriteUsageMaskEdit;
+
     public var color: SLightRewriteOptionalColour;
 
     // Local-space position override for the light
@@ -42,6 +44,7 @@ abstract class ILightRewriteParams {
         target.shadowFadeRange = MergeClampedFloat(target, target.shadowFadeRange, shadowFadeRange);
         if (shadowBlendFactor.has) target.shadowBlendFactor = shadowBlendFactor;
         if (castShadows.has) target.castShadows = castShadows;
+        target.usageMask = LR_MergeUsageMaskEdit(target.usageMask, usageMask);
         if (color.has) target.color = color;
         if (offset.has) target.offset = offset;
     }

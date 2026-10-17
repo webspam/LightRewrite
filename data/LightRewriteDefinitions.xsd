@@ -130,6 +130,8 @@
           <xs:documentation>Shadow fade parameters - distance, range, and blend factor.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="lum"
+                  type="lumType" />
       <xs:element name="colour"
                   type="overrideColourType">
         <xs:annotation>
@@ -459,6 +461,9 @@
           <xs:documentation>Shadow fade parameters for this point light.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="lum"
+                  type="lumType"
+                  minOccurs="0" />
       <xs:element name="colour"
                   type="overrideColourType"
                   minOccurs="0">
@@ -512,6 +517,9 @@
           <xs:documentation>Shadow fade parameters for the spotlight.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="lum"
+                  type="lumType"
+                  minOccurs="0" />
       <xs:element name="colour"
                   type="overrideColourType"
                   minOccurs="0">
@@ -595,6 +603,40 @@
       </xs:annotation>
     </xs:attribute>
     <xs:attributeGroup ref="minMaxAttributes" />
+  </xs:complexType>
+
+  <xs:complexType name="lumType">
+    <xs:annotation>
+      <xs:documentation>Light usage mask (LUM) flags. A higher-weight override only changes the flags it lists.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="exclude_scene"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Excludes this light from scene render.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="env_probe"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Include this light in env probes.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="interior"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Light emitted by this light only affects interior areas.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="exterior"
+                  type="xs:boolean"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Light emitted by this light only affects exterior areas.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:attributeGroup name="minMaxAttributes">

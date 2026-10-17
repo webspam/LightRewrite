@@ -251,20 +251,87 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
         return ToHtmlBlock(text, fontSize);
     }
 
+    private function UsageMaskLineHtml(
+        prefix: string,
+        light: CLightComponent,
+        params: CLightRewriteSourceParams,
+        type: name,
+        index: int,
+        fontSize: int
+    ): string {
+        var edit: SLightRewriteUsageMaskEdit = LRDebug_EffectiveUsageMask(params, type, index);
+        var liveMask: int = light.LR_GetLightUsageMask();
+
+        return ToHtmlBlock(
+            prefix + ": "
+                + UsageFlagHtml(edit, liveMask, LRLUM_ExcludeFromSceneRender) + "  "
+                + UsageFlagHtml(edit, liveMask, LRLUM_RenderToEnvProbe) + "  "
+                + UsageFlagHtml(edit, liveMask, LRLUM_InteriorOnly) + "  "
+                + UsageFlagHtml(edit, liveMask, LRLUM_ExteriorOnly),
+            fontSize
+        );
+    }
+
+    private function UsageFlagHtml(
+        edit: SLightRewriteUsageMaskEdit,
+        liveMask: int,
+        flag: ELightRewriteUsageMask
+    ): string {
+        var liveOn: bool = (liveMask & (int)flag) != 0;
+        var colour: string;
+
+        switch (LRDebug_GetUsageFlagState(edit, flag)) {
+            case LRDebug_LUM_On:   colour = "#ffffff";  break;
+            case LRDebug_LUM_Off:  colour = "#ff9999";  break;
+            default:
+                colour = liveOn ? "#bbbbbb" : "#555555";
+                break;
+        }
+
+        return "<font color='" + colour + "'>" + UsageFlagShortLabel(flag) + "</font>";
+    }
+
+    private function UsageFlagShortLabel(flag: ELightRewriteUsageMask): string {
+        switch (flag) {
+            case LRLUM_ExcludeFromSceneRender:  return "NoScene";
+            case LRLUM_RenderToEnvProbe:        return "Env";
+            case LRLUM_InteriorOnly:            return "Int";
+            case LRLUM_ExteriorOnly:            return "Ext";
+        }
+        return "?";
+    }
+
+    private function GetUsageMaskDisplayParams(): CLightRewriteSourceParams {
+        var rewriter: ILightSourceRewriter = entity.lightSourceRewriter;
+
+        if (rewriter && rewriter.inOriginalState) return NULL;
+        if (entity.lrDebugParams) return entity.lrDebugParams;
+        if (rewriter) return rewriter.LRDebug_GetEffectiveParams();
+        return NULL;
+    }
+
     private function ShadowStatusHtml(fontSize: int): string {
-        var html: string;
+        var html, prefix: string;
         var components: array<CComponent>;
+        var light: CLightComponent;
+        var params: CLightRewriteSourceParams = GetUsageMaskDisplayParams();
         var i: int;
 
         components = entity.GetComponentsByClassName('CPointLightComponent');
         for (i = 0; i < components.Size(); i += 1) {
-            html += ShadowLineHtml("P" + (i + 1), (CLightComponent)components[i], fontSize);
+            prefix = "P" + (i + 1);
+            light = (CLightComponent)components[i];
+            html += ShadowLineHtml(prefix, light, fontSize);
+            html += UsageMaskLineHtml(prefix, light, params, 'point', i, fontSize);
         }
 
         components.Clear();
         components = entity.GetComponentsByClassName('CSpotLightComponent');
         for (i = 0; i < components.Size(); i += 1) {
-            html += ShadowLineHtml("S" + (i + 1), (CLightComponent)components[i], fontSize);
+            prefix = "S" + (i + 1);
+            light = (CLightComponent)components[i];
+            html += ShadowLineHtml(prefix, light, fontSize);
+            html += UsageMaskLineHtml(prefix, light, params, 'spot', i, fontSize);
         }
 
         return html;

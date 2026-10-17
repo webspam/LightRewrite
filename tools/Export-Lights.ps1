@@ -104,7 +104,8 @@ function ParseExportLines {
 # Canonical base field names; pN_/sN_ prefixed variants are stripped before lookup
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
     'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetZ'
-$intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor'
+$intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', `
+    'lumExcludeFromSceneRender', 'lumRenderToEnvProbe', 'lumInteriorOnly', 'lumExteriorOnly'
 
 # Structural metadata only used for bookkeeping; skipped during entry comparison and attribute output.
 $metaFields = 'entityFile', 'layerPath', 'pointLightCount', 'spotLightCount'
@@ -258,6 +259,35 @@ function AddShadowsChild {
     $Parent.AppendChild($shadows) | Out-Null
 }
 
+function AddLumChild {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [hashtable]              $Params,
+        [string]                 $Prefix
+    )
+
+    $lumAttributes = [ordered]@{
+        lumExcludeFromSceneRender = 'exclude_scene'
+        lumRenderToEnvProbe       = 'env_probe'
+        lumInteriorOnly           = 'interior'
+        lumExteriorOnly           = 'exterior'
+    }
+
+    $lum = $Doc.CreateElement('lum')
+    foreach ($field in $lumAttributes.Keys) {
+        $key = "${Prefix}$field"
+        if (-not $Params.ContainsKey($key)) { continue }
+
+        $isOn = $Params[$key] -eq 1
+        if ($field -eq 'lumExcludeFromSceneRender') { $isOn = -not $isOn }
+        $lum.SetAttribute($lumAttributes[$field], ($isOn ? 'true' : 'false'))
+    }
+
+    if ($lum.Attributes.Count -eq 0) { return }
+    $Parent.AppendChild($lum) | Out-Null
+}
+
 # Appends a <colour> child when the prefixed colour fields are present
 function AddColourChild {
     param(
@@ -315,6 +345,7 @@ function BuildSpotlightElement {
     if ($Params.ContainsKey("${Prefix}softness")) { $spot.SetAttribute('softness', (FmtFloat $Params["${Prefix}softness"])) }
 
     AddShadowsChild $Doc $spot $Params $Prefix
+    AddLumChild $Doc $spot $Params $Prefix
     AddColourChild $Doc $spot $Params $Prefix
     AddOffsetChild $Doc $spot $Params $Prefix
 
@@ -337,6 +368,7 @@ function BuildLightElement {
     if ($Params.ContainsKey("${prefix}attenuation")) { $light.SetAttribute('attenuation', (FmtFloat $Params["${prefix}attenuation"])) }
 
     AddShadowsChild $Doc $light $Params $prefix
+    AddLumChild $Doc $light $Params $prefix
     AddColourChild $Doc $light $Params $prefix
     AddOffsetChild $Doc $light $Params $prefix
 
@@ -423,6 +455,7 @@ function BuildOverrideElement {
     }
 
     AddShadowsChild $Doc $override $Params ''
+    AddLumChild $Doc $override $Params ''
     AddColourChild $Doc $override $Params ''
     AddOffsetChild $Doc $override $Params ''
 

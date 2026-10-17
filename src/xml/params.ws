@@ -63,6 +63,11 @@ function ParseLightRewriteBaseParams(
         params.castShadows.value = LR_StringToLightShadowCastingMode(strVal);
     }
 
+    params.usageMask = LR_MergeUsageMaskEdit(
+        params.usageMask,
+        ParseLightRewriteUsageMask(dm, dm.GetCustomDefinitionSubNode(node, 'lum'))
+    );
+
     colourNode = dm.GetCustomDefinitionSubNode(node, 'colour');
     if (dm.GetCustomNodeAttributeValueString(colourNode, 'r', strVal)) {
         params.color.has = true;
@@ -76,6 +81,38 @@ function ParseLightRewriteBaseParams(
     offsetNode = dm.GetCustomDefinitionSubNode(node, 'offset');
     if (ParseLightRewriteVector(dm, offsetNode, params.offset.value)) {
         params.offset.has = true;
+    }
+}
+
+function ParseLightRewriteUsageMask(
+    dm: CDefinitionsManagerAccessor,
+    lumNode: SCustomNode
+): SLightRewriteUsageMaskEdit {
+    var edit: SLightRewriteUsageMaskEdit;
+
+    ParseLightRewriteUsageFlag(dm, lumNode, 'exclude_scene', LRLUM_ExcludeFromSceneRender, edit);
+    ParseLightRewriteUsageFlag(dm, lumNode, 'env_probe', LRLUM_RenderToEnvProbe, edit);
+    ParseLightRewriteUsageFlag(dm, lumNode, 'interior', LRLUM_InteriorOnly, edit);
+    ParseLightRewriteUsageFlag(dm, lumNode, 'exterior', LRLUM_ExteriorOnly, edit);
+    return edit;
+}
+
+function ParseLightRewriteUsageFlag(
+    dm: CDefinitionsManagerAccessor,
+    lumNode: SCustomNode,
+    attribute: name,
+    flag: ELightRewriteUsageMask,
+    out edit: SLightRewriteUsageMaskEdit
+) {
+    var strVal: string;
+
+    if (!dm.GetCustomNodeAttributeValueString(lumNode, attribute, strVal)) return;
+
+    if (strVal == "true" || strVal == "1") {
+        edit.setBits = edit.setBits | (int)flag;
+    }
+    else {
+        edit.clearBits = edit.clearBits | (int)flag;
     }
 }
 

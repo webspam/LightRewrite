@@ -36,6 +36,37 @@ function LRDebug_ShadowModeEdited(
     return cur.has && (!base.has || cur.value != base.value);
 }
 
+function LRDebug_UsageFlagField(
+    cur: SLightRewriteUsageMaskEdit,
+    base: SLightRewriteUsageMaskEdit,
+    flag: ELightRewriteUsageMask,
+    key: string
+): string {
+    var curState: ELRDebug_LUM_FlagState = LRDebug_GetUsageFlagState(cur, flag);
+
+    if (curState == LRDebug_LUM_Unset) return "";
+    if (curState == LRDebug_GetUsageFlagState(base, flag)) return "";
+
+    if (curState == LRDebug_LUM_On) return " " + key + "=1";
+    return " " + key + "=0";
+}
+
+function LRDebug_BuildUsageMaskSegment(
+    cur: SLightRewriteUsageMaskEdit,
+    base: SLightRewriteUsageMaskEdit,
+    prefix: string
+): string {
+    return LRDebug_UsageFlagField(
+        cur,
+        base,
+        LRLUM_ExcludeFromSceneRender,
+        prefix + "lumExcludeFromSceneRender"
+    )
+        + LRDebug_UsageFlagField(cur, base, LRLUM_RenderToEnvProbe, prefix + "lumRenderToEnvProbe")
+        + LRDebug_UsageFlagField(cur, base, LRLUM_InteriorOnly, prefix + "lumInteriorOnly")
+        + LRDebug_UsageFlagField(cur, base, LRLUM_ExteriorOnly, prefix + "lumExteriorOnly");
+}
+
 function LRDebug_ColourEdited(cur: ILightRewriteParams, base: ILightRewriteParams): bool {
     if (!cur.color.has) return false;
     if (!base.color.has) return true;
@@ -73,6 +104,7 @@ function LRDebug_BuildLightFieldSegment(
     if (LRDebug_ShadowModeEdited(cur.castShadows, base.castShadows)) {
         line += " " + prefix + "castingMode=" + LR_LightShadowCastingModeToString(cur.castShadows.value);
     }
+    line += LRDebug_BuildUsageMaskSegment(cur.usageMask, base.usageMask, prefix);
 
     if (LRDebug_ColourEdited(cur, base)) {
         line += " " + prefix + "colorR=" + IntToString((int)cur.color.value.Red);
