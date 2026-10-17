@@ -26,8 +26,8 @@ function Invoke-WccLite {
   param([Parameter(Mandatory)] [string] $Arguments)
 
   $psi = [System.Diagnostics.ProcessStartInfo]::new()
-  $psi.FileName = $script:wccLiteExe
-  $psi.WorkingDirectory = Split-Path -Parent $script:wccLiteExe
+  $psi.FileName = $wccLiteExe
+  $psi.WorkingDirectory = Split-Path -Parent $wccLiteExe
   $psi.Arguments = "$Arguments -agreetoterms"
   $psi.UseShellExecute = $false
   $psi.RedirectStandardOutput = $true
@@ -227,24 +227,35 @@ Copy-Item -Recurse -Filter "*.ws" -Path (Join-Path $RepoRoot "src") -Destination
 New-Directory $modContentDir
 Copy-Item -Path (Join-Path $RepoRoot "l10n/*.w3strings") -Destination $modContentDir
 
-# Execute wcc_lite to pack the content into a new bundle
+$wccLiteSteps = [ordered]@{}
+
 if ($SkipWcc) {
   Write-Host -ForegroundColor Yellow "⌛ Skipping wcc_lite (SkipWcc flag set)"
 }
 else {
-  try {
-    Invoke-WccLite -Arguments "pack -dir=`"$bundleDir`" -outdir=`"$modContentDir`""
-  }
-  catch {
-    throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
-  }
+  $wccLiteSteps.Bundle = @(
+    @{ 
+      Arguments = "pack -dir=`"$bundleDir`" -outdir=`"$modContentDir`""; 
+      Error     = "Error packing content into a new bundle using wcc_lite" 
+    }
+    @{
+      Arguments = "metadatastore -path=`"$modContentDir`"";
+      Error     = "Error generating metadata.store using wcc_lite" 
+    }
+  )
+}
 
-  try {
-    Invoke-WccLite -Arguments "metadatastore -path=`"$modContentDir`""
-  }
-  catch {
-    throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
-  }
+if (!$SkipDlc) {
+  $wccLiteSteps.Dlc = @(
+    @{
+      Arguments = "pack -dir=`"$dlcBundleDir`" -outdir=`"$dlcOutDir`"";
+      Error     = "Error packing DLC content into a new bundle using wcc_lite" 
+    }
+    @{ 
+      Arguments = "metadatastore -path=`"$dlcOutDir`"";
+      Error     = "Error generating DLC metadata.store using wcc_lite" 
+    }
+  )
 }
 
 if ($Compile) {
@@ -262,13 +273,35 @@ if ($Compile) {
     Copy-Item -Recurse -LiteralPath $IncludeScripts -Destination $includedScriptsDir
   }
 
-  try {
-    Invoke-WccLite -Arguments "compilescripts `"$gameContent0Dir`" -out=`"$compiledScriptsDir`" -patch=`"$compileSourceDir`""
-  }
-  catch {
-    throw "Error compiling scripts using wcc_lite:`n`n$($_.Exception.Message)"
-  }
+  $wccLiteSteps.Compile = @(
+    @{
+      Arguments = "compilescripts `"$gameContent0Dir`" -out=`"$compiledScriptsDir`" -patch=`"$compileSourceDir`""; 
+      Error     = "Error compiling scripts using wcc_lite" 
+    }
+  )
+}
 
+$invokeWccLiteDefinition = ${function:Invoke-WccLite}.ToString()
+$wccLiteJobs = foreach ($name in $wccLiteSteps.Keys) {
+  Start-ThreadJob -Name $name -ArgumentList (, $wccLiteSteps[$name]) -ScriptBlock {
+    param($Steps)
+    $ErrorActionPreference = "Stop"
+    $wccLiteExe = $using:wccLiteExe
+    ${function:Invoke-WccLite} = $using:invokeWccLiteDefinition
+
+    foreach ($step in $Steps) {
+      try {
+        Invoke-WccLite -Arguments $step.Arguments
+      }
+      catch {
+        throw "$($step.Error):`n`n$($_.Exception.Message)"
+      }
+    }
+  }
+}
+$wccLiteJobs | Wait-Job | Receive-Job
+
+if ($Compile) {
   # Add rsblob field retargeting to access LUM at runtime
   $compiledBlob = Join-Path $compiledScriptsDir "blob.rsblob"
   $precompiledBlob = Join-Path $modContentDir "precompiled.rsblob"
@@ -283,21 +316,4 @@ if ($Compile) {
   }
   
   Remove-DirectoryIfExists $compiledScriptsDir
-}
-
-if (!$SkipDlc) {
-  # DLC (entities)
-  try {
-    Invoke-WccLite -Arguments "pack -dir=`"$dlcBundleDir`" -outdir=`"$dlcOutDir`""
-  }
-  catch {
-    throw "Error packing content into a new bundle using wcc_lite:`n`n$($_.Exception.Message)"
-  }
-
-  try {
-    Invoke-WccLite -Arguments "metadatastore -path=`"$dlcOutDir`""
-  }
-  catch {
-    throw "Error generating metadata.store using wcc_lite:`n`n$($_.Exception.Message)"
-  }
 }
