@@ -139,7 +139,9 @@ function ParseLightRewriteClampedFloat(
     parsed.max.value = StringToFloat(maxStr, 0.f);
 
     if (hasMin && hasMax && parsed.min.value > parsed.max.value) {
-        LogLightRewriteXml(NameToString(minAttribute) + " exceeds " + NameToString(maxAttribute) + "; max wins.");
+        LogLightRewriteXml(
+            NameToString(minAttribute) + " exceeds " + NameToString(maxAttribute) + "; max wins."
+        );
     }
     if (hasValue) {
         parsed.SetClampedValue(StringToFloat(valueStr, 0.f));

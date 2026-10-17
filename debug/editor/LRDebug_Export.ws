@@ -93,7 +93,9 @@ function LRDebug_BuildLightFieldSegment(
         line += " " + prefix + "attenuation=" + FloatToString(cur.attenuation.value.value);
     }
     if (LRDebug_ClampedFloatEdited(cur.shadowFadeDistance, base.shadowFadeDistance)) {
-        line += " " + prefix + "shadowFadeDistance=" + FloatToString(cur.shadowFadeDistance.value.value);
+        line += " " + prefix + "shadowFadeDistance=" + FloatToString(
+            cur.shadowFadeDistance.value.value
+        );
     }
     if (LRDebug_ClampedFloatEdited(cur.shadowFadeRange, base.shadowFadeRange)) {
         line += " " + prefix + "shadowFadeRange=" + FloatToString(cur.shadowFadeRange.value.value);
@@ -102,7 +104,9 @@ function LRDebug_BuildLightFieldSegment(
         line += " " + prefix + "shadowBlendFactor=" + FloatToString(cur.shadowBlendFactor.value);
     }
     if (LRDebug_ShadowModeEdited(cur.castShadows, base.castShadows)) {
-        line += " " + prefix + "castingMode=" + LR_LightShadowCastingModeToString(cur.castShadows.value);
+        line += " " + prefix + "castingMode=" + LR_LightShadowCastingModeToString(
+            cur.castShadows.value
+        );
     }
     line += LRDebug_BuildUsageMaskSegment(cur.usageMask, base.usageMask, prefix);
 

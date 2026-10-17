@@ -50,7 +50,10 @@ class LRDebug_RenderToggler {
     }
 
     private function Toggle(varName: name): bool {
-        var setEnabled: bool = theGame.GetInGameConfigWrapper().GetVarValue(GRAPHICS_GROUP, varName) != "true";
+        var setEnabled: bool = theGame.GetInGameConfigWrapper().GetVarValue(
+            GRAPHICS_GROUP,
+            varName
+        ) != "true";
 
         SetAndRaiseGraphicsVar(varName, setEnabled);
         if (setEnabled && theGame.GetDLSSEnabled() && theGame.GetDLSSRRSupported()) {

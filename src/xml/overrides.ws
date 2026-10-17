@@ -24,10 +24,14 @@ function LoadLightRewriteOverrides(
 
         dm.GetCustomNodeAttributeValueName(overridesNode, 'profile_name', profileName);
         if (profileName == noneProfile) {
-            LogLightRewriteXml("Skipping overrides group - profile name '" + profileName + "' is reserved.");
+            LogLightRewriteXml(
+                "Skipping overrides group - profile name '" + profileName + "' is reserved."
+            );
             continue;
         }
-        LogLightRewriteXml("Found overrides group with weight: " + weight + ", profile: " + profileName + ", overrides: " + overridesNode.subNodes.Size());
+        LogLightRewriteXml(
+            "Found overrides group with weight: " + weight + ", profile: " + profileName + ", overrides: " + overridesNode.subNodes.Size()
+        );
 
         group = LoadLightRewriteOverrideGroup(owner, dm, overridesNode, weight, profileName);
         if (group.overrides.Size() > 0) {
@@ -115,7 +119,9 @@ function LoadLightRewriteOverrideGroup(
 
         ParseLightRewritePerLightNodes(override, dm, entryNode);
 
-        LogLightRewriteXml("Loaded override: " + override.tag + " (rules=" + override.condition.rules.Size() + ")");
+        LogLightRewriteXml(
+            "Loaded override: " + override.tag + " (rules=" + override.condition.rules.Size() + ")"
+        );
         group.overrides.PushBack(override);
     }
 

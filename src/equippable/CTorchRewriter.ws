@@ -4,7 +4,9 @@ class CTorchRewriter extends IEquippableLightRewriter {
     }
 
     protected function SpawnTemporaryLight(): CLightComponent {
-        var entity: CEntity = SpawnTemporaryLightEntity("dlc\lightrewrite\lights\pointlight_all_uses.w2ent");
+        var entity: CEntity = SpawnTemporaryLightEntity(
+            "dlc\lightrewrite\lights\pointlight_all_uses.w2ent"
+        );
 
         if (!entity) return NULL;
 

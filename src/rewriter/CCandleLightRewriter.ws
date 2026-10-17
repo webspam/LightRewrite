@@ -34,7 +34,9 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         var i: int;
         var forceSingle: bool;
 
-        var components: array<CComponent> = parentEntity.GetComponentsByClassName('CPointLightComponent');
+        var components: array<CComponent> = parentEntity.GetComponentsByClassName(
+            'CPointLightComponent'
+        );
         var count: int = components.Size();
 
         // Clusters of candles emit most of their light via a single spotlight.

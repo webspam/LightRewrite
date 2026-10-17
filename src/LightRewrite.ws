@@ -70,7 +70,9 @@ protected function InitialiseLightRewrite() {
 
 @addMethod(CGameplayEntity)
 public function LightRewriteProfileChanged() {
-    var params: CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(this);
+    var params: CLightRewriteSourceParams = theGame.GetLightRewriteSettings().FindParamsForEntity(
+        this
+    );
 
     // Always reset to baseline; profiles aren't guaranteed to alter the same fields
     if (lightSourceRewriter) {

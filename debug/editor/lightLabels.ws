@@ -608,7 +608,11 @@ public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
         modifier = 0.2;
     }
 
-    if (lrDebugAttrEditor.MoveOffsetXY(action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier, 0.0, lrDebugTargeting.GetTarget())) {
+    if (lrDebugAttrEditor.MoveOffsetXY(
+        action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier,
+        0.0,
+        lrDebugTargeting.GetTarget()
+    )) {
         lrDebugLabelManager.RefreshTargetOneliner();
     }
     return true;
