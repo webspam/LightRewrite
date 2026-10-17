@@ -50,13 +50,10 @@ class LRDebug_LabelManager {
         toast.Show("<font size='14'>" + text + "</font>", seconds);
     }
 
-    public function Update(targeting: LRDebug_Targeting) {
-        var entities: array<CGameplayEntity>;
+    public function Update(targeting: LRDebug_Targeting, entities: array<CGameplayEntity>) {
         var entity: CGameplayEntity;
         var i, count: int;
         var targetChanged: bool;
-
-        FindNearbyLights(entities);
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
@@ -296,7 +293,7 @@ class LRDebug_LabelManager {
         RefreshTargetOneliner();
     }
 
-    private function FindNearbyLights(out entities: array<CGameplayEntity>) {
+    public function FindNearbyLights(out entities: array<CGameplayEntity>) {
         var candidates: array<CGameplayEntity>;
         var i, count: int;
 

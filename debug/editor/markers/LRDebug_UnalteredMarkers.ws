@@ -4,12 +4,10 @@ statemachine class LRDebug_UnalteredMarkers extends LRDebug_MarkerPool {
     private const var GLYPH          : string;  default GLYPH = "&#8226;";
     private const var COLOUR         : string;  default COLOUR = "#e4461a";
     private const var SCREEN_OFFSET_Y: float;   default SCREEN_OFFSET_Y = 40.0;
-    private const var SCAN_INTERVAL  : float;   default SCAN_INTERVAL = 1.0;
 
     private var entities: array<CGameplayEntity>;
     private var visible: bool;  default visible = true;
-    private var nextScanTime: float;
-    private var tracking    : bool;
+    private var tracking: bool;
 
     public function Init() {
         SetBaseId(0x4000C000);
@@ -41,34 +39,22 @@ statemachine class LRDebug_UnalteredMarkers extends LRDebug_MarkerPool {
         }
     }
 
-    public function Tick() {
-        var now: float = theGame.GetEngineTimeAsSeconds();
-
-        if (now >= nextScanTime) {
-            Scan();
-            nextScanTime = now + SCAN_INTERVAL;
-        }
-
-        Update();
-    }
-
-    private function Scan() {
-        var found: array<CEntity>;
+    public function Scan(nearbyLights: array<CGameplayEntity>) {
         var entity: CGameplayEntity;
         var i, count: int;
 
-        theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, found);
+        if (!tracking) return;
 
-        count = found.Size();
+        count = nearbyLights.Size();
         for (i = 0; i < count; i += 1) {
-            entity = (CGameplayEntity)found[i];
+            entity = nearbyLights[i];
             if (entity && entity.bypassLightRewrite) {
                 Register(entity);
             }
         }
     }
 
-    private function Update() {
+    public function Update() {
         var playerPos: Vector = thePlayer.GetWorldPosition();
         var entityPos: Vector;
         var maxRange: float = thePlayer.lrDebugTargeting.GetMaxRange();
@@ -124,7 +110,7 @@ state Tracking in LRDebug_UnalteredMarkers {
 
     entry function Track(): void {
         while (true) {
-            parent.Tick();
+            parent.Update();
             SleepOneFrame();
         }
     }
