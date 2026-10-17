@@ -90,6 +90,14 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleGroupEdit', 'LRDebug_GroupEdit');
     theInput.RegisterListener(this, 'LRDebug_OnInputToggleRewriter', 'LRDebug_ToggleRewriter');
     theInput.RegisterListener(this, 'LRDebug_OnInputCycleShadowMode', 'LRDebug_CycleShadowMode');
+    theInput.RegisterListener(
+        this,
+        'LRDebug_OnInputCycleLumSceneRender',
+        'LRDebug_CycleLumSceneRender'
+    );
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLumEnvProbe', 'LRDebug_CycleLumEnvProbe');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLumInterior', 'LRDebug_CycleLumInterior');
+    theInput.RegisterListener(this, 'LRDebug_OnInputCycleLumExterior', 'LRDebug_CycleLumExterior');
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetOffset', 'LRDebug_ResetOffset');
@@ -347,6 +355,47 @@ public function LRDebug_OnInputCycleShadowMode(action: SInputAction): bool {
     if (!target || !target.lrdebugOneliner) return true;
 
     lrDebugAttrEditor.CycleShadowMode(target);
+    lrDebugLabelManager.RefreshTargetOneliner();
+    return true;
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLumSceneRender(action: SInputAction): bool {
+    return LRDebug_CycleUsageFlag(action, LRLUM_ExcludeFromSceneRender);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLumEnvProbe(action: SInputAction): bool {
+    return LRDebug_CycleUsageFlag(action, LRLUM_RenderToEnvProbe);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLumInterior(action: SInputAction): bool {
+    return LRDebug_CycleUsageFlag(action, LRLUM_InteriorOnly);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_OnInputCycleLumExterior(action: SInputAction): bool {
+    return LRDebug_CycleUsageFlag(action, LRLUM_ExteriorOnly);
+}
+
+@addMethod(CR4Player)
+public function LRDebug_CycleUsageFlag(action: SInputAction, flag: ELightRewriteUsageMask): bool {
+    var target: CGameplayEntity;
+
+    if (
+        !lrDebugLabels ||
+        !IsPressed(action) ||
+        !thePlayer ||
+        lrDebugAdjusting
+    ) {
+        return false;
+    }
+
+    target = lrDebugTargeting.GetTarget();
+    if (!target || !target.lrdebugOneliner) return true;
+
+    lrDebugAttrEditor.CycleUsageFlag(target, flag);
     lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
