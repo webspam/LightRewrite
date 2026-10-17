@@ -280,7 +280,6 @@ function AddLumChild {
         if (-not $Params.ContainsKey($key)) { continue }
 
         $isOn = $Params[$key] -eq 1
-        if ($field -eq 'lumExcludeFromSceneRender') { $isOn = -not $isOn }
         $lum.SetAttribute($lumAttributes[$field], ($isOn ? 'true' : 'false'))
     }
 
