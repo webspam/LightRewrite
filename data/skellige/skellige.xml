@@ -39,7 +39,9 @@
             <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
             <match mode="exact">lamp_standing_complex.w2ent</match>
           </any>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
 
@@ -76,7 +78,9 @@
           <light index="2"
                  radius="2.75" />
 
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
           <shadows fade_distance="30"
                    fade_range="20" />
         </override>

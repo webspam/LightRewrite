@@ -36,7 +36,9 @@
                   radius="4"
                   attenuation="1">
           <match mode="exact">candle_holder_wall_complex_b.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_OlgierdMansion_candle_holder_large_wood_b_complex"
@@ -59,7 +61,9 @@
           <light index="2"
                  radius="2.5">
           </light>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_OlgierdMansion_candelabra_complex"
@@ -68,7 +72,9 @@
                   radius="5"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Exterior Stables -->

@@ -41,7 +41,9 @@
           <colour r="255"
                   g="250"
                   b="245" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Large Candle Holder A -->
@@ -59,7 +61,9 @@
                  brightness="5"
                  radius="2" />
           <shadows casting_mode="Normal" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Large Candle Holder B -->

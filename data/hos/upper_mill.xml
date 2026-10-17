@@ -61,7 +61,9 @@
           <offset x="0"
                   y="0"
                   z="0.58" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
 

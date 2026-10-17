@@ -26,7 +26,9 @@
                   radius="5"
                   attenuation="1">
           <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Hanging Lamp -->
@@ -40,7 +42,9 @@
           <colour r="255"
                   g="250"
                   b="245" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Torch on a Stick -->

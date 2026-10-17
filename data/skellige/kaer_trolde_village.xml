@@ -63,7 +63,9 @@
                   radius="3.5">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
           <shadows fade_distance="10" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
 

@@ -48,7 +48,9 @@
         <override tag_name="LR_Erde_Candleholder"
                   label="erde_candleholder">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Torch on a Stick -->

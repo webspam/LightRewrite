@@ -90,7 +90,9 @@
           <match mode="exact">candelabra_complex.w2ent</match>
           <match type="layer"
                  mode="exact">dlc\ep1\levels\novigrad\locations\poi\valley_ruin\ruin.w2l</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
 

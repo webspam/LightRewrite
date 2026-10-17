@@ -62,7 +62,9 @@
           <colour r="255"
                   g="235"
                   b="215" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Wall torch -->

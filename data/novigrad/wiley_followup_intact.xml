@@ -92,7 +92,9 @@
                     y="0"
                     z="1.86" />
           </light>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
         <override tag_name="LR_Edited_candle_small_group_melted_c_complex_w2ent"
                   label="edited_candle_small_group_melted_c_complex_w2ent">

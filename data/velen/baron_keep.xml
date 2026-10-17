@@ -115,7 +115,9 @@
                   brightness="30">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <shadows fade_range="20" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Hanging Lamp -->

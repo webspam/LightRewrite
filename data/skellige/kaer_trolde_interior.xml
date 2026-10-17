@@ -41,7 +41,9 @@
           <offset x="0"
                   y="0"
                   z="0.85" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Standing Candleholder - large, row of candles -->
