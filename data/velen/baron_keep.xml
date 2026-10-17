@@ -115,16 +115,19 @@
                   brightness="30">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <shadows fade_range="20" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Hanging Lamp -->
         <override tag_name="LR_Baron_HangingLamp"
                   label="baron_castle_hanging_lamp"
                   brightness="15"
-                  radius="0"
                   attenuation="1">
           <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <lum exclude_scene="true" />
+
           <spotlight brightness="15"
                      radius="5"
                      attenuation="1"

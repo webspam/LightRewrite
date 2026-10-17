@@ -42,7 +42,9 @@
                   radius="5"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_AvallachLab_Chandelier_Bright_Noshadow"
@@ -72,7 +74,9 @@
                  radius="2.75" />
           <light index="2"
                  radius="2.75" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Candleholder - Large -->

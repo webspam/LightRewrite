@@ -13,9 +13,10 @@
 
         <!-- Radiates light from the middle of the archway above the overcompensating fire -->
         <override tag_name="LR_Edited_city_bouncelight_fire_w2ent"
-                  label="edited_city_bouncelight_fire_w2ent"
-                  radius="0">
+                  label="edited_city_bouncelight_fire_w2ent">
           <match mode="exact">city_bouncelight_fire.w2ent</match>
+
+          <lum exclude_scene="true" />
         </override>
 
         <!-- Centre shrine -->

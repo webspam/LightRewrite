@@ -18,7 +18,9 @@
           <offset x="0"
                   y="0"
                   z="0.3" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_qYQerJKo_torch_hand_long_complex"
@@ -28,7 +30,9 @@
           <offset x="0"
                   y="0"
                   z="0.56" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
       </overrides>
     </light_rewrite>

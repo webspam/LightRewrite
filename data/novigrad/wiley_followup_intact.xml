@@ -92,7 +92,9 @@
                     y="0"
                     z="1.86" />
           </light>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
         <override tag_name="LR_Edited_candle_small_group_melted_c_complex_w2ent"
                   label="edited_candle_small_group_melted_c_complex_w2ent">
@@ -101,10 +103,12 @@
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <light index="0"
                  radius="4.05" />
-          <light index="1"
-                 radius="0" />
-          <light index="2"
-                 radius="0" />
+          <light index="1">
+            <lum exclude_scene="true" />
+          </light>
+          <light index="2">
+            <lum exclude_scene="true" />
+          </light>
         </override>
       </overrides>
     </light_rewrite>

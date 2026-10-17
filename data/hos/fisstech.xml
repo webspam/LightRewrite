@@ -47,8 +47,9 @@
                   radius="5.5"
                   attenuation="1">
           <match mode="exact">hanging_lamp_complex.w2ent</match>
-          <spotlight radius="0"
-                     attenuation="1" />
+          <spotlight attenuation="1">
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Brazier -->

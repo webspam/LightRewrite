@@ -79,7 +79,9 @@
           <light index="0" brightness="7.58" />
           <light index="1" brightness="3.3" />
           <light index="2" brightness="3.3" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_D7ugaywW_candle_holder_large_wood_b_complex" label="edited_candle_holder_large_wood_b_complex" brightness="7.76" radius="5.5" attenuation="1">
@@ -89,7 +91,9 @@
         <override tag_name="LR_D7ugaywW_candle_small_group_melted_complex" label="edited_candle_small_group_melted_complex">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
           <light index="0" brightness="5" />
-          <light index="1" brightness="5" radius="0" />
+          <light index="1" brightness="5">
+            <lum exclude_scene="true" />
+          </light>
         </override>
 
         <override tag_name="LR_D7ugaywW_chandelier_bright" label="edited_chandelier_bright" brightness="24">

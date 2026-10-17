@@ -37,8 +37,9 @@
                   radius="5"
                   attenuation="1">
           <match mode="exact">hanging_lamp_complex.w2ent</match>
-          <spotlight radius="0"
-                     attenuation="1" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
           <shadows fade_distance="30"
                    fade_range="20"
                    blend_factor="0.74" />
@@ -48,7 +49,9 @@
         <override tag_name="LR_Erde_Candleholder"
                   label="erde_candleholder">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Torch on a Stick -->
@@ -58,8 +61,9 @@
                   radius="5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <shadows blend_factor="0.66" />
-          <spotlight radius="0"
-                     attenuation="1" />
+          <spotlight attenuation="1">
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Stove -->

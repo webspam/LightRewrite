@@ -33,8 +33,9 @@
                           y="0"
                           z="0" />
           <spotlight brightness="39.61"
-                     radius="0"
-                     attenuation="0.94" />
+                     attenuation="0.94">
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <override tag_name="LR_KaerTrolde_Village_Chandelier"

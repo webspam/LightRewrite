@@ -47,7 +47,9 @@
           <offset x="0"
                   y="0"
                   z="1.96" />
-          <spotlight radius="0" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Floor Brazier -->
