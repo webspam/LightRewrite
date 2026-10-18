@@ -59,7 +59,12 @@ class LRDebug_TargetMarkers extends LRDebug_MarkerPool {
         var light: CLightComponent;
         var spot: CSpotLightComponent;
 
-        if (editor && (editor.IsEditingRadius() || editor.IsEditingSpotAngle(target))) {
+        if (
+            editor &&
+            (editor.IsEditingRadius() ||
+                editor.IsEditingSpotAngle(target) ||
+                editor.IsEditingSpotRotation(target))
+        ) {
             light = editor.GetActiveLight(target);
         }
         spot = (CSpotLightComponent)light;

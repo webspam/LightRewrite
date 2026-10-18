@@ -103,7 +103,8 @@ function ParseExportLines {
 
 # Canonical base field names; pN_/sN_ prefixed variants are stripped before lookup
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
-    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetX', 'alignOffsetY', 'alignOffsetZ'
+    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetX', 'alignOffsetY', 'alignOffsetZ', `
+    'rotationPitch', 'rotationYaw', 'rotationRoll'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', `
     'lumExcludeFromSceneRender', 'lumRenderToEnvProbe', 'lumInteriorOnly', 'lumExteriorOnly'
 
@@ -323,6 +324,23 @@ function AddOffsetChild {
     $Parent.AppendChild($off) | Out-Null
 }
 
+function AddRotationChild {
+    param(
+        [System.Xml.XmlDocument] $Doc,
+        [System.Xml.XmlElement]  $Parent,
+        [hashtable]              $Params,
+        [string]                 $Prefix
+    )
+
+    if (-not ($Params.ContainsKey("${Prefix}rotationPitch") -or $Params.ContainsKey("${Prefix}rotationYaw") -or $Params.ContainsKey("${Prefix}rotationRoll"))) { return }
+
+    $rot = $Doc.CreateElement('rotation')
+    $rot.SetAttribute('pitch', (FmtFloat ($Params.ContainsKey("${Prefix}rotationPitch") ? $Params["${Prefix}rotationPitch"] : 0.0)))
+    $rot.SetAttribute('yaw', (FmtFloat ($Params.ContainsKey("${Prefix}rotationYaw") ? $Params["${Prefix}rotationYaw"] : 0.0)))
+    $rot.SetAttribute('roll', (FmtFloat ($Params.ContainsKey("${Prefix}rotationRoll") ? $Params["${Prefix}rotationRoll"] : 0.0)))
+    $Parent.AppendChild($rot) | Out-Null
+}
+
 # Builds a <spotlight> element from per-component prefixed params ('sN_')
 # Scalars are attributes; shadows/colour/offset are child elements, matching spotlightOverrideType in the XSD
 function BuildSpotlightElement {
@@ -347,6 +365,7 @@ function BuildSpotlightElement {
     AddLumChild $Doc $spot $Params $Prefix
     AddColourChild $Doc $spot $Params $Prefix
     AddOffsetChild $Doc $spot $Params $Prefix
+    AddRotationChild $Doc $spot $Params $Prefix
 
     return $spot
 }

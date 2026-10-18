@@ -67,6 +67,7 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
         var light: CLightComponent;
         var spotComp: CSpotLightComponent;
         var position: Vector;
+        var rotation: EulerAngles;
         var valF: float;
         var valI: int;
         var activeIndex: int;
@@ -193,6 +194,24 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
                 else if (spotComp) valF = spotComp.softness;
                 return FloatToString(valF);
 
+            case 'rotation':
+                rotation = SpotRotation(spotlight, spotComp);
+                return FloatToString(rotation.Pitch) + ", "
+                    + FloatToString(rotation.Yaw) + ", "
+                    + FloatToString(rotation.Roll);
+
+            case 'rotationPitch':
+                rotation = SpotRotation(spotlight, spotComp);
+                return FloatToString(rotation.Pitch);
+
+            case 'rotationYaw':
+                rotation = SpotRotation(spotlight, spotComp);
+                return FloatToString(rotation.Yaw);
+
+            case 'rotationRoll':
+                rotation = SpotRotation(spotlight, spotComp);
+                return FloatToString(rotation.Roll);
+
             case 'overrideColour':
                 if (lightParams && lightParams.color.has) return "true";
                 return "false";
@@ -223,6 +242,17 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
         }
 
         return "?";
+    }
+
+    private function SpotRotation(
+        spotlight: CLightRewriteSpotlightParams,
+        spotComp: CSpotLightComponent
+    ): EulerAngles {
+        var rotation: EulerAngles;
+
+        if (spotlight && spotlight.rotation.has) return spotlight.rotation.value;
+        if (spotComp) rotation = spotComp.GetLocalRotation();
+        return rotation;
     }
 
     private function ToHtmlBlock(text: string, size: int, optional colour: string): string {

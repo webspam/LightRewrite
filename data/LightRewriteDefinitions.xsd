@@ -449,6 +449,21 @@
     </xs:attribute>
   </xs:complexType>
 
+  <xs:complexType name="rotationType">
+    <xs:attribute name="pitch"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="yaw"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+    <xs:attribute name="roll"
+                  type="xs:decimal"
+                  use="required">
+    </xs:attribute>
+  </xs:complexType>
+
   <xs:complexType name="lightIndexOverrideType">
     <xs:annotation>
       <xs:documentation>Per-component point-light override. Attributes and children have the same meaning as on the parent override, but apply to one component only.</xs:documentation>
@@ -532,6 +547,13 @@
                   minOccurs="0">
         <xs:annotation>
           <xs:documentation>When present, moves each spotlight component to this local-space offset from the entity origin (0, 0, 0).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="rotation"
+                  type="rotationType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Sets spotlight rotation, in degrees, relative to the entity (local space).</xs:documentation>
         </xs:annotation>
       </xs:element>
     </xs:all>

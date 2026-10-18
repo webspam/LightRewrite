@@ -31,6 +31,7 @@ struct SLightRewriteOriginalValues {
 
     var enabled           : bool;
     var position          : Vector;
+    var rotation          : EulerAngles;
     var brightness        : float;
     var radius            : float;
     var attenuation       : float;
@@ -53,6 +54,7 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.hasBeenSaved = true;
 
     lightRewriteOriginalValues.position = GetLocalPosition();
+    lightRewriteOriginalValues.rotation = GetLocalRotation();
     lightRewriteOriginalValues.brightness = brightness;
     lightRewriteOriginalValues.radius = radius;
     lightRewriteOriginalValues.attenuation = attenuation;
@@ -192,6 +194,7 @@ public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional ena
     if (wasEnabled) SetEnabled(false);
 
     SetPosition(lightRewriteOriginalValues.position);
+    SetRotation(lightRewriteOriginalValues.rotation);
     brightness = lightRewriteOriginalValues.brightness;
     radius = lightRewriteOriginalValues.radius;
     attenuation = lightRewriteOriginalValues.attenuation;

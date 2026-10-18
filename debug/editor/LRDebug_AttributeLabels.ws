@@ -8,7 +8,7 @@ class LRDebug_AttributeLabels {
     private var labels  : array<LRDebug_ScreenLabel>;
     private var slotUsed: array<bool>;
 
-    private const var COLS   : int;  default COLS = 4;
+    private const var COLS   : int;  default COLS = 5;
     private const var ROWS   : int;  default ROWS = 5;
     private const var BASE_ID: int;  default BASE_ID = 1073766656;
 
@@ -57,6 +57,7 @@ class LRDebug_AttributeLabels {
         BuildShadowColumn(oneliner, type);
         BuildColourColumn(oneliner, type);
         BuildPlacementColumn(oneliner, type);
+        BuildRotationColumn(oneliner, type);
 
         HideUnused();
     }
@@ -104,6 +105,23 @@ class LRDebug_AttributeLabels {
         }
     }
 
+    private function BuildRotationColumn(oneliner: LRDebug_LightOneLiner, type: name) {
+        if (type != 'spot') return;
+
+        Emit(oneliner, type, 4, 3, 'rotationYaw', "yaw");
+        Emit(oneliner, type, 4, 2, 'rotationPitch', "pitch");
+        Emit(oneliner, type, 4, 1, 'rotationRoll', "roll");
+    }
+
+    private function IsActiveAttr(type: name, attr: name): bool {
+        var current: name = thePlayer.lrDebugAttrEditor.GetCurrentAttrId(type);
+
+        if (current == 'rotation') {
+            return attr == 'rotationPitch' || attr == 'rotationYaw' || attr == 'rotationRoll';
+        }
+        return current == attr;
+    }
+
     private function Emit(
         oneliner: LRDebug_LightOneLiner,
         type: name,
@@ -113,7 +131,7 @@ class LRDebug_AttributeLabels {
         optional labelText: string
     ) {
         var idx: int = SlotIndex(col, row);
-        var active: bool = thePlayer.lrDebugAttrEditor.GetCurrentAttrId(type) == attr;
+        var active: bool = IsActiveAttr(type, attr);
         var label: string = labelText;
         var newText: string;
 

@@ -101,6 +101,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnInputExportEdited', 'LRDebug_ExportEdited');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetLight', 'LRDebug_ResetLight');
     theInput.RegisterListener(this, 'LRDebug_OnInputResetOffset', 'LRDebug_ResetOffset');
+    theInput.RegisterListener(this, 'LRDebug_OnInputResetRotation', 'LRDebug_ResetRotation');
     theInput.RegisterListener(this, 'LRDebug_OnInputSolveSpacing', 'LRDebug_SolveSpacing');
     theInput.RegisterListener(this, 'LRDebug_OnInputUndo', 'LRDebug_Undo');
     theInput.RegisterListener(this, 'LRDebug_OnInputRedo', 'LRDebug_Redo');
@@ -146,6 +147,7 @@ timer function LRDebug_DeferredLabelInstall(dt: float, id: int) {
     theInput.RegisterListener(this, 'LRDebug_OnColourGModifier', 'LRDebug_ColourGModifier');
     theInput.RegisterListener(this, 'LRDebug_OnColourBModifier', 'LRDebug_ColourBModifier');
     theInput.RegisterListener(this, 'LRDebug_OnSoftnessModifier', 'LRDebug_SoftnessModifier');
+    theInput.RegisterListener(this, 'LRDebug_OnRotationModifier', 'LRDebug_RotationModifier');
 
     theInput.RegisterListener(this, 'LRDebug_OnAltPressed', 'ShowDeveloperModeAlt');
 }
@@ -434,6 +436,16 @@ public function LRDebug_OnInputResetOffset(action: SInputAction): bool {
     return true;
 }
 
+@addMethod(CR4Player)
+public function LRDebug_OnInputResetRotation(action: SInputAction): bool {
+    if (!lrDebugLabels || !theInput.lr.IsNormalKeydown(action) || !thePlayer) return false;
+
+    if (lrDebugAttrEditor.ResetRotation(lrDebugTargeting.GetTarget())) {
+        lrDebugLabelManager.RefreshTargetOneliner();
+    }
+    return true;
+}
+
 /** Ignored mid-hold so an in-progress edit finishes before its predecessor is reverted */
 @addMethod(CR4Player)
 public function LRDebug_OnInputUndo(action: SInputAction): bool {
@@ -538,6 +550,17 @@ public function LRDebug_OnSoftnessModifier(action: SInputAction): bool {
 }
 
 @addMethod(CR4Player)
+public function LRDebug_OnRotationModifier(action: SInputAction): bool {
+    if (
+        IsPressed(action) &&
+        lrDebugAttrEditor.GetSelectedLightType(lrDebugTargeting.GetTarget()) != 'spot'
+    ) {
+        return false;
+    }
+    return LRDebug_EnterAdjust(action, 14);
+}
+
+@addMethod(CR4Player)
 public function LRDebug_OnOverrideColourModifier(action: SInputAction): bool {
     return LRDebug_ToggleAttr(action, 9);
 }
@@ -607,34 +630,67 @@ public function LRDebug_MovingOffsetXY(): bool {
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisX(action: SInputAction): bool {
+    var changeMade: bool;
+    var delta: float;
     var modifier: float = 1.0;
 
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
-    if (!LRDebug_MovingOffsetXY()) return false;
+    if (!theInput.lr.IsAltHeld()) return false;
 
     if (theInput.IsActionPressed('LRDebug_CtrlModifier')) {
         modifier = 0.2;
     }
 
-    if (lrDebugAttrEditor.MoveOffsetXY(
-        action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier,
-        0.0,
-        lrDebugTargeting.GetTarget()
-    )) {
-        lrDebugLabelManager.RefreshTargetOneliner();
+    delta = action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier;
+
+    if (lrDebugAttrEditor.IsEditingRotation()) {
+        changeMade = lrDebugAttrEditor.RotateSpot(delta, 0.0, 0.0, lrDebugTargeting.GetTarget());
     }
+    else if (lrDebugAttrEditor.IsEditingOffset()) {
+        changeMade = lrDebugAttrEditor.MoveOffsetXY(delta, 0.0, lrDebugTargeting.GetTarget());
+    }
+    else {
+        return false;
+    }
+
+    if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
     return true;
 }
 
 @addMethod(CR4Player)
 public function LRDebug_OnMouseAxisY(action: SInputAction): bool {
     var changeMade: bool;
+    var delta: float;
     var modifier: float = 1.0;
 
     if (!lrDebugAdjusting || action.value == 0.0 || !thePlayer) return false;
 
     if (theInput.IsActionPressed('LRDebug_CtrlModifier')) {
         modifier = 0.2;
+    }
+
+    if (lrDebugAttrEditor.IsEditingRotation()) {
+        delta = -action.value * theInput.lr.ADJUST_AXIS_SENSITIVITY * modifier;
+
+        if (theInput.lr.IsAltHeld()) {
+            changeMade = lrDebugAttrEditor.RotateSpot(
+                0.0,
+                0.0,
+                delta,
+                lrDebugTargeting.GetTarget()
+            );
+        }
+        else {
+            changeMade = lrDebugAttrEditor.RotateSpot(
+                0.0,
+                delta,
+                0.0,
+                lrDebugTargeting.GetTarget()
+            );
+        }
+
+        if (changeMade) lrDebugLabelManager.RefreshTargetOneliner();
+        return true;
     }
 
     if (LRDebug_MovingOffsetXY()) {
