@@ -103,7 +103,7 @@ function ParseExportLines {
 
 # Canonical base field names; pN_/sN_ prefixed variants are stripped before lookup
 $floatFields = 'brightness', 'radius', 'attenuation', 'shadowFadeDistance', 'shadowFadeRange', 'shadowBlendFactor', `
-    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetZ'
+    'innerAngle', 'outerAngle', 'softness', 'offsetX', 'offsetY', 'offsetZ', 'alignOffsetX', 'alignOffsetY', 'alignOffsetZ'
 $intFields = 'colorR', 'colorG', 'colorB', 'alignPointLights', 'useSpotlightColor', `
     'lumExcludeFromSceneRender', 'lumRenderToEnvProbe', 'lumInteriorOnly', 'lumExteriorOnly'
 
@@ -461,8 +461,8 @@ function BuildOverrideElement {
     # <fire_fx_offset> - only when alignPointLights is present
     if ($Params.ContainsKey('alignPointLights')) {
         $align = $Doc.CreateElement('fire_fx_offset')
-        $align.SetAttribute('x', '0')
-        $align.SetAttribute('y', '0')
+        $align.SetAttribute('x', (FmtFloat ($Params.ContainsKey('alignOffsetX') ? $Params['alignOffsetX'] : 0.0)))
+        $align.SetAttribute('y', (FmtFloat ($Params.ContainsKey('alignOffsetY') ? $Params['alignOffsetY'] : 0.0)))
         $align.SetAttribute('z', (FmtFloat ($Params.ContainsKey('alignOffsetZ') ? $Params['alignOffsetZ'] : 0.0)))
         $override.AppendChild($align) | Out-Null
     }

@@ -165,7 +165,7 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
                     }
                     return FloatToString(valF);
                 }
-                if (LRDebug_IsCandle(entity)) {
+                if (entity.LRDebug_UsesCandleRewriter()) {
                     if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
                     else valF = 0.0;
                 }
