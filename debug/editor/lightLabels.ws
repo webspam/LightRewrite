@@ -241,7 +241,10 @@ public function LRDebug_OnInputToggleLabels(action: SInputAction): bool {
 function PostStateChange() {
     wrappedMethod();
 
-    if (thePlayer.lrDebugLabels && theInput.GetContext() == thePlayer.GetExplorationInputContext()) {
+    if (
+        thePlayer.lrDebugLabels &&
+        theInput.GetContext() == thePlayer.GetExplorationInputContext()
+    ) {
         theInput.StoreContext('LRDebug');
     }
 }

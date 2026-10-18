@@ -69,6 +69,11 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
     return LRT_Unknown;
 }
 
+@addMethod(CGameplayEntity)
+public function LRDebug_UsesCandleRewriter(): bool {
+    return (CCandleLightRewriter)lightSourceRewriter ? true : false;
+}
+
 // ---- CGameplayEntity extensions ----
 
 /** The params used to edit the light source */

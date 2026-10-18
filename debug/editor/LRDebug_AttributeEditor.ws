@@ -349,7 +349,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                if (type != 'spot' && LRDebug_IsCandle(target)) {
+                if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
@@ -453,7 +453,6 @@ class LRDebug_AttributeEditor {
         return true;
     }
 
-    /** Candles are excluded because their offset auto-aligns to FX slots and only its Z value can be exported */
     public function MoveOffsetXY(dx: float, dy: float, target: CGameplayEntity): bool {
         var params: CLightRewriteSourceParams;
         var lightParams: ILightRewriteParams;
@@ -469,17 +468,26 @@ class LRDebug_AttributeEditor {
         params = target.LRDebug_GetParams(rewriter);
 
         type = GetSelectedLightType(target);
-        if (type != 'spot' && LRDebug_IsCandle(target)) return false;
 
         // Normalise using the same value as Z-axis adjustment
         scale = GetAxisScale('alignOffsetZ');
         dx *= scale;
         dy *= scale;
 
-        lightParams = GetActiveLightParams(params, target, type);
-        SeedComponentOffset(lightParams, GetLight(target, type));
-        lightParams.offset.value.X += dx;
-        lightParams.offset.value.Y += dy;
+        if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
+            if (!params.alignPointLights.has) {
+                params.alignPointLights.has = true;
+                params.alignPointLights.value = true;
+            }
+            params.pointLightOffset.X += dx;
+            params.pointLightOffset.Y += dy;
+        }
+        else {
+            lightParams = GetActiveLightParams(params, target, type);
+            SeedComponentOffset(lightParams, GetLight(target, type));
+            lightParams.offset.value.X += dx;
+            lightParams.offset.value.Y += dy;
+        }
 
         ApplyParams(target, rewriter, params);
         adjustChanged = true;
@@ -506,7 +514,7 @@ class LRDebug_AttributeEditor {
         params = target.LRDebug_GetParams(rewriter);
         type = GetSelectedLightType(target);
 
-        if (type != 'spot' && LRDebug_IsCandle(target)) {
+        if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
             changed = params.pointLightOffset != vectorZero || !params.alignPointLights.has;
 
             params.pointLightOffset = vectorZero;

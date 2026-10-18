@@ -78,10 +78,10 @@ abstract class ILightSourceRewriter {
         ApplyForceCastShadows();
 
         // Fire FX on these entities has identity vector until first frame
-        if (StrStartsWith(
-            entityName,
-            "baron_candle_holder"
-        ) || entityName == "candle_med_a.w2ent") {
+        if (
+            StrStartsWith(entityName, "baron_candle_holder") ||
+            entityName == "candle_med_a.w2ent"
+        ) {
             RewriteLight();
         }
     }
@@ -156,7 +156,11 @@ abstract class ILightSourceRewriter {
         // A spawn override creates its own spotlight entity rather than editing a component
         if (p.spotlight && p.spotlight.spawn) RewriteSpawnedSpotlight(p.spotlight);
 
-        if (!disableUnconfigured && p.spotLights.Size() == 0 && (!p.spotlight || p.spotlight.spawn)) {
+        if (
+            !disableUnconfigured &&
+            p.spotLights.Size() == 0 &&
+            (!p.spotlight || p.spotlight.spawn)
+        ) {
             return;
         }
 
