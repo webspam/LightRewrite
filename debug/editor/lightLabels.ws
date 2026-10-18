@@ -179,9 +179,14 @@ function GetAllLightSourceTags(): array<name> {
 
 @addMethod(CR4Player)
 timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
+    var nearbyLights: array<CGameplayEntity>;
+
     if (!lrDebugLabels || !theGame || !thePlayer) return;
 
     lrDebugUnknownMarkers.Scan();
+
+    lrDebugLabelManager.FindNearbyLights(nearbyLights);
+    lrDebugUnalteredMarkers.Scan(nearbyLights);
 
     if (
         lrDebugTargeting.IsLocked() ||
@@ -190,7 +195,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
         return;
     }
 
-    lrDebugLabelManager.Update(lrDebugTargeting);
+    lrDebugLabelManager.Update(lrDebugTargeting, nearbyLights);
 }
 
 /*
