@@ -31,6 +31,14 @@ class LRDebug_AttributeEditor {
         return GetCurrentAttrId(selectedLightType) == 'alignOffsetZ';
     }
 
+    public function IsEditingRotation(): bool {
+        return GetCurrentAttrId(selectedLightType) == 'rotation';
+    }
+
+    public function IsEditingSpotRotation(target: CGameplayEntity): bool {
+        return IsEditingRotation() && GetSelectedLightType(target) == 'spot';
+    }
+
     public function IsEditingRadius(): bool {
         return GetCurrentAttrId(selectedLightType) == 'radius';
     }
@@ -65,6 +73,7 @@ class LRDebug_AttributeEditor {
             case 11:  return 'colourG';
             case 12:  return 'colourB';
             case 13:  return 'softness';
+            case 14:  return 'rotation';
         }
         return 'unknown';
     }
@@ -83,6 +92,7 @@ class LRDebug_AttributeEditor {
             case 'innerAngle':          return "inner angle";
             case 'outerAngle':          return "outer angle";
             case 'softness':            return "softness";
+            case 'rotation':            return "rotation";
             case 'overrideColour':      return "override colour";
             case 'colourR':             return "colour R";
             case 'colourG':             return "colour G";
@@ -162,6 +172,7 @@ class LRDebug_AttributeEditor {
             case 'innerAngle':
             case 'outerAngle':
             case 'softness':
+            case 'rotation':
                 return lightType == 'spot';
             case 'useSpotlightColor':
             case 'alignPointLights':
@@ -202,6 +213,12 @@ class LRDebug_AttributeEditor {
         if (params.offset.has) return;
         params.offset.has = true;
         if (light) params.offset.value = light.GetLocalPosition();
+    }
+
+    private function SeedSpotRotation(params: CLightRewriteSpotlightParams, light: CLightComponent) {
+        if (params.rotation.has) return;
+        params.rotation.has = true;
+        if (light) params.rotation.value = light.GetLocalRotation();
     }
 
     /** RoundF() is not used here because RoundF(0.05 * 100.0) / 100.0 == 0.04. */
@@ -534,6 +551,75 @@ class LRDebug_AttributeEditor {
         return changed;
     }
 
+    public function RotateSpot(
+        dPitch: float,
+        dYaw: float,
+        dRoll: float,
+        target: CGameplayEntity
+    ): bool {
+        var params: CLightRewriteSourceParams;
+        var spotParams: CLightRewriteSpotlightParams;
+        var rewriter: ILightSourceRewriter;
+        var scale: float;
+
+        if (dPitch == 0.0 && dYaw == 0.0 && dRoll == 0.0) return false;
+        if (!target || !target.lrdebugOneliner) return false;
+        if (GetSelectedLightType(target) != 'spot') return false;
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+
+        scale = GetAxisScale('rotation');
+
+        spotParams = GetActiveSpotParams(params, target);
+        SeedSpotRotation(spotParams, GetLight(target, 'spot'));
+        spotParams.rotation.value.Pitch = AngleNormalize180(
+            spotParams.rotation.value.Pitch + dPitch * scale
+        );
+        spotParams.rotation.value.Yaw = AngleNormalize180(
+            spotParams.rotation.value.Yaw + dYaw * scale
+        );
+        spotParams.rotation.value.Roll = AngleNormalize180(
+            spotParams.rotation.value.Roll + dRoll * scale
+        );
+
+        ApplyParams(target, rewriter, params);
+        adjustChanged = true;
+        return true;
+    }
+
+    public function ResetRotation(target: CGameplayEntity): bool {
+        var params: CLightRewriteSourceParams;
+        var spotParams: CLightRewriteSpotlightParams;
+        var rewriter: ILightSourceRewriter;
+        var scope: array<CGameplayEntity>;
+        var changed: bool;
+
+        var identity: EulerAngles = EulerAngles(0, 0, 0);
+
+        if (!target || !target.lrdebugOneliner) return false;
+        if (GetSelectedLightType(target) != 'spot') return false;
+
+        GetEditScope(target, scope);
+        history.StartEdit(scope, "reset rotation");
+
+        rewriter = target.LRDebug_GetOrCreateRewriter();
+        params = target.LRDebug_GetParams(rewriter);
+        spotParams = GetActiveSpotParams(params, target);
+
+        changed = !spotParams.rotation.has
+            || spotParams.rotation.value.Pitch != 0.0
+            || spotParams.rotation.value.Yaw != 0.0
+            || spotParams.rotation.value.Roll != 0.0;
+
+        spotParams.rotation.has = true;
+        spotParams.rotation.value = identity;
+
+        if (changed) ApplyParams(target, rewriter, params);
+        history.Commit(changed);
+        return changed;
+    }
+
     private function ResetAdjustAccumulator() {
         adjustAccumulator = 0.0;
     }
@@ -577,6 +663,7 @@ class LRDebug_AttributeEditor {
             case 'shadowBlendFactor':  return 0.01;
             case 'alignOffsetZ':       return 0.1;
             case 'softness':           return 0.02;
+            case 'rotation':           return 3.6;
             case 'colourR':
             case 'colourG':
             case 'colourB':            return 2.55;

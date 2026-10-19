@@ -140,6 +140,29 @@ function LRDebug_BuildSpotlightSegment(
     }
 
     line += LRDebug_BuildOffsetSegment(cur, base, prefix);
+    line += LRDebug_BuildRotationSegment(cur, base, prefix);
+
+    return line;
+}
+
+function LRDebug_BuildRotationSegment(
+    cur: CLightRewriteSpotlightParams,
+    base: CLightRewriteSpotlightParams,
+    prefix: string
+): string {
+    var line: string;
+
+    if (
+        cur.rotation.has &&
+        (!base.rotation.has ||
+            cur.rotation.value.Pitch != base.rotation.value.Pitch ||
+            cur.rotation.value.Yaw != base.rotation.value.Yaw ||
+            cur.rotation.value.Roll != base.rotation.value.Roll)
+    ) {
+        line += " " + prefix + "rotationPitch=" + FloatToString(cur.rotation.value.Pitch);
+        line += " " + prefix + "rotationYaw=" + FloatToString(cur.rotation.value.Yaw);
+        line += " " + prefix + "rotationRoll=" + FloatToString(cur.rotation.value.Roll);
+    }
 
     return line;
 }

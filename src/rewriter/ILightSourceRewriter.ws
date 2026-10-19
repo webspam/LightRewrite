@@ -252,6 +252,7 @@ abstract class ILightSourceRewriter {
         if (spotParams.outerAngle.has) spotLight.outerAngle = spotParams.outerAngle.value;
         if (spotParams.softness.has) spotLight.softness = spotParams.softness.value;
         if (spotParams.offset.has) spotLight.SetPosition(spotParams.offset.value);
+        if (spotParams.rotation.has) spotLight.SetRotation(spotParams.rotation.value);
     }
 
     protected function RewriteSpawnedSpotlight(spotParams: CLightRewriteSpotlightParams) {

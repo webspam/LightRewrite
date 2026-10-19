@@ -5,6 +5,8 @@ class CLightRewriteSpotlightParams extends CLightRewriteComponentLightParams {
 
     public var softness: SLightRewriteOptionalFloat;
 
+    public var rotation: SLightRewriteOptionalEulerAngles;
+
     // When set, a spotlight entity is spawned for the match rather than editing an existing component
     public var spawn: bool;  default spawn = false;
 
@@ -14,6 +16,7 @@ class CLightRewriteSpotlightParams extends CLightRewriteComponentLightParams {
         if (innerAngle.has) target.innerAngle = innerAngle;
         if (outerAngle.has) target.outerAngle = outerAngle;
         if (softness.has) target.softness = softness;
+        if (rotation.has) target.rotation = rotation;
         target.spawn = spawn;
     }
 }

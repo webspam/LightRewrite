@@ -211,8 +211,34 @@ function ParseLightRewriteSpotlightParams(
     if (dm.GetCustomNodeAttributeValueString(spotlightNode, 'spawn', strVal)) {
         spotlight.spawn = (strVal == "true");
     }
+    if (ParseLightRewriteEulerAngles(
+        dm,
+        dm.GetCustomDefinitionSubNode(spotlightNode, 'rotation'),
+        spotlight.rotation.value
+    )) {
+        spotlight.rotation.has = true;
+    }
 
     return spotlight;
+}
+
+function ParseLightRewriteEulerAngles(
+    dm: CDefinitionsManagerAccessor,
+    node: SCustomNode,
+    out angles: EulerAngles
+): bool {
+    var pitch, yaw, roll: string;
+
+    if (!dm.GetCustomNodeAttributeValueString(node, 'pitch', pitch)) return false;
+
+    dm.GetCustomNodeAttributeValueString(node, 'yaw', yaw);
+    dm.GetCustomNodeAttributeValueString(node, 'roll', roll);
+    angles = EulerAngles(
+        StringToFloat(pitch, 0.f),
+        StringToFloat(yaw, 0.f),
+        StringToFloat(roll, 0.f)
+    );
+    return true;
 }
 
 function ParseLightRewriteVector(
