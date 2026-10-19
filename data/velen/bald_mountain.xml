@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Bald Mountain quest lights -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="startsWith">levels\novigrad\nml_surface\q111_imlerith\</match>
+        </matches>
+
+        <!-- Wall torches -->
+        <override tag_name="LR_BaldMountain_WallTorch"
+                  attenuation="1">
+          <match mode="exact">torch_wall_metal_staticshadow.w2ent</match>
+        </override>
+
+        <!-- Campfire -->
+        <override tag_name="LR_BaldMountain_Campfire"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="0.9">
+          <match mode="exact">campfire_01.w2ent</match>
+        </override>
+
+        <!-- Giant bonfire -->
+        <override tag_name="LR_BaldMountain_BonfireLarge">
+          <match mode="exact">bonfire_large.w2ent</match>
+          <!-- Fixes Remastered shadows without introducing bigger issues -->
+          <offset x="0.462"
+                  y="0.126"
+                  z="9.29" />
+        </override>
+
+        <!-- Thecla's tent - Coal Fire -->
+        <override tag_name="LR_BaldMountain_CoalSmall"
+                  brightness="40"
+                  attenuation="0.9">
+          <match mode="exact">coal_small.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.3" />
+        </override>
+
+        <!-- Large Candle Group - Single point light -->
+        <override tag_name="LR_BaldMountain_CandleLargeGroupCaves"
+                  brightness="30">
+          <match mode="exact">candle_large_group_caves.w2ent</match>
+        </override>
+      </overrides>
+
+      <!-- Cauldron -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_BaldMountain_Cauldron"
+                  label="bald_mountain_cauldron"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
+          <match type="layer">levels\novigrad\quests\q111_imlerith\</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
