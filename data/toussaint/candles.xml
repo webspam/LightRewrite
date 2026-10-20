@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Toussaint Candles -->
+      <overrides profile_name="Default"
+                 weight="7">
+        <matches>
+          <match type="layer">dlc\bob\</match>
+        </matches>
+
+        <override tag_name="LR_Toussaint_CandleWallBNoShadow"
+                  label="toussaint_candle_wall_b_noshadow"
+                  rewriter_type="LRT_Spotlight">
+          <match mode="exact">gen_poor_candleholder_wall_b_no_shadow.w2ent</match>
+        </override>
+
+        <!-- Bottle candle -->
+        <override tag_name="LR_Toussaint_gen_poor_candleholder_bottle_3lights"
+                  brightness="3"
+                  radius="4">
+          <match mode="exact">gen_poor_candleholder_bottle_3lights.w2ent</match>
+          <lum exclude_scene="false" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- Gen Poor -->
+        <!-- Candleholder A - 3 lights -->
+        <override tag_name="LR_Toussaint_gen_poor_candleholder_a_3lights"
+                  brightness="3">
+          <match mode="exact">gen_poor_candleholder_a_3lights.w2ent</match>
+          <lum exclude_scene="false" />
+          <spotlight index="0">
+            <lum exclude_scene="true" />
+          </spotlight>
+          <spotlight index="1">
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- 3 Candle group - Gen Poor 3lights -->
+        <override tag_name="LR_Toussaint_gen_poor_candlewax_set_a_3lights"
+                  brightness="4.65">
+          <any>
+            <match mode="exact">gen_poor_candlewax_set_a_3lights.w2ent</match>
+            <match mode="exact">gen_poor_candlewax_set_b_3lights.w2ent</match>
+          </any>
+          <lum exclude_scene="false" />
+          <spotlight index="0">
+            <lum exclude_scene="true" />
+          </spotlight>
+          <spotlight index="1">
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

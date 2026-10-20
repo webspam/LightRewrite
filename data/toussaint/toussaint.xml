@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Toussaint -->
+      <overrides profile_name="Default"
+                 weight="5">
+        <matches>
+          <match type="layer">dlc\bob\</match>
+        </matches>
+
+        <!-- All Candles -->
+        <override tag_name="LR_Toussaint_Candle"
+                  label="toussaint_candle"
+                  max_brightness="5"
+                  min_radius="4.5"
+                  attenuation="1"
+                  rewriter_type="LRT_Candle">
+          <any>
+            <match>candle_small</match>
+            <match>candle_med</match>
+            <match>candle_tall</match>
+            <match>gen_poor_candleholder</match>
+            <match>gen_poor_candlewax</match>
+            <match>gen_rich_candleholder_a</match>
+            <match>gen_rich_candleholder_c</match>
+            <match>gen_rich_candleholder_d</match>
+          </any>
+
+          <shadows min_fade_distance="10"
+                   min_fade_range="7.5"
+                   blend_factor="1" />
+          <!-- Most Toussaint lights are extremely red (likely a counter for the zones ubiquitous yellow filter) -->
+          <colour r="255"
+                  g="235"
+                  b="205" />
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
