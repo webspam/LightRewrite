@@ -19,7 +19,8 @@
         <!-- Bottle candle -->
         <override tag_name="LR_Toussaint_gen_poor_candleholder_bottle_3lights"
                   brightness="3"
-                  radius="4">
+                  radius="4"
+                  rewriter_type="LRT_Candle">
           <match mode="exact">gen_poor_candleholder_bottle_3lights.w2ent</match>
           <lum exclude_scene="false" />
           <spotlight>
@@ -30,7 +31,8 @@
         <!-- Gen Poor -->
         <!-- Candleholder A - 3 lights -->
         <override tag_name="LR_Toussaint_gen_poor_candleholder_a_3lights"
-                  brightness="3">
+                  brightness="3"
+                  rewriter_type="LRT_Candle">
           <match mode="exact">gen_poor_candleholder_a_3lights.w2ent</match>
           <lum exclude_scene="false" />
           <spotlight index="0">
@@ -43,7 +45,8 @@
 
         <!-- 3 Candle group - Gen Poor 3lights -->
         <override tag_name="LR_Toussaint_gen_poor_candlewax_set_a_3lights"
-                  brightness="4.65">
+                  brightness="4.65"
+                  rewriter_type="LRT_Candle">
           <any>
             <match mode="exact">gen_poor_candlewax_set_a_3lights.w2ent</match>
             <match mode="exact">gen_poor_candlewax_set_b_3lights.w2ent</match>
