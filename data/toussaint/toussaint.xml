@@ -15,8 +15,7 @@
                   label="toussaint_candle"
                   max_brightness="5"
                   min_radius="4.5"
-                  attenuation="1"
-                  rewriter_type="LRT_Candle">
+                  attenuation="1">
           <any>
             <match>candle_small</match>
             <match>candle_med</match>
