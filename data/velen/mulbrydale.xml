@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Mulbrydale -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <any>
+            <!-- lw_before_rescue\tempdeco.w2l -->
+            <!-- scenes\peasants_01.w2l -->
+            <match type="layer"
+                   mode="exact">levels\novigrad\communities\poppystone\</match>
+            <!-- lights.w2l -->
+            <!-- gameplay.w2l -->
+            <!-- interior_nonstatic.w2l -->
+            <!-- nilgaardian_camp\assets.w2l -->
+            <match type="layer"
+                   mode="exact">levels\novigrad\greyrocks\gr4_poppystone\</match>
+          </any>
+        </matches>
+
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_Mulbrydale_TorchOnAStick"
+                  brightness="22.51"
+                  radius="6.5"
+                  attenuation="1">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\greyrocks\gr4_poppystone\lights.w2l</match>
+          <lum exterior="false" />
+          <spotlight attenuation="1" />
+        </override>
+
+        <!-- Campfire -->
+        <override tag_name="LR_Mulbrydale_Campfire"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">campfire_01.w2ent</match>
+        </override>
+
+        <!-- Forge -->
+        <override tag_name="LR_Mulbrydale_Forge"
+                  brightness="35"
+                  radius="5">
+          <match mode="exact">ob_forge_px.w2ent</match>
+          <offset x="0"
+                  y="0.625774"
+                  z="0.8" />
+        </override>
+
+        <!-- Stove -->
+        <override tag_name="LR_Mulbrydale_CoalStove"
+                  radius="4.5"
+                  attenuation="1">
+          <match mode="exact">coal_small_double_spotlight.w2ent</match>
+          <offset x="0.11421"
+                  y="-0.051122"
+                  z="-0.038401" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
