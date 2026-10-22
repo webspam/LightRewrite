@@ -215,7 +215,6 @@
         <xs:documentation>Light attenuation - how quickly the light fades out with distance.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attributeGroup ref="autoHideAttributes" />
     <xs:attributeGroup ref="minMaxAttributes" />
     <xs:attribute name="use_spotlight_colour"
                   type="xs:boolean"
@@ -518,7 +517,6 @@
     <xs:attribute name="attenuation"
                   type="xs:decimal"
                   use="optional" />
-    <xs:attributeGroup ref="autoHideAttributes" />
     <xs:attributeGroup ref="minMaxAttributes" />
   </xs:complexType>
 
@@ -626,7 +624,6 @@
         <xs:documentation>Range 0-255 (0-2 in practice); 0 is an unrealistic sharp edge, 2 is smooth. Higher values are barely perceptible in-game.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attributeGroup ref="autoHideAttributes" />
     <xs:attributeGroup ref="minMaxAttributes" />
   </xs:complexType>
 
@@ -666,7 +663,7 @@
 
   <xs:attributeGroup name="minMaxAttributes">
     <xs:annotation>
-      <xs:documentation>Min / max limits for brightness, radius, attenuation, auto_hide_distance, and auto_hide_range.</xs:documentation>
+      <xs:documentation>Min / max limits for brightness, radius, and attenuation.</xs:documentation>
       <xs:documentation>Higher-weight overrides always take precedence over min/max from lower weights.</xs:documentation>
     </xs:annotation>
     <xs:attribute name="min_brightness"
@@ -687,35 +684,6 @@
     <xs:attribute name="max_attenuation"
                   type="xs:decimal"
                   use="optional" />
-    <xs:attribute name="min_auto_hide_distance"
-                  type="xs:decimal"
-                  use="optional" />
-    <xs:attribute name="max_auto_hide_distance"
-                  type="xs:decimal"
-                  use="optional" />
-    <xs:attribute name="min_auto_hide_range"
-                  type="xs:decimal"
-                  use="optional" />
-    <xs:attribute name="max_auto_hide_range"
-                  type="xs:decimal"
-                  use="optional" />
-  </xs:attributeGroup>
-
-  <xs:attributeGroup name="autoHideAttributes">
-    <xs:attribute name="auto_hide_distance"
-                  type="xs:decimal"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>The distance from the camera at which the light starts to fade out.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="auto_hide_range"
-                  type="xs:decimal"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>The distance over which the light fades out, starting from `auto_hide_distance`.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
   </xs:attributeGroup>
 
 </xs:schema>
