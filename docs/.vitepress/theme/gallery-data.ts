@@ -77,6 +77,13 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     before: REMASTERED + "kingfisher-ultra-before.jpg",
     after: REMASTERED + "kingfisher-ultra-after.jpg",
   },
+  {
+    id: "novigrad-distance",
+    title: "Novigrad",
+    tag: "Distant fires",
+    before: REMASTERED + "novigrad-distance-before.jpg",
+    after: REMASTERED + "novigrad-distance-after.jpg",
+  },
 ];
 
 export const NEXTGEN_GALLERY: GalleryItem[] = [
