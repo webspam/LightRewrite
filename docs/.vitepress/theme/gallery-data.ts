@@ -15,6 +15,20 @@ const REMASTERED = "https://webspam.github.io/remastered/";
 
 export const REMASTERED_GALLERY: GalleryItem[] = [
   {
+    id: "kaer-trolde-cellar",
+    title: "Kaer Trolde",
+    tag: "Cellar",
+    before: REMASTERED + "kaer-trolde-cellar-before.jpg",
+    after: REMASTERED + "kaer-trolde-cellar-after.jpg",
+  },
+  {
+    id: "npc-torches-oxenfurt",
+    title: "Oxenfurt",
+    tag: "NPC torches",
+    before: REMASTERED + "npc-torches-oxenfurt-before.jpg",
+    after: REMASTERED + "npc-torches-oxenfurt-after.jpg",
+  },
+  {
     id: "vizima-courtyard",
     title: "Vizima castle",
     tag: "Courtyard",
