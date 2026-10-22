@@ -11,6 +11,11 @@
                  mode="startsWith">levels\novigrad\nml_surface\q111_imlerith\</match>
         </matches>
 
+        <!-- Minimum auto hide distance -->
+        <override tag_name="LR_BaldMountain_AutoHideDistance"
+                  min_auto_hide_distance="30">
+        </override>
+
         <!-- Wall torches -->
         <override tag_name="LR_BaldMountain_WallTorch"
                   attenuation="1">

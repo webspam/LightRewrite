@@ -12,6 +12,8 @@
                   brightness="5"
                   radius="4"
                   attenuation="1"
+                  min_auto_hide_distance="100"
+                  min_auto_hide_range="100"
                   rewriter_type="LRT_Candle">
           <any>
             <match>candle_small</match>
@@ -103,6 +105,60 @@
                    fade_range="10"
                    blend_factor="1" />
         </override> -->
+
+        <!-- Auto Hide -->
+
+        <!-- Candelabras & Candle Holders -->
+        <override tag_name="LR_AutoHide_CandleMedium"
+                  min_auto_hide_distance="15">
+          <any>
+            <match>candle_holder</match>
+            <match>gen_rich_candleholder_b</match>
+            <match>candle_large_group_caves</match>
+            <match mode="contains">candelabra</match>
+          </any>
+        </override>
+
+        <!-- Lanterns -->
+        <override tag_name="LR_AutoHide_Lantern"
+                  min_auto_hide_distance="30">
+          <any>
+            <match mode="contains">lantern</match>
+            <match mode="contains">lamp</match>
+          </any>
+        </override>
+
+        <!-- Open fires -->
+        <override tag_name="LR_AutoHide_OpenFire"
+                  min_auto_hide_distance="100">
+          <any>
+            <match>fireplace</match>
+            <match>gen_rich_fireplace</match>
+            <match>coal</match>
+            <match>bonfire</match>
+            <match mode="contains">campfire</match>
+          </any>
+        </override>
+
+        <!-- Chandeliers -->
+        <override tag_name="LR_AutoHide_Chandelier"
+                  min_auto_hide_distance="50">
+          <match mode="contains">chandelier</match>
+        </override>
+
+        <!-- Braziers -->
+        <override tag_name="LR_AutoHide_Brazier"
+                  min_auto_hide_distance="500">
+          <match mode="contains">brazier</match>
+          <spotlight min_auto_hide_distance="500" />
+        </override>
+
+        <!-- Eternal Fire Shrines -->
+        <override tag_name="LR_AutoHide_EternalFire"
+                  min_auto_hide_distance="500">
+          <match>shrine_</match>
+          <spotlight min_auto_hide_distance="500" />
+        </override>
       </overrides>
     </light_rewrite>
   </custom>

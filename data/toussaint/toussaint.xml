@@ -15,7 +15,8 @@
                   label="toussaint_candle"
                   max_brightness="5"
                   min_radius="4.5"
-                  attenuation="1">
+                  attenuation="1"
+                  min_auto_hide_distance="15">
           <any>
             <match>candle_small</match>
             <match>candle_med</match>
