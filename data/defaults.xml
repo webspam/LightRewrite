@@ -12,8 +12,6 @@
                   brightness="5"
                   radius="4"
                   attenuation="1"
-                  min_auto_hide_distance="100"
-                  min_auto_hide_range="100"
                   rewriter_type="LRT_Candle">
           <any>
             <match>candle_small</match>
@@ -105,78 +103,6 @@
                    fade_range="10"
                    blend_factor="1" />
         </override> -->
-
-        <!-- Auto Hide -->
-
-        <!-- Candelabras & Candle Holders -->
-        <override tag_name="LR_AutoHide_CandleMedium"
-                  min_auto_hide_distance="200"
-                  min_auto_hide_range="100">
-          <any>
-            <match>candle_holder</match>
-            <match>gen_rich_candleholder_b</match>
-            <match>candle_large_group_caves</match>
-            <match mode="contains">candelabra</match>
-          </any>
-        </override>
-
-        <!-- Lanterns -->
-        <override tag_name="LR_AutoHide_Lantern"
-                  min_auto_hide_distance="350"
-                  min_auto_hide_range="100">
-          <any>
-            <match mode="contains">lantern</match>
-            <match mode="contains">lamp</match>
-          </any>
-        </override>
-
-        <!-- Torches -->
-        <override tag_name="LR_AutoHide_Torch"
-                  min_auto_hide_distance="750"
-                  min_auto_hide_range="200">
-          <match mode="contains">torch</match>
-        </override>
-
-        <!-- Open fires -->
-        <override tag_name="LR_AutoHide_OpenFire"
-                  min_auto_hide_distance="1000"
-                  min_auto_hide_range="200">
-          <any>
-            <match>fireplace</match>
-            <match>gen_rich_fireplace</match>
-            <match>coal</match>
-            <match>bonfire</match>
-            <match mode="contains">campfire</match>
-          </any>
-        </override>
-
-        <!-- Chandeliers -->
-        <override tag_name="LR_AutoHide_Chandelier"
-                  min_auto_hide_distance="750"
-                  min_auto_hide_range="200">
-          <match mode="contains">chandelier</match>
-        </override>
-
-        <!-- Window Lights -->
-        <override tag_name="LR_AutoHide_WindowLight"
-                  min_auto_hide_distance="750"
-                  min_auto_hide_range="200">
-          <match>window_</match>
-        </override>
-
-        <!-- Braziers -->
-        <override tag_name="LR_AutoHide_Brazier"
-                  min_auto_hide_distance="1000"
-                  min_auto_hide_range="200">
-          <match mode="contains">brazier</match>
-        </override>
-
-        <!-- Eternal Fire Shrines -->
-        <override tag_name="LR_AutoHide_EternalFire"
-                  min_auto_hide_distance="1000"
-                  min_auto_hide_range="200">
-          <match>shrine_</match>
-        </override>
       </overrides>
     </light_rewrite>
   </custom>

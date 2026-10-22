@@ -1,3 +1,18 @@
+// Below classes are already imported by modSharedImports
+
+// import class CLightComponent extends CSpriteComponent {
+//     import var radius : float;
+//     import var brightness : float;
+//     import var attenuation : float;
+//     import var color : Color;
+//     import var allowDistantFade : bool;
+//     import var shadowFadeDistance : float;
+//     import var shadowFadeRange : float;
+//     import var shadowBlendFactor : float;
+// }
+
+// import class CSpotLightComponent extends CLightComponent {}
+
 enum ELightRewriteType {
     LRT_None,
     LRT_Unknown,

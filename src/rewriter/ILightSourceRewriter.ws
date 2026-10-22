@@ -233,12 +233,6 @@ abstract class ILightSourceRewriter {
         if (pamparams.shadowBlendFactor.has) {
             light.shadowBlendFactor = pamparams.shadowBlendFactor.value;
         }
-        if (pamparams.autoHideDistance) {
-            light.autoHideDistance = pamparams.autoHideDistance.Resolve(original.autoHideDistance);
-        }
-        if (pamparams.autoHideRange) {
-            light.autoHideRange = pamparams.autoHideRange.Resolve(original.autoHideRange);
-        }
         if (pamparams.castShadows.has) light.shadowCastingMode = pamparams.castShadows.value;
         if (LR_HasUsageMaskEdit(pamparams.usageMask)) {
             light.LR_SetLightUsageMask(LR_ApplyUsageMaskEdit(

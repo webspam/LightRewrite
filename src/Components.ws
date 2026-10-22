@@ -38,8 +38,6 @@ struct SLightRewriteOriginalValues {
     var shadowFadeDistance: float;
     var shadowFadeRange   : float;
     var shadowBlendFactor : float;
-    var autoHideDistance  : float;
-    var autoHideRange     : float;
     var shadowCastingMode : ELightShadowCastingMode;
     var usageMask         : int;
     var color             : Color;
@@ -63,8 +61,6 @@ public function SaveLightRewriteOriginalValues() {
     lightRewriteOriginalValues.shadowFadeDistance = shadowFadeDistance;
     lightRewriteOriginalValues.shadowFadeRange = shadowFadeRange;
     lightRewriteOriginalValues.shadowBlendFactor = shadowBlendFactor;
-    lightRewriteOriginalValues.autoHideDistance = autoHideDistance;
-    lightRewriteOriginalValues.autoHideRange = autoHideRange;
     lightRewriteOriginalValues.shadowCastingMode = shadowCastingMode;
     lightRewriteOriginalValues.usageMask = LR_GetLightUsageMask();
     lightRewriteOriginalValues.color = color;
@@ -205,8 +201,6 @@ public function RestoreLightRewriteOriginalValues(useEnabled: bool, optional ena
     shadowFadeDistance = lightRewriteOriginalValues.shadowFadeDistance;
     shadowFadeRange = lightRewriteOriginalValues.shadowFadeRange;
     shadowBlendFactor = lightRewriteOriginalValues.shadowBlendFactor;
-    autoHideDistance = lightRewriteOriginalValues.autoHideDistance;
-    autoHideRange = lightRewriteOriginalValues.autoHideRange;
     shadowCastingMode = lightRewriteOriginalValues.shadowCastingMode;
     LR_SetLightUsageMask(lightRewriteOriginalValues.usageMask);
     color = lightRewriteOriginalValues.color;
