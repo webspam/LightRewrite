@@ -36,6 +36,22 @@ function ParseLightRewriteBaseParams(
         'min_attenuation',
         'max_attenuation'
     );
+    params.autoHideDistance = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        node,
+        'auto_hide_distance',
+        'min_auto_hide_distance',
+        'max_auto_hide_distance'
+    );
+    params.autoHideRange = ParseLightRewriteClampedFloat(
+        params,
+        dm,
+        node,
+        'auto_hide_range',
+        'min_auto_hide_range',
+        'max_auto_hide_range'
+    );
 
     shadowsNode = dm.GetCustomDefinitionSubNode(node, 'shadows');
     params.shadowFadeDistance = ParseLightRewriteClampedFloat(
