@@ -14,6 +14,14 @@
           <shadows fade_distance="20"
                    fade_range="15" />
         </override>
+
+        <!-- Abandoned house - cellar -->
+        <override tag_name="LR_Spikeroog_AbandonedHouse_CandleHolderLargeWoodA"
+                  brightness="8.5">
+          <match mode="exact">candle_holder_large_wood_a.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\skellige\spikeroog\udalryk_house\basement_lights.w2l</match>
+        </override>
       </overrides>
 
 
