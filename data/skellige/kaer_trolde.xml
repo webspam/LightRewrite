@@ -52,7 +52,8 @@
         <!-- Round wall brazier -->
         <override tag_name="LR_KaerTrolde_BrazierRoundWall"
                   label="kaer_trolde_brazier_round_wall"
-                  radius="8">
+                  radius="6"
+                  attenuation="0.95">
           <match mode="exact">braziers_wall_round_bounce.w2ent</match>
           <shadows fade_distance="25"
                    fade_range="20" />
