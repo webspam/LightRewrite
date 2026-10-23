@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Imlerith, Bald Mountain -->
+      <overrides profile_name="Default"
+                 weight="9">
+        <matches>
+          <match type="layer">levels\novigrad\nml_surface\q111_imlerith\bg_orgy\</match>
+        </matches>
+
+        <!-- Bonfires x2 -->
+        <override tag_name="LR_Imlerith_Bonfire">
+          <match mode="exact">bonfire_large.w2ent</match>
+          <!-- blockout.w2l -->
+          <offset x="0.416499"
+                  y="-0.006286"
+                  z="9" />
+        </override>
+
+        <!-- Torch near Imlerith -->
+        <override tag_name="LR_Imlerith_Torch"
+                  brightness="50"
+                  radius="6.5">
+          <match mode="exact">torch_wall_metal.w2ent</match>
+          <!-- fx_outside.w2l -->
+          <shadows fade_distance="30"
+                   fade_range="20" />
+          <offset x="-0.3315"
+                  y="0"
+                  z="0.59" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
