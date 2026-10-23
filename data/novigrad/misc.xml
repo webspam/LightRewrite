@@ -26,6 +26,43 @@
                    fade_range="12.5" />
         </override>
 
+        <!-- Misc Raw edits -->
+        <override tag_name="LR_NovigradBrothelDistrict_BigCauldron"
+                  label="edited_stand_mw_cooking_big_cauldron_ap"
+                  brightness="40">
+          <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\communities\novigrad_brothel_district\misc\refugees_men.w2l</match>
+        </override>
+
+        <!-- Spotlight-only lamps -->
+        <override tag_name="LR_HoS_NovigradLaundry_Lamp"
+                  label="edited_lamp_standing_complex_one_light">
+          <match mode="exact">lamp_standing_complex_one_light.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\q602_barn\laundry_house\lights.w2l</match>
+          <spotlight brightness="15"
+                     radius="5"
+                     attenuation="1">
+            <offset x="0"
+                    y="0"
+                    z="-0.18" />
+          </spotlight>
+        </override>
+        <override tag_name="LR_HoS_NovigradWatermill_Lamp"
+                  label="edited_lamp_standing_complex_one_light">
+          <match mode="exact">lamp_standing_complex_one_light.w2ent</match>
+          <match type="layer"
+                 mode="exact">dlc\ep1\levels\novigrad\locations\q602_barn\watermill\lights.w2l</match>
+          <spotlight brightness="15"
+                     radius="5"
+                     attenuation="1"
+                     outerAngle="228.5">
+            <offset x="0"
+                    y="0"
+                    z="-0.17" />
+          </spotlight>
+        </override>
       </overrides>
     </light_rewrite>
   </custom>
