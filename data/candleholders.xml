@@ -27,6 +27,20 @@
                   y="0"
                   z="2.05" />
         </override>
+
+
+        <!-- Candle Holder - Large A -->
+        <override tag_name="LR_Testing_CandleHolderLargeA"
+                  label="testing_candle_holder_large_a"
+                  max_brightness="7.76"
+                  min_radius="4.5"
+                  attenuation="1">
+          <match mode="exact">candle_holder_large_wood_a.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="2.05" />
+        </override>
+
       </overrides>
     </light_rewrite>
   </custom>
