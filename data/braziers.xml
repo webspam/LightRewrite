@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Brazier defaults -->
+      <overrides profile_name="Default"
+                 weight="2">
+        <!-- Floor Square Bounce -->
+        <override tag_name="LR_BraziersFloorSquareBounce"
+                  label="braziers_floor_square_bounce">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <shadows blend_factor="0.66" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
