@@ -2,7 +2,10 @@
 
 @addMethod(CR4Game)
 public function GetLRDebugWarp(): LRDebug_Warp {
-    if (!lrDebugWarp) lrDebugWarp = new LRDebug_Warp in this;
+    if (!lrDebugWarp) {
+        lrDebugWarp = new LRDebug_Warp in this;
+        lrDebugWarp.Init();
+    }
     return lrDebugWarp;
 }
 

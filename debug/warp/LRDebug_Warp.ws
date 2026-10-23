@@ -8,6 +8,27 @@ statemachine class LRDebug_Warp {
     private var entityPosition   : Vector;
     private var worldPath        : string;
 
+    public function Init() {
+        lookPointResolver = new LRDebug_LookPointResolver in this;
+        finder = new LRDebug_StandSpotFinder in this;
+
+        theInput.RegisterListener(this, 'OnWarpToTarget', 'LRDebug_WarpToTarget');
+    }
+
+    event OnWarpToTarget(action: SInputAction) {
+        var target: CGameplayEntity;
+
+        if (!thePlayer.lrDebugLabels || !theInput.lr.IsNormalKeydown(action)) {
+            return false;
+        }
+
+        target = thePlayer.lrDebugTargeting.GetTarget();
+        if (!target) return true;
+
+        Begin(target.GetWorldPosition(), "");
+        return true;
+    }
+
     public function Begin(entityPosition: Vector, world: string) {
         worldPath = ResolveWorldPath(world);
         if (worldPath == "") {
@@ -41,17 +62,15 @@ statemachine class LRDebug_Warp {
     }
 
     public function NotifyNoStandSpot() {
-        var formattedPosition: string = VecToStringPrec(entityPosition, 2);
-
-        Notify("No stand spot found near " + formattedPosition, BRIEF_NOTIFY_DURATION_MS);
+        Notify(
+            "No stand spot found near " + VecToStringPrec(entityPosition, 2),
+            BRIEF_NOTIFY_DURATION_MS
+        );
     }
 
     public function TryArrive(): bool {
         var lookPoint, stand: Vector;
         var facing: EulerAngles;
-
-        if (!lookPointResolver) lookPointResolver = new LRDebug_LookPointResolver in this;
-        if (!finder) finder = new LRDebug_StandSpotFinder in this;
 
         lookPoint = lookPointResolver.Resolve(entityPosition);
         if (!finder.Find(lookPoint, stand, facing)) {
@@ -90,21 +109,18 @@ statemachine class LRDebug_Warp {
 
     private function KnownWorlds(): string {
         var pins: array<SAreaMapPinInfo> = theGame.GetCommonMapManager().GetAreaMapPins();
-        var names: array<string>;
-        var known: string;
+        var seen: map<string, bool>;
+        var known, directory: string;
         var i, count: int;
 
         count = pins.Size();
         for (i = 0; i < count; i += 1) {
-            if (!names.Contains(DirectoryStem(pins[i].worldPath))) {
-                names.PushBack(DirectoryStem(pins[i].worldPath));
-            }
-        }
+            directory = DirectoryStem(pins[i].worldPath);
+            if (seen.Contains(directory)) continue;
 
-        count = names.Size();
-        for (i = 0; i < count; i += 1) {
-            if (i > 0) known += ", ";
-            known += names[i];
+            seen[directory] = true;
+            if (known != "") known += ", ";
+            known += directory;
         }
         return known;
     }
