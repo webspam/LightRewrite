@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Nithral / Avallac'h Hideout -->
+      <overrides profile_name="Default"
+                 weight="9">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\nml_underground\salt_mine\final_chamber\lights_saveable.w2l</match>
+        </matches>
+
+        <!-- Brazier (Eternal Fire) -->
+        <override tag_name="LR_AvallachHideout_BrazierEternalFire"
+                  brightness="85">
+          <match mode="exact">shrine_of_ethernal_fire_altar_spot.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="2.12" />
+          <spotlight brightness="85" />
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_AvallachHideout_TorchOnAStick"
+                  brightness="22.5"
+                  radius="5.5">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <lum interior="false"
+               exterior="false" />
+          <spotlight>
+            <lum exclude_scene="true"
+                 env_probe="false" />
+          </spotlight>
+        </override>
+
+        <!-- Four Torches on Pillars -->
+        <override tag_name="LR_Nithral_Torch"
+                  brightness="28">
+          <match mode="exact">torch_wall_metal.w2ent</match>
+        </override>
+
+        <!-- Torch lying on the ground -->
+        <override tag_name="LR_AvallachHideout_HandTorch"
+                  brightness="25">
+          <match mode="exact">torch_hand.w2ent</match>
+        </override>
+
+        <!-- Below bookshelves in the hideout -->
+        <override tag_name="LR_AvallachHideout_BrazierFloorSquare"
+                  brightness="45">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <spotlight brightness="35" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
