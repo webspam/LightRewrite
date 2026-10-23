@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <!-- Ultra -->
+    <light_rewrite>
+      <!-- Kingfisher -->
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_Ultra_Kingfisher_CandleGroupC">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="0"
+                 brightness="2"
+                 radius="2" />
+          <light index="1"
+                 brightness="2"
+                 radius="6.75" />
+          <light index="2"
+                 brightness="2"
+                 radius="2" />
+        </override>
+
+        <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy"
+                  brightness="1.99"
+                  radius="5.51">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_Ultra_Kingfisher_LargeCandleHolderB"
+                  brightness="3"
+                  radius="6.5">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+        </override>
+
+        <!-- Stage -->
+        <override tag_name="LR_Ultra_Kingfisher_CandleGroupD">
+          <any>
+            <match mode="exact">candle_small_group_melted_d.w2ent</match>
+            <match mode="exact">candle_small_group_melted_b.w2ent</match>
+          </any>
+          <light index="0"
+                 brightness="2"
+                 radius="5" />
+          <light index="1"
+                 brightness="2"
+                 radius="1.5" />
+        </override>
+
+        <override tag_name="LR_Ultra_Kingfisher_Candelabra"
+                  brightness="10.23">
+          <any>
+            <match mode="exact">candelabra_complex.w2ent</match>
+            <match mode="exact">candelabra.w2ent</match>
+          </any>
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_Ultra_Kingfisher_CandelabraStanding"
+                  brightness="9.52">
+          <match mode="exact">candelabra_standing.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="1.96" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy2"
+                  brightness="2"
+                  radius="5.5">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\tables_to_be_hidden_q309\lights.w2l</match>
+        </override>
+      </overrides>
+
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <override tag_name="LR_Ultra_Kingfisher_ChandelierSmallNoShadow"
+                  brightness="50"
+                  radius="5">
+          <match mode="exact">chandelier_small_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\main_square\lights_exterior.w2l</match>
+          <offset x="0"
+                  y="0"
+                  z="0.25" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

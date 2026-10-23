@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Ultra - Dandelion's -->
+      <!-- <snip> -->
+
+      <!-- Boudoir -->
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <override tag_name="LR_Ultra_ChameleonBoudoir_Chandelier"
+                  radius="6.25">
+          <match mode="exact">chandelier_small.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\dandelion_brothel\rich\interior\lights.w2l</match>
+        </override>
+      </overrides>
+
+    </light_rewrite>
+  </custom>
+</redxml>

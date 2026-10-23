@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Bigger light radii, better shadows -->
+      <overrides profile_name="Ultra"
+                 weight="0">
+
+        <inherits>Default</inherits>
+
+        <!-- Candles -->
+        <override tag_name="LR_Candle"
+                  label="candle"
+                  brightness="5"
+                  min_radius="5"
+                  attenuation="1"
+                  rewriter_type="LRT_Candle">
+          <any>
+            <match>candle_small</match>
+            <match>candle_med</match>
+            <match>candle_tall</match>
+            <match>candleholder_small</match>
+            <match>candleholder_med</match>
+            <match>candleholder_fancy</match>
+            <match>candlestick_small</match>
+            <match>baron_candle</match>
+            <match>candle_jar</match>
+            <match>candle_shelf</match>
+          </any>
+          <shadows min_fade_distance="12.5"
+                   min_fade_range="10"
+                   blend_factor="0.95" />
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.12" />
+        </override>
+
+        <!-- Torches -->
+        <!-- <override tag_name="LR_Torch"
+                  label="torch"
+                  brightness="30"
+                  radius="10"
+                  attenuation="1.0">
+          <match>torch</match>
+          <shadows fade_distance="15"
+                   fade_range="7.5"
+                   blend_factor="1" />
+        </override> -->
+
+        <!-- Braziers -->
+        <!-- <override tag_name="LR_Brazier"
+                  label="brazier"
+                  brightness="40"
+                  radius="10"
+                  attenuation="1.0">
+          <match>brazier</match>
+          <shadows fade_distance="20"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override> -->
+
+        <!-- Candelabras -->
+        <!-- <override tag_name="LR_Candelabra"
+                  label="candelabra"
+                  brightness="8"
+                  radius="10"
+                  attenuation="1.0">
+          <any>
+            <match>gen_rich_candleholder_b</match>
+            <match>candelabra</match>
+          </any>
+          <shadows fade_distance="15"
+                   fade_range="7.5"
+                   blend_factor="1" />
+        </override> -->
+
+        <!-- Campfires -->
+        <!-- <override tag_name="LR_Campfire"
+                  label="campfire"
+                  brightness="50"
+                  radius="12"
+                  attenuation="0.85">
+          <match>campfire</match>
+          <shadows fade_distance="20"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override> -->
+
+        <!-- Chandeliers -->
+        <!-- <override tag_name="LR_Chandelier"
+                  label="chandelier"
+                  brightness="12"
+                  radius="18"
+                  attenuation="1.0">
+          <match>chandelier</match>
+          <shadows fade_distance="20"
+                   fade_range="10"
+                   blend_factor="1" />
+        </override> -->
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
