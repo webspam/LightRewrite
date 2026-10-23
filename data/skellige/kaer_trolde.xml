@@ -68,6 +68,13 @@
           </spotlight>
         </override>
 
+        <override tag_name="LR_KaerTrolde_BrazierFloorSquare"
+                  max_brightness="45">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <spotlight max_brightness="40" />
+        </override>
+
+
         <!-- Wall torch -->
         <override tag_name="LR_KaerTrolde_WallTorch"
                   label="kaer_trolde_wall_torch"
