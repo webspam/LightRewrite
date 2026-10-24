@@ -13,6 +13,9 @@ class CLightRewriteSettings {
     // Label key constants (must match XML Var id values)
     private const var CURRENT_PROFILE_LABEL   : string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
     private const var NONE_PROFILE            : name;    default NONE_PROFILE = 'None';
+    private const var DEFAULT_PROFILE         : name;    default DEFAULT_PROFILE = 'Default';
+    private const var REALISTIC_PROFILE       : name;    default REALISTIC_PROFILE = 'Realistic';
+    private const var ULTRA_PROFILE           : name;    default ULTRA_PROFILE = 'Ultra';
     // Setting name constants (must match XML Var id values)
     private const var ENABLED                 : name;    default ENABLED = 'Enabled';
     private const var INIT_VERSION            : name;    default INIT_VERSION = 'InitVersion';
@@ -87,6 +90,11 @@ class CLightRewriteSettings {
         profiles.Build(overrideGroups);
 
         profileOptions = profiles.GetNames();
+        // Workaround for XML profile ordering
+        ArraySortNames(profileOptions);
+        if (profileOptions.Remove(ULTRA_PROFILE)) profileOptions.Insert(0, ULTRA_PROFILE);
+        if (profileOptions.Remove(REALISTIC_PROFILE)) profileOptions.Insert(0, REALISTIC_PROFILE);
+        if (profileOptions.Remove(DEFAULT_PROFILE)) profileOptions.Insert(0, DEFAULT_PROFILE);
         profileOptions.Insert(0, NONE_PROFILE);
 
         playerTorch = SLightRewriteTorchLight(
