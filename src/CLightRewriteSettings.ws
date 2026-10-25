@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 17;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 18;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -37,6 +37,9 @@ class CLightRewriteSettings {
     private const var BRIGHTNESS_BOOST        : name;    default BRIGHTNESS_BOOST = 'BrightnessBoost';
 
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
+
+    private const var STATE_GROUP         : string;  default STATE_GROUP = "LightRewrite_State";
+    private const var CURRENT_PROFILE_NAME: string;  default CURRENT_PROFILE_NAME = "CurrentProfileName";
 
     // Internal group IDs resolved at init time
     private var generalGroupId : int;
@@ -149,6 +152,8 @@ class CLightRewriteSettings {
 
     // If mod config has never been initialised, set the default values and save them.
     public function EnsureGameConfigIsInitialised() {
+        var currentValue: string;
+
         var initVersion: int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
         var isFreshInstall: bool = initVersion == 0;
 
@@ -159,7 +164,7 @@ class CLightRewriteSettings {
         // Never initialised - write defaults for the current settings.
         if (initVersion == 0) {
             gameConfig.SetVarValue(GENERAL_GROUP, ENABLED, isEnabled);
-            gameConfig.SetVarValue(GENERAL_GROUP, CURRENT_PROFILE, FIRST_PROFILE_INDEX);
+            SaveProfile(FIRST_PROFILE_INDEX);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_MODE, spacingMode);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_COUNT, spacingCount);
             gameConfig.SetVarValue(ADVANCED_GROUP, SPACING_BUDGET, spacingBudget);
@@ -203,6 +208,12 @@ class CLightRewriteSettings {
             gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, brightnessBoostPercent);
         }
 
+        // v18: Save profiles by name
+        if (initVersion < 18 && !isFreshInstall) {
+            currentValue = gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PROFILE);
+            SaveProfile(StringToInt(currentValue, 0));
+        }
+
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
         theGame.SaveUserSettings();
     }
@@ -237,16 +248,37 @@ class CLightRewriteSettings {
         return optionName == FOG_REMOVAL || optionName == FOG_FADE_TIME;
     }
 
+    private function GetProfile(index: int): name {
+        return index >= 0 && index < profileOptions.Size()
+            ? profileOptions[index]
+            : NONE_PROFILE;
+    }
+
+    private function SaveProfile(index: int) {
+        gameConfig.SetRawConfigValueByStr(STATE_GROUP, CURRENT_PROFILE_NAME, GetProfile(index));
+    }
+
+    private function ResolveSavedProfile(): name {
+        var savedName: string = gameConfig.GetRawConfigValueByStr(
+            STATE_GROUP,
+            CURRENT_PROFILE_NAME
+        );
+        var i, count: int;
+
+        count = profileOptions.Size();
+        for (i = 0; i < count; i += 1) {
+            if (NameToString(profileOptions[i]) == savedName) return profileOptions[i];
+        }
+
+        LogLightRewrite("Saved profile '" + savedName + "' not found");
+        return GetProfile(FIRST_PROFILE_INDEX);
+    }
+
     public function ReadGameConfig() {
         isEnabled = gameConfig.GetVarValue(GENERAL_GROUP, ENABLED);
 
-        profileIndex = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PROFILE), 0);
-        if (profileIndex >= 0 && profileIndex < profileOptions.Size()) {
-            currentProfile = profileOptions[profileIndex];
-        }
-        else {
-            currentProfile = NONE_PROFILE;
-        }
+        currentProfile = ResolveSavedProfile();
+        profileIndex = profileOptions.FindFirst(currentProfile);
 
         spacingMode = StringToInt(
             gameConfig.GetVarValue(ADVANCED_GROUP, SPACING_MODE),
@@ -301,7 +333,11 @@ class CLightRewriteSettings {
 
         if (!IsMyModSettingsGroup(groupId)) return;
 
-        if (optionName == CURRENT_PROFILE) ResetBrightnessBoost();
+        // Save the profile name, then discard the option value
+        if (optionName == CURRENT_PROFILE) {
+            SaveProfile(StringToInt(optionValue, 0));
+            ResetBrightnessBoost();
+        }
 
         ReadGameConfig();
 
@@ -393,7 +429,8 @@ class CLightRewriteSettings {
             CURRENT_PROFILE,
             GetLocStringByKeyExt(CURRENT_PROFILE_LABEL),
             GENERAL_GROUP,
-            optionTexts
+            optionTexts,
+            profileIndex
         );
     }
 

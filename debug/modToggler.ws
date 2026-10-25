@@ -50,7 +50,7 @@ public function OnToggleTestingProfile(action: SInputAction): bool {
 
     LogLightRewrite("Switching profile: " + currentProfile + " -> " + profileOptions[targetIndex]);
 
-    gameConfig.SetVarValue(GENERAL_GROUP, CURRENT_PROFILE, targetIndex);
+    SaveProfile(targetIndex);
     theGame.SaveUserSettings();
     ReadGameConfig();
     theGame.lightRewrite.ChangeProfile();
