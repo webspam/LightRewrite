@@ -139,7 +139,7 @@ class LRDebug_Clock {
 
     public function Disable() {
         if (scrubbing) {
-            thePlayer.EnableManualCameraControl(true, theInput.lr.CAMERA_LOCK_SOURCE);
+            theInput.lr.ReleaseMouseMovement(this);
             scrubbing = false;
         }
         HideClockFace();

@@ -18,6 +18,10 @@ class LRDebug_Input {
     public var ADJUST_AXIS_SENSITIVITY : float;  default ADJUST_AXIS_SENSITIVITY = 0.15;
     public var CLOCK_SCRUB_SENSITIVITY : float;  default CLOCK_SCRUB_SENSITIVITY = 0.05;
 
+    private var cameraLocked        : bool;
+    private var cameraRotationPinned: bool;
+    private var pinnedCameraRotation: EulerAngles;
+
     public function Init() {
         theInput.RegisterListener(this, 'OnModifierKey', 'LRDebug_ModifierKey');
     }
@@ -44,6 +48,8 @@ class LRDebug_Input {
         theInput.RegisterListener(listener, handlerX, 'GI_MouseDampX');
         theInput.RegisterListener(listener, handlerY, 'GI_MouseDampY');
 
+        cameraLocked = true;
+        cameraRotationPinned = false;
         thePlayer.EnableManualCameraControl(false, CAMERA_LOCK_SOURCE);
     }
 
@@ -51,7 +57,20 @@ class LRDebug_Input {
         theInput.UnregisterListener(listener, 'GI_MouseDampX');
         theInput.UnregisterListener(listener, 'GI_MouseDampY');
 
+        cameraLocked = false;
         thePlayer.EnableManualCameraControl(true, CAMERA_LOCK_SOURCE);
+    }
+
+    public function PinCameraRotation(out moveData: SCameraMovementData) {
+        if (!cameraLocked) return;
+
+        if (!cameraRotationPinned) {
+            pinnedCameraRotation = moveData.pivotRotationValue;
+            cameraRotationPinned = true;
+        }
+
+        moveData.pivotRotationValue = pinnedCameraRotation;
+        moveData.pivotRotationVelocity = EulerAngles(0.0, 0.0, 0.0);
     }
 
     event OnModifierKey(action: SInputAction) {
@@ -62,4 +81,14 @@ class LRDebug_Input {
             thePlayer.lrDebugLabelManager.RegenerateNearbyOneliners();
         }
     }
+}
+
+@wrapMethod(CR4Player)
+function OnGameCameraPostTick(out moveData: SCameraMovementData, dt: float) {
+    var handled: bool;
+
+    handled = wrappedMethod(moveData, dt);
+    theInput.lr.PinCameraRotation(moveData);
+
+    return handled;
 }
