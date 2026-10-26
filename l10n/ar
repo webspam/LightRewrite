@@ -98,15 +98,15 @@
 2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite ﻣﻔﻌّﻞ
 2122144100||LightRewrite_MenuDescOff_Enabled|ﺟﻤﻴﻊ ﻣﻴﺰﺍﺕ Light Rewrite ﻣﻌﻄّﻠﺔ ﺣﺎﻟﻴًﺎ
 2122144101||LightRewrite_MenuDesc_Enabled|ﻳﺒﺪّﻝ ﺟﻤﻴﻊ ﺗﻌﺪﻳﻼﺕ ﺍﻹﺿﺎﺀﺓ ﻓﻲ Light Rewrite
-2122144102||LightRewrite_MenuDesc_CurrentProfile|ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ ﻟﻺﺿﺎﺀﺓ ﺍﻟﻤﺮﺍﺩ ﺍﺳﺘﺨﺪﺍﻣﻪ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: ﺍﻻﻓﺘﺮﺍﺿﻲ
+2122144102||LightRewrite_MenuDesc_CurrentProfile|<p>ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ ﻟﻺﺿﺎﺀﺓ ﺍﻟﻤﺮﺍﺩ ﺍﺳﺘﺨﺪﺍﻣﻪ.  <font color="#d06010">ﺍﻟﻤُﻮﺻﻰ ﺑﻪ:</font> ﺍﻻﻓﺘﺮﺍﺿﻲ</p><br><p><font color="#6359be">Realistic:</font> ﻗﻴﺪ ﺍﻟﺘﻄﻮﻳﺮ، ﻟﺘﺘﺒﻊ ﺍﻟﻤﺴﺎﺭ ﻓﻘﻂ. ﻳﻘﻠﻞ ﺳﻄﻮﻉ ﻣﻌﻈﻢ ﺍﻟﺸﻤﻮﻉ.</p><p><font color="#6359be">Ultra:</font> ﻟﻤﻦ ﻳﻤﻠﻜﻮﻥ ﻋﺘﺎﺩًﺍ ﻋﺎﻟﻲ ﺍﻷﺩﺍﺀ ﻭﻓﺎﺋﻀًﺎ ﻓﻲ ﺍﻹﻃﺎﺭﺍﺕ.</p>
 2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|ﻳﺘﺠﺎﻭﺯ ﺇﻋﺪﺍﺩﺍﺕ ﺍﻹﺿﺎﺀﺓ ﻟﺸﻌﻠﺔ ﻭﻓﺎﻧﻮﺱ ﺍﻟﻼﻋﺐ
-2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: ﻗﺮﻳﺐ ﻣﻦ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ
-2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 8
-2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 0.9    ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 0.6
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 25<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> ﻗﺮﻳﺐ ﻣﻦ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 25<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 0.9<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 0.6
 2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|ﻳﺘﺠﺎﻭﺯ ﺿﻮﺀ ﺟﻤﻴﻊ ﺷﻌﻼﺕ ﺍﻟﺸﺨﺼﻴﺎﺕ ﻏﻴﺮ ﺍﻟﻼﻋﺒﺔ
-2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 25     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 30-40
-2122144109||LightRewrite_MenuDesc_NpcTorchRadius|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 6.5     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: 5-6
-2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ: 0.9     ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ: ~0.6
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 25<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 6.5<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 0.9<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> ~0.6
 2122144111||LightRewrite_MenuDesc_FogRemoval|ﻣﻘﺪﺍﺭ ﺍﻟﻀﺒﺎﺏ ﺍﻟﺬﻱ ﺳﺘﺘﻢ ﺇﺯﺍﻟﺘﻪ: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|ﺍﻟﻮﻗﺖ ﺑﺎﻟﺜﻮﺍﻧﻲ ﺍﻟﺬﻱ ﺗﺘﻐﻴﺮ ﻓﻴﻪ ﺇﺯﺍﻟﺔ ﺍﻟﻀﺒﺎﺏ، ﺑﻌﺪ ﺩﺧﻮﻝ/ﻣﻐﺎﺩﺭﺓ ﻣﻜﺎﻥ ﺩﺍﺧﻠﻲ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: 1-3
 2122144113||LightRewrite_Preset_Default|ﺍﻻﻓﺘﺮﺍﺿﻲ

@@ -30,9 +30,25 @@ private var lightRewriteSettings: CLightRewriteSettings;
 @addField(CR4IngameMenu)
 private var lightRewriteLastSubmenuId: string;
 
+// showBardsBalladTooltip: gameplay/gui_new/actionscript/red/game/witcher3/menus/mainmenu/IngameMenu.as:2926
+@addField(CR4IngameMenu)
+private var lightRewriteShowTooltip: CScriptedFlashFunction;
+
 @wrapMethod(CR4IngameMenu)
 function OnConfigUI() {
     wrappedMethod();
+
+    lightRewriteShowTooltip = m_flashModule.GetMemberFlashFunction(
+        "showBardsBalladTooltip"
+    );
+    m_flashModule.GetChildFlashSprite("mcOptionListModule").GetChildFlashSprite(
+        "tooltip"
+    ).GetMemberFlashObject(
+        "textField"
+    ).SetMemberFlashString(
+        "autoSize",
+        "left"
+    );
 
     lightRewriteSettings = theGame.GetLightRewriteSettings();
     lightRewriteSettings.EnsureGameConfigIsInitialised();
@@ -62,6 +78,9 @@ function OnOptionValueChanged(groupId: int, optionName: name, optionValue: strin
     wrappedReturnValue = wrappedMethod(groupId, optionName, optionValue);
 
     lightRewriteSettings.OptionValueChanged(groupId, optionName, optionValue);
+    if (lightRewriteSettings.IsMyModSettingsGroup(groupId)) {
+        LR_ShowOptionDescription(optionName);
+    }
 
     return wrappedReturnValue;
 }
@@ -71,6 +90,8 @@ function OnOptionValueChanged(groupId: int, optionName: name, optionValue: strin
 function OnOptionPanelNavigateBack() {
     if (lightRewriteSettings.IsLightRewriteSubmenu(lightRewriteLastSubmenuId)) {
         lightRewriteSettings.ApplyPendingChanges();
+        UpdateBardsBalladTooltipText();
+        lightRewriteShowTooltip.InvokeSelfOneArg(FlashArgBool(false));
     }
     lightRewriteLastSubmenuId = "";
     return wrappedMethod();
