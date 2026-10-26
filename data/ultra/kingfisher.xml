@@ -25,8 +25,8 @@
         </override>
 
         <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy"
-                  brightness="1.99"
-                  radius="5.51">
+                  brightness="2"
+                  radius="5.5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
