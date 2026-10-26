@@ -30,5 +30,6 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         ApplySpotOverrides();
 
         ApplyForceCastShadows();
+        ApplyDefaultState();
     }
 }

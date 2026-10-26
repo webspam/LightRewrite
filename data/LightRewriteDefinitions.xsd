@@ -187,6 +187,13 @@
         <xs:documentation>Whether this light source type should be rewritten. Default: `true`</xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="default_state"
+                  type="defaultStateEnum"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>When set, rewriting this light will force the light on/off (unless the player or another script changes its state).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="rewriter_type"
                   type="rewriterTypeEnum"
                   use="optional">
@@ -351,6 +358,13 @@
       <xs:enumeration value="LRT_None" />
       <xs:enumeration value="LRT_Candle" />
       <xs:enumeration value="LRT_Spotlight" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="defaultStateEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="on" />
+      <xs:enumeration value="off" />
     </xs:restriction>
   </xs:simpleType>
 

@@ -29,6 +29,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
     // Force shadow casting on drawable (mesh) components - for noshadow entities
     public var forceCastShadows: SLightRewriteOptionalBool;
 
+    public var defaultState: SLightRewriteOptionalBool;
+
     // Spotlight-specific override - NULL if no <spotlight> element was present
     public var spotlight: CLightRewriteSpotlightParams;
 
@@ -126,6 +128,7 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         if (useSpotlightColor.has) target.useSpotlightColor = useSpotlightColor;
         if (forceSingleLight.has) target.forceSingleLight = forceSingleLight;
         if (forceCastShadows.has) target.forceCastShadows = forceCastShadows;
+        if (defaultState.has) target.defaultState = defaultState;
         if (spotlight) {
             if (!target.spotlight) target.spotlight = new CLightRewriteSpotlightParams in target;
             spotlight.ApplySpotlightTo(target.spotlight);

@@ -13,6 +13,7 @@ class CSpotlightLightRewriter extends ILightSourceRewriter {
     public function RewriteLight() {
         RewriteSpotlights();
         ApplyForceCastShadows();
+        ApplyDefaultState();
     }
 
     private function RewriteSpotlights() {

@@ -108,6 +108,10 @@ function LoadLightRewriteOverrideGroup(
             override.forceCastShadows.has = true;
             override.forceCastShadows.value = (strVal == "true");
         }
+        if (dm.GetCustomNodeAttributeValueString(entryNode, 'default_state', strVal)) {
+            override.defaultState.has = true;
+            override.defaultState.value = (strVal == "on");
+        }
 
         ParseLightRewriteMatchRules(dm, entryNode, override.condition, true);
 
