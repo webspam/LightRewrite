@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Witch Hunters' Headquarters -->
+       <!-- TODO: Raw edits, requires clean up -->
+      <overrides profile_name="Default" weight="20">
+        <matches>
+          <match type="layer" mode="exact">levels\novigrad\novigrad\q303_witch_hunters_outpost\witch_huntershq_whole\lights_interior.w2l</match>
+        </matches>
+        <override tag_name="LR_mFmSS60T_city_bouncelight_fire">
+          <match mode="exact">city_bouncelight_fire.w2ent</match>
+          <lum exclude_scene="true" />
+        </override>
+
+        <override tag_name="LR_mFmSS60T_candle_small_group_melted_b_complex" brightness="5.12">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_mFmSS60T_torch_wall_metal_bounce" brightness="15" radius="4">
+          <match mode="exact">torch_wall_metal_bounce.w2ent</match>
+        </override>
+
+        <override tag_name="LR_mFmSS60T_candleholder_small_melted_fake_shadow_complex">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_mFmSS60T_candle_holder_large_wood_b_complex" brightness="7.76" radius="4" attenuation="1">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+        </override>
+
+        <override tag_name="LR_mFmSS60T_candle_small_group_melted_c">
+          <match mode="exact">candle_small_group_melted_c.w2ent</match>
+          <fire_fx_offset x="0" y="0" z="0.18" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
