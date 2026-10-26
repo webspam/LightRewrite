@@ -105,6 +105,7 @@ abstract class ILightSourceRewriter {
             'CGameplayLightComponent'
         );
         if (interactionComponent) {
+            interactionComponent.RestoreLightRewriteOriginalValues();
             useEntityState = true;
             entityLightState = interactionComponent.IsLightOn();
         }
@@ -431,6 +432,26 @@ abstract class ILightSourceRewriter {
             // No spotlight, and we're not overriding the colour, so use the original colour.
             pointLight.color = pointLight.lightRewriteOriginalValues.color;
         }
+    }
+
+    protected function ApplyDefaultState() {
+        var gameplayLight: CGameplayLightComponent;
+
+        var p: CLightRewriteSourceParams = GetEffectiveParams();
+
+        if (!p.defaultState.has) return;
+
+        gameplayLight = (CGameplayLightComponent)parentEntity.GetComponentByClassName(
+            'CGameplayLightComponent'
+        );
+        if (!gameplayLight) return;
+        if (gameplayLight.lightRewriteOriginalValues.isPlayerSet) return;
+
+        gameplayLight.SaveLightRewriteOriginalValues();
+        if (gameplayLight.IsLightOn() == p.defaultState.value) return;
+
+        gameplayLight.SetLight(p.defaultState.value);
+        gameplayLight.lightRewriteOriginalValues.isPlayerSet = false;
     }
 
     /** Enables shadow casting on all drawable (mesh) components - for noshadow entities */

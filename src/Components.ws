@@ -25,6 +25,42 @@ public function RestoreLightRewriteOriginalValues() {
     SetCastingShadows(lightRewriteOriginalValues.castShadows);
 }
 
+struct SLightRewriteGameplayLightState {
+    var hasBeenSaved: bool;
+    var isLightOn   : bool;
+    var isPlayerSet : bool;
+}
+
+@addField(CGameplayLightComponent) public var lightRewriteOriginalValues: SLightRewriteGameplayLightState;
+
+// Keep the intended light state after player turns a light on/off manually
+@wrapMethod(CGameplayLightComponent)
+function SetLight(toggle: bool) {
+    wrappedMethod(toggle);
+    lightRewriteOriginalValues.isPlayerSet = true;
+}
+
+@addMethod(CGameplayLightComponent)
+public function SaveLightRewriteOriginalValues() {
+    if (lightRewriteOriginalValues.hasBeenSaved) return;
+
+    lightRewriteOriginalValues.hasBeenSaved = true;
+    lightRewriteOriginalValues.isLightOn = IsLightOn();
+}
+
+@addMethod(CGameplayLightComponent)
+public function RestoreLightRewriteOriginalValues() {
+    if (!lightRewriteOriginalValues.hasBeenSaved) return;
+
+    lightRewriteOriginalValues.hasBeenSaved = false;
+
+    if (lightRewriteOriginalValues.isPlayerSet) return;
+    if (IsLightOn() == lightRewriteOriginalValues.isLightOn) return;
+
+    SetLight(lightRewriteOriginalValues.isLightOn);
+    lightRewriteOriginalValues.isPlayerSet = false;
+}
+
 // Stores the original values of a light component before it is rewritten.
 struct SLightRewriteOriginalValues {
     var hasBeenSaved: bool;

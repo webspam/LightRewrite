@@ -8,8 +8,7 @@
       <overrides profile_name="Ultra"
                  weight="20">
         <matches>
-          <match type="layer"
-                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\lights.w2l</match>
+          <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
         </matches>
         <override tag_name="LR_Ultra_Kingfisher_CandleGroupC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
@@ -25,8 +24,9 @@
         </override>
 
         <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy"
-                  brightness="1.99"
-                  radius="5.51">
+                  brightness="2"
+                  radius="5.5"
+                  default_state="on">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
@@ -67,17 +67,6 @@
           <offset x="0"
                   y="0"
                   z="1.96" />
-        </override>
-      </overrides>
-
-      <overrides profile_name="Ultra"
-                 weight="20">
-        <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy2"
-                  brightness="2"
-                  radius="5.5">
-          <match mode="exact">candleholder_fancy_complex.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\tables_to_be_hidden_q309\lights.w2l</match>
         </override>
       </overrides>
 

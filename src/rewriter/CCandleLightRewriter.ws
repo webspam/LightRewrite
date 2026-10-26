@@ -85,6 +85,7 @@ class CCandleLightRewriter extends ILightSourceRewriter {
         ApplySpotOverrides(count > 0 && !p.spotlight);
 
         ApplyForceCastShadows();
+        ApplyDefaultState();
     }
 
     /*
