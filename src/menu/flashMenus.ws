@@ -20,12 +20,12 @@ function LR_ReplaceFlashMenuOptions(
     optionId: name,
     optionLabel: string,
     groupId: name,
-    optionTexts: array<string>
+    optionTexts: array<string>,
+    selectedIndex: int
 ) {
     var groupIndex: int;
     var newObject, existingObject, parentObject: CScriptedFlashObject;
     var flashArray, options: CScriptedFlashArray;
-    var currentValue: string;
     var i, count: int;
 
     var gameConfig: CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
@@ -42,8 +42,6 @@ function LR_ReplaceFlashMenuOptions(
         LogLightRewrite("ReplaceFlashMenuOptions: group " + groupId + " not found");
         return;
     }
-
-    currentValue = gameConfig.GetVarValue(groupId, optionId);
 
     // Remove the existing menu entry
     existingObject = flash.CreateTempFlashObject();
@@ -67,8 +65,8 @@ function LR_ReplaceFlashMenuOptions(
     newObject.SetMemberFlashString("label", optionLabel);
     newObject.SetMemberFlashUInt("type", IGMActionType_List);
     newObject.SetMemberFlashUInt("tag", NameToFlashUInt(optionId));
-    newObject.SetMemberFlashString("current", currentValue);
-    newObject.SetMemberFlashString("startingValue", currentValue);
+    newObject.SetMemberFlashString("current", selectedIndex);
+    newObject.SetMemberFlashString("startingValue", selectedIndex);
     newObject.SetMemberFlashInt("groupID", groupIndex);
     newObject.SetMemberFlashBool("checkHardwareCursor", false);
     newObject.SetMemberFlashBool("streamable", false);
