@@ -98,15 +98,15 @@
 2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite увімкнено
 2122144100||LightRewrite_MenuDescOff_Enabled|Усі функції Light Rewrite наразі вимкнено
 2122144101||LightRewrite_MenuDesc_Enabled|Перемикає всі зміни освітлення від Light Rewrite
-2122144102||LightRewrite_MenuDesc_CurrentProfile|Пресет освітлення для використання.  Рекомендовано: За замовчуванням
+2122144102||LightRewrite_MenuDesc_CurrentProfile|<p>Пресет освітлення для використання.  <font color="#d06010">Рекомендовано:</font> За замовчуванням</p><br><p><font color="#6359be">Realistic:</font> У розробці, лише трасування шляху. Знижує яскравість більшості свічок.</p><p><font color="#6359be">Ultra:</font> Для тих, хто має потужне обладнання та запас FPS.</p>
 2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Перевизначає налаштування світла смолоскипа та ліхтаря гравця
-2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Стандарт моду: 25     Стандарт гри: майже максимум
-2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Стандарт моду: 25     Стандарт гри: 8
-2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Стандарт моду: 0.9    Стандарт гри: 0.6
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|<font color="#d06010">Стандарт моду:</font> 25<br><font color="#E69E5C">Стандарт гри:</font> майже максимум
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|<font color="#d06010">Стандарт моду:</font> 25<br><font color="#E69E5C">Стандарт гри:</font> 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|<font color="#d06010">Стандарт моду:</font> 0.9<br><font color="#E69E5C">Стандарт гри:</font> 0.6
 2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Перевизначає світло всіх смолоскипів NPC
-2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Стандарт моду: 25     Стандарт гри: 30-40
-2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Стандарт моду: 6.5     Стандарт гри: 5-6
-2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Стандарт моду: 0.9     Стандарт гри: ~0.6
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Стандарт моду:</font> 25<br><font color="#E69E5C">Стандарт гри:</font> 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Стандарт моду:</font> 6.5<br><font color="#E69E5C">Стандарт гри:</font> 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Стандарт моду:</font> 0.9<br><font color="#E69E5C">Стандарт гри:</font> ~0.6
 2122144111||LightRewrite_MenuDesc_FogRemoval|Скільки туману буде видалено: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Час у секундах, за який змінюється видалення туману після входу/виходу з приміщення.  Рекомендовано: 1-3
 2122144113||LightRewrite_Preset_Default|За замовчуванням

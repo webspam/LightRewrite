@@ -98,15 +98,15 @@
 2122144099||LightRewrite_MenuDescOn_Enabled|Light Rewrite etkin
 2122144100||LightRewrite_MenuDescOff_Enabled|Tüm Light Rewrite özellikleri şu anda devre dışı
 2122144101||LightRewrite_MenuDesc_Enabled|Tüm Light Rewrite ışık ayarlarını açar/kapatır
-2122144102||LightRewrite_MenuDesc_CurrentProfile|Kullanılacak aydınlatma ön ayarı.  Önerilen: Varsayılan
+2122144102||LightRewrite_MenuDesc_CurrentProfile|<p>Kullanılacak aydınlatma ön ayarı.  <font color="#d06010">Önerilen:</font> Varsayılan</p><br><p><font color="#6359be">Realistic:</font> Geliştirme aşamasında, yalnızca pathtracing. Çoğu mumun parlaklığını düşürür.</p><p><font color="#6359be">Ultra:</font> Üst düzey donanıma ve bol FPS'ye sahip olanlar için.</p>
 2122144103||LightRewrite_MenuDesc_PlayerTorchEnabled|Oyuncu meşalesi ve fenerinin ışık ayarlarını geçersiz kılar
-2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|Mod varsayılanı: 25     Oyun varsayılanı: neredeyse maksimum
-2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|Mod varsayılanı: 25     Oyun varsayılanı: 8
-2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|Mod varsayılanı: 0.9    Oyun varsayılanı: 0.6
+2122144104||LightRewrite_MenuDesc_PlayerTorchBrightness|<font color="#d06010">Mod varsayılanı:</font> 25<br><font color="#E69E5C">Oyun varsayılanı:</font> neredeyse maksimum
+2122144105||LightRewrite_MenuDesc_PlayerTorchRadius|<font color="#d06010">Mod varsayılanı:</font> 25<br><font color="#E69E5C">Oyun varsayılanı:</font> 8
+2122144106||LightRewrite_MenuDesc_PlayerTorchAttenuation|<font color="#d06010">Mod varsayılanı:</font> 0.9<br><font color="#E69E5C">Oyun varsayılanı:</font> 0.6
 2122144107||LightRewrite_MenuDesc_NpcTorchEnabled|Tüm NPC meşalelerinin ışığını geçersiz kılar
-2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|Mod varsayılanı: 25     Oyun varsayılanı: 30-40
-2122144109||LightRewrite_MenuDesc_NpcTorchRadius|Mod varsayılanı: 6.5     Oyun varsayılanı: 5-6
-2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|Mod varsayılanı: 0.9     Oyun varsayılanı: ~0.6
+2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Mod varsayılanı:</font> 25<br><font color="#E69E5C">Oyun varsayılanı:</font> 30-40
+2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Mod varsayılanı:</font> 6.5<br><font color="#E69E5C">Oyun varsayılanı:</font> 5-6
+2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Mod varsayılanı:</font> 0.9<br><font color="#E69E5C">Oyun varsayılanı:</font> ~0.6
 2122144111||LightRewrite_MenuDesc_FogRemoval|Ne kadar sisin kaldırılacağı: 0-100%
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Bir iç mekâna girdikten/çıktıktan sonra sis kaldırmanın değişmesi için saniye cinsinden süre.  Önerilen: 1-3
 2122144113||LightRewrite_Preset_Default|Varsayılan
