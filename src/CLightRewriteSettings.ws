@@ -150,6 +150,22 @@ class CLightRewriteSettings {
         return submenuId == GENERAL_SUBMENU || submenuId == ADVANCED_SUBMENU;
     }
 
+    public function GetOptionDescription(submenuId: string, optionName: name): string {
+        var group: name = GENERAL_GROUP;
+        var stateKey: string = "LightRewrite_MenuDescOff_";
+        var description: string;
+
+        if (submenuId == ADVANCED_SUBMENU) group = ADVANCED_GROUP;
+        if (gameConfig.GetVarValue(group, optionName) == "true") {
+            stateKey = "LightRewrite_MenuDescOn_";
+        }
+
+        description = GetLocStringByKeyExt(stateKey + optionName);
+        if (description != "") return description;
+
+        return GetLocStringByKeyExt("LightRewrite_MenuDesc_" + optionName);
+    }
+
     // If mod config has never been initialised, set the default values and save them.
     public function EnsureGameConfigIsInitialised() {
         var currentValue: string;

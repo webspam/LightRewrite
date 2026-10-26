@@ -1,29 +1,23 @@
-@wrapMethod
-function SetDescriptionText(
-    optionObject: CScriptedFlashObject,
-    optionName: name,
-    optionValue: string
-) {
-    var groupId: int;
-    var description, descriptionOn, descriptionOff: string;
+@wrapMethod(CR4IngameMenu)
+function OnOptionSelectionChanged(optionName: name, value: bool) {
+    var wrappedReturnValue: bool;
 
-    wrappedMethod(optionObject, optionName, optionValue);
+    wrappedReturnValue = wrappedMethod(optionName, value);
 
-    groupId = optionObject.GetMemberFlashInt("groupID");
-    if (!theGame.GetLightRewriteSettings().IsMyModSettingsGroup(groupId)) return;
+    if (value) LR_ShowOptionDescription(optionName);
 
-    description = GetLocStringByKeyExt("LightRewrite_MenuDesc_" + optionName);
-    descriptionOn = GetLocStringByKeyExt("LightRewrite_MenuDescOn_" + optionName);
-    descriptionOff = GetLocStringByKeyExt("LightRewrite_MenuDescOff_" + optionName);
+    return wrappedReturnValue;
+}
 
-    if (descriptionOn == "" && descriptionOff == "") {
-        if (description != "") optionObject.SetMemberFlashString("description", description);
+@addMethod(CR4IngameMenu)
+function LR_ShowOptionDescription(optionName: name) {
+    var description: string;
+
+    if (!lightRewriteSettings.IsLightRewriteSubmenu(lightRewriteLastSubmenuId)) {
         return;
     }
 
-    if (descriptionOn == "") descriptionOn = description;
-    if (descriptionOff == "") descriptionOff = description;
-
-    optionObject.SetMemberFlashString("descriptionTrue", descriptionOn);
-    optionObject.SetMemberFlashString("descriptionFalse", descriptionOff);
+    description = lightRewriteSettings.GetOptionDescription(lightRewriteLastSubmenuId, optionName);
+    m_fxUpdateBardsBalladText.InvokeSelfOneArg(FlashArgString(description));
+    lightRewriteShowTooltip.InvokeSelfOneArg(FlashArgBool(true));
 }
