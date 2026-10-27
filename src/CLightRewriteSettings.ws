@@ -50,6 +50,8 @@ class CLightRewriteSettings {
     public var isEnabled: bool;  default isEnabled = true;
     private var currentProfile: name;
 
+    public var lightTransport: ELightRewriteLightTransport;
+
     // Each spacing mode draws its amount from its own slider; see GetActiveSpacingAmountVar
     private var spacingMode  : int;    default spacingMode = 0;
     private var spacingCount : float;  default spacingCount = 2.0;
@@ -109,6 +111,21 @@ class CLightRewriteSettings {
         npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
 
         brightnessBoost = new CLightRewriteBrightnessBooster in this;
+
+        RefreshLightTransport();
+    }
+
+    public function RefreshLightTransport(): bool {
+        var previousLightTransport: ELightRewriteLightTransport = lightTransport;
+
+        lightTransport = theGame.GetRTEnabled()
+            ? theGame.GetPTEnabled()
+                ? LR_Transport_PT
+                : LR_Transport_RT
+            : LR_Transport_Raster;
+
+        theGame.GetGuiManager().ShowNotification("Light transport: " + lightTransport);
+        return lightTransport != previousLightTransport;
     }
 
     public function GetEnabledOptionId(): name {
