@@ -456,7 +456,11 @@ class CLightRewriteSettings {
         var dataArray: CScriptedFlashArray;
         var activeVar: name = GetActiveSpacingAmountVar();
 
-        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        flashValueStorage = theGame
+            .GetGuiManager()
+            .GetRootMenu()
+            .GetSubMenu()
+            .GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
         LR_SetMenuOptionDisabled(
