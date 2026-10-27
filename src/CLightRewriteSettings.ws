@@ -124,8 +124,14 @@ class CLightRewriteSettings {
                 : LR_Transport_RT
             : LR_Transport_Raster;
 
-        theGame.GetGuiManager().ShowNotification("Light transport: " + lightTransport);
         return lightTransport != previousLightTransport;
+    }
+
+    public function ApplyLightTransportChange() {
+        if (!RefreshLightTransport()) return;
+
+        UpdateBrightnessBoost();
+        if (isEnabled) theGame.lightRewrite.RewriteAllLightSources();
     }
 
     public function GetEnabledOptionId(): name {
@@ -355,7 +361,7 @@ class CLightRewriteSettings {
             0.0,
             ReadFloat(ADVANCED_GROUP, BRIGHTNESS_BOOST, brightnessBoostPercent)
         );
-        brightnessBoost.SetBoostPercent(brightnessBoostPercent);
+        UpdateBrightnessBoost();
     }
 
     // To be called for every option-change event.
@@ -407,6 +413,18 @@ class CLightRewriteSettings {
 
     private function ResetBrightnessBoost() {
         gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0);
+    }
+
+    private function UpdateBrightnessBoost() {
+        var lightTransportBoostPercent: float;
+
+        switch (lightTransport) {
+            case LR_Transport_PT:  lightTransportBoostPercent = 0.0;   break;
+            case LR_Transport_RT:  lightTransportBoostPercent = 35.0;  break;
+            default:               lightTransportBoostPercent = 40.0;  break;
+        }
+
+        brightnessBoost.SetBoostPercent(brightnessBoostPercent + lightTransportBoostPercent);
     }
 
     // Apples pending settings changes.

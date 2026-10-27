@@ -33,7 +33,7 @@ function OnGameStarting(restored: bool) {
 function SaveUserSettings() {
     wrappedMethod();
 
-    lightRewriteSettings.RefreshLightTransport();
+    lightRewriteSettings.ApplyLightTransportChange();
 }
 
 @addField(CR4IngameMenu)
