@@ -33,10 +33,12 @@ class LRDebug_LightToggler {
         changed = SetLightsInRange(lightsOn);
 
         if (lightsOn) stateText = "ON";
-        theGame.GetGuiManager().ShowNotification(
-            "Nearby lights: " + stateText + " (" + IntToString(changed) + ")",
-            1000
-        );
+        theGame
+            .GetGuiManager()
+            .ShowNotification(
+                "Nearby lights: " + stateText + " (" + IntToString(changed) + ")",
+                1000
+            );
         LogChannel('LRDebug', "LRDebug nearby lights " + stateText + ": " + changed);
         return true;
     }
