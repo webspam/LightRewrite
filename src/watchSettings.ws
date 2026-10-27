@@ -41,14 +41,11 @@ function OnConfigUI() {
     lightRewriteShowTooltip = m_flashModule.GetMemberFlashFunction(
         "showBardsBalladTooltip"
     );
-    m_flashModule.GetChildFlashSprite("mcOptionListModule").GetChildFlashSprite(
-        "tooltip"
-    ).GetMemberFlashObject(
-        "textField"
-    ).SetMemberFlashString(
-        "autoSize",
-        "left"
-    );
+    m_flashModule
+        .GetChildFlashSprite("mcOptionListModule")
+        .GetChildFlashSprite("tooltip")
+        .GetMemberFlashObject("textField")
+        .SetMemberFlashString("autoSize", "left");
 
     lightRewriteSettings = theGame.GetLightRewriteSettings();
     lightRewriteSettings.EnsureGameConfigIsInitialised();
