@@ -193,6 +193,8 @@ class LRDebug_Clock {
         seconds = (int)((hour - (float)hours - (float)minutes / 60.0) * 3600.0);
 
         theGame.SetGameTime(GameTimeCreate(day, hours, minutes, seconds), true);
+        theGame.GetCityLightManager().SetUpdateEnabled(true);
+        theGame.GetCityLightManager().ForceUpdate();
     }
 
     private function CurrentTimeAsHours(): float {
