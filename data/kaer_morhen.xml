@@ -101,6 +101,16 @@
                   b="255" />
         </override>
 
+        <override tag_name="LR_KaerMorhen_ChandelierBright"
+                  brightness="50"
+                  attenuation="0.9">
+          <match mode="exact">chandelier_bright.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\kaer_morhen\kaer_morhen_valley\castle_interior\lights.w2l</match>
+          <offset x="0"
+                  y="0"
+                  z="-1.46" />
+        </override>
       </overrides>
 
 
