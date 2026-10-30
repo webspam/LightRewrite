@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Mod alapértelmezett:</font> 25<br><font color="#E69E5C">Játék alapértelmezett:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Mod alapértelmezett:</font> 6.5<br><font color="#E69E5C">Játék alapértelmezett:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Mod alapértelmezett:</font> 0.9<br><font color="#E69E5C">Játék alapértelmezett:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|Mennyi köd lesz eltávolítva: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|Mennyi köd lesz eltávolítva: <font color="#d06010">0-100%</font><br><br>Az érintett területek listáját maga a játék határozza meg. Ez egy tökéletlen áthidaló megoldás, de a legtöbb felhasználónak mégis ajánlott.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Másodpercben az az idő, amely alatt a ködeltávolítás megváltozik, beltérbe való belépés/kilépés után.  Ajánlott: 1-3
 2122144113||LightRewrite_Preset_Default|Alapértelmezett
 2122144114||LightRewrite_GameplayLightRemoval|Játékmeneti fény eltávolítása
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Csökkenti a kamera mögül világító mesterséges játékmeneti fény erősségét: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Csökkenti a kamera mögül világító mesterséges játékmeneti fény erősségét: <font color="#d06010">0-100%</font><br><br>* Ez csak a játékmeneti fényt érinti, és nincs hatással az átvezető jelenetekre.
 2122144116||LightRewrite_BrightnessBoost|Fényerő-növelés
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|Áthidaló megoldás minden újraírt fényhez: 0-100%.  Visszaáll 0-ra, amikor az előbeállítás megváltozik.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Áthidaló megoldás a halvány fények fényerejének növelésére.  Skálán alkalmazva: <font color="#d06010">0-100%</font><br><br>Az előbeállítás megváltoztatásakor 0-ra áll vissza.  Minden küszöbérték alatti újraírt fényre vonatkozik.

@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Mod default:</font> 25<br><font color="#E69E5C">Game default:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Mod default:</font> 6.5<br><font color="#E69E5C">Game default:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Mod default:</font> 0.9<br><font color="#E69E5C">Game default:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|How much fog will be removed: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|How much fog will be removed: <font color="#d06010">0-100%</font><br><br>The list of areas this affects is decided by the game itself. It is an imperfect workaround, but still recommended for most users.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|The time in seconds for fog removal to change, after entering/leaving an interior.  Recommended: 1-3
 2122144113||LightRewrite_Preset_Default|Default
 2122144114||LightRewrite_GameplayLightRemoval|Gameplay light removal
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduces the strength of the artificial gameplay light that shines from behind the camera: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduces the strength of the artificial gameplay light that shines from behind the camera: <font color="#d06010">0-100%</font><br><br>* This affects the gameplay light only, and has no impact during cutscenes.
 2122144116||LightRewrite_BrightnessBoost|Brightness boost
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|A workaround for all rewritten lights: 0-100%.  Reset to 0 when the preset is changed.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|A workaround to increase the brightness of dim lights.  Applies on a scale: <font color="#d06010">0-100%</font><br><br>Resets to 0 when changing presets.  Applies to all rewritten lights below the threshold.
