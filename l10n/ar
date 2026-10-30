@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 25<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 6.5<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻤﻮﺩ:</font> 0.9<br><font color="#E69E5C">ﺍﻻﻓﺘﺮﺍﺿﻲ ﻓﻲ ﺍﻟﻠﻌﺒﺔ:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|ﻣﻘﺪﺍﺭ ﺍﻟﻀﺒﺎﺏ ﺍﻟﺬﻱ ﺳﺘﺘﻢ ﺇﺯﺍﻟﺘﻪ: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|ﻣﻘﺪﺍﺭ ﺍﻟﻀﺒﺎﺏ ﺍﻟﺬﻱ ﺳﺘﺘﻢ ﺇﺯﺍﻟﺘﻪ: <font color="#d06010">0-100%</font><br><br>ﻗﺎﺋﻤﺔ ﺍﻟﻤﻨﺎﻃﻖ ﺍﻟﺘﻲ ﻳﺆﺛﺮ ﻋﻠﻴﻬﺎ ﻫﺬﺍ ﺗﺤﺪﺩﻫﺎ ﺍﻟﻠﻌﺒﺔ ﻧﻔﺴﻬﺎ. ﺇﻧﻪ ﺣﻞ ﺑﺪﻳﻞ ﻏﻴﺮ ﻣﺜﺎﻟﻲ، ﻟﻜﻨﻪ ﻻ ﻳﺰﺍﻝ ﻣﻮﺻﻰ ﺑﻪ ﻟﻤﻌﻈﻢ ﺍﻟﻤﺴﺘﺨﺪﻣﻴﻦ.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|ﺍﻟﻮﻗﺖ ﺑﺎﻟﺜﻮﺍﻧﻲ ﺍﻟﺬﻱ ﺗﺘﻐﻴﺮ ﻓﻴﻪ ﺇﺯﺍﻟﺔ ﺍﻟﻀﺒﺎﺏ، ﺑﻌﺪ ﺩﺧﻮﻝ/ﻣﻐﺎﺩﺭﺓ ﻣﻜﺎﻥ ﺩﺍﺧﻠﻲ.  ﺍﻟﻤُﻮﺻﻰ ﺑﻪ: 1-3
 2122144113||LightRewrite_Preset_Default|ﺍﻻﻓﺘﺮﺍﺿﻲ
 2122144114||LightRewrite_GameplayLightRemoval|ﺇﺯﺍﻟﺔ ﺿﻮﺀ ﺍﻟﻠﻌﺐ
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|ﻳﻘﻠﻞ ﻣﻦ ﺷﺪﺓ ﺿﻮﺀ ﺍﻟﻠﻌﺐ ﺍﻻﺻﻄﻨﺎﻋﻲ ﺍﻟﺬﻱ ﻳﻀﻲﺀ ﻣﻦ ﺧﻠﻒ ﺍﻟﻜﺎﻣﻴﺮﺍ: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|ﻳﻘﻠﻞ ﻣﻦ ﺷﺪﺓ ﺿﻮﺀ ﺍﻟﻠﻌﺐ ﺍﻻﺻﻄﻨﺎﻋﻲ ﺍﻟﺬﻱ ﻳﻀﻲﺀ ﻣﻦ ﺧﻠﻒ ﺍﻟﻜﺎﻣﻴﺮﺍ: <font color="#d06010">0-100%</font><br><br>* ﻫﺬﺍ ﻳﺆﺛﺮ ﻋﻠﻰ ﺿﻮﺀ ﺍﻟﻠﻌﺐ ﻓﻘﻂ، ﻭﻟﻴﺲ ﻟﻪ ﺗﺄﺛﻴﺮ ﺃﺛﻨﺎﺀ ﺍﻟﻤﺸﺎﻫﺪ ﺍﻟﺴﻴﻨﻤﺎﺋﻴﺔ.
 2122144116||LightRewrite_BrightnessBoost|ﺗﻌﺰﻳﺰ ﺍﻟﺴﻄﻮﻉ
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|ﺣﻞ ﺑﺪﻳﻞ ﻟﺠﻤﻴﻊ ﺍﻷﺿﻮﺍﺀ ﺍﻟﻤُﻌﺎﺩ ﻛﺘﺎﺑﺘﻬﺎ: 0-100%.  ﺗﺘﻢ ﺇﻋﺎﺩﺓ ﺍﻟﺘﻌﻴﻴﻦ ﺇﻟﻰ 0 ﻋﻨﺪ ﺗﻐﻴﻴﺮ ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|ﺣﻞ ﺑﺪﻳﻞ ﻟﺰﻳﺎﺩﺓ ﺳﻄﻮﻉ ﺍﻷﺿﻮﺍﺀ ﺍﻟﺨﺎﻓﺘﺔ.  ﻳُﻄﺒﻖ ﻋﻠﻰ ﻣﻘﻴﺎﺱ: <font color="#d06010">0-100%</font><br><br>ﺗﺘﻢ ﺇﻋﺎﺩﺓ ﺍﻟﺘﻌﻴﻴﻦ ﺇﻟﻰ 0 ﻋﻨﺪ ﺗﻐﻴﻴﺮ ﺍﻹﻋﺪﺍﺩ ﺍﻟﻤﺴﺒﻖ.  ﻳﻨﻄﺒﻖ ﻋﻠﻰ ﺟﻤﻴﻊ ﺍﻷﺿﻮﺍﺀ ﺍﻟﻤُﻌﺎﺩ ﻛﺘﺎﺑﺘﻬﺎ ﺩﻭﻥ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ.

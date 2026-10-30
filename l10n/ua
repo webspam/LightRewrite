@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Стандарт моду:</font> 25<br><font color="#E69E5C">Стандарт гри:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Стандарт моду:</font> 6.5<br><font color="#E69E5C">Стандарт гри:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Стандарт моду:</font> 0.9<br><font color="#E69E5C">Стандарт гри:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|Скільки туману буде видалено: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|Скільки туману буде видалено: <font color="#d06010">0-100%</font><br><br>Список областей, на які це впливає, визначається самою грою. Це недосконале обхідне рішення, але все одно рекомендоване для більшості користувачів.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Час у секундах, за який змінюється видалення туману після входу/виходу з приміщення.  Рекомендовано: 1-3
 2122144113||LightRewrite_Preset_Default|За замовчуванням
 2122144114||LightRewrite_GameplayLightRemoval|Видалення ігрового світла
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Зменшує інтенсивність штучного ігрового світла, що світить із-за камери: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Зменшує інтенсивність штучного ігрового світла, що світить із-за камери: <font color="#d06010">0-100%</font><br><br>* Це впливає лише на ігрове світло і не діє під час катсцен.
 2122144116||LightRewrite_BrightnessBoost|Посилення яскравості
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|Обхідне рішення для всіх переписаних джерел світла: 0-100%.  Скидається до 0 під час зміни пресету.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Обхідне рішення для збільшення яскравості тьмяних джерел світла.  Застосовується за шкалою: <font color="#d06010">0-100%</font><br><br>Скидається до 0 під час зміни пресету.  Застосовується до всіх переписаних джерел світла нижче порогу.

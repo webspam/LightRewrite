@@ -9,7 +9,7 @@ class CLightRewriteSettings {
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
     // Submenu ids (must match last segment of XML Group displayName)
     private const var GENERAL_SUBMENU         : string;  default GENERAL_SUBMENU = "LightRewrite";
-    private const var ADVANCED_SUBMENU        : string;  default ADVANCED_SUBMENU = ADVANCED_GROUP;
+    private const var ADVANCED_SUBMENU        : string;  default ADVANCED_SUBMENU = 'LightRewrite_Advanced';
     // Label key constants (must match XML Var id values)
     private const var CURRENT_PROFILE_LABEL   : string;  default CURRENT_PROFILE_LABEL = 'LightRewrite_CurrentProfile';
     private const var NONE_PROFILE            : name;    default NONE_PROFILE = 'None';

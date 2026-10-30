@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Domyślne moda:</font> 25<br><font color="#E69E5C">Domyślne gry:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Domyślne moda:</font> 6.5<br><font color="#E69E5C">Domyślne gry:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Domyślne moda:</font> 0.9<br><font color="#E69E5C">Domyślne gry:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|Ile mgły zostanie usunięte: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|Ile mgły zostanie usunięte: <font color="#d06010">0-100%</font><br><br>Lista obszarów, których to dotyczy, jest ustalana przez samą grę. To niedoskonałe obejście, ale mimo to zalecane dla większości użytkowników.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Czas w sekundach, w jakim zmienia się usuwanie mgły po wejściu/wyjściu z wnętrza.  Zalecane: 1-3
 2122144113||LightRewrite_Preset_Default|Domyślne
 2122144114||LightRewrite_GameplayLightRemoval|Usuwanie światła rozgrywki
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Zmniejsza siłę sztucznego światła rozgrywki świecącego zza kamery: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Zmniejsza siłę sztucznego światła rozgrywki świecącego zza kamery: <font color="#d06010">0-100%</font><br><br>* Dotyczy to wyłącznie światła rozgrywki i nie ma wpływu na przerywniki filmowe.
 2122144116||LightRewrite_BrightnessBoost|Wzmocnienie jasności
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|Obejście dla wszystkich przepisanych świateł: 0-100%.  Resetowane do 0 po zmianie ustawienia wstępnego.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Obejście zwiększające jasność słabych świateł.  Stosowane w skali: <font color="#d06010">0-100%</font><br><br>Resetowane do 0 przy zmianie ustawienia wstępnego.  Dotyczy wszystkich przepisanych świateł poniżej progu.

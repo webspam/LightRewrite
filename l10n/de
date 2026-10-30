@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Mod-Standard:</font> 25<br><font color="#E69E5C">Spiel-Standard:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Mod-Standard:</font> 6.5<br><font color="#E69E5C">Spiel-Standard:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Mod-Standard:</font> 0.9<br><font color="#E69E5C">Spiel-Standard:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|Wie viel Nebel entfernt wird: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|Wie viel Nebel entfernt wird: <font color="#d06010">0-100%</font><br><br>Welche Bereiche davon betroffen sind, entscheidet das Spiel selbst. Es ist eine unvollkommene Notlösung, aber für die meisten Nutzer dennoch empfehlenswert.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Zeit in Sekunden, in der sich die Nebelentfernung ändert, nach Betreten/Verlassen eines Innenraums.  Empfohlen: 1-3
 2122144113||LightRewrite_Preset_Default|Standard
 2122144114||LightRewrite_GameplayLightRemoval|Entfernung des Gameplay-Lichts
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Verringert die Stärke des künstlichen Gameplay-Lichts, das von hinter der Kamera scheint: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Verringert die Stärke des künstlichen Gameplay-Lichts, das von hinter der Kamera scheint: <font color="#d06010">0-100%</font><br><br>* Dies betrifft nur das Gameplay-Licht und hat keine Auswirkung während Zwischensequenzen.
 2122144116||LightRewrite_BrightnessBoost|Helligkeitsverstärkung
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|Eine Notlösung für alle neu geschriebenen Lichter: 0-100%.  Wird auf 0 zurückgesetzt, wenn die Voreinstellung geändert wird.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Eine Notlösung, um die Helligkeit schwacher Lichter zu erhöhen.  Wird skaliert angewendet: <font color="#d06010">0-100%</font><br><br>Wird beim Wechsel der Voreinstellung auf 0 zurückgesetzt.  Gilt für alle neu geschriebenen Lichter unterhalb des Schwellenwerts.

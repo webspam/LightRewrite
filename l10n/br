@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">Padrão do mod:</font> 25<br><font color="#E69E5C">Padrão do jogo:</font> 30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">Padrão do mod:</font> 6.5<br><font color="#E69E5C">Padrão do jogo:</font> 5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">Padrão do mod:</font> 0.9<br><font color="#E69E5C">Padrão do jogo:</font> ~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|Quanta névoa será removida: 0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|Quanta névoa será removida: <font color="#d06010">0-100%</font><br><br>A lista de áreas afetadas é decidida pelo próprio jogo. É uma solução alternativa imperfeita, mas ainda assim recomendada para a maioria dos usuários.
 2122144112||LightRewrite_MenuDesc_FogFadeTime|Tempo em segundos para a remoção de névoa mudar, após entrar/sair de um interior.  Recomendado: 1-3
 2122144113||LightRewrite_Preset_Default|Padrão
 2122144114||LightRewrite_GameplayLightRemoval|Remoção da luz de jogabilidade
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduz a intensidade da luz artificial de jogabilidade que brilha por trás da câmera: 0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|Reduz a intensidade da luz artificial de jogabilidade que brilha por trás da câmera: <font color="#d06010">0-100%</font><br><br>* Isso afeta apenas a luz de jogabilidade e não tem impacto durante as cinemáticas.
 2122144116||LightRewrite_BrightnessBoost|Aumento de brilho
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|Uma solução alternativa para todas as luzes reescritas: 0-100%.  Redefinido para 0 quando a predefinição é alterada.
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|Uma solução alternativa para aumentar o brilho de luzes fracas.  Aplica-se em uma escala: <font color="#d06010">0-100%</font><br><br>Redefine para 0 ao mudar de predefinição.  Aplica-se a todas as luzes reescritas abaixo do limite.

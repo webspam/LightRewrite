@@ -107,10 +107,10 @@
 2122144108||LightRewrite_MenuDesc_NpcTorchBrightness|<font color="#d06010">模组默认：</font>25<br><font color="#E69E5C">游戏默认：</font>30-40
 2122144109||LightRewrite_MenuDesc_NpcTorchRadius|<font color="#d06010">模组默认：</font>6.5<br><font color="#E69E5C">游戏默认：</font>5-6
 2122144110||LightRewrite_MenuDesc_NpcTorchAttenuation|<font color="#d06010">模组默认：</font>0.9<br><font color="#E69E5C">游戏默认：</font>~0.6
-2122144111||LightRewrite_MenuDesc_FogRemoval|将消除多少雾气：0-100%
+2122144111||LightRewrite_MenuDesc_FogRemoval|将消除多少雾气：<font color="#d06010">0-100%</font><br><br>受影响的区域列表由游戏本身决定。这是一个不完美的变通方法，但仍推荐大多数用户使用。
 2122144112||LightRewrite_MenuDesc_FogFadeTime|进入/离开室内后，雾气消除变化所需的时间（秒）。  推荐：1-3
 2122144113||LightRewrite_Preset_Default|默认
 2122144114||LightRewrite_GameplayLightRemoval|游戏光源消除
-2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|降低从镜头后方照射的人造游戏光源的强度：0-100%
+2122144115||LightRewrite_MenuDesc_GameplayLightRemoval|降低从镜头后方照射的人造游戏光源的强度：<font color="#d06010">0-100%</font><br><br>* 此选项仅影响游戏光源，对过场动画没有影响。
 2122144116||LightRewrite_BrightnessBoost|亮度提升
-2122144117||LightRewrite_MenuDesc_BrightnessBoost|适用于所有重写光源的变通方法：0-100%。  更改预设时重置为 0。
+2122144117||LightRewrite_MenuDesc_BrightnessBoost|用于提高昏暗光源亮度的变通方法。  按比例应用：<font color="#d06010">0-100%</font><br><br>更改预设时重置为 0。  适用于所有低于阈值的重写光源。
