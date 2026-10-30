@@ -2,6 +2,12 @@
 // forwards option-change events from CR4IngameMenu, and performs the
 // initial config read when the player spawns.
 
+enum ELightRewriteLightTransport {
+    LR_Transport_Raster = 0,
+    LR_Transport_RT = 1,
+    LR_Transport_PT = 2
+}
+
 @addField(CR4Game)
 private var lightRewriteSettings: CLightRewriteSettings;
 
@@ -21,6 +27,13 @@ function OnGameStarting(restored: bool) {
     wrappedMethod(restored);
 
     GetLightRewriteSettings().ReadGameConfig();
+}
+
+@wrapMethod(CR4Game)
+function SaveUserSettings() {
+    wrappedMethod();
+
+    lightRewriteSettings.ApplyLightTransportChange();
 }
 
 @addField(CR4IngameMenu)

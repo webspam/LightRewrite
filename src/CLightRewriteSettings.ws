@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 18;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 19;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -49,6 +49,8 @@ class CLightRewriteSettings {
     // Light rewrite parameters
     public var isEnabled: bool;  default isEnabled = true;
     private var currentProfile: name;
+
+    public var lightTransport: ELightRewriteLightTransport;
 
     // Each spacing mode draws its amount from its own slider; see GetActiveSpacingAmountVar
     private var spacingMode  : int;    default spacingMode = 0;
@@ -109,6 +111,27 @@ class CLightRewriteSettings {
         npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
 
         brightnessBoost = new CLightRewriteBrightnessBooster in this;
+
+        RefreshLightTransport();
+    }
+
+    public function RefreshLightTransport(): bool {
+        var previousLightTransport: ELightRewriteLightTransport = lightTransport;
+
+        lightTransport = theGame.GetRTEnabled()
+            ? theGame.GetPTEnabled()
+                ? LR_Transport_PT
+                : LR_Transport_RT
+            : LR_Transport_Raster;
+
+        return lightTransport != previousLightTransport;
+    }
+
+    public function ApplyLightTransportChange() {
+        if (!RefreshLightTransport()) return;
+
+        UpdateBrightnessBoost();
+        if (isEnabled) theGame.lightRewrite.RewriteAllLightSources();
     }
 
     public function GetEnabledOptionId(): name {
@@ -169,6 +192,7 @@ class CLightRewriteSettings {
     // If mod config has never been initialised, set the default values and save them.
     public function EnsureGameConfigIsInitialised() {
         var currentValue: string;
+        var boostPercent: float;
 
         var initVersion: int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
         var isFreshInstall: bool = initVersion == 0;
@@ -228,6 +252,16 @@ class CLightRewriteSettings {
         if (initVersion < 18 && !isFreshInstall) {
             currentValue = gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PROFILE);
             SaveProfile(StringToInt(currentValue, 0));
+        }
+
+        // v19: Brightness equalisation
+        if (initVersion < 19 && !isFreshInstall) {
+            boostPercent = ReadFloat(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0.0);
+            gameConfig.SetVarValue(
+                ADVANCED_GROUP,
+                BRIGHTNESS_BOOST,
+                MaxF(0.0, boostPercent - GetLightTransportBoostPercent())
+            );
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -338,7 +372,7 @@ class CLightRewriteSettings {
             0.0,
             ReadFloat(ADVANCED_GROUP, BRIGHTNESS_BOOST, brightnessBoostPercent)
         );
-        brightnessBoost.SetBoostPercent(brightnessBoostPercent);
+        UpdateBrightnessBoost();
     }
 
     // To be called for every option-change event.
@@ -390,6 +424,18 @@ class CLightRewriteSettings {
 
     private function ResetBrightnessBoost() {
         gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0);
+    }
+
+    private function GetLightTransportBoostPercent(): float {
+        switch (lightTransport) {
+            case LR_Transport_PT:  return 0.0;
+            case LR_Transport_RT:  return 35.0;
+            default:               return 40.0;
+        }
+    }
+
+    private function UpdateBrightnessBoost() {
+        brightnessBoost.SetBoostPercent(brightnessBoostPercent + GetLightTransportBoostPercent());
     }
 
     // Apples pending settings changes.
@@ -456,7 +502,11 @@ class CLightRewriteSettings {
         var dataArray: CScriptedFlashArray;
         var activeVar: name = GetActiveSpacingAmountVar();
 
-        flashValueStorage = theGame.GetGuiManager().GetRootMenu().GetSubMenu().GetMenuFlashValueStorage();
+        flashValueStorage = theGame
+            .GetGuiManager()
+            .GetRootMenu()
+            .GetSubMenu()
+            .GetMenuFlashValueStorage();
         dataArray = flashValueStorage.CreateTempFlashArray();
 
         LR_SetMenuOptionDisabled(
