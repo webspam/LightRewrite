@@ -4,7 +4,7 @@
  * Where CCandleLightRewriter discards the spotlight in favour of the point lights,
  * here the spotlight is the light: the source params are applied to it directly.
  */
-class CSpotlightLightRewriter extends ILightSourceRewriter {
+class CSpotlightLightRewriter extends IFireFxLightRewriter {
     public function ProcessDeferredActions() {
         super.ProcessDeferredActions();
         RewriteSpotlights();
@@ -37,6 +37,10 @@ class CSpotlightLightRewriter extends ILightSourceRewriter {
             if (wasEnabled) spotLight.SetEnabled(false);
 
             ApplyLightParams(spotLight, p);
+
+            if (p.alignPointLights.has && p.alignPointLights.value) {
+                AlignLightToFireFxSlot(i, spotLight);
+            }
 
             if (wasEnabled) spotLight.SetEnabled(true);
         }
