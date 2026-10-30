@@ -595,7 +595,7 @@ class LRDebug_AttributeEditor {
         var scope: array<CGameplayEntity>;
         var changed: bool;
 
-        var identity: EulerAngles = EulerAngles(0, 0, 0);
+        var defaultRotation: EulerAngles = EulerAngles(90, 0, 0);
 
         if (!target || !target.lrdebugOneliner) return false;
         if (GetSelectedLightType(target) != 'spot') return false;
@@ -608,12 +608,12 @@ class LRDebug_AttributeEditor {
         spotParams = GetActiveSpotParams(params, target);
 
         changed = !spotParams.rotation.has
-            || spotParams.rotation.value.Pitch != 0.0
-            || spotParams.rotation.value.Yaw != 0.0
-            || spotParams.rotation.value.Roll != 0.0;
+            || spotParams.rotation.value.Pitch != defaultRotation.Pitch
+            || spotParams.rotation.value.Yaw != defaultRotation.Yaw
+            || spotParams.rotation.value.Roll != defaultRotation.Roll;
 
         spotParams.rotation.has = true;
-        spotParams.rotation.value = identity;
+        spotParams.rotation.value = defaultRotation;
 
         if (changed) ApplyParams(target, rewriter, params);
         history.Commit(changed);
