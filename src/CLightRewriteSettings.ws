@@ -3,7 +3,7 @@
  */
 class CLightRewriteSettings {
     // The current XML config version
-    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 18;
+    private const var CONFIG_VERSION          : int;     default CONFIG_VERSION = 19;
     // Group name constants (must match XML Group id values)
     private const var GENERAL_GROUP           : name;    default GENERAL_GROUP = 'LightRewrite_General';
     private const var ADVANCED_GROUP          : name;    default ADVANCED_GROUP = 'LightRewrite_Advanced';
@@ -192,6 +192,7 @@ class CLightRewriteSettings {
     // If mod config has never been initialised, set the default values and save them.
     public function EnsureGameConfigIsInitialised() {
         var currentValue: string;
+        var boostPercent: float;
 
         var initVersion: int = StringToInt(gameConfig.GetVarValue(GENERAL_GROUP, INIT_VERSION), 0);
         var isFreshInstall: bool = initVersion == 0;
@@ -251,6 +252,16 @@ class CLightRewriteSettings {
         if (initVersion < 18 && !isFreshInstall) {
             currentValue = gameConfig.GetVarValue(GENERAL_GROUP, CURRENT_PROFILE);
             SaveProfile(StringToInt(currentValue, 0));
+        }
+
+        // v19: Brightness equalisation
+        if (initVersion < 19 && !isFreshInstall) {
+            boostPercent = ReadFloat(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0.0);
+            gameConfig.SetVarValue(
+                ADVANCED_GROUP,
+                BRIGHTNESS_BOOST,
+                MaxF(0.0, boostPercent - GetLightTransportBoostPercent())
+            );
         }
 
         gameConfig.SetVarValue(GENERAL_GROUP, INIT_VERSION, CONFIG_VERSION);
@@ -415,16 +426,16 @@ class CLightRewriteSettings {
         gameConfig.SetVarValue(ADVANCED_GROUP, BRIGHTNESS_BOOST, 0);
     }
 
-    private function UpdateBrightnessBoost() {
-        var lightTransportBoostPercent: float;
-
+    private function GetLightTransportBoostPercent(): float {
         switch (lightTransport) {
-            case LR_Transport_PT:  lightTransportBoostPercent = 0.0;   break;
-            case LR_Transport_RT:  lightTransportBoostPercent = 35.0;  break;
-            default:               lightTransportBoostPercent = 40.0;  break;
+            case LR_Transport_PT:  return 0.0;
+            case LR_Transport_RT:  return 35.0;
+            default:               return 40.0;
         }
+    }
 
-        brightnessBoost.SetBoostPercent(brightnessBoostPercent + lightTransportBoostPercent);
+    private function UpdateBrightnessBoost() {
+        brightnessBoost.SetBoostPercent(brightnessBoostPercent + GetLightTransportBoostPercent());
     }
 
     // Apples pending settings changes.
