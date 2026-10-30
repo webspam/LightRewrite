@@ -13,77 +13,110 @@
  * <Option id="1"><Entry varId="ID" value="1" /></Option>
  * // ... 2, 3, 4, etc.
  * ```
- *
- * Reference code: IngameMenu_AdditionalOptionValueChangeHandling (dropDown) and ShowDeveloperMode
  */
 function LR_ReplaceFlashMenuOptions(
     optionId: name,
     optionLabel: string,
-    groupId: name,
     optionTexts: array<string>,
     selectedIndex: int
 ) {
-    var groupIndex: int;
-    var newObject, existingObject, parentObject: CScriptedFlashObject;
-    var flashArray, options: CScriptedFlashArray;
+    var optionEntry, update: CScriptedFlashObject;
+    var options, updates: CScriptedFlashArray;
+    var flash: CScriptedFlashValueStorage;
     var i, count: int;
 
-    var gameConfig: CInGameConfigWrapper = theGame.GetInGameConfigWrapper();
     var ingameMenu: CR4IngameMenu = theGame.GetGuiManager().GetIngameMenu();
-    var flash: CScriptedFlashValueStorage = ingameMenu.GetMenuFlashValueStorage();
 
     if (!ingameMenu) {
         LogLightRewrite("ReplaceFlashMenuOptions: no ingame menu");
         return;
     }
 
-    groupIndex = gameConfig.GetGroupIdx(groupId);
-    if (groupIndex < 0) {
-        LogLightRewrite("ReplaceFlashMenuOptions: group " + groupId + " not found");
+    if (!LR_FindOptionListEntry(LR_GetOptionListModule(ingameMenu), optionId, optionEntry)) {
+        LogLightRewrite("ReplaceFlashMenuOptions: option " + optionId + " not found");
         return;
     }
 
-    // Remove the existing menu entry
-    existingObject = flash.CreateTempFlashObject();
-    existingObject.SetMemberFlashUInt("tag", NameToFlashUInt(optionId));
-    flashArray = flash.CreateTempFlashArray();
-    flashArray.PushBackFlashObject(existingObject);
-    parentObject = flash.CreateTempFlashObject();
-    parentObject.SetMemberFlashArray("list", flashArray);
-    flash.SetFlashObject("options.remove_entry", parentObject);
-
-    // Add all options to the list
-    options = flash.CreateTempFlashArray();
+    options = optionEntry.CreateFlashArray();
     count = optionTexts.Size();
     for (i = 0; i < count; i += 1) {
         options.PushBackFlashString(optionTexts[i]);
     }
 
-    // Create new menu entry
-    newObject = flash.CreateTempFlashObject();
-    newObject.SetMemberFlashString("id", "1");
-    newObject.SetMemberFlashString("label", optionLabel);
-    newObject.SetMemberFlashUInt("type", IGMActionType_List);
-    newObject.SetMemberFlashUInt("tag", NameToFlashUInt(optionId));
-    newObject.SetMemberFlashString("current", selectedIndex);
-    newObject.SetMemberFlashString("startingValue", selectedIndex);
-    newObject.SetMemberFlashInt("groupID", groupIndex);
-    newObject.SetMemberFlashBool("checkHardwareCursor", false);
-    newObject.SetMemberFlashBool("streamable", false);
-    newObject.SetMemberFlashBool("isDropdownContent", false);
-    newObject.SetMemberFlashBool("isDeveloper", false);
-    newObject.SetMemberFlashArray("subElements", options);
+    optionEntry.SetMemberFlashString("label", optionLabel);
+    optionEntry.SetMemberFlashString("startingValue", selectedIndex);
+    optionEntry.SetMemberFlashArray("subElements", options);
 
-    // Insert new menu entry
-    flashArray = flash.CreateTempFlashArray();
-    flashArray.PushBackFlashObject(newObject);
-    parentObject = flash.CreateTempFlashObject();
-    parentObject.SetMemberFlashArray("list", flashArray);
+    flash = ingameMenu.GetMenuFlashValueStorage();
+    update = flash.CreateTempFlashObject();
+    update.SetMemberFlashUInt("tag", NameToFlashUInt(optionId));
+    update.SetMemberFlashString("current", selectedIndex);
+    updates = flash.CreateTempFlashArray();
+    updates.PushBackFlashObject(update);
 
-    // Insert under the "Enabled" option
-    i = NameToFlashUInt(theGame.GetLightRewriteSettings().GetEnabledOptionId());
-    parentObject.SetMemberFlashUInt("masterTag", i);
-    flash.SetFlashObject("options.insert_entry", parentObject);
-
+    flash.SetFlashArray("options.force_update_values", updates);
     theGame.GetGuiManager().ForceProcessFlashStorage();
+}
+
+/*
+ * Manually sets the individual properties the SWF uses for "disabled".
+ * Mutates the menu entries in-place.
+ *
+ * This method replaces the old `remove_entry`/`insert_entry` combo, which triggers a bug with
+ * sliders "sticking" to the cursor on PC.
+ */
+function LR_SetMenuOptionDisabled(xmlVarId: name, disabled: bool) {
+    var optionListModule: CScriptedFlashSprite;
+    var optionEntry, optionListItem, listItemData: CScriptedFlashObject;
+    var optionListItems: CScriptedFlashArray;
+    var i, count: int;
+
+    var ingameMenu: CR4IngameMenu = theGame.GetGuiManager().GetIngameMenu();
+    var tag: int = NameToFlashUInt(xmlVarId);
+
+    optionListModule = LR_GetOptionListModule(ingameMenu);
+    if (!LR_FindOptionListEntry(optionListModule, xmlVarId, optionEntry)) {
+        LogLightRewrite("SetMenuOptionDisabled: option " + xmlVarId + " not found");
+        return;
+    }
+
+    optionEntry.SetMemberFlashBool("disabled", disabled);
+
+    optionListItems = optionListModule.GetMemberFlashArray("optionListItems");
+    count = optionListItems.GetLength();
+    for (i = 0; i < count; i += 1) {
+        optionListItem = optionListItems.GetElementFlashObject(i);
+        listItemData = optionListItem.GetMemberFlashObject("data");
+        if (!listItemData) continue;
+        if (listItemData.GetMemberFlashUInt("tag") != tag) continue;
+
+        optionListItem.SetMemberFlashNumber("alpha", disabled ? 0.35 : 1.0);
+        optionListItem.SetMemberFlashBool("selectable", !disabled);
+        optionListItem.SetMemberFlashBool("mouseChildren", !disabled);
+        return;
+    }
+}
+
+function LR_GetOptionListModule(ingameMenu: CR4IngameMenu): CScriptedFlashSprite {
+    return ingameMenu.GetMenuFlash().GetChildFlashSprite("mcOptionListModule");
+}
+
+function LR_FindOptionListEntry(
+    optionListModule: CScriptedFlashSprite,
+    optionId: name,
+    out optionEntry: CScriptedFlashObject
+): bool {
+    var optionListData: CScriptedFlashArray = optionListModule.GetMemberFlashArray(
+        "optionListData"
+    );
+    var tag: int = NameToFlashUInt(optionId);
+    var i, count: int;
+
+    count = optionListData.GetLength();
+    for (i = 0; i < count; i += 1) {
+        optionEntry = optionListData.GetElementFlashObject(i);
+        if (optionEntry.GetMemberFlashUInt("tag") == tag) return true;
+    }
+
+    return false;
 }
