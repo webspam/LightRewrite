@@ -402,7 +402,9 @@ class CLightRewriteSettings {
         if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
             theGame.lightRewrite.RefreshEquippedLights();
         }
-        if (optionName == PLAYER_TORCH_ENABLED) UpdatePlayerTorchMenuDisabledState();
+        if (optionName == PLAYER_TORCH_ENABLED || optionName == NPC_TORCH_ENABLED) {
+            UpdateTorchMenuDisabledState();
+        }
         if (IsTorchOption(optionName)) return;
 
         if (groupId == advancedGroupId && optionName == SPACING_MODE) {
@@ -453,7 +455,7 @@ class CLightRewriteSettings {
 
         if (submenuId == GENERAL_SUBMENU) {
             ReplaceProfileMenuOptions();
-            UpdatePlayerTorchMenuDisabledState();
+            UpdateTorchMenuDisabledState();
         }
         else if (submenuId == ADVANCED_SUBMENU) {
             UpdateSpacingMenuDisabledState();
@@ -505,12 +507,16 @@ class CLightRewriteSettings {
         LR_SetMenuOptionDisabled(SPACING_BUDGET, activeVar != SPACING_BUDGET);
     }
 
-    private function UpdatePlayerTorchMenuDisabledState() {
-        var disabled: bool = !playerTorch.enabled;
+    private function UpdateTorchMenuDisabledState() {
+        var playerDisabled: bool = !playerTorch.enabled;
+        var npcDisabled: bool = !npcTorch.enabled;
 
-        LR_SetMenuOptionDisabled(PLAYER_TORCH_BRIGHTNESS, disabled);
-        LR_SetMenuOptionDisabled(PLAYER_TORCH_RADIUS, disabled);
-        LR_SetMenuOptionDisabled(PLAYER_TORCH_ATTENUATION, disabled);
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_BRIGHTNESS, playerDisabled);
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_RADIUS, playerDisabled);
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_ATTENUATION, playerDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_BRIGHTNESS, npcDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_RADIUS, npcDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_ATTENUATION, npcDisabled);
     }
 
     // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
