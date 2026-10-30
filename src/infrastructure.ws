@@ -6,17 +6,3 @@ function LogLightRewrite(msg: string) {
 function LogLightRewriteXml(message: string) {
     LogChannel('LightRewriteXml', message);
 }
-
-// Sets the "disabled" state of a flash menu option, via a "disabled" tag in the dataArray.
-function LR_SetMenuOptionDisabled(
-    flashValueStorage: CScriptedFlashValueStorage,
-    out dataArray: CScriptedFlashArray,
-    xmlVarId: name,
-    disabled: bool
-) {
-    var dataObject: CScriptedFlashObject = flashValueStorage.CreateTempFlashObject();
-
-    dataObject.SetMemberFlashUInt("tag", NameToFlashUInt(xmlVarId));
-    dataObject.SetMemberFlashBool("disabled", disabled);
-    dataArray.PushBackFlashObject(dataObject);
-}

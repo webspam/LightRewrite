@@ -134,10 +134,6 @@ class CLightRewriteSettings {
         if (isEnabled) theGame.lightRewrite.RewriteAllLightSources();
     }
 
-    public function GetEnabledOptionId(): name {
-        return ENABLED;
-    }
-
     public function GetSpacingMode(): LR_ELightSpaceMode {
         switch (spacingMode) {
             case 1:   return LR_LSM_DistanceClamp;
@@ -406,6 +402,9 @@ class CLightRewriteSettings {
         if (IsTorchOption(optionName) || isEnabled != wasEnabled) {
             theGame.lightRewrite.RefreshEquippedLights();
         }
+        if (optionName == PLAYER_TORCH_ENABLED || optionName == NPC_TORCH_ENABLED) {
+            UpdateTorchMenuDisabledState();
+        }
         if (IsTorchOption(optionName)) return;
 
         if (groupId == advancedGroupId && optionName == SPACING_MODE) {
@@ -454,8 +453,13 @@ class CLightRewriteSettings {
     public function ConfigureModMenu(submenuId: string, recordBaseline: bool) {
         if (recordBaseline) RecordMenuBaseline();
 
-        if (submenuId == GENERAL_SUBMENU) ReplaceProfileMenuOptions();
-        else if (submenuId == ADVANCED_SUBMENU) UpdateSpacingMenuDisabledState();
+        if (submenuId == GENERAL_SUBMENU) {
+            ReplaceProfileMenuOptions();
+            UpdateTorchMenuDisabledState();
+        }
+        else if (submenuId == ADVANCED_SUBMENU) {
+            UpdateSpacingMenuDisabledState();
+        }
     }
 
     // Change detection: record the profile and spacing settings when the menu is opened
@@ -490,7 +494,6 @@ class CLightRewriteSettings {
         LR_ReplaceFlashMenuOptions(
             CURRENT_PROFILE,
             GetLocStringByKeyExt(CURRENT_PROFILE_LABEL),
-            GENERAL_GROUP,
             optionTexts,
             profileIndex
         );
@@ -498,32 +501,22 @@ class CLightRewriteSettings {
 
     // Ensures only the active mode's slider is enabled.
     private function UpdateSpacingMenuDisabledState() {
-        var flashValueStorage: CScriptedFlashValueStorage;
-        var dataArray: CScriptedFlashArray;
         var activeVar: name = GetActiveSpacingAmountVar();
 
-        flashValueStorage = theGame
-            .GetGuiManager()
-            .GetRootMenu()
-            .GetSubMenu()
-            .GetMenuFlashValueStorage();
-        dataArray = flashValueStorage.CreateTempFlashArray();
+        LR_SetMenuOptionDisabled(SPACING_COUNT, activeVar != SPACING_COUNT);
+        LR_SetMenuOptionDisabled(SPACING_BUDGET, activeVar != SPACING_BUDGET);
+    }
 
-        LR_SetMenuOptionDisabled(
-            flashValueStorage,
-            dataArray,
-            SPACING_COUNT,
-            activeVar != SPACING_COUNT
-        );
-        LR_SetMenuOptionDisabled(
-            flashValueStorage,
-            dataArray,
-            SPACING_BUDGET,
-            activeVar != SPACING_BUDGET
-        );
+    private function UpdateTorchMenuDisabledState() {
+        var playerDisabled: bool = !playerTorch.enabled;
+        var npcDisabled: bool = !npcTorch.enabled;
 
-        flashValueStorage.SetFlashArray("options.update_disabled", dataArray);
-        theGame.GetGuiManager().ForceProcessFlashStorage();
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_BRIGHTNESS, playerDisabled);
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_RADIUS, playerDisabled);
+        LR_SetMenuOptionDisabled(PLAYER_TORCH_ATTENUATION, playerDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_BRIGHTNESS, npcDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_RADIUS, npcDisabled);
+        LR_SetMenuOptionDisabled(NPC_TORCH_ATTENUATION, npcDisabled);
     }
 
     // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
