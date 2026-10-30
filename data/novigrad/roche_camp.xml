@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <!-- Roche Camp -->
+    <light_rewrite>
+      <!-- Camp-wide defaults -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\nvg_villages\roche_camp\</match>
+        </matches>
+
+        <!-- Various throughout camp -->
+        <override tag_name="LR_RocheCamp_torch_hand_long_complex"
+                  brightness="12.5"
+                  radius="5">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <!-- lights_exterior.w2l -->
+          <lum interior="false"
+               exterior="false" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- Large central campfire -->
+        <override tag_name="LR_RocheCamp_city_bouncelight_fire"
+                  brightness="80">
+          <match mode="exact">city_bouncelight_fire.w2ent</match>
+          <!-- lights_exterior.w2l -->
+        </override>
+
+        <!-- On walkway -->
+        <override tag_name="LR_RocheCamp_candleholder_small_melted_fake_shadow_complex"
+                  brightness="9.4">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <!-- lights_exterior.w2l -->
+        </override>
+
+        <!--  -->
+        <override tag_name="LR_RocheCamp_campfire_01_noshadow"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="0.95">
+          <match mode="exact">campfire_01_noshadow.w2ent</match>
+          <!-- loot.w2l -->
+        </override>
+
+        <!-- Wall torches in lookout walkways -->
+        <override tag_name="LR_RocheCamp_WallTorch"
+                  brightness="15"
+                  radius="5">
+          <match mode="exact">torch_wall_metal_bounce.w2ent</match>
+          <!-- lights_exterior.w2l -->
+        </override>
+
+        <!-- Forge, pig on a spit, and mini cave near entrance -->
+        <override tag_name="LR_RocheCamp_campfire_01"
+                  brightness="30"
+                  radius="5.5"
+                  attenuation="0.95">
+          <match mode="exact">campfire_01.w2ent</match>
+          <!-- gameplay.w2l -->
+        </override>
+
+        <!-- Forge fire -->
+        <override tag_name="LR_RocheCamp_ob_forge_px"
+                  brightness="22.5">
+          <match mode="exact">ob_forge_px.w2ent</match>
+          <!-- gameplay.w2l -->
+        </override>
+      </overrides>
+
+      <!-- Cave - env is problematic for brightness -->
+      <overrides profile_name="Default"
+                 weight="22">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\nvg_villages\roche_camp\roche_cave.w2l</match>
+        </matches>
+
+        <!-- Small campfire near Roche -->
+        <override tag_name="LR_RocheCamp_Cave_Campfire"
+                  brightness="17.5"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">campfire_01.w2ent</match>
+        </override>
+
+        <!-- Candle next to small campfire -->
+        <override tag_name="LR_RocheCamp_candle_small_group_melted_b_complex"
+                  brightness="3"
+                  radius="4">
+          <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+        </override>
+
+        <!-- Candle holder in back of cave -->
+        <override tag_name="LR_RocheCamp_candleholder_small_melted_fake_shadow_complex"
+                  brightness="3.5"
+                  radius="4">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+        </override>
+
+        <!-- Large campfire in back of cave -->
+        <override tag_name="LR_RocheCamp_campfire_02_cave"
+                  brightness="30"
+                  radius="6.5">
+          <match mode="exact">campfire_02_cave.w2ent</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
