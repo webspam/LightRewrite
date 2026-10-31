@@ -70,7 +70,10 @@ function LRDebug_GuessRewriterType(entity: CGameplayEntity): ELightRewriteType {
 }
 
 @addMethod(CGameplayEntity)
-public function LRDebug_UsesCandleRewriter(): bool {
+public function LRDebug_UsesFireFxOffset(type: name): bool {
+    if ((CFxAlignLightRewriter)lightSourceRewriter) return true;
+    if (type == 'spot') return false;
+
     return (CCandleLightRewriter)lightSourceRewriter ? true : false;
 }
 

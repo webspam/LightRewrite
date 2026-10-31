@@ -366,7 +366,7 @@ class LRDebug_AttributeEditor {
                 break;
 
             case 'alignOffsetZ':
-                if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
+                if (target.LRDebug_UsesFireFxOffset(type)) {
                     if (!params.alignPointLights.has) {
                         params.alignPointLights.has = true;
                         params.alignPointLights.value = true;
@@ -491,7 +491,7 @@ class LRDebug_AttributeEditor {
         dx *= scale;
         dy *= scale;
 
-        if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
+        if (target.LRDebug_UsesFireFxOffset(type)) {
             if (!params.alignPointLights.has) {
                 params.alignPointLights.has = true;
                 params.alignPointLights.value = true;
@@ -531,7 +531,7 @@ class LRDebug_AttributeEditor {
         params = target.LRDebug_GetParams(rewriter);
         type = GetSelectedLightType(target);
 
-        if (type != 'spot' && target.LRDebug_UsesCandleRewriter()) {
+        if (target.LRDebug_UsesFireFxOffset(type)) {
             changed = params.pointLightOffset != vectorZero || !params.alignPointLights.has;
 
             params.pointLightOffset = vectorZero;
