@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- The Adder & Jewels Winery -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">dlc\bob\data\levels\bob\locations\city_of_beauclair\upper_city\east\blockout\adder_winery\lights.w2l</match>
+        </matches>
+
+        <!-- Small candleholder with snuffer -->
+        <override tag_name="LR_AdderWinery_CandleholderSmall"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">gen_rich_candleholder_a_3lights.w2ent</match>
+          <spotlight index="0"
+                     innerAngle="257"
+                     outerAngle="335" />
+        </override>
+
+        <!-- Wall Candleholder - Spotlight only -->
+        <override tag_name="LR_AdderWinery_WallCandleholderSpotlight"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">gen_poor_candleholder_wall_b_no_shadow.w2ent</match>
+          <spotlight brightness="5"
+                     radius="5"
+                     innerAngle="250"
+                     outerAngle="334">
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight>
+        </override>
+
+        <!-- Wall Candleholder - Next to the Bar -->
+        <override tag_name="LR_AdderWinery_gen_poor_candleholder_wall_b_3lights"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">gen_poor_candleholder_wall_b_3lights.w2ent</match>
+          <lum exclude_scene="true" />
+          <spotlight index="0"
+                     brightness="5"
+                     radius="4.25"
+                     attenuation="1"
+                     innerAngle="302"
+                     outerAngle="338">
+            <lum exclude_scene="false" />
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight>
+          <spotlight index="1">
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- Candleabra at the Bar -->
+        <override tag_name="LR_AdderWinery_gen_rich_candelabra_table_3lights"
+                  brightness="3.75"
+                  radius="2.5"
+                  attenuation="1">
+          <match mode="exact">gen_rich_candelabra_table_3lights.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="0.68" />
+          <spotlight index="0"
+                     brightness="4.75"
+                     radius="5"
+                     attenuation="1"
+                     innerAngle="295"
+                     outerAngle="340">
+            <offset x="0.1965"
+                    y="0.0045"
+                    z="0.61" />
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight>
+          <spotlight index="1"
+                     brightness="4.75"
+                     radius="5"
+                     attenuation="1"
+                     innerAngle="290"
+                     outerAngle="335">
+            <offset x="-0.200598"
+                    y="0.008722"
+                    z="0.6" />
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight>
+        </override>
+
+        <!-- Candleabra on a Stick -->
+        <override tag_name="LR_AdderWinery_gen_rich_candelabra_standing_3lights"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">gen_rich_candelabra_standing_3lights.w2ent</match>
+          <spotlight index="0"
+                     brightness="11.49"
+                     attenuation="0.95"
+                     innerAngle="195"
+                     outerAngle="338">
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.05" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
