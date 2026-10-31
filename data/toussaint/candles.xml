@@ -12,7 +12,7 @@
 
         <override tag_name="LR_Toussaint_CandleWallBNoShadow"
                   label="toussaint_candle_wall_b_noshadow"
-                  rewriter_type="LRT_Spotlight">
+                  rewriter_type="LRT_FxAlign">
           <match mode="exact">gen_poor_candleholder_wall_b_no_shadow.w2ent</match>
         </override>
 
