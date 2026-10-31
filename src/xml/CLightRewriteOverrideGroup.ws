@@ -8,20 +8,20 @@ class CLightRewriteOverrideGroup {
     public var overrides: array<CLightRewriteSourceParams>;
 
     public function Apply(
-        entity: CGameplayEntity,
+        target: CLightRewriteMatchTarget,
         params: CLightRewriteSourceParams
     ): CLightRewriteSourceParams {
         var override: CLightRewriteSourceParams;
         var i, count: int;
 
-        if (!filter.Matches(entity)) return params;
+        if (!filter.Matches(target)) return params;
 
         count = overrides.Size();
         for (i = 0; i < count; i += 1) {
             override = overrides[i];
-            if (!override.condition.Matches(entity)) continue;
+            if (!override.condition.Matches(target)) continue;
 
-            if (!params) params = new CLightRewriteSourceParams in entity;
+            if (!params) params = new CLightRewriteSourceParams in target.entity;
             override.ApplyTo(params);
 
             // TODO: Determine if we want tags from all merged overrides

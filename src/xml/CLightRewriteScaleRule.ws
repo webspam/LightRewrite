@@ -14,13 +14,13 @@ class CLightRewriteScaleRule extends ILightRewriteMatchRule {
     default matchValue = LR_Scale_Unscaled;
     default scale = 1.0;
 
-    public function Matches(entity: CGameplayEntity): bool {
-        var entityScale: Vector = entity.GetLocalScale();
+    public function Matches(target: CLightRewriteMatchTarget): bool {
+        var entityScale: Vector = target.entity.GetLocalScale();
         var sum: float = entityScale.X + entityScale.Y + entityScale.Z;
-        var target: float = scale * 3.0;
+        var scaleSum: float = scale * 3.0;
 
-        if (AbsF(sum - target) <= AXIS_TOLERANCE * 3.0) return matchValue == LR_Scale_Unscaled;
-        if (sum > target) return matchValue == LR_Scale_Larger;
+        if (AbsF(sum - scaleSum) <= AXIS_TOLERANCE * 3.0) return matchValue == LR_Scale_Unscaled;
+        if (sum > scaleSum) return matchValue == LR_Scale_Larger;
         return matchValue == LR_Scale_Smaller;
     }
 }

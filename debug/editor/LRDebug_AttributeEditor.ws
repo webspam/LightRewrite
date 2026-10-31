@@ -921,6 +921,7 @@ class LRDebug_AttributeEditor {
         var match: CLightRewriteMatchAll;
         var entities: array<CEntity>;
         var entity: CGameplayEntity;
+        var matchTarget: CLightRewriteMatchTarget;
         var i, count: int;
 
         if (groupEditTarget == target) return;
@@ -928,32 +929,36 @@ class LRDebug_AttributeEditor {
         groupEditTarget = target;
         groupMembers.Clear();
 
-        match = BuildGroupMatch(target);
+        matchTarget = new CLightRewriteMatchTarget in this;
+        matchTarget.Init(target);
+        match = BuildGroupMatch(matchTarget);
         theGame.GetEntitiesByTag(theGame.lightRewrite.TAG_HAS_LIGHT, entities);
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
             entity = (CGameplayEntity)entities[i];
             if (!entity || entity == target) continue;
-            if (!match.Matches(entity)) continue;
+
+            matchTarget.Init(entity);
+            if (!match.Matches(matchTarget)) continue;
             groupMembers.PushBack(entity);
         }
     }
 
-    private function BuildGroupMatch(target: CGameplayEntity): CLightRewriteMatchAll {
+    private function BuildGroupMatch(matchTarget: CLightRewriteMatchTarget): CLightRewriteMatchAll {
         var match: CLightRewriteMatchAll = new CLightRewriteMatchAll in this;
         var entityRule, layerRule: CLightRewriteMatchRule;
 
         entityRule = new CLightRewriteMatchRule in match;
         entityRule.matchType = LR_Match_Entity;
         entityRule.matchMode = LR_Match_Exact;
-        entityRule.matchValue = entityRule.GetSubject(target);
+        entityRule.matchValue = matchTarget.entityFile;
         match.rules.PushBack(entityRule);
 
         layerRule = new CLightRewriteMatchRule in match;
         layerRule.matchType = LR_Match_Layer;
         layerRule.matchMode = LR_Match_Exact;
-        layerRule.matchValue = layerRule.GetSubject(target);
+        layerRule.matchValue = matchTarget.layerPath;
         match.rules.PushBack(layerRule);
 
         return match;
