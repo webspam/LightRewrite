@@ -48,6 +48,7 @@ class CFxAlignLightRewriter extends IFireFxLightRewriter {
         ApplySpotOverrides();
 
         if (alignToFireFx) {
+            components.Clear();
             components = parentEntity.GetComponentsByClassName('CSpotLightComponent');
             count = components.Size();
             for (i = 0; i < count; i += 1) {
