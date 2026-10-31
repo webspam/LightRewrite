@@ -49,6 +49,14 @@
           <xs:documentation>Declare at most once per profile, even when the profile is split across files. A redeclaration replaces the earlier list entirely, and which one is read last is engine-controlled; the build rejects duplicates.</xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="transport"
+                  type="transportListType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Comma-separated list of light transports this group applies to: `pathtracing`, `raytracing`, and `raster`. Invalid entries are ignored. Re-evaluated when the light transport changes.</xs:documentation>
+          <xs:documentation>Default: all transports.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="matches"
                   type="sharedMatchesType"
                   minOccurs="0">
@@ -81,6 +89,12 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+
+  <xs:simpleType name="transportListType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\s*(raster|raytracing|pathtracing)\s*(,\s*(raster|raytracing|pathtracing)\s*)*" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:complexType name="sharedMatchesType">
     <xs:annotation>
