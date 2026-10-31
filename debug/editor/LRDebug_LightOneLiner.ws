@@ -156,6 +156,10 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
                 return "?";
 
             case 'alignOffsetZ':
+                if (entity.LRDebug_UsesFireFxOffset(type)) {
+                    if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
+                    return FloatToString(valF);
+                }
                 if (type == 'spot') {
                     if (spotlight && spotlight.offset.has) {
                         valF = spotlight.offset.value.Z;
@@ -166,11 +170,7 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
                     }
                     return FloatToString(valF);
                 }
-                if (entity.LRDebug_UsesCandleRewriter()) {
-                    if (params && params.alignPointLights.has) valF = params.pointLightOffset.Z;
-                    else valF = 0.0;
-                }
-                else if (lightParams && lightParams.offset.has) {
+                if (lightParams && lightParams.offset.has) {
                     valF = lightParams.offset.value.Z;
                 }
                 else if (light) {
