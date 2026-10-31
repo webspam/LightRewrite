@@ -357,7 +357,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="LRT_None" />
       <xs:enumeration value="LRT_Candle" />
-      <xs:enumeration value="LRT_Spotlight" />
+      <xs:enumeration value="LRT_FxAlign" />
     </xs:restriction>
   </xs:simpleType>
 
