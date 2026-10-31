@@ -5,7 +5,8 @@ statemachine class LRDebug_UnalteredMarkers extends LRDebug_MarkerPool {
     private const var COLOUR         : string;  default COLOUR = "#e4461a";
     private const var SCREEN_OFFSET_Y: float;   default SCREEN_OFFSET_Y = 40.0;
 
-    private var entities: array<CGameplayEntity>;
+    private var entities       : array<CGameplayEntity>;
+    private var registeredGuids: map<CGUID, bool>;
     private var visible: bool;  default visible = true;
     private var tracking: bool;
 
@@ -78,18 +79,11 @@ statemachine class LRDebug_UnalteredMarkers extends LRDebug_MarkerPool {
     }
 
     private function Register(entity: CGameplayEntity) {
-        var i, count: int;
+        var guid: CGUID = entity.guid;
 
-        if (entities.Contains(entity)) return;
+        if (registeredGuids.Contains(guid)) return;
 
-        count = entities.Size();
-        for (i = 0; i < count; i += 1) {
-            if (!entities[i]) {
-                entities[i] = entity;
-                return;
-            }
-        }
-
+        registeredGuids[guid] = true;
         AddMarker(GLYPH, FONT_SIZE, COLOUR);
         entities.PushBack(entity);
     }
