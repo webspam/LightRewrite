@@ -7,6 +7,11 @@ class CCandleLightRewriter extends IFireFxLightRewriter {
 
         super.ProcessDeferredActions();
 
+        if (!LR_HasPointLight(parentEntity)) {
+            RewriteSpotlight(p);
+            return;
+        }
+
         ApplySpotOverrides(!p.spotlight);
     }
 
@@ -24,6 +29,14 @@ class CCandleLightRewriter extends IFireFxLightRewriter {
             'CPointLightComponent'
         );
         var count: int = components.Size();
+
+        // Candles that have no point lights
+        if (count == 0) {
+            RewriteSpotlight(p);
+            ApplyForceCastShadows();
+            ApplyDefaultState();
+            return;
+        }
 
         // Clusters of candles emit most of their light via a single spotlight.
         // The point lights are used to balance the pre-RT fake scene lighting (blue), so they end up being extremely red with RT on.
@@ -66,11 +79,37 @@ class CCandleLightRewriter extends IFireFxLightRewriter {
             }
         }
 
-        // Remove spotlights from candles that have point lights (should be all candles),
-        // unless a spotlight override is configured - in that case, apply it instead.
-        ApplySpotOverrides(count > 0 && !p.spotlight);
+        // Remove spotlights from candles that have point lights, unless a spotlight override is
+        // configured - in that case, apply it instead.
+        ApplySpotOverrides(!p.spotlight);
 
         ApplyForceCastShadows();
         ApplyDefaultState();
+    }
+
+    // Base game candles with no point lights only ever have one spotlight
+    private function RewriteSpotlight(p: CLightRewriteSourceParams) {
+        var spotLight: CSpotLightComponent;
+        var wasEnabled: bool;
+
+        spotLight = (CSpotLightComponent)parentEntity.GetComponentByClassName(
+            'CSpotLightComponent'
+        );
+        if (spotLight) {
+            spotLight.SaveLightRewriteOriginalValues();
+
+            wasEnabled = spotLight.IsEnabled();
+            if (wasEnabled) spotLight.SetEnabled(false);
+
+            ApplyLightParams(spotLight, p);
+
+            if (p.alignPointLights.has && p.alignPointLights.value) {
+                AlignLightToFireFxSlot(0, spotLight);
+            }
+
+            if (wasEnabled) spotLight.SetEnabled(true);
+        }
+
+        ApplySpotOverrides();
     }
 }

@@ -45,12 +45,7 @@ class CLightRewriteManager {
 
         switch (params.rewriterType.value) {
             case LRT_Candle:
-                if (LR_HasPointLight(entity)) {
-                    rewriter = new CCandleLightRewriter in entity;
-                }
-                else {
-                    rewriter = new CSpotlightLightRewriter in entity;
-                }
+                rewriter = new CCandleLightRewriter in entity;
                 break;
             case LRT_Spotlight:
                 rewriter = new CSpotlightLightRewriter in entity;
