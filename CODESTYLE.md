@@ -66,7 +66,8 @@ for (i = 0; i < count; i += 1) {
 
 ## Miscellaneous
 
-- A short body sits inline without braces (`if (wasEnabled) light.SetEnabled(false);`); compound bodies take braces
+- A short body sits inline without braces (`if (wasEnabled) light.SetEnabled(false);`)
+  - Use braces for anything non-trivial, e.g. condition with >3 idents / keywords
 - Prefer `switch` with `default` when there are more than two branches
 
 ## One return value
