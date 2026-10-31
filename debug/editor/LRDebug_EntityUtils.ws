@@ -129,7 +129,7 @@ function RewriteLight() {
     inOriginalState = false;
 }
 
-@wrapMethod(CSpotlightLightRewriter)
+@wrapMethod(CFxAlignLightRewriter)
 function RewriteLight() {
     wrappedMethod();
     inOriginalState = false;

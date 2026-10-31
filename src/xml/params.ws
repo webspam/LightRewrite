@@ -274,9 +274,9 @@ function ParseLightRewriteVector(
 
 function ParseLightRewriteType(str: string): ELightRewriteType {
     switch (str) {
-        case "LRT_Candle":     return LRT_Candle;
-        case "LRT_Spotlight":  return LRT_Spotlight;
-        default:               return LRT_None;
+        case "LRT_Candle":   return LRT_Candle;
+        case "LRT_FxAlign":  return LRT_FxAlign;
+        default:             return LRT_None;
     }
 }
 

@@ -2,7 +2,7 @@ enum ELightRewriteType {
     LRT_None,
     LRT_Unknown,
     LRT_Candle,
-    LRT_Spotlight
+    LRT_FxAlign
 }
 
 // The Light Rewrite module singleton.
