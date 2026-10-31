@@ -61,7 +61,7 @@
                   type="sharedMatchesType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>Match filters shared by every override in this group, ANDed into each override's own filters. When present, must be the first child, before any override.</xs:documentation>
+          <xs:documentation>Match filters shared by every override in this group. Treated as if it was written on every override in this group (logical AND).</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="override"
