@@ -57,7 +57,7 @@ class CFxAlignLightRewriter extends IFireFxLightRewriter {
                 light = (CLightComponent)components[i];
                 if (!light || !IsRenderedInScene(light)) continue;
 
-                spotParams = p.GetEffectiveSpotLightParams(i);
+                spotParams = p.GetSpotLightParams(i);
                 if (!spotParams || !spotParams.offset.has) {
                     AlignLightToFireFxSlot(slotIndex, light);
                 }
