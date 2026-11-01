@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Ultra: Kingfisher - PT Only -->
+      <overrides profile_name="Ultra"
+                 weight="23">
+        <transport>pathtracing</transport>
+        <matches>
+          <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
+        </matches>
+
+        <!-- Candelabra -->
+        <override tag_name="LR_UltraPT_Kingfisher_CandelabraComplex"
+                  rewriter_type="LRT_FxAlign">
+          <any>
+            <match>candelabra_complex</match>
+            <match mode="exact">candelabra.w2ent</match>
+          </any>
+          <lum exclude_scene="true" />
+          <spotlight brightness="10.23"
+                     radius="5"
+                     attenuation="1"
+                     innerAngle="268"
+                     outerAngle="350"
+                     softness="0.45">
+            <colour r="255"
+                    g="250"
+                    b="245" />
+            <lum exclude_scene="false" />
+          </spotlight>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+        </override>
+
+        <override tag_name="LR_UltraPT_Kingfisher_CandleHolderFancy"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+          <lum exclude_scene="true" />
+          <spotlight brightness="2"
+                     attenuation="1"
+                     innerAngle="255"
+                     outerAngle="330"
+                     softness="0.8">
+            <lum exclude_scene="false" />
+            <colour r="255"
+                    g="250"
+                    b="245" />
+          </spotlight>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+        </override>
+
+        <!-- Candelabra on a Stick - Penthouse -->
+        <override tag_name="LR_UltraPT_Kingfisher_Penthouse_CandleabraOnAStick"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">candelabra_standing_complex.w2ent</match>
+          <!-- building\lights.w2l -->
+          <lum exclude_scene="true" />
+
+          <!-- TODO: RT Shadows Quality only -->
+          <spotlight brightness="9.52"
+                     radius="5.5"
+                     attenuation="1"
+                     innerAngle="280"
+                     outerAngle="342.5">
+            <lum exclude_scene="false" />
+            <colour r="255"
+                    g="250"
+                    b="245" />
+          </spotlight>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
