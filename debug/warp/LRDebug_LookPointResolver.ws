@@ -60,12 +60,12 @@ class LRDebug_LookPointResolver {
         slots.PushBack('fire');
         slots.PushBack('fire1');
         slots.PushBack('fire2');
-        slots.PushBack('fire3');
-        slots.PushBack('fire4');
         slots.PushBack('fx');
         slots.PushBack('fx1');
         slots.PushBack('fx2');
-        slots.PushBack('fx3');
+        slots.PushBack('candle01');
+        slots.PushBack('candle02');
+        slots.PushBack('light_point');
         return slots;
     }
 }
