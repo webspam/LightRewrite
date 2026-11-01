@@ -7,6 +7,8 @@ class LRDebug_HudLabel {
     protected var flash : CScriptedFlashSprite;
     protected var sprite: CScriptedFlashSprite;
 
+    private var textField: CScriptedFlashObject;
+
     protected var created  : bool;
     protected var isVisible: bool;
 
@@ -27,6 +29,7 @@ class LRDebug_HudLabel {
         fxCreate.InvokeSelfTwoArgs(FlashArgInt(this.id), FlashArgString(this.text));
 
         this.sprite = this.flash.GetChildFlashSprite("mcOneliner" + this.id);
+        this.textField = this.sprite.GetMemberFlashObject("textField");
         this.created = true;
 
         // A fresh oneliner shows itself; honour our tracked state instead.
@@ -48,10 +51,15 @@ class LRDebug_HudLabel {
 
         this.text = newText;
 
-        if (!created) return;
+        if (created) ApplyText();
+    }
 
-        Remove();
-        Create();
+    private function ApplyText() {
+        this.textField.SetMemberFlashString("htmlText", this.text);
+        this.textField.SetMemberFlashNumber(
+            "y",
+            -this.textField.GetMemberFlashNumber("textHeight")
+        );
     }
 
     protected function SetScreenPosition(x: float, y: float) {
