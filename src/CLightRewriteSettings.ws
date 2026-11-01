@@ -128,10 +128,10 @@ class CLightRewriteSettings {
     }
 
     public function ApplyLightTransportChange() {
-        if (!RefreshLightTransport()) return;
+        if (!isEnabled || !RefreshLightTransport()) return;
 
         UpdateBrightnessBoost();
-        if (isEnabled) theGame.lightRewrite.RewriteAllLightSources();
+        theGame.lightRewrite.ChangeProfile();
     }
 
     public function GetSpacingMode(): LR_ELightSpaceMode {
@@ -415,6 +415,11 @@ class CLightRewriteSettings {
         if (isEnabled != wasEnabled && !isEnabled) {
             theGame.lightRewrite.DisableLightRewrite();
         }
+        // Mod just turned on, and the light transport has changed
+        else if (isEnabled && !wasEnabled && RefreshLightTransport()) {
+            UpdateBrightnessBoost();
+            theGame.lightRewrite.ChangeProfile();
+        }
         // Some change was made, and the mod is enabled
         else if (isEnabled) {
             theGame.lightRewrite.RewriteAllLightSources();
@@ -552,7 +557,7 @@ class CLightRewriteSettings {
         matchTarget = new CLightRewriteMatchTarget in this;
         matchTarget.Init(entity);
 
-        params = profile.FindParams(matchTarget);
+        params = profile.FindParams(matchTarget, lightTransport);
         delete matchTarget;
 
         return params;

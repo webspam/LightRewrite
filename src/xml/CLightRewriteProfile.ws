@@ -10,14 +10,18 @@ class CLightRewriteProfile {
 
     private var matchCache: map<string, CLightRewriteMatchedOverrides>;
 
-    public function FindParams(target: CLightRewriteMatchTarget): CLightRewriteSourceParams {
-        return GetMatchedOverrides(target).Apply(target);
+    public function FindParams(
+        target: CLightRewriteMatchTarget,
+        transport: ELightRewriteLightTransport
+    ): CLightRewriteSourceParams {
+        return GetMatchedOverrides(target, transport).Apply(target);
     }
 
     private function GetMatchedOverrides(
-        target: CLightRewriteMatchTarget
+        target: CLightRewriteMatchTarget,
+        transport: ELightRewriteLightTransport
     ): CLightRewriteMatchedOverrides {
-        var key: string = target.layerPath + CACHE_KEY_SEPARATOR + target.entityFile;
+        var key: string = target.layerPath + CACHE_KEY_SEPARATOR + target.entityFile + CACHE_KEY_SEPARATOR + (int)transport;
         var matched: CLightRewriteMatchedOverrides;
         var i, count: int;
 
@@ -27,6 +31,8 @@ class CLightRewriteProfile {
 
         count = groups.Size();
         for (i = 0; i < count; i += 1) {
+            if (!groups[i].transports.Contains(transport)) continue;
+
             groups[i].CollectMatches(target, matched);
         }
 

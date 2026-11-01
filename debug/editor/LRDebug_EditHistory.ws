@@ -118,6 +118,7 @@ class LRDebug_EditHistory {
     private function RestoreEntry(record: LRDebug_EditEntry) {
         var entity: CGameplayEntity;
         var rewriter: ILightSourceRewriter;
+        var snapshot: CLightRewriteSourceParams;
         var i, count: int;
 
         count = record.entities.Size();
@@ -126,11 +127,42 @@ class LRDebug_EditHistory {
             if (!entity) continue;
 
             rewriter = entity.LRDebug_GetOrCreateRewriter();
-            entity.lrDebugParams = CloneParams(record.snapshots[i], entity);
-            rewriter.LRDebug_SetMenuOverrideParams(entity.lrDebugParams);
+            snapshot = record.snapshots[i];
+
+            if (IsUneditedWithoutHistory(entity, snapshot)) {
+                rewriter.LRDebug_ClearMenuOverrideParams();
+                entity.LRDebug_ClearDebugParams();
+            }
+            else {
+                entity.LRDebug_GetParams(rewriter);
+                entity.lrDebugParams = CloneParams(snapshot, entity);
+                rewriter.LRDebug_SetMenuOverrideParams(entity.lrDebugParams);
+            }
+
             rewriter.RestoreOriginalState();
             rewriter.RewriteLight();
         }
+    }
+
+    private function IsUneditedWithoutHistory(
+        entity: CGameplayEntity,
+        snapshot: CLightRewriteSourceParams
+    ): bool {
+        if (HasUndoStep(entity)) return false;
+        if (!entity.lrDebugBaseline) return true;
+
+        return LRDebug_BuildEditedFields(snapshot, entity.lrDebugBaseline) == "";
+    }
+
+    private function HasUndoStep(entity: CGameplayEntity): bool {
+        var i, count: int;
+
+        count = entries.Size();
+        for (i = 0; i < count; i += 1) {
+            if (entries[i].entities.Contains(entity)) return true;
+        }
+
+        return false;
     }
 
     /** Decouple the stored snapshot from the live params so later edits can't mutate it */

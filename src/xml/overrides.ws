@@ -72,6 +72,10 @@ function LoadLightRewriteOverrideGroup(
         group.inherits.PushBack(inheritsNode.values[i]);
     }
 
+    group.transports = ParseLightRewriteTransports(
+        dm.GetCustomDefinitionSubNode(overridesNode, 'transport')
+    );
+
     matchesNode = dm.GetCustomDefinitionSubNode(overridesNode, 'matches');
     if (matchesNode.nodeName == 'matches') {
         ParseLightRewriteMatchRules(dm, matchesNode, group.filter, true);
@@ -130,6 +134,47 @@ function LoadLightRewriteOverrideGroup(
     }
 
     return group;
+}
+
+function ParseLightRewriteTransports(transportNode: SCustomNode): array<ELightRewriteLightTransport> {
+    var transports: array<ELightRewriteLightTransport>;
+    var transport: ELightRewriteLightTransport;
+    var i, count: int;
+
+    if (transportNode.nodeName != 'transport') {
+        transports.PushBack(LR_Transport_Raster);
+        transports.PushBack(LR_Transport_RT);
+        transports.PushBack(LR_Transport_PT);
+        return transports;
+    }
+
+    count = transportNode.values.Size();
+    for (i = 0; i < count; i += 1) {
+        if (!ParseLightRewriteTransport(transportNode.values[i], transport)) {
+            LogLightRewriteXml("Ignoring invalid transport '" + transportNode.values[i] + "'.");
+            continue;
+        }
+
+        if (!transports.Contains(transport)) transports.PushBack(transport);
+    }
+
+    return transports;
+}
+
+function ParseLightRewriteTransport(value: name, out transport: ELightRewriteLightTransport): bool {
+    switch (NameToString(value)) {
+        case "raster":
+            transport = LR_Transport_Raster;
+            return true;
+        case "raytracing":
+            transport = LR_Transport_RT;
+            return true;
+        case "pathtracing":
+            transport = LR_Transport_PT;
+            return true;
+        default:
+            return false;
+    }
 }
 
 /** Sorts override groups ascending by weight using insertion sort (stable, O(n²)). */
