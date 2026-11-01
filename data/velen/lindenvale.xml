@@ -9,8 +9,7 @@
           <match type="layer"
                  mode="exact">levels\novigrad\descent\de23_cemetery\lights.w2l</match>
         </matches>
-        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplex"
-                  label="lindenvale_cemetary_candle_group_complex">
+        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplex">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
           <light index="0"
                  radius="3" />
@@ -18,8 +17,7 @@
                  radius="1.25" />
         </override>
 
-        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplex"
-                  label="lindenvale_cemetary_candle_group_complex">
+        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplexC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="0"
                  radius="3" />
@@ -29,14 +27,12 @@
                  radius="1.25" />
         </override>
 
-        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplex"
-                  label="lindenvale_cemetary_candle_group_complex"
+        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplexB"
                   radius="3">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
         </override>
 
-        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplex"
-                  label="lindenvale_cemetary_candle_group_complex">
+        <override tag_name="LR_Lindenvale_Cemetary_CandleGroupComplexD">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="0"
                  radius="3" />
