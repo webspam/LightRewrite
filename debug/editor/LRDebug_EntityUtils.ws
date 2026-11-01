@@ -139,6 +139,12 @@ function RewriteLight() {
 }
 
 @wrapMethod(ILightSourceRewriter)
+function Init(parentEntity: CGameplayEntity, params: CLightRewriteSourceParams) {
+    wrappedMethod(parentEntity, params);
+    overrideParams = parentEntity.lrDebugParams;
+}
+
+@wrapMethod(ILightSourceRewriter)
 function RestoreOriginalState() {
     wrappedMethod();
     inOriginalState = true;
