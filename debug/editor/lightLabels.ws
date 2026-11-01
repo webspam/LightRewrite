@@ -192,6 +192,7 @@ timer function LRDebug_RefreshOnelinersTimer(dt: float, id: int) {
 
     if (
         lrDebugTargeting.IsLocked() ||
+        lrDebugAdjusting ||
         theInput.IsActionPressed('LRDebug_CtrlModifier')
     ) {
         return;
