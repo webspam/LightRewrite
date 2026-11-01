@@ -89,21 +89,21 @@
         </override>
 
         <!-- Candle next to small campfire -->
-        <override tag_name="LR_RocheCamp_candle_small_group_melted_b_complex"
+        <override tag_name="LR_RocheCamp_Cave_CandleGroup"
                   brightness="3"
                   radius="4">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
         </override>
 
         <!-- Candle holder in back of cave -->
-        <override tag_name="LR_RocheCamp_candleholder_small_melted_fake_shadow_complex"
+        <override tag_name="LR_RocheCamp_Cave_Candleholder"
                   brightness="3.5"
                   radius="4">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
         </override>
 
         <!-- Large campfire in back of cave -->
-        <override tag_name="LR_RocheCamp_campfire_02_cave"
+        <override tag_name="LR_RocheCamp_Cave_LargeCampfire"
                   brightness="30"
                   radius="6.5">
           <match mode="exact">campfire_02_cave.w2ent</match>

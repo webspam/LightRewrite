@@ -9,22 +9,19 @@
           <match type="layer"
                  mode="exact">dlc\ep1\levels\novigrad\locations\poi\graveyard\lights.w2l</match>
         </matches>
-        <override tag_name="LR_UpperMill_Church_CandleC"
-                  label="upper_mill_church_candle_c">
+        <override tag_name="LR_UpperMill_Church_CandleC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="0"
                  radius="6.5" />
         </override>
 
         <override tag_name="LR_UpperMill_Church_CandleB"
-                  label="upper_mill_church_candle_b"
                   radius="6.5">
           <match mode="exact">candle_med_b_complex.w2ent</match>
         </override>
 
         <!-- Candleholder - Large B -->
         <override tag_name="LR_UpperMill_Church_CandleHolderB"
-                  label="upper_mill_church_candle_holder_b"
                   brightness="9"
                   radius="5.5"
                   attenuation="1">
@@ -36,7 +33,6 @@
 
         <!-- Candleholder - Large A -->
         <override tag_name="LR_UpperMill_Church_CandleHolderA"
-                  label="upper_mill_church_candle_holder_a"
                   rewriter_type="LRT_Candle"
                   brightness="3.3">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
@@ -55,8 +51,7 @@
         </override>
 
         <!-- Hanging Lamp - Pointlight has wrong LUM -->
-        <override tag_name="LR_HoSPoI_Graveyard_HangingLamp"
-                  label="hos_poi_graveyard_hanging_lamp">
+        <override tag_name="LR_HoSPoI_Graveyard_HangingLamp">
           <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
           <spotlight brightness="15">
             <offset x="0"
@@ -70,7 +65,6 @@
       <overrides profile_name="Default"
                  weight="20">
         <override tag_name="LR_UpperMill_TorchHand"
-                  label="upper_mill_torch_hand"
                   radius="5">
           <match mode="exact">torch_hand.w2ent</match>
           <match type="layer"
@@ -80,8 +74,7 @@
 
       <overrides profile_name="Default"
                  weight="20">
-        <override tag_name="LR_UpperMill_LampStanding"
-                  label="upper_mill_lamp_standing"
+        <override tag_name="LR_UpperMill_Church_LampStanding"
                   brightness="15"
                   radius="5"
                   attenuation="1">

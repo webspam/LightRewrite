@@ -34,7 +34,7 @@
                    fade_range="20" />
         </override>
 
-        <override tag_name="LR_Chandelier"
+        <override tag_name="LR_Wyzima_Chandelier"
                   label="chandelier"
                   brightness="65"
                   radius="15"

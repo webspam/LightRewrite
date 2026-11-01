@@ -29,7 +29,7 @@
         </override>
 
         <!-- Hanging lamps -->
-        <override tag_name="LR_HangingLamp"
+        <override tag_name="LR_WhiteOrchard_HangingLamp"
                   label="hanging_lamp"
                   radius="5"
                   attenuation="1">
@@ -46,7 +46,7 @@
           <match mode="contains">campfire</match>
         </override>
         <!-- Braziers -->
-        <override tag_name="LR_Brazier"
+        <override tag_name="LR_WhiteOrchard_Brazier"
                   label="brazier"
                   brightness="40"
                   radius="10"
@@ -58,7 +58,7 @@
         </override>
 
         <!-- Candelabras -->
-        <override tag_name="LR_Candelabra"
+        <override tag_name="LR_WhiteOrchard_Candelabra"
                   label="candelabra"
                   brightness="8"
                   radius="10"
@@ -70,7 +70,7 @@
         </override>
 
         <!-- Campfires -->
-        <override tag_name="LR_Campfire"
+        <override tag_name="LR_WhiteOrchard_Campfire"
                   label="campfire"
                   brightness="50"
                   radius="12"
@@ -82,7 +82,7 @@
         </override>
 
         <!-- Chandeliers -->
-        <override tag_name="LR_Chandelier"
+        <override tag_name="LR_WhiteOrchard_Chandelier"
                   label="chandelier"
                   brightness="12"
                   radius="18"
