@@ -28,15 +28,6 @@
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
         </override>
 
-        <!-- Counter Candle - light cookie bleeds through counter -->
-        <override tag_name="LR_WhiteOrchard_Tavern_Counter_Candle"
-                  label="white_orchard_tavern_counter_candle">
-          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
-          <fire_fx_offset x="0"
-                          y="0"
-                          z="0.24" />
-        </override>
-
         <!-- Rear table - light cookie bleeds through table -->
         <override tag_name="LR_3BL2s5qc_candle_small_group_melted_c_complex_2"
                   label="edited_candle_small_group_melted_c_complex_w2ent">
@@ -44,6 +35,17 @@
           <fire_fx_offset x="0"
                           y="0"
                           z="0.21" />
+        </override>
+
+        <!-- Counter Candle - light cookie bleeds through counter -->
+        <override tag_name="LR_WhiteOrchard_Tavern_Counter_Candle"
+                  label="white_orchard_tavern_counter_candle">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <match type="layer"
+                 mode="endsWith">decorations.w2l</match>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.24" />
         </override>
       </overrides>
     </light_rewrite>
