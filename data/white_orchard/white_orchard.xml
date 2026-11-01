@@ -39,12 +39,6 @@
                   z="-0.09" />
         </override>
 
-        <!-- Campfires -->
-        <override tag_name="LR_WhiteOrchard_Campfire"
-                  label="white_orchard_campfire"
-                  brightness="50">
-          <match mode="contains">campfire</match>
-        </override>
         <!-- Braziers -->
         <override tag_name="LR_WhiteOrchard_Brazier"
                   label="brazier"
