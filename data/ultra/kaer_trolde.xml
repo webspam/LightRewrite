@@ -12,7 +12,7 @@
         </matches>
 
         <!-- Wall torch -->
-        <override tag_name="LR_KaerTrolde_CastlePath_WallTorch"
+        <override tag_name="LR_Ultra_KaerTrolde_CastlePath_WallTorch"
                   label="kaer_trolde_castle_path_wall_torch"
                   radius="6.5"
                   attenuation="1">
@@ -29,7 +29,7 @@
         </matches>
 
         <!-- Round wall brazier -->
-        <override tag_name="LR_KaerTrolde_BrazierRoundWall"
+        <override tag_name="LR_Ultra_KaerTrolde_BrazierRoundWall"
                   label="kaer_trolde_brazier_round_wall"
                   radius="8">
           <match mode="exact">braziers_wall_round_bounce.w2ent</match>
@@ -47,7 +47,7 @@
         </override>
 
         <!-- Wall torch -->
-        <override tag_name="LR_KaerTrolde_WallTorch"
+        <override tag_name="LR_Ultra_KaerTrolde_WallTorch"
                   label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="6.5">
@@ -55,7 +55,7 @@
         </override>
 
         <!-- Armoury Candle -->
-        <override tag_name="LR_KaerTrolde_ArmouryCandle">
+        <override tag_name="LR_Ultra_KaerTrolde_ArmouryCandle">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <!-- TODO: Revoke point light LUMs & test values -->
           <spotlight radius="6" />

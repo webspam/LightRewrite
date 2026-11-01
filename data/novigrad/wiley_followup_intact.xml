@@ -5,21 +5,21 @@
     <light_rewrite>
       <overrides profile_name="Default"
                  weight="20">
-        <override tag_name="LR_Edited_candlestick_small_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candlestick_small_complex_w2ent"
                   label="edited_candlestick_small_complex_w2ent">
           <match mode="exact">candlestick_small_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <shadows fade_distance="22.56" />
         </override>
-        <override tag_name="LR_Edited_candle_small_group_melted_b_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_small_group_melted_b_complex_w2ent"
                   label="edited_candle_small_group_melted_b_complex_w2ent">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <shadows fade_distance="22.98" />
         </override>
-        <override tag_name="LR_Edited_candelabra_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candelabra_complex_w2ent"
                   label="edited_candelabra_complex_w2ent"
                   radius="4">
           <match mode="exact">candelabra_complex.w2ent</match>
@@ -32,14 +32,14 @@
           <spotlight brightness="5"
                      radius="1.35" />
         </override>
-        <override tag_name="LR_Edited_candle_shelf_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_shelf_complex_w2ent"
                   label="edited_candle_shelf_complex_w2ent">
           <match mode="exact">candle_shelf_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <shadows fade_distance="22.39" />
         </override>
-        <override tag_name="LR_Edited_candle_small_group_melted_d_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_small_group_melted_d_complex_w2ent"
                   label="edited_candle_small_group_melted_d_complex_w2ent">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <match type="layer"
@@ -48,14 +48,14 @@
             <shadows fade_distance="22.19" />
           </light>
         </override>
-        <override tag_name="LR_Edited_candle_med_melted_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_med_melted_complex_w2ent"
                   label="edited_candle_med_melted_complex_w2ent">
           <match mode="exact">candle_med_melted_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <shadows fade_distance="15.23" />
         </override>
-        <override tag_name="LR_Edited_candle_small_group_melted_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_small_group_melted_complex_w2ent"
                   label="edited_candle_small_group_melted_complex_w2ent">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
           <match type="layer"
@@ -64,14 +64,14 @@
             <shadows fade_distance="25" />
           </light>
         </override>
-        <override tag_name="LR_Edited_candleholder_fancy_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candleholder_fancy_complex_w2ent"
                   label="edited_candleholder_fancy_complex_w2ent">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\q302_whoreson_house\q302_state_intact\lights.w2l</match>
           <shadows fade_distance="22.62" />
         </override>
-        <override tag_name="LR_Edited_candle_holder_large_wood_a_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_holder_large_wood_a_complex_w2ent"
                   label="edited_candle_holder_large_wood_a_complex_w2ent">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
           <match type="layer"
@@ -96,7 +96,7 @@
             <lum exclude_scene="true" />
           </spotlight>
         </override>
-        <override tag_name="LR_Edited_candle_small_group_melted_c_complex_w2ent"
+        <override tag_name="LR_WileyFollowupIntact_candle_small_group_melted_c_complex_w2ent"
                   label="edited_candle_small_group_melted_c_complex_w2ent">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <match type="layer"

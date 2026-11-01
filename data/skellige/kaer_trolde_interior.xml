@@ -88,7 +88,7 @@
         </override>
 
         <!-- Wall torch -->
-        <override tag_name="LR_KaerTrolde_WallTorch"
+        <override tag_name="LR_KaerTrolde_Interior_WallTorch"
                   label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="7"

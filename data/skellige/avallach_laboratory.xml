@@ -13,8 +13,7 @@
         </matches>
 
         <!-- Shadows for all candelabra/candles -->
-        <override tag_name="LR_AvallachLab_Shadows"
-                  label="avallach_lab_shadows">
+        <override tag_name="LR_AvallachLab_Shadows">
           <match mode="startsWith">cand</match>
           <shadows casting_mode="Normal"
                    fade_distance="25"
@@ -22,8 +21,7 @@
         </override>
 
         <!-- Candle brightness -->
-        <override tag_name="LR_AvallachLab_Shadows"
-                  label="avallach_lab_shadows"
+        <override tag_name="LR_AvallachLab_CandleBrightness"
                   brightness="11">
           <any>
             <match mode="startsWith">candleholder_fancy</match>
@@ -37,7 +35,6 @@
 
         <!-- Candelabra - Complex -->
         <override tag_name="LR_AvallachLab_Candelabra_Complex"
-                  label="avallach_lab_candelabra_complex"
                   brightness="35"
                   radius="5"
                   attenuation="1">
@@ -48,14 +45,12 @@
         </override>
 
         <override tag_name="LR_AvallachLab_Chandelier_Bright_Noshadow"
-                  label="avallach_lab_chandelier_bright_noshadow"
                   brightness="30"
                   radius="7.5">
           <match mode="exact">chandelier_bright_noshadow.w2ent</match>
         </override>
         <!-- Candelabra - Static Shadow -->
         <override tag_name="LR_AvallachLab_Candelabra_Static_Shadow"
-                  label="avallach_lab_candelabra_static_shadow"
                   brightness="35"
                   radius="6"
                   attenuation="1">
@@ -64,7 +59,6 @@
 
         <!-- Candleholder - Large Multi-Light -->
         <override tag_name="LR_AvallachLab_Candleholder_LargeMulti"
-                  label="avallach_lab_candleholder_large_multi"
                   brightness="10"
                   rewriter_type="LRT_Candle">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
@@ -81,7 +75,6 @@
 
         <!-- Candleholder - Large -->
         <override tag_name="LR_AvallachLab_Candleholder_Large"
-                  label="avallach_lab_candleholder_large"
                   brightness="33"
                   radius="6"
                   attenuation="0.95">
@@ -93,7 +86,6 @@
 
         <!-- Candles below tapestry -->
         <override tag_name="LR_AvallachLab_Candles_Below_Tapestry"
-                  label="avallach_lab_candles_below_tapestry"
                   brightness="40"
                   radius="7.5">
           <match mode="exact">candle_large_group_caves.w2ent</match>
@@ -101,7 +93,6 @@
 
         <!-- Bedroom Candelabra -->
         <override tag_name="LR_AvallachLab_TriCandleabra"
-                  label="avallach_lab_tri_candleabra"
                   brightness="11">
           <match mode="exact">candelabra_tall_three_point_complex.w2ent</match>
           <spotlight brightness="15"
@@ -110,7 +101,6 @@
 
         <!-- Bedroom Standing Candleholder -->
         <override tag_name="LR_AvallachLab_Candleholder_Large_Noshadow"
-                  label="avallach_lab_candleholder_large_noshadow"
                   brightness="20"
                   radius="6">
           <match mode="exact">candle_holder_large_wood_a_noshadow.w2ent</match>

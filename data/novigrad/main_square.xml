@@ -19,8 +19,7 @@
                    fade_range="12.5" />
         </override>
         <!-- Chandelier -->
-        <override tag_name="LR_Edited_chandelier_small_bounce_w2ent"
-                  label="edited_chandelier_small_bounce_w2ent"
+        <override tag_name="LR_Novigrad_MainSquare_IronChandelier"
                   force_cast_shadows="true">
           <match mode="exact">chandelier_small.w2ent</match>
           <match type="layer"
@@ -37,8 +36,7 @@
 
 
         <!-- Top Notch Swords -->
-        <override tag_name="LR_Edited_chandelier_small_bounce_w2ent"
-                  label="edited_chandelier_small_bounce_w2ent"
+        <override tag_name="LR_Novigrad_TopNotchSwords_IronChandelier"
                   force_cast_shadows="true">
           <match mode="exact">chandelier_small_bounce.w2ent</match>
           <match type="layer"
@@ -52,8 +50,7 @@
 
 
         <!-- Torches - wall, metal -->
-        <override tag_name="LR_Edited_torch_wall_metal_bounce_w2ent_2"
-                  label="edited_torch_wall_metal_bounce_w2ent"
+        <override tag_name="LR_Novigrad_MainSquare_TorchWallMetal"
                   radius="5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
           <match type="layer"

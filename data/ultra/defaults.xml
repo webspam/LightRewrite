@@ -10,7 +10,7 @@
         <inherits>Default</inherits>
 
         <!-- Candles -->
-        <override tag_name="LR_Candle"
+        <override tag_name="LR_Ultra_Candle"
                   label="candle"
                   brightness="5"
                   min_radius="5"
