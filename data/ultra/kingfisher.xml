@@ -68,8 +68,42 @@
                   y="0"
                   z="1.96" />
         </override>
+
+        <!-- Candelabra on a Stick - Penthouse -->
+        <override tag_name="LR_Ultra_Kingfisher_Penthouse_CandleabraOnAStick"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">candelabra_standing_complex.w2ent</match>
+          <!-- building\lights.w2l -->
+          <lum exclude_scene="false" />
+          <shadows fade_distance="15"
+                   fade_range="15"
+                   blend_factor="0.75" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <offset x="0"
+                  y="0"
+                  z="1.94" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+
+          <!-- TODO: RT Shadows Quality only -->
+          <!-- <spotlight brightness="9.52"
+                     innerAngle="280"
+                     outerAngle="342.5">
+            <colour r="255"
+                    g="250"
+                    b="245" />
+            <offset x="0"
+                    y="0"
+                    z="1.94" />
+          </spotlight> -->
+        </override>
       </overrides>
 
+      <!-- Iron Chandeliers - Exterior Balconies -->
       <overrides profile_name="Ultra"
                  weight="20">
         <override tag_name="LR_Ultra_Kingfisher_ChandelierSmallNoShadow"

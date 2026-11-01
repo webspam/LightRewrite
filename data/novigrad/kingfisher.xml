@@ -78,6 +78,26 @@
           <light index="1"
                  radius="1.5" />
         </override>
+
+        <!-- Candelabra on a Stick - Penthouse -->
+        <override tag_name="LR_Ultra_Kingfisher_Penthouse_CandleabraOnAStick"
+                  radius="4.25"
+                  attenuation="1">
+          <match mode="exact">candelabra_standing_complex.w2ent</match>
+          <lum exclude_scene="false" />
+          <shadows fade_distance="15"
+                   fade_range="15"
+                   blend_factor="0.75" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <offset x="0"
+                  y="0"
+                  z="1.94" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
       </overrides>
 
       <!-- Kingfisher Inn - First floor, Northeast Room (3) -->
