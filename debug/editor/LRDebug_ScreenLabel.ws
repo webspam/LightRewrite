@@ -10,17 +10,9 @@ class LRDebug_ScreenLabel extends LRDebug_HudLabel {
         AcquireFlash();
     }
 
-    /** The flash oneliner has no text setter, so changed text means rebuilding the sprite. */
     public function SetText(newText: string) {
-        if (newText == this.text) return;
-
-        this.text = newText;
-
-        if (!created) return;
-
-        // Nothing to show; defer the rebuild until Show() has text again.
         if (newText == "") Remove();
-        else Rebuild();
+        super.SetText(newText);
     }
 
     public function Show() {
