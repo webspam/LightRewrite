@@ -9,8 +9,10 @@ class LRDebug_HudLabel {
 
     private var textField: CScriptedFlashObject;
 
-    protected var created  : bool;
-    protected var isVisible: bool;
+    protected var created        : bool;
+    protected var isVisible      : bool;
+    protected var horizontalAlign: ELRHorizontalAlign;
+    protected var verticalAlign  : ELRVerticalAlign;
 
     protected function AcquireFlash() {
         var module: CR4HudModuleOneliners;
@@ -30,6 +32,29 @@ class LRDebug_HudLabel {
 
         this.sprite = this.flash.GetChildFlashSprite("mcOneliner" + this.id);
         this.textField = this.sprite.GetMemberFlashObject("textField");
+
+        switch (this.horizontalAlign) {
+            case LR_HAlign_Left:
+                this.textField.SetMemberFlashString("autoSize", "left");
+                this.textField.SetMemberFlashNumber("x", 0.0);
+                break;
+            case LR_HAlign_Right:
+                this.textField.SetMemberFlashString("autoSize", "right");
+                this.textField.SetMemberFlashNumber(
+                    "x",
+                    -this.textField.GetMemberFlashNumber("width")
+                );
+                break;
+            default:
+                this.textField.SetMemberFlashString("autoSize", "center");
+                this.textField.SetMemberFlashNumber(
+                    "x",
+                    -this.textField.GetMemberFlashNumber("width") * 0.5
+                );
+                break;
+        }
+
+        AlignVertically();
         this.created = true;
 
         // A fresh oneliner shows itself; honour our tracked state instead.
@@ -56,10 +81,20 @@ class LRDebug_HudLabel {
 
     private function ApplyText() {
         this.textField.SetMemberFlashString("htmlText", this.text);
-        this.textField.SetMemberFlashNumber(
-            "y",
-            -this.textField.GetMemberFlashNumber("textHeight")
-        );
+        AlignVertically();
+    }
+
+    private function AlignVertically() {
+        var textHeight: float = this.textField.GetMemberFlashNumber("textHeight");
+        var y: float;
+
+        switch (this.verticalAlign) {
+            case LR_VAlign_Top:     y = 0.0;                break;
+            case LR_VAlign_Centre:  y = -textHeight * 0.5;  break;
+            default:                y = -textHeight;        break;
+        }
+
+        this.textField.SetMemberFlashNumber("y", y);
     }
 
     protected function SetScreenPosition(x: float, y: float) {
