@@ -26,6 +26,7 @@
         <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy"
                   brightness="2"
                   radius="5.5"
+                  attenuation="1"
                   default_state="on">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
@@ -51,7 +52,8 @@
         </override>
 
         <override tag_name="LR_Ultra_Kingfisher_Candelabra"
-                  brightness="10.23">
+                  brightness="10.23"
+                  attenuation="1">
           <any>
             <match mode="exact">candelabra_complex.w2ent</match>
             <match mode="exact">candelabra.w2ent</match>
@@ -62,11 +64,13 @@
         </override>
 
         <override tag_name="LR_Ultra_Kingfisher_CandelabraStanding"
-                  brightness="9.52">
+                  radius="4.25"
+                  brightness="9.52"
+                  rewriter_type="LRT_FxAlign">
           <match mode="exact">candelabra_standing.w2ent</match>
-          <offset x="0"
-                  y="0"
-                  z="1.96" />
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
         </override>
 
         <!-- Candelabra on a Stick - Penthouse -->
@@ -88,18 +92,6 @@
           <spotlight>
             <lum exclude_scene="true" />
           </spotlight>
-
-          <!-- TODO: RT Shadows Quality only -->
-          <!-- <spotlight brightness="9.52"
-                     innerAngle="280"
-                     outerAngle="342.5">
-            <colour r="255"
-                    g="250"
-                    b="245" />
-            <offset x="0"
-                    y="0"
-                    z="1.94" />
-          </spotlight> -->
         </override>
       </overrides>
 

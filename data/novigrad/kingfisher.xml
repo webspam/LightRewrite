@@ -36,7 +36,8 @@
         <override tag_name="LR_Kingfisher_CandelabraComplex"
                   label="kingfisher_candelabracomplex"
                   brightness="16"
-                  radius="4">
+                  radius="4"
+                  attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
           <offset x="0"
                   y="0"
@@ -112,7 +113,8 @@
         <override tag_name="LR_Kingfisher3_CandelabraComplex"
                   label="kingfisher3_candelabracomplex"
                   brightness="17"
-                  radius="2.65">
+                  radius="2.65"
+                  attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
           <offset x="0"
                   y="0"
