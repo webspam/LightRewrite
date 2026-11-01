@@ -54,7 +54,7 @@ function LoadLightRewriteOverrideGroup(
     var group: CLightRewriteOverrideGroup;
     var entryNode: SCustomNode;
     var alignNode: SCustomNode;
-    var override: CLightRewriteSourceParams;
+    var override: CLightRewriteOverride;
     var strVal: string;
     var nameVal: name;
     var i, count: int;
@@ -87,7 +87,7 @@ function LoadLightRewriteOverrideGroup(
             continue;
         }
 
-        override = new CLightRewriteSourceParams in group;
+        override = new CLightRewriteOverride in group;
         override.condition = new CLightRewriteMatchAll in override;
         override.tag = nameVal;
 

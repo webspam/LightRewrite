@@ -522,7 +522,7 @@ class CLightRewriteSettings {
     // Gets an array of every tag that the mod might add to a valid CGameplayEntity light source
     public function GetAllLightSourceTags(): array<name> {
         var tags: array<name>;
-        var overrides: array<CLightRewriteSourceParams>;
+        var overrides: array<CLightRewriteOverride>;
         var i, j, count, overrideCount: int;
 
         count = overrideGroups.Size();

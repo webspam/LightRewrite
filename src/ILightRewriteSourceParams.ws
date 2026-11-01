@@ -1,18 +1,12 @@
 /*
- * Unified params class for per-light-source configuration.
+ * Shared params base for per-light-source configuration.
  *
  * Every field except tag is optional; a false has* guard means
  * "do not touch this property - leave it as the engine set it".
- *
- * When condition is set the object acts as an override: it will only be
- * applied to entities that satisfy all of its rules.
  */
-class CLightRewriteSourceParams extends ILightRewriteParams {
+abstract class ILightRewriteSourceParams extends ILightRewriteParams {
     // Always required
     public var tag: name;
-
-    // Override match condition - NULL means this is a base-params entry, not an override
-    public var condition: CLightRewriteMatchAll;
 
     // The rewriter implementation to use
     public var rewriterType: SLightRewriteOptionalRewriterType;
@@ -48,23 +42,6 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    public function GetEffectivePointLightParams(index: int): ILightRewriteParams {
-        return MergePointLightParams(GetPointLightParams(index));
-    }
-
-    public function MergePointLightParams(
-        lightParams: CLightRewriteComponentLightParams
-    ): ILightRewriteParams {
-        var merged: CLightRewriteComponentLightParams;
-
-        if (!lightParams) return this;
-
-        merged = new CLightRewriteComponentLightParams in this;
-        ApplyBaseTo(merged);
-        lightParams.ApplyBaseTo(merged);
-        return merged;
-    }
-
     public function GetOrCreatePointLightParams(index: int): CLightRewriteComponentLightParams {
         var params: CLightRewriteComponentLightParams = GetPointLightParams(index);
 
@@ -72,6 +49,17 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
             params = new CLightRewriteComponentLightParams in this;
             params.index = index;
             pointLights.PushBack(params);
+        }
+        return params;
+    }
+
+    public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
+        var params: CLightRewriteSpotlightParams = GetSpotLightParams(index);
+
+        if (!params) {
+            params = new CLightRewriteSpotlightParams in this;
+            params.index = index;
+            spotLights.PushBack(params);
         }
         return params;
     }
@@ -86,35 +74,8 @@ class CLightRewriteSourceParams extends ILightRewriteParams {
         return NULL;
     }
 
-    // The entity-wide spotlight is the base merged into every component
-    public function GetEffectiveSpotLightParams(index: int): CLightRewriteSpotlightParams {
-        var entityWide, spotParams, merged: CLightRewriteSpotlightParams;
-
-        if (spotlight && !spotlight.spawn) entityWide = spotlight;
-        spotParams = GetSpotLightParams(index);
-
-        if (!entityWide) return spotParams;
-        if (!spotParams) return entityWide;
-
-        merged = new CLightRewriteSpotlightParams in this;
-        entityWide.ApplySpotlightTo(merged);
-        spotParams.ApplySpotlightTo(merged);
-        return merged;
-    }
-
-    public function GetOrCreateSpotLightParams(index: int): CLightRewriteSpotlightParams {
-        var params: CLightRewriteSpotlightParams = GetSpotLightParams(index);
-
-        if (!params) {
-            params = new CLightRewriteSpotlightParams in this;
-            params.index = index;
-            spotLights.PushBack(params);
-        }
-        return params;
-    }
-
     // Applies every set field from this object onto target, overwriting its values.
-    public function ApplyTo(target: CLightRewriteSourceParams) {
+    public function ApplyTo(target: ILightRewriteSourceParams) {
         var i: int;
         var pointCount: int = pointLights.Size();
         var spotCount: int = spotLights.Size();
