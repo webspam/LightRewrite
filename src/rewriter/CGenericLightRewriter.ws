@@ -18,6 +18,8 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         );
         var count: int = components.Size();
 
+        ApplyDefaultState();
+
         if (p.useSpotlightColor.has && p.useSpotlightColor.value) {
             spotLight = (CSpotLightComponent)parentEntity.GetComponent('CSpotLightComponent0');
         }
@@ -30,6 +32,5 @@ class CGenericLightRewriter extends ILightSourceRewriter {
         ApplySpotOverrides();
 
         ApplyForceCastShadows();
-        ApplyDefaultState();
     }
 }
