@@ -100,8 +100,6 @@
           <xs:documentation>An any-match group ANDed into every override in this group. Same behaviour as a top-level override any group.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="match_scale"
-                  type="matchScaleType" />
     </xs:choice>
   </xs:complexType>
 
@@ -304,8 +302,6 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="match"
                   type="matchType" />
-      <xs:element name="match_scale"
-                  type="matchScaleType" />
     </xs:choice>
   </xs:complexType>
 

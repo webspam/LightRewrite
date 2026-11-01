@@ -539,10 +539,9 @@ class CLightRewriteSettings {
 
     // Finds the params for a given entity.
     public function FindParamsForEntity(entity: CGameplayEntity): CLightRewriteSourceParams {
-        var params: CLightRewriteSourceParams = NULL;
+        var params: CLightRewriteSourceParams;
         var profile: CLightRewriteProfile;
         var matchTarget: CLightRewriteMatchTarget;
-        var i, count: int;
 
         // Build params object by applying all overrides that match the entity and selected profile
         if (currentProfile == NONE_PROFILE) return NULL;
@@ -553,10 +552,7 @@ class CLightRewriteSettings {
         matchTarget = new CLightRewriteMatchTarget in this;
         matchTarget.Init(entity);
 
-        count = profile.groups.Size();
-        for (i = 0; i < count; i += 1) {
-            params = profile.groups[i].Apply(matchTarget, params);
-        }
+        params = profile.FindParams(matchTarget);
         delete matchTarget;
 
         return params;
