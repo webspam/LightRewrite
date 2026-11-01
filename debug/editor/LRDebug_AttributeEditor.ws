@@ -769,10 +769,10 @@ class LRDebug_AttributeEditor {
         type = GetSelectedLightType(target);
         index = GetActiveLightIndex(target, type);
 
-        nextState = LRDebug_NextUsageFlagState(LRDebug_GetUsageFlagState(
-            LRDebug_EffectiveUsageMask(params, type, index),
-            flag
-        ));
+        nextState = LRDebug_NextVisibleUsageFlagState(
+            LRDebug_GetUsageFlagState(LRDebug_EffectiveUsageMask(params, type, index), flag),
+            LRDebug_GetUsageFlagState(LRDebug_InheritedUsageMask(params, type), flag)
+        );
 
         count = scope.Size();
         for (i = 0; i < count; i += 1) {

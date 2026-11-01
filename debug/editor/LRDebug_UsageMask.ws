@@ -39,6 +39,31 @@ function LRDebug_NextUsageFlagState(flagState: ELRDebug_LUM_FlagState): ELRDebug
     }
 }
 
+function LRDebug_NextVisibleUsageFlagState(
+    effectiveState: ELRDebug_LUM_FlagState,
+    inheritedState: ELRDebug_LUM_FlagState
+): ELRDebug_LUM_FlagState {
+    var nextState: ELRDebug_LUM_FlagState = LRDebug_NextUsageFlagState(effectiveState);
+
+    if (nextState == LRDebug_LUM_Unset && inheritedState == effectiveState) {
+        nextState = LRDebug_NextUsageFlagState(nextState);
+    }
+    return nextState;
+}
+
+function LRDebug_InheritedUsageMask(
+    params: CLightRewriteSourceParams,
+    type: name
+): SLightRewriteUsageMaskEdit {
+    var unset: SLightRewriteUsageMaskEdit;
+
+    if (!params) return unset;
+    if (type != 'spot') return params.usageMask;
+    if (!params.spotlight || params.spotlight.spawn) return unset;
+
+    return params.spotlight.usageMask;
+}
+
 function LRDebug_EffectiveUsageMask(
     params: CLightRewriteSourceParams,
     type: name,
