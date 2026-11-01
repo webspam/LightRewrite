@@ -5,13 +5,13 @@ class CLightRewriteOverrideGroup {
 
     public var filter: CLightRewriteMatchAll;
 
-    public var overrides: array<CLightRewriteSourceParams>;
+    public var overrides: array<CLightRewriteOverride>;
 
     public function Apply(
         target: CLightRewriteMatchTarget,
         params: CLightRewriteSourceParams
     ): CLightRewriteSourceParams {
-        var override: CLightRewriteSourceParams;
+        var override: CLightRewriteOverride;
         var i, count: int;
 
         if (!filter.Matches(target)) return params;

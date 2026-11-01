@@ -166,7 +166,7 @@ function ParseLightRewriteClampedFloat(
 }
 
 function ParseLightRewritePerLightNodes(
-    override: CLightRewriteSourceParams,
+    override: CLightRewriteOverride,
     dm: CDefinitionsManagerAccessor,
     entryNode: SCustomNode
 ) {
