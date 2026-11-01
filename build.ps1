@@ -126,7 +126,7 @@ $dlcSourceDir = Join-Path $RepoRoot "dlc"
 
 $xmlSourceDir = Join-Path $RepoRoot "data"
 
-# Reject min_* exceeding max_*, and diamond / circular profile inheritance, before touching the build dirs
+# Reject min_* exceeding max_*, match_scale outside an override, and diamond / circular profile inheritance, before touching the build dirs
 $profileBases = @{}
 $inheritsDeclaredIn = @{}
 $minMaxErrors = [System.Collections.Generic.List[string]]::new()
@@ -142,6 +142,9 @@ Get-ChildItem -Path $xmlSourceDir -Filter "*.xml" -Recurse | ForEach-Object {
         $minMaxErrors.Add("$($_.FullName): <$($element.Name)> min_$property ($min) exceeds max_$property ($max)")
       }
     }
+  }
+  foreach ($scaleRule in $doc.SelectNodes('//match_scale[not(parent::override)]')) {
+    throw "$($_.FullName): <match_scale> is only supported directly inside <override>, found in <$($scaleRule.ParentNode.Name)>"
   }
   foreach ($overrides in $doc.SelectNodes('//overrides')) {
     $profileName = $overrides.GetAttribute('profile_name')

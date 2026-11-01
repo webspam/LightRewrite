@@ -20,7 +20,12 @@ function ParseLightRewriteMatchRules(
         }
         else {
             rule = ParseLightRewriteRule(group, dm, child);
-            if (rule) group.rules.PushBack(rule);
+            if (!rule) continue;
+
+            group.rules.PushBack(rule);
+            if ((CLightRewriteScaleRule)rule) {
+                group.hasScaleRule = true;
+            }
         }
     }
 }

@@ -7,27 +7,19 @@ class CLightRewriteOverrideGroup {
 
     public var overrides: array<CLightRewriteOverride>;
 
-    public function Apply(
+    public function CollectMatches(
         target: CLightRewriteMatchTarget,
-        params: CLightRewriteSourceParams
-    ): CLightRewriteSourceParams {
-        var override: CLightRewriteOverride;
+        matched: CLightRewriteMatchedOverrides
+    ) {
         var i, count: int;
 
-        if (!filter.Matches(target)) return params;
+        if (!filter.Matches(target)) return;
 
         count = overrides.Size();
         for (i = 0; i < count; i += 1) {
-            override = overrides[i];
-            if (!override.condition.Matches(target)) continue;
-
-            if (!params) params = new CLightRewriteSourceParams in target.entity;
-            override.ApplyTo(params);
-
-            // TODO: Determine if we want tags from all merged overrides
-            params.tag = override.tag;
+            if (overrides[i].condition.hasScaleRule || overrides[i].condition.Matches(target)) {
+                matched.overrides.PushBack(overrides[i]);
+            }
         }
-
-        return params;
     }
 }
