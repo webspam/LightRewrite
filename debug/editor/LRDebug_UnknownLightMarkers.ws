@@ -18,8 +18,9 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     private const var COLOUR    : string;  default COLOUR = "#ff0000";
     private const var SCAN_RANGE: float;   default SCAN_RANGE = 10.0;
 
-    private var entities : array<CGameplayEntity>;
-    private var pathLabel: LRDebug_PathLabel;
+    private var entities       : array<CGameplayEntity>;
+    private var registeredGuids: map<CGUID, bool>;
+    private var pathLabel      : LRDebug_PathLabel;
 
     public function Init() {
         SetBaseId(0x40007001);
@@ -57,9 +58,12 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
     }
 
     private function Register(entity: CGameplayEntity) {
-        if (IsRegistered(entity)) return;
+        var guid: CGUID = entity.guid;
+
+        if (registeredGuids.Contains(guid)) return;
 
         LogChannel('LRDebugUnknown', "Marking: " + entity.ToString());
+        registeredGuids[guid] = true;
         AddMarker("?", FONT_SIZE, COLOUR);
         entities.PushBack(entity);
     }
@@ -69,12 +73,7 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
 
         count = markers.Size();
         for (i = 0; i < count; i += 1) {
-            if (entities[i]) {
-                markers[i].SetWorldPosition(entities[i].GetWorldPosition());
-            }
-            else {
-                markers[i].Hide();
-            }
+            markers[i].SetWorldPosition(entities[i].GetWorldPosition());
         }
 
         UpdatePathLabel();
@@ -100,8 +99,6 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
 
         count = entities.Size();
         for (i = 0; i < count; i += 1) {
-            if (!entities[i]) continue;
-
             dist = VecDistanceSquared(playerPos, entities[i].GetWorldPosition());
             if (!nearest || dist < bestDist) {
                 nearest = entities[i];
@@ -109,15 +106,5 @@ class LRDebug_UnknownLightMarkers extends LRDebug_MarkerPool {
             }
         }
         return nearest;
-    }
-
-    private function IsRegistered(entity: CGameplayEntity): bool {
-        var i, count: int;
-
-        count = entities.Size();
-        for (i = 0; i < count; i += 1) {
-            if (entities[i] == entity) return true;
-        }
-        return false;
     }
 }
