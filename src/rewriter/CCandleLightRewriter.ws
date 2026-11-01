@@ -30,11 +30,12 @@ class CCandleLightRewriter extends IFireFxLightRewriter {
         );
         var count: int = components.Size();
 
+        ApplyDefaultState();
+
         // Candles that have no point lights
         if (count == 0) {
             RewriteSpotlight(p);
             ApplyForceCastShadows();
-            ApplyDefaultState();
             return;
         }
 
@@ -84,7 +85,6 @@ class CCandleLightRewriter extends IFireFxLightRewriter {
         ApplySpotOverrides(!p.spotlight);
 
         ApplyForceCastShadows();
-        ApplyDefaultState();
     }
 
     // Base game candles with no point lights only ever have one spotlight
