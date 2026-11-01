@@ -140,5 +140,20 @@ abstract class IFireFxLightRewriter extends ILightSourceRewriter {
         else if (hasFx) {
             fireFxSlotNames.PushBack('fx');
         }
+        else {
+            // Candelabra
+            if (parentEntity.HasSlot('candle01')) {
+                fireFxSlotNames.PushBack('candle01');
+            }
+            if (parentEntity.HasSlot('candle02')) {
+                fireFxSlotNames.PushBack('candle02');
+            }
+            if (parentEntity.HasSlot('candle03')) {
+                fireFxSlotNames.PushBack('candle03');
+            }
+            if (parentEntity.HasSlot('candle04')) {
+                fireFxSlotNames.PushBack('candle04');
+            }
+        }
     }
 }
