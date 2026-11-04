@@ -6,7 +6,7 @@
       <!-- Ultra: Kingfisher - PT Only -->
       <overrides profile_name="Ultra"
                  weight="23">
-        <transport>pathtracing</transport>
+        <transport>pt</transport>
         <matches>
           <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
         </matches>

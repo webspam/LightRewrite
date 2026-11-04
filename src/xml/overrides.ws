@@ -166,10 +166,10 @@ function ParseLightRewriteTransport(value: name, out transport: ELightRewriteLig
         case "raster":
             transport = LR_Transport_Raster;
             return true;
-        case "raytracing":
+        case "rt":
             transport = LR_Transport_RT;
             return true;
-        case "pathtracing":
+        case "pt":
             transport = LR_Transport_PT;
             return true;
         default:
