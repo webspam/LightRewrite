@@ -10,7 +10,7 @@
 
         <override tag_name="LR_WhiteOrchard_Torch"
                   label="white_orchard_torch"
-                  brightness="30"
+                  brightness="22.5"
                   radius="7.5"
                   attenuation="1.0">
           <!-- Use `any` groups to match any single match -->
