@@ -66,9 +66,9 @@
         <!-- Campfires -->
         <override tag_name="LR_WhiteOrchard_Campfire"
                   label="campfire"
-                  brightness="50"
+                  brightness="40"
                   radius="12"
-                  attenuation="0.85">
+                  attenuation="0.95">
           <match>campfire</match>
           <shadows fade_distance="20"
                    fade_range="10"
@@ -107,6 +107,34 @@
           <match mode="exact">torch_wall_metal.w2ent</match>
         </override>
 
+        <!-- Override for the Nilfgarrdian Camp -->
+        <override tag_name="LR_WhiteOrchard_NilfgaardCamp_Campfire"
+                  brightness="35">
+          <match mode="exact">campfire_01.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\prolog_village\community\prologue_encounter_nilfgaardian_camp\nilfgaardian_soldiers\decoration.w2l</match>
+          <lum exterior="false" />
+        </override>
+
+        <!-- Nilfgaardian Captain -->
+        <override tag_name="LR_WhiteOrchard_NilfgaardCamp_Candle">
+          <match mode="exact">candle_small_group_melted.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\prolog_village\griffon_castle\nilfgard_in\deco_ns.w2l</match>
+          <light index="0"
+                 brightness="3">
+            <lum exterior="false" />
+          </light>
+          <light index="1"
+                 brightness="3" />
+        </override>
+        <override tag_name="LR_WhiteOrchard_NilfgaardCamp_WallTorch"
+                  brightness="15">
+          <match mode="exact">torch_wall_metal.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\prolog_village\griffon_castle\nilfgard_in\deco_ns.w2l</match>
+        </override>
+
         <!-- Stoves -->
         <override tag_name="LR_WhiteOrchard_Stove"
                   label="white_orchard_stove">
@@ -122,7 +150,9 @@
         <!-- Cooking fire -->
         <override tag_name="LR_WhiteOrchard_CookingFire"
                   label="white_orchard_cooking_fire"
-                  radius="5.5">
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="1">
           <match>stand_mw_cooking_</match>
           <offset x="0"
                   y="0"
@@ -136,6 +166,21 @@
           <match mode="exact">ob_forge_px.w2ent</match>
           <shadows fade_distance="25"
                    fade_range="20" />
+        </override>
+
+        <!-- Braziers (Redanian) -->
+        <override tag_name="LR_WhiteOrchard_RoadLights_Brazier"
+                  brightness="75"
+                  radius="7.5"
+                  attenuation="0.95">
+          <match mode="exact">braziers_floor_square_dynamic.w2ent</match>
+        </override>
+
+        <!-- Opulent bandit camp -->
+        <override tag_name="LR_WhiteOrchard_HangingBrazier"
+                  brightness="30">
+          <match mode="exact">braziers_wall_chain.w2ent</match>
+          <lum exterior="false" />
         </override>
       </overrides>
     </light_rewrite>
