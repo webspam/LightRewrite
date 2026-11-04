@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Ultra"
+                 weight="22">
+        <transport>pt, rtshadows</transport>
+
+        <override tag_name="LR_UltraPT_Bathhouse_TriCandelabra"
+                  brightness="5"
+                  min_auto_hide_distance="50">
+          <match mode="exact">candelabra_tall_three_point.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights.w2l</match>
+          <shadows casting_mode="None" />
+        </override>
+      </overrides>
+
+      <overrides profile_name="Ultra"
+                 weight="22">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\env_global_pbr\env_novigrad\env_bathhouse_nn\entity_lights_02.w2l</match>
+        </matches>
+        <override tag_name="LR_Ultra_Bathhouse_TriCandelabra_02"
+                  brightness="5"
+                  min_auto_hide_distance="50">
+          <match mode="exact">candelabra_tall_three_point.w2ent</match>
+        </override>
+
+        <override tag_name="LR_Ultra_Bathhouse_TriCandelabraSinglePoint"
+                  brightness="7.76"
+                  min_auto_hide_distance="50">
+          <match mode="exact">candelabra_tall_three_point_noshadow.w2ent</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

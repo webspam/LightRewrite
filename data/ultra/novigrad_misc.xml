@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Ultra: Novigrad Fishmarket -->
+      <overrides profile_name="Ultra"
+                 weight="22">
+        <transport>pt, rtshadows</transport>
+
+        <matches>
+          <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
+        </matches>
+
+        <!-- Fix shrine blackholes the light -->
+        <override tag_name="LR_Ultra_Novigrad_Fishmarket_EternalFireBrazier">
+          <match mode="exact">shrine_of_ethernal_fire_altar_spot.w2ent</match>
+          <lum exterior="false" />
+          <spotlight>
+            <lum exterior="false" />
+          </spotlight>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

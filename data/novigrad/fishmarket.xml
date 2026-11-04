@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Novigrad Fishmarket -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
+        </matches>
+
+        <override tag_name="LR_Novigrad_Fishmarket_CandleCComplex"
+                  label="novigrad_candle_small_group_melted_c_complex">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <!-- levels\novigrad\novigrad\fishmarket\interiors\lights.w2l -->
+          <shadows casting_mode="Normal" />
+        </override>
+
+        <!-- Next to smithy -->
+        <override tag_name="LR_Novigrad_Fishmarket_CandleCNearSmithy"
+                  brightness="3">
+          <match mode="exact">candle_small_group_melted_c.w2ent</match>
+          <!-- interiors\lights.w2l -->
+          <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
+        </override>
+        <override tag_name="LR_Novigrad_Fishmarket_HangingLamp"
+                  brightness="11.5">
+          <match mode="exact">hanging_lamp.w2ent</match>
+          <!-- interiors\lights.w2l -->
+          <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
+        </override>
+
+        <!-- Two mini Eternal Fire braziers above shrine entrance -->
+        <override tag_name="LR_Novigrad_Fishmarket_SmallEternalFire"
+                  attenuation="0.95"
+                  use_spotlight_colour="true">
+          <match mode="exact">shrine_of_ethernal_fire_altar_small_spot_bounce.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="2.01" />
+          <spotlight attenuation="0.95">
+            <offset x="0"
+                    y="0"
+                    z="1.82" />
+          </spotlight>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
