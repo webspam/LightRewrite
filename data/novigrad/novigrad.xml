@@ -28,15 +28,6 @@
           </any>
         </override>
 
-        <!-- Fix fishmarket candle group -->
-        <override tag_name="LR_Novigrad_Fishmarket"
-                  label="novigrad_candle_small_group_melted_c_complex">
-          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
-          <!-- levels\novigrad\novigrad\fishmarket\interiors\lights.w2l -->
-          <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
-          <shadows casting_mode="Normal" />
-        </override>
-
         <!-- Townhouse candles -->
         <override tag_name="LR_Novigrad_PoorCandleC"
                   label="novigrad_poor_candle_c"
