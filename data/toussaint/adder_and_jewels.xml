@@ -6,6 +6,7 @@
       <!-- The Adder & Jewels Winery -->
       <overrides profile_name="Default"
                  weight="20">
+        <transport>pt, rtshadows</transport>
         <matches>
           <match type="layer"
                  mode="exact">dlc\bob\data\levels\bob\locations\city_of_beauclair\upper_city\east\blockout\adder_winery\lights.w2l</match>
