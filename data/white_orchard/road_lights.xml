@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Road Lights DLC - White Orchard -->
+      <overrides profile_name="Default"
+                 weight="10">
+        <matches>
+          <match type="layer">dlc\dlctest1\levels\prolog_village\</match>
+        </matches>
+
+        <!-- Brazier -->
+        <override tag_name="LR_WhiteOrchard_RoadLights_Brazier"
+                  brightness="75"
+                  radius="7.5"
+                  attenuation="0.95">
+          <match mode="exact">braziers_floor_square_dynamic.w2ent</match>
+          <!-- test1\testlayer1\static.w2l -->
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

@@ -4,54 +4,49 @@
   <custom>
     <light_rewrite>
 
-      <!-- Light cookie fixes -->
+      <!-- Custom fixes for Remastered candle balls of light bleeding through tables -->
       <overrides profile_name="Default"
                  weight="11">
         <matches>
+          <match type="layer">levels\prolog_village\</match>
+        </matches>
+
+        <override tag_name="LR_WhiteOrchard_Fixes_CandleGroupB">
+          <match mode="exact">candle_small_group_melted_b.w2ent</match>
           <match type="layer"
                  mode="exact">levels\prolog_village\village\buildings\buildings_destroyed\lights.w2l</match>
-        </matches>
-        <override tag_name="LR_lbAVNJtX_candle_small_group_melted_b"
-                  label="edited_candle_small_group_melted_b_w2ent">
-          <match mode="exact">candle_small_group_melted_b.w2ent</match>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.16" />
         </override>
 
-        <override tag_name="LR_lbAVNJtX_candle_small_group_melted_c_complex_2"
-                  label="edited_candle_small_group_melted_c_complex_w2ent">
+        <override tag_name="LR_WhiteOrchard_Fixes_CandleGroupCC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\prolog_village\village\buildings\buildings_destroyed\lights.w2l</match>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.23" />
         </override>
-      </overrides>
 
-      <overrides profile_name="Default"
-                 weight="10">
-        <matches>
+        <override tag_name="LR_WhiteOrchard_Fixes_CandleGroupC">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\prolog_village\village\buildings\building_a\lights.w2l</match>
-        </matches>
-        <override tag_name="LR_lbAVNJtX_candle_small_group_melted_c_complex"
-                  label="edited_candle_small_group_melted_c_complex_w2ent">
-          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.35" />
         </override>
 
-        <override tag_name="LR_lbAVNJtX_candle_small_group_melted_b_complex"
-                  label="edited_candle_small_group_melted_b_complex_w2ent">
+        <override tag_name="LR_WhiteOrchard_Fixes_CandleGroupBComplex">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\prolog_village\village\buildings\building_a\lights.w2l</match>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.29" />
         </override>
       </overrides>
-
-
     </light_rewrite>
   </custom>
 </redxml>
