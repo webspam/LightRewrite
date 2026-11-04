@@ -81,7 +81,7 @@
         </override>
 
         <!-- Candelabra on a Stick - Penthouse -->
-        <override tag_name="LR_Ultra_Kingfisher_Penthouse_CandleabraOnAStick"
+        <override tag_name="LR_Kingfisher_Penthouse_CandleabraOnAStick"
                   radius="4.25"
                   attenuation="1">
           <match mode="exact">candelabra_standing_complex.w2ent</match>
