@@ -3,10 +3,10 @@
         xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
   <custom>
     <light_rewrite>
-      <!-- Ultra: Kingfisher - PT Only -->
+      <!-- Ultra: Kingfisher - PT & RT Shadows Only -->
       <overrides profile_name="Ultra"
                  weight="23">
-        <transport>pathtracing</transport>
+        <transport>pt, rtshadows</transport>
         <matches>
           <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
         </matches>
@@ -61,7 +61,6 @@
           <!-- building\lights.w2l -->
           <lum exclude_scene="true" />
 
-          <!-- TODO: RT Shadows Quality only -->
           <spotlight brightness="9.52"
                      radius="5.5"
                      attenuation="1"

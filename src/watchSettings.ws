@@ -4,8 +4,11 @@
 
 enum ELightRewriteLightTransport {
     LR_Transport_Raster = 0,
-    LR_Transport_RT = 1,
-    LR_Transport_PT = 2
+    // RT with RT Shadows: Performance / Off
+    LR_Transport_RTBasic = 1,
+    // RT with RT Shadows: Quality
+    LR_Transport_RTShadows = 2,
+    LR_Transport_PT = 3
 }
 
 @addField(CR4Game)

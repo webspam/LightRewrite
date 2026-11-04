@@ -53,7 +53,7 @@
                   type="transportListType"
                   minOccurs="0">
         <xs:annotation>
-          <xs:documentation>Comma-separated list of light transports this group applies to: `pathtracing`, `raytracing`, and `raster`. Invalid entries are ignored. Re-evaluated when the light transport changes.</xs:documentation>
+          <xs:documentation>Comma-separated list of light transports this group applies to: `pt` (path tracing), `rtshadows` (RT Shadows: quality), and `raster`. Invalid entries are ignored.</xs:documentation>
           <xs:documentation>Default: all transports.</xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -92,7 +92,7 @@
 
   <xs:simpleType name="transportListType">
     <xs:restriction base="xs:string">
-      <xs:pattern value="\s*(raster|raytracing|pathtracing)\s*(,\s*(raster|raytracing|pathtracing)\s*)*" />
+      <xs:pattern value="\s*(raster|rtshadows|pt)\s*(,\s*(raster|rtshadows|pt)\s*)*" />
     </xs:restriction>
   </xs:simpleType>
 

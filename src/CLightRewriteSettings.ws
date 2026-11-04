@@ -36,6 +36,10 @@ class CLightRewriteSettings {
     private const var GAMEPLAY_LIGHT_REMOVAL  : name;    default GAMEPLAY_LIGHT_REMOVAL = 'GameplayLightRemoval';
     private const var BRIGHTNESS_BOOST        : name;    default BRIGHTNESS_BOOST = 'BrightnessBoost';
 
+    private const var GRAPHICS_GROUP    : name;  default GRAPHICS_GROUP = 'Graphics';
+    private const var RT_SHADOWS        : name;  default RT_SHADOWS = 'Virtual_RTShadows';
+    private const var RT_SHADOWS_QUALITY: int;   default RT_SHADOWS_QUALITY = 2;
+
     private const var FIRST_PROFILE_INDEX: int;  default FIRST_PROFILE_INDEX = 1;
 
     private const var STATE_GROUP         : string;  default STATE_GROUP = "LightRewrite_State";
@@ -121,10 +125,19 @@ class CLightRewriteSettings {
         lightTransport = theGame.GetRTEnabled()
             ? theGame.GetPTEnabled()
                 ? LR_Transport_PT
-                : LR_Transport_RT
+                : IsRTShadowsQuality()
+                    ? LR_Transport_RTShadows
+                    : LR_Transport_RTBasic
             : LR_Transport_Raster;
 
         return lightTransport != previousLightTransport;
+    }
+
+    private function IsRTShadowsQuality(): bool {
+        return StringToInt(
+            gameConfig.GetVarValue(GRAPHICS_GROUP, RT_SHADOWS),
+            -1
+        ) == RT_SHADOWS_QUALITY;
     }
 
     public function ApplyLightTransportChange() {
@@ -432,9 +445,10 @@ class CLightRewriteSettings {
 
     private function GetLightTransportBoostPercent(): float {
         switch (lightTransport) {
-            case LR_Transport_PT:  return 0.0;
-            case LR_Transport_RT:  return 35.0;
-            default:               return 40.0;
+            case LR_Transport_PT:         return 0.0;
+            case LR_Transport_RTBasic:
+            case LR_Transport_RTShadows:  return 35.0;
+            default:                      return 40.0;
         }
     }
 
