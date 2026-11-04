@@ -143,7 +143,8 @@ function ParseLightRewriteTransports(transportNode: SCustomNode): array<ELightRe
 
     if (transportNode.nodeName != 'transport') {
         transports.PushBack(LR_Transport_Raster);
-        transports.PushBack(LR_Transport_RT);
+        transports.PushBack(LR_Transport_RTBasic);
+        transports.PushBack(LR_Transport_RTShadows);
         transports.PushBack(LR_Transport_PT);
         return transports;
     }
@@ -166,8 +167,8 @@ function ParseLightRewriteTransport(value: name, out transport: ELightRewriteLig
         case "raster":
             transport = LR_Transport_Raster;
             return true;
-        case "rt":
-            transport = LR_Transport_RT;
+        case "rtshadows":
+            transport = LR_Transport_RTShadows;
             return true;
         case "pt":
             transport = LR_Transport_PT;
