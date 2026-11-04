@@ -52,6 +52,9 @@
             <match mode="exact">gen_poor_candlewax_set_b_3lights.w2ent</match>
           </any>
           <lum exclude_scene="false" />
+          <offset x="0"
+                  y="0"
+                  z="0.24" />
           <spotlight index="0">
             <lum exclude_scene="true" />
           </spotlight>
