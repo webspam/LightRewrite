@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Outpost South of Oxenfurt Bridge -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\greyrocks\guardposts\crossroads_post\</match>
+        </matches>
+
+        <override tag_name="LR_OxenfurtOutpost_FloorBrazier"
+                  brightness="100">
+          <match>braziers_floor_square</match>
+          <!-- _dynamic.w2ent -->
+          <!-- assets.w2l -->
+          <!-- decals.w2l -->
+        </override>
+
+        <override tag_name="LR_OxenfurtOutpost_WallBrazier"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="1">
+          <match>braziers_wall_chain</match>
+          <!-- _chain.w2ent -->
+          <!-- assets.w2l -->
+          <shadows fade_distance="30"
+                   fade_range="20"
+                   blend_factor="0.55" />
+        </override>
+
+        <override tag_name="LR_OxenfurtOutpost_Campfire"
+                  brightness="50"
+                  radius="6.5"
+                  attenuation="1">
+          <match>campfire</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>

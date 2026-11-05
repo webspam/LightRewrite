@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Oxenfurt Bridge -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <!-- Camp in Velen -->
+        <matches>
+          <match type="layer">levels\novigrad\greyrocks\warzone\</match>
+        </matches>
+
+        <override tag_name="LR_OxenfurtBridge_HangingLampHolder">
+          <!-- hanging_lamp_complex.w2ent -->
+          <!-- hanging_lamp_holder_complex.w2ent -->
+          <match>hanging_lamp</match>
+          <!-- lights_exterior.w2l -->
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_OxenfurtBridge_HangingLamp">
+          <match mode="exact">hanging_lamp_complex.w2ent</match>
+          <!-- lights_exterior.w2l -->
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_OxenfurtBridge_Torch"
+                  brightness="30"
+                  radius="5">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <!-- lights_exterior.w2l -->
+          <lum exclude_scene="false" />
+          <!-- <spotlight brightness="20"
+                     radius="6"
+                     attenuation="1"
+                     innerAngle="326.58"
+                     outerAngle="350"
+                     softness="0.7">
+            <lum exclude_scene="true" />
+            <offset x="-0.0285"
+                    y="0"
+                    z="0.44" />
+            <rotation pitch="90"
+                      yaw="0"
+                      roll="0" />
+          </spotlight> -->
+        </override>
+
+        <override tag_name="LR_OxenfurtBridge_Campfire"
+                  brightness="40"
+                  radius="5.5"
+                  attenuation="1">
+          <match mode="exact">campfire_01.w2ent</match>
+          <!-- lights_exterior.w2l -->
+        </override>
+
+        <override tag_name="LR_OxenfurtBridge_Candle"
+                  brightness="3.3">
+          <match mode="exact">candle_small_group_melted_b.w2ent</match>
+          <!-- lights_interior.w2l -->
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
