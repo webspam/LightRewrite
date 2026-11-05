@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Devil's Pit -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer">levels\novigrad\greyrocks\gr3_plague_pit\</match>
+        </matches>
+
+        <override tag_name="LR_DevilsPit_HangingLampHolder">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+          <spotlight brightness="15" />
+          <!-- lights.w2l -->
+        </override>
+
+        <override tag_name="LR_DevilsPit_TorchWallWoodenSmallBounce"
+                  brightness="30">
+          <match mode="exact">torch_wall_wooden_small_bounce.w2ent</match>
+          <!-- lights.w2l -->
+        </override>
+
+        <override tag_name="LR_DevilsPit_TorchHandLongComplex"
+                  brightness="30">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <!-- lights.w2l -->
+        </override>
+
+        <!-- Wall Torch - Red -->
+        <override tag_name="LR_DevilsPit_Mq1060TorchWallCreepy">
+          <match mode="exact">mq1060_torch_wall_creepy.w2ent</match>
+          <!-- gr3_cave_2\creepy_lights_boss\lights.w2l -->
+          <offset x="-0.276"
+                  y="0"
+                  z="0.59" />
+        </override>
+
+        <!-- Building, Post Quest -->
+        <override tag_name="LR_DevilsPit_LampStandingComplex"
+                  brightness="9.33">
+          <match mode="exact">lamp_standing_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\greyrocks\gr3_plague_pit\building\building_after\lights.w2l</match>
+        </override>
+
+        <override tag_name="LR_DevilsPit_LampStandingComplex2"
+                  brightness="7.5">
+          <match mode="exact">lamp_standing_complex.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\greyrocks\gr3_plague_pit\building\building_after\loot.w2l</match>
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <override tag_name="LR_DevilsPit_CoalSmallDoubleSpotlight"
+                  radius="4"
+                  attenuation="1">
+          <match mode="exact">coal_small_double_spotlight.w2ent</match>
+          <!-- building_after\lights.w2l -->
+          <offset x="0.1"
+                  y="0"
+                  z="0" />
+        </override>
+
+        <override tag_name="LR_DevilsPit_TorchWallMetalBounce"
+                  brightness="15">
+          <match mode="exact">torch_wall_metal_bounce.w2ent</match>
+          <!-- building_after\lights.w2l -->
+        </override>
+
+        <override tag_name="LR_DevilsPit_CandleHolderLargeWoodBComplex"
+                  brightness="7.76"
+                  radius="5">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+          <offset x="0"
+                  y="0"
+                  z="2.12" />
+        </override>
+      </overrides>
+
+      <!-- Campfire up top -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_DevilsPit_Campfire01"
+                  brightness="50"
+                  radius="6"
+                  attenuation="1">
+          <match mode="exact">campfire_01.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\communities\plague_pit\mq1060_community\exterior\refugees\bed_tent_2\woman_day.w2l</match>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
