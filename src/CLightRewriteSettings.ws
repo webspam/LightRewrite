@@ -107,9 +107,9 @@ class CLightRewriteSettings {
         profileOptions.Insert(0, NONE_PROFILE);
 
         playerTorch = SLightRewriteTorchLight(
-            25,
-            25,
-            0.9,
+            30,
+            20,
+            0.95,
             SLightRewriteOptionalColour(true, Color(255, 250, 245, 255))
         );
         npcTorch = SLightRewriteTorchLight(25, 6.5, 0.9);
