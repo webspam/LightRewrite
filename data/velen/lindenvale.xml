@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Lindenvale -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\nml_villages\sroda_village\lights_and_fx.w2l</match>
+        </matches>
+
+        <!-- Colour & Shadows -->
+        <override tag_name="LR_Lindenvale_ColourReset">
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <shadows min_fade_distance="20"
+                   min_fade_range="20" />
+        </override>
+
+        <!-- Campfire (Mislayering impact: 2x in Novigrad Outskirts, and 1x in Devils Pit) -->
+        <override tag_name="LR_Lindenvale_Campfire"
+                  brightness="50"
+                  radius="5.5"
+                  attenuation="0.95"
+                  min_auto_hide_distance="300">
+          <match mode="exact">campfire_01.w2ent</match>
+          <!-- lights_and_fx.w2l -->
+          <shadows fade_distance="30"
+                   fade_range="20" />
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_Lindenvale_TorchOnAStick"
+                  brightness="25"
+                  radius="5"
+                  attenuation="1">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <!-- lights_and_fx.w2l -->
+          <shadows fade_distance="30"
+                   fade_range="20" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- Lamp - Tavern Door -->
+        <override tag_name="LR_Lindenvale_Tavern_DoorLamp">
+          <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
+          <!-- lights_and_fx.w2l -->
+          <lum exterior="false" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+
+        <!-- Candle group near well -->
+        <override tag_name="LR_Lindenvale_CandleWell"
+                  brightness="4">
+          <match mode="exact">candle_small_group_melted_complex.w2ent</match>
+          <!-- lights_and_fx.w2l -->
+        </override>
+
+        <override tag_name="LR_Lindenvale_candleholder_small_melted_fake_shadow_complex"
+                  use_spotlight_colour="true">
+          <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
+          <!-- tavern\fx_lights.w2l -->
+        </override>
+
+        <!-- 3 Candle Group -->
+        <override tag_name="LR_Lindenvale_Tavern_ThreeCandleGroup"
+                  brightness="2.75">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <!-- tavern\fx_lights.w2l -->
+        </override>
+
+        <!-- 2 Candle Group -->
+        <override tag_name="LR_Lindenvale_Tavern_TwoCandleGroup"
+                  brightness="3.33">
+          <match mode="exact">candle_small_group_melted_b.w2ent</match>
+          <!-- tavern\fx_lights.w2l -->
+        </override>
+
+        <!-- "General Stall" Lamp -->
+        <override tag_name="LR_Lindenvale_GeneralStore_Lamp"
+                  brightness="17.5"
+                  attenuation="1">
+          <match mode="exact">hanging_lamp.w2ent</match>
+          <!-- general_store\decoration.w2l -->
+        </override>
+
+        <!-- Lamp - Lookout Post & one house -->
+        <override tag_name="LR_Lindenvale_LampStanding">
+          <match mode="exact">lamp_standing_complex.w2ent</match>
+          <!-- decorations.w2l -->
+          <shadows fade_distance="30" />
+        </override>
+
+        <!-- Iron Chandelier - Lookout Post -->
+        <override tag_name="LR_Lindenvale_IronChandelier"
+                  brightness="40"
+                  radius="5.5">
+          <match mode="exact">chandelier_small_bounce.w2ent</match>
+          <!-- decorations.w2l -->
+          <shadows fade_distance="30"
+                   blend_factor="0.9" />
+          <lum interior="false" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
