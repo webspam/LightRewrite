@@ -8,7 +8,7 @@
  * emitted, so profile-inherited values aren't re-exported and can't clobber the profile.
  *
  * entity.ToString() format:
- *   CLayer "levels\skellige\spikeroog\village_buildings.w2w"::levels\skellige\spikeroog\village_buildings\braziers_floor_square_bounce.w2ent
+ *   CLayer "levels\skellige\spikeroog\village_buildings.w2l"::levels\skellige\spikeroog\village_buildings\braziers_floor_square_bounce.w2ent
  */
 
 /** `true` if edited, and different from the default value. */

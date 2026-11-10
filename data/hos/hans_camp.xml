@@ -3,7 +3,6 @@
         xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
   <custom>
     <light_rewrite>
-      <!-- WARNING: 2 conflicting duplicate(s) were found. All duplicates are in Default_Duplicates overrides block(s) below. -->
       <overrides profile_name="Default"
                  weight="20">
         <matches>
