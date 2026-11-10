@@ -163,8 +163,7 @@
                   label="baron_tamara_room_candle_doorway"
                   brightness="4.6">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
-          <match type="layer"
-                 mode="exact">levels\novigrad\baron_lair\baron_castle\baron_castle_interior_lights_nn\entity</match>
+          <match type="layer">levels\novigrad\baron_lair\baron_castle\baron_castle_interior_lights_nn\entity</match>
         </override>
 
         <!-- Shrine - Chandelier -->
