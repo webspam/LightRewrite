@@ -23,9 +23,15 @@
         </override>
 
         <override tag_name="LR_DevilsPit_TorchHandLongComplex"
-                  brightness="30">
+                  brightness="27.5"
+                  radius="5.5"
+                  attenuation="1"
+                  min_auto_hide_distance="170">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <!-- lights.w2l -->
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
         </override>
 
         <!-- Wall Torch - Red -->
@@ -78,6 +84,12 @@
           <offset x="0"
                   y="0"
                   z="2.12" />
+        </override>
+
+        <!-- Square Brazier -->
+        <override tag_name="LR_DevilsPit_SquareBrazier">
+          <match mode="exact">braziers_floor_square_bounce.w2ent</match>
+          <spotlight attenuation="1" />
         </override>
       </overrides>
 

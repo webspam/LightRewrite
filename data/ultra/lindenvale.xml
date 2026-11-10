@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <!-- Ultra: Lindenvale -->
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <transport>pt, rtshadows</transport>
+
+        <matches>
+          <match type="layer">levels\novigrad\nml_villages\sroda_village\</match>
+        </matches>
+
+        <!-- Bigger, brighter campfires -->
+        <override tag_name="LR_UltraPT_Lindenvale_Campfire"
+                  brightness="45"
+                  radius="6">
+          <match mode="exact">campfire_01.w2ent</match>
+        </override>
+
+        <!-- Torch on a Stick -->
+        <override tag_name="LR_UltraPT_Lindenvale_TorchOnAStick"
+                  brightness="25"
+                  radius="6">
+          <match mode="exact">torch_hand_long_complex.w2ent</match>
+          <!-- Fix torch light in doorways -->
+          <lum exterior="false"
+               interior="false" />
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
