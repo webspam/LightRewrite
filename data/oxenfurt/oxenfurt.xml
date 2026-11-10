@@ -67,6 +67,27 @@
           <spotlight brightness="30"
                      attenuation="0.9" />
         </override>
+
+        <!-- Candelabra -->
+        <override tag_name="LR_Oxenfurt_Candelabra"
+                  brightness="10.23"
+                  radius="5"
+                  attenuation="1"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">candelabra_complex.w2ent</match>
+          <shadows min_fade_distance="10"
+                   min_fade_range="15"
+                   blend_factor="0.5" />
+          <colour r="255"
+                  g="250"
+                  b="245" />
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+          <spotlight>
+            <lum exclude_scene="true" />
+          </spotlight>
+        </override>
       </overrides>
     </light_rewrite>
   </custom>
