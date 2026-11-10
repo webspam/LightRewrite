@@ -5,11 +5,36 @@
     <light_rewrite>
       <!-- Ultra: Kingfisher - PT & RT Shadows Only -->
       <overrides profile_name="Ultra"
-                 weight="23">
+                 weight="22">
         <transport>pt, rtshadows</transport>
         <matches>
           <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
         </matches>
+
+        <!-- Default the other lights to on -->
+        <override tag_name="LR_Ultra_Kingfisher_CandleHolderFancy"
+                  radius="5.5"
+                  brightness="2"
+                  attenuation="1"
+                  default_state="on">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+          <match type="layer">levels\novigrad\novigrad\zimorodek_inn\</match>
+        </override>
+
+        <!-- Bar, Barrel -->
+        <override tag_name="LR_Ultra_Kingfisher_CandleGroupC">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="1"
+                 brightness="2"
+                 radius="6.75" />
+        </override>
+
+        <!-- Stage -->
+        <override tag_name="LR_Ultra_Kingfisher_LargeCandleHolderB"
+                  brightness="3"
+                  radius="6.5">
+          <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
+        </override>
 
         <!-- Candelabra -->
         <override tag_name="LR_UltraPT_Kingfisher_CandelabraComplex"
@@ -40,6 +65,7 @@
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
           <lum exclude_scene="true" />
           <spotlight brightness="2"
+                     min_radius="3.5"
                      attenuation="1"
                      innerAngle="255"
                      outerAngle="330"
@@ -49,6 +75,16 @@
                     g="250"
                     b="245" />
           </spotlight>
+          <fire_fx_offset x="0"
+                          y="0"
+                          z="0.07" />
+        </override>
+
+        <override tag_name="LR_Ultra_Kingfisher_CandelabraStanding"
+                  radius="5.5"
+                  brightness="9.52"
+                  rewriter_type="LRT_FxAlign">
+          <match mode="exact">candelabra_standing.w2ent</match>
           <fire_fx_offset x="0"
                           y="0"
                           z="0.07" />
@@ -74,6 +110,54 @@
           <fire_fx_offset x="0"
                           y="0"
                           z="0.07" />
+        </override>
+      </overrides>
+
+      <!-- Kingfisher Inn - First floor, Northeast Room (3) -->
+      <overrides profile_name="Ultra"
+                 weight="22">
+        <matches>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\northeast_room_q310\lights.w2l</match>
+        </matches>
+        <override tag_name="LR_UltraPT_Kingfisher3_candleholder_fancy_complex_2">
+          <match mode="exact">candleholder_fancy_complex.w2ent</match>
+          <spotlight radius="3.5" />
+        </override>
+
+        <override tag_name="LR_UltraPT_Kingfisher3_candle_small_group_melted_d_complex">
+          <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
+          <light index="0"
+                 brightness="2" />
+          <light index="1"
+                 brightness="2"
+                 radius="3" />
+        </override>
+
+        <override tag_name="LR_UltraPT_Kingfisher3_candle_small_group_melted_complex">
+          <match mode="exact">candle_small_group_melted_complex.w2ent</match>
+          <light index="0"
+                 brightness="2" />
+          <light index="1"
+                 brightness="2"
+                 radius="3" />
+        </override>
+
+        <override tag_name="LR_UltraPT_Kingfisher3_candle_small_group_melted_c_complex"
+                  use_spotlight_colour="false">
+          <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="0"
+                 brightness="2"
+                 radius="3.5" />
+          <light index="2"
+                 brightness="2"
+                 radius="3" />
+        </override>
+
+        <override tag_name="LR_UltraPT_Kingfisher3_candle_med_melted_complex"
+                  brightness="2"
+                  radius="3.75">
+          <match mode="exact">candle_med_melted_complex.w2ent</match>
         </override>
       </overrides>
     </light_rewrite>

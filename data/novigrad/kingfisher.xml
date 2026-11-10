@@ -41,9 +41,10 @@
           <match mode="exact">candelabra_complex.w2ent</match>
           <offset x="0"
                   y="0"
-                  z="0.82" />
-          <shadows fade_distance="15"
-                   fade_range="10" />
+                  z="0.97" />
+          <shadows min_fade_distance="20"
+                   min_fade_range="15"
+                   blend_factor="0.8" />
           <spotlight radius="0.73"
                      innerAngle="0.01"
                      outerAngle="359.93">
@@ -86,15 +87,15 @@
                   attenuation="1">
           <match mode="exact">candelabra_standing_complex.w2ent</match>
           <lum exclude_scene="false" />
-          <shadows fade_distance="15"
-                   fade_range="15"
+          <shadows min_fade_distance="15"
+                   min_fade_range="15"
                    blend_factor="0.75" />
           <colour r="255"
                   g="250"
                   b="245" />
           <offset x="0"
                   y="0"
-                  z="1.94" />
+                  z="2.14" />
           <spotlight>
             <lum exclude_scene="true" />
           </spotlight>
@@ -116,9 +117,12 @@
                   radius="2.65"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>
+          <shadows fade_distance="15"
+                   fade_range="10"
+                   blend_factor="0.7" />
           <offset x="0"
                   y="0"
-                  z="0.82" />
+                  z="0.97" />
           <spotlight brightness="8"
                      radius="1.1"
                      innerAngle="359.58"
@@ -132,7 +136,7 @@
         <!-- Candle holder - foot of bed -->
         <override tag_name="LR_Kingfisher3_CandleHolderFancy"
                   label="kingfisher3_candleholderfancy"
-                  radius="3">
+                  radius="2">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
@@ -141,7 +145,11 @@
                   label="kingfisher3_floorcandle_d"
                   radius="3">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
-          <light index="1">
+          <light index="0"
+                 brightness="3.5" />
+          <light index="1"
+                 brightness="2.5"
+                 radius="1">
             <shadows casting_mode="None" />
           </light>
         </override>
@@ -151,22 +159,44 @@
                   label="kingfisher3_floorcandle_a"
                   radius="3">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
-          <light index="1">
+          <light index="1"
+                 radius="1">
             <shadows casting_mode="None" />
           </light>
         </override>
 
         <!-- Floor candles -->
         <override tag_name="LR_Kingfisher3_FloorCandleC"
-                  label="kingfisher3_floorcandle_c"
-                  radius="3">
+                  label="kingfisher3_floorcandle_c">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
+          <light index="0"
+                 brightness="2.5"
+                 radius="1" />
+          <light index="1"
+                 brightness="4"
+                 radius="3" />
+          <light index="2"
+                 brightness="2.5"
+                 radius="1" />
         </override>
 
         <override tag_name="LR_Kingfisher3_Med_FloorCandle"
                   label="kingfisher3_med_floorcandle"
                   radius="3">
           <match mode="exact">candle_med_melted_complex.w2ent</match>
+        </override>
+      </overrides>
+
+      <!-- Iron Chandeliers - Exterior Balconies -->
+      <overrides profile_name="Default"
+                 weight="20">
+        <override tag_name="LR_Kingfisher_ChandelierSmallNoShadow"
+                  brightness="50">
+          <match mode="exact">chandelier_small_noshadow.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\main_square\lights_exterior.w2l</match>
+          <shadows min_fade_distance="30"
+                   min_fade_range="20" />
         </override>
       </overrides>
     </light_rewrite>
