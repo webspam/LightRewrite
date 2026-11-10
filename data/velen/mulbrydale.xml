@@ -10,21 +10,19 @@
           <any>
             <!-- lw_before_rescue\tempdeco.w2l -->
             <!-- scenes\peasants_01.w2l -->
-            <match type="layer"
-                   mode="exact">levels\novigrad\communities\poppystone\</match>
+            <match type="layer">levels\novigrad\communities\poppystone\</match>
             <!-- lights.w2l -->
             <!-- gameplay.w2l -->
             <!-- interior_nonstatic.w2l -->
             <!-- nilgaardian_camp\assets.w2l -->
-            <match type="layer"
-                   mode="exact">levels\novigrad\greyrocks\gr4_poppystone\</match>
+            <match type="layer">levels\novigrad\greyrocks\gr4_poppystone\</match>
           </any>
         </matches>
 
 
         <!-- Torch on a Stick -->
         <override tag_name="LR_Mulbrydale_TorchOnAStick"
-                  brightness="22.51"
+                  brightness="22.5"
                   radius="6.5"
                   attenuation="1">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
