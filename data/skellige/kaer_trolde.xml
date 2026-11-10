@@ -13,22 +13,19 @@
 
         <!-- Wall torch -->
         <override tag_name="LR_KaerTrolde_CastlePath_WallTorch"
-                  label="kaer_trolde_castle_path_wall_torch"
                   brightness="20"
                   radius="6">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
         </override>
 
         <!-- Brazier - wall chain -->
-        <override tag_name="LR_KaerTrolde_CastlePath_BrazierChain"
-                  label="kaer_trolde_brazier_chain">
+        <override tag_name="LR_KaerTrolde_CastlePath_BrazierChain">
           <match mode="exact">braziers_wall_chain_bounce.w2ent</match>
           <shadows fade_range="15" />
         </override>
 
         <!-- Round Wall Brazier - Tunnel path -->
-        <override tag_name="LR_Edited_braziers_wall_round_bounce_w2ent_2"
-                  label="edited_braziers_wall_round_bounce_w2ent">
+        <override tag_name="LR_Edited_braziers_wall_round_bounce_w2ent_2">
           <match mode="exact">braziers_wall_round_bounce.w2ent</match>
           <shadows fade_distance="40"
                    fade_range="20" />
@@ -51,7 +48,6 @@
 
         <!-- Round wall brazier -->
         <override tag_name="LR_KaerTrolde_BrazierRoundWall"
-                  label="kaer_trolde_brazier_round_wall"
                   radius="6"
                   attenuation="0.95">
           <match mode="exact">braziers_wall_round_bounce.w2ent</match>
@@ -77,7 +73,6 @@
 
         <!-- Wall torch -->
         <override tag_name="LR_KaerTrolde_WallTorch"
-                  label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="5.5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>

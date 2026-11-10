@@ -10,8 +10,7 @@
           <match type="layer">levels\skellige\ice_giant_island\q501_eredin_decoration\501_village\</match>
         </matches>
 
-        <override tag_name="LR_FinalCamp_AllColours"
-                  label="final_camp_all_colours">
+        <override tag_name="LR_FinalCamp_AllColours">
           <colour r="255"
                   g="250"
                   b="245" />
@@ -19,7 +18,6 @@
 
         <!-- Storehouse braziers -->
         <override tag_name="LR_FinalCamp_Braziers_Floor_Square_Bounce_Dynamic"
-                  label="final_camp_braziers_floor_square_bounce_dynamic"
                   brightness="80"
                   radius="7.5">
           <match mode="exact">braziers_floor_square_bounce_dynamic.w2ent</match>

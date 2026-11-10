@@ -15,14 +15,12 @@
 
         <!-- Candleholder -->
         <override tag_name="LR_Lugos_Candleholder"
-                  label="lugos_candleholder"
                   radius="6">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <!-- Fireplace -->
         <override tag_name="LR_Lugos_Fireplace"
-                  label="lugos_fireplace"
                   radius="6"
                   attenuation="0.9">
           <match mode="exact">fireplace_grate.w2ent</match>
@@ -32,7 +30,6 @@
 
         <!-- Campfire -->
         <override tag_name="LR_Lugos_Campfire"
-                  label="lugos_campfire"
                   radius="5.5"
                   attenuation="0.85">
           <match mode="exact">campfire_01.w2ent</match>
@@ -40,7 +37,6 @@
 
         <!-- Campfire Large -->
         <override tag_name="LR_Lugos_Campfire_Cave"
-                  label="lugos_campfire_cave"
                   radius="7.5">
           <match mode="exact">campfire_01_cave.w2ent</match>
         </override>
@@ -51,7 +47,6 @@
                  weight="21">
         <!-- Override above fireplace -->
         <override tag_name="LR_Lugos_Fireplace_Large"
-                  label="lugos_fireplace_large"
                   radius="7.5"
                   attenuation="1">
           <match mode="exact">fireplace_grate.w2ent</match>

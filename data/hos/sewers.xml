@@ -12,8 +12,7 @@
         </matches>
 
         <!-- Shadows -->
-        <override tag_name="LR_HoSSewer_Shadows"
-                  label="hos_sewer_shadows">
+        <override tag_name="LR_HoSSewer_Shadows">
           <shadows casting_mode="Normal"
                    fade_distance="30"
                    fade_range="20" />
@@ -21,7 +20,6 @@
 
         <!-- Wall Torch -->
         <override tag_name="LR_HoSSewer_Torch_Wall"
-                  label="hos_sewer_torch_wall"
                   brightness="40"
                   radius="7.5"
                   attenuation="1">
@@ -30,7 +28,6 @@
 
         <!-- Lamp -->
         <override tag_name="LR_HoSSewer_Hanging_Lamp"
-                  label="hos_sewer_hanging_lamp"
                   brightness="80"
                   radius="8"
                   attenuation="1">

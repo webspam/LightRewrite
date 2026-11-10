@@ -12,17 +12,14 @@
         </matches>
 
         <override tag_name="LR_HarbourStables_CandleB"
-                  label="novigrad_harbour_stables_candle_b"
                   radius="5">
           <match mode="exact">candle_small_group_melted_b.w2ent</match>
         </override>
         <override tag_name="LR_HarbourStables_Candleholder"
-                  label="novigrad_harbour_stables_candleholder"
                   radius="5">
           <match mode="exact">candleholder_small_melted.w2ent</match>
         </override>
         <override tag_name="LR_HarbourStables_CandleC"
-                  label="novigrad_harbour_stables_candle_c"
                   radius="5">
           <match mode="exact">candle_small_group_melted_c.w2ent</match>
         </override>

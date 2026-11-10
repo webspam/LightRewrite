@@ -10,7 +10,6 @@
                  mode="exact">dlc\ep1\levels\novigrad\locations\q603\mercenary_camp.w2l</match>
         </matches>
         <override tag_name="LR_HansCidaris_Brazier"
-                  label="hans_cidaris_brazier"
                   brightness="60"
                   radius="6"
                   attenuation="1">
@@ -20,7 +19,6 @@
         </override>
 
         <override tag_name="LR_HansCidaris_Torch"
-                  label="hans_cidaris_torch"
                   brightness="20"
                   attenuation="1">
           <match mode="exact">torch_hand_long.w2ent</match>

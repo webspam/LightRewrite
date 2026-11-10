@@ -12,7 +12,6 @@
 
         <!-- All candles -->
         <override tag_name="LR_Novigrad_Candle"
-                  label="novigrad_candle"
                   use_spotlight_colour="true">
           <any>
             <match>candle_small</match>
@@ -30,7 +29,6 @@
 
         <!-- Townhouse candles -->
         <override tag_name="LR_Novigrad_PoorCandleC"
-                  label="novigrad_poor_candle_c"
                   force_single_light="true">
           <!-- 2/3 point lights had tiny radii, and no shadows -->
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
@@ -41,7 +39,6 @@
 
         <!-- Campfires -->
         <override tag_name="LR_Novigrad_Campfire"
-                  label="novigrad_campfire"
                   brightness="90"
                   radius="12"
                   attenuation="0.85">
@@ -52,7 +49,6 @@
           </any>
         </override>
         <override tag_name="LR_Novigrad_Campfire01"
-                  label="novigrad_campfire_01"
                   brightness="60"
                   radius="9"
                   attenuation="0.9">
@@ -61,15 +57,13 @@
 
         <!-- Lamps -->
         <override tag_name="LR_Novigrad_Lamp"
-                  label="novigrad_lamp"
                   brightness="15"
                   radius="4.5">
           <match mode="exact">hanging_lamp.w2ent</match>
         </override>
 
         <!-- Red Lanterns -->
-        <override tag_name="LR_Novigrad_HangingLanternRed"
-                  label="novigrad_hanging_lantern_red">
+        <override tag_name="LR_Novigrad_HangingLanternRed">
           <match mode="exact">hanging_lantern_red.w2ent</match>
           <!-- Lowest it can go before the light pokes outside the mesh -->
           <offset x="0"
@@ -78,8 +72,7 @@
         </override>
 
         <!-- Crippled Kate's -->
-        <override tag_name="LR_Edited_baron_candle_holder_noshadow_dynamic_w2ent"
-                  label="edited_baron_candle_holder_noshadow_dynamic_w2ent">
+        <override tag_name="LR_Edited_baron_candle_holder_noshadow_dynamic_w2ent">
           <match mode="exact">baron_candle_holder_noshadow_dynamic.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\novigrad\pegleg_peggys_bordello\stage\decoration_interior.w2l</match>

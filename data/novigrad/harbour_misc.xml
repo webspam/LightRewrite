@@ -8,7 +8,6 @@
         <!-- House A -->
         <!-- Stove -->
         <override tag_name="LR_Novigrad_HouseA_Stove"
-                  label="novigrad_house_a_stove"
                   brightness="55"
                   attenuation="1">
           <match mode="exact">coal_small_double_spotlight.w2ent</match>
@@ -19,7 +18,6 @@
         </override>
         <!-- Candle on the right downstairs -->
         <override tag_name="LR_Novigrad_HouseA_CandleMedMelted"
-                  label="novigrad_house_a_candle_med_melted"
                   brightness="4">
           <match mode="exact">candle_med_melted.w2ent</match>
           <match type="layer"
@@ -29,7 +27,6 @@
         <!-- Ships -->
         <!-- Hanging Lamp -->
         <override tag_name="LR_Novigrad_Ships_HangingLamp"
-                  label="novigrad_ships_hanging_lamp"
                   brightness="20"
                   radius="5"
                   attenuation="1">
@@ -48,7 +45,6 @@
         </override>
         <!-- Brazier -->
         <override tag_name="LR_Novigrad_Ships_Brazier"
-                  label="novigrad_ships_brazier"
                   brightness="60"
                   radius="5">
           <match mode="exact">braziers_floor_square_dynamic.w2ent</match>

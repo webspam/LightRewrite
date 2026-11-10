@@ -7,7 +7,6 @@
       <overrides profile_name="Default"
                  weight="20">
         <override tag_name="LR_Oxenfurt_Armoury_CandleholderFancy"
-                  label="oxenfurt_armoury_candleholder_fancy"
                   radius="6.5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
           <match type="layer"
@@ -23,7 +22,6 @@
                  mode="exact">levels\novigrad\white_bridge\armory\int_nonstat.w2l</match>
         </matches>
         <override tag_name="LR_Oxenfurt_Armoury_Candelabra"
-                  label="oxenfurt_armoury_candelabra"
                   brightness="10.23"
                   radius="5"
                   attenuation="1">
@@ -31,13 +29,11 @@
         </override>
 
         <override tag_name="LR_Oxenfurt_Armoury_CandleholderFancy2"
-                  label="oxenfurt_armoury_candleholder_fancy_2"
                   use_spotlight_colour="true">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <override tag_name="LR_Oxenfurt_Armoury_ChandelierSmallNoshadow"
-                  label="oxenfurt_armoury_chandelier_small_noshadow"
                   brightness="30"
                   radius="5"
                   attenuation="1">

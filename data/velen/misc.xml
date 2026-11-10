@@ -7,7 +7,6 @@
                  weight="20">
         <!-- Keira's Hut -->
         <override tag_name="LR_KeiraHut_CandleGroupCaves"
-                  label="keira_hut_candle_large_group_caves"
                   brightness="24">
           <match mode="exact">candle_large_group_caves_noshadow.w2ent</match>
           <match type="layer"
@@ -17,8 +16,7 @@
 
       <!-- <overrides profile_name="Default"
                  weight="10">
-        <override tag_name="LR_BaldMountain_Braziers"
-                  label="bald_mountain_braziers">
+        <override tag_name="LR_BaldMountain_Braziers">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\nml_surface\q111_imlerith\bg_orgy\hag_tent_kitchen.w2l</match>

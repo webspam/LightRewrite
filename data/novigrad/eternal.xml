@@ -13,7 +13,6 @@
 
         <!-- Mini hanging chandelier - walkway -->
         <override tag_name="LR_Eternal_Chandelier_Small"
-                  label="eternal_chandelier_small"
                   brightness="30"
                   radius="5"
                   attenuation="0.9"
@@ -35,7 +34,6 @@
 
         <!-- Regular altar fire -->
         <override tag_name="LR_Eternal_Altar_Fire"
-                  label="eternal_altar_fire"
                   brightness="150"
                   radius="10">
           <match mode="exact">shrine_of_ethernal_fire_altar_spot.w2ent</match>
@@ -56,7 +54,6 @@
 
         <!-- Small central alter fire -->
         <override tag_name="LR_Eternal_Small_Fire"
-                  label="eternal_small_fire"
                   brightness="125"
                   radius="7.5"
                   attenuation="0.8">
@@ -79,8 +76,7 @@
         </override>
 
         <!-- Large fires around the main building -->
-        <override tag_name="LR_Eternal_Large"
-                  label="edited_shrine_of_ethernal_fire_altar_wide_bounce_w2ent">
+        <override tag_name="LR_Eternal_Large">
           <match mode="exact">shrine_of_ethernal_fire_altar_wide_bounce.w2ent</match>
           <offset x="0"
                   y="0"
@@ -100,7 +96,6 @@
 
         <!-- The Overcompensating Fire -->
         <override tag_name="LR_The_Overcompensating_Fire"
-                  label="the_overcompensating_fire"
                   brightness="300"
                   radius="20"
                   attenuation="0.7"
@@ -137,7 +132,6 @@
 
         <!-- Bastions -->
         <override tag_name="LR_Eternal_Bastion_Torch"
-                  label="eternal_bastion_torch"
                   brightness="15"
                   radius="7.5"
                   attenuation="0.9">

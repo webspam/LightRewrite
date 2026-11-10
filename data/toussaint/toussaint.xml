@@ -12,7 +12,6 @@
 
         <!-- All Candles -->
         <override tag_name="LR_Toussaint_Candle"
-                  label="toussaint_candle"
                   max_brightness="5"
                   min_radius="4.5"
                   attenuation="1"

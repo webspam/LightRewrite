@@ -8,7 +8,6 @@
                  weight="20">
         <!-- House next to the barber -->
         <override tag_name="LR_Oxenfurt_Building_A"
-                  label="oxenfurt_building_a_candelabra"
                   brightness="8"
                   radius="5">
           <match mode="exact">candelabra.w2ent</match>
@@ -27,14 +26,12 @@
         </matches>
 
         <!-- All shadows -->
-        <override tag_name="LR_Oxenfurt_Barber_Shadows"
-                  label="oxenfurt_barber_shadow">
+        <override tag_name="LR_Oxenfurt_Barber_Shadows">
           <shadows fade_distance="12.5" />
         </override>
 
         <!-- Candle Holder -->
         <override tag_name="LR_Oxenfurt_Barber_Candles"
-                  label="oxenfurt_barber_candle"
                   brightness="5">
           <match mode="exact">baron_candle_holder.w2ent</match>
           <shadows casting_mode="Normal" />
@@ -45,7 +42,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Oxenfurt_Barber_Candelabra"
-                  label="oxenfurt_barber_candelabra"
                   brightness="10.23"
                   attenuation="1">
           <match mode="exact">candelabra.w2ent</match>

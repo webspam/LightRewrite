@@ -8,8 +8,7 @@
       <overrides profile_name="Default"
                  weight="2">
         <!-- Small group D complex -->
-        <override tag_name="LR_candle_small_group_melted_d_complex"
-                  label="candle_small_group_melted_d_complex">
+        <override tag_name="LR_candle_small_group_melted_d_complex">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="0">
             <shadows casting_mode="Normal" />
@@ -21,8 +20,7 @@
         </override>
 
         <!-- Small group C -->
-        <override tag_name="LR_candle_small_group_melted_c"
-                  label="candle_small_group_melted_c">
+        <override tag_name="LR_candle_small_group_melted_c">
           <match>candle_small_group_melted_c</match>
           <light index="0">
             <shadows casting_mode="Normal" />
@@ -40,7 +38,6 @@
         <!-- Small group B complex - RT/PT only dual-light -->
         <!-- Remastered allows the spotlight to be used - can cast RT/PT shadows. -->
         <!-- <override tag_name="LR_candle_small_group_melted_b_complex"
-                  label="candle_small_group_melted_b_complex"
                   radius="5">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
           <spotlight brightness="5">

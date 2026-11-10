@@ -15,15 +15,13 @@
         </matches>
 
         <!-- Shadows -->
-        <override tag_name="LR_KaerMorhen_Shadows"
-                  label="kaer_morhen_shadows">
+        <override tag_name="LR_KaerMorhen_Shadows">
           <shadows fade_distance="40"
                    fade_range="30" />
         </override>
 
         <!-- Wall Torch -->
         <override tag_name="LR_KaerMorhen_WallTorch"
-                  label="kaer_morhen_wall_torch"
                   brightness="20">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
           <colour r="255"
@@ -33,7 +31,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_KaerMorhen_CandelabraComplex"
-                  label="kaer_morhen_candelabra_complex"
                   brightness="26"
                   radius="6"
                   attenuation="1">
@@ -48,7 +45,6 @@
 
         <!-- Large Candle Holder A -->
         <override tag_name="LR_KaerMorhen_CandleHolderLargeWoodAComplex"
-                  label="kaer_morhen_candle_holder_large_wood_a_complex"
                   use_spotlight_colour="true">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
           <light index="0"
@@ -68,7 +64,6 @@
 
         <!-- Large Candle Holder B -->
         <override tag_name="LR_KaerMorhen_CandleHolderLargeWoodBComplex"
-                  label="kaer_morhen_candle_holder_large_wood_b_complex"
                   brightness="7.76"
                   radius="5"
                   attenuation="1">
@@ -76,14 +71,12 @@
         </override>
 
         <!-- Hearth -->
-        <!-- <override tag_name="LR_KaerMorhen_BathhouseFloorBrazier"
-                  label="kaer_morhen_bathhouse_floor_brazier">
+        <!-- <override tag_name="LR_KaerMorhen_BathhouseFloorBrazier">
           <match mode="exact">bathhouse_floor_brazier.w2ent</match>
         </override> -->
 
         <!-- Hearth Table Candle -->
         <override tag_name="LR_KaerMorhen_HearthTableCandles"
-                  label="kaer_morhen_hearth_table_candles"
                   radius="10">
           <match mode="exact">candle_small_group_melted_e_complex.w2ent</match>
           <colour r="255"
@@ -93,8 +86,7 @@
 
         <!-- Tower Chamber Brazier -->
         <!-- levels\kaer_morhen\kaer_morhen_valley\castle_interior\q403_avallach_chamber\q403_avallach_chamber.w2l -->
-        <override tag_name="LR_KaerMorhen_TowerChamber_Brazier"
-                  label="kaer_morhen_tower_chamber_brazier">
+        <override tag_name="LR_KaerMorhen_TowerChamber_Brazier">
           <match mode="exact">braziers_floor_square.w2ent</match>
           <colour r="255"
                   g="255"
@@ -122,8 +114,7 @@
                  mode="exact">levels\kaer_morhen\kaer_morhen_valley\castle_interior\castle_storage_interior.w2l</match>
         </matches>
 
-        <override tag_name="LR_KaerMorhen_torch_wall_metal_fake_shadow_w2ent"
-                  label="kaer_morhen_torch_wall_metal_fake_shadow_w2ent">
+        <override tag_name="LR_KaerMorhen_torch_wall_metal_fake_shadow_w2ent">
           <match mode="exact">torch_wall_metal_fake_shadow.w2ent</match>
           <spotlight attenuation="1">
             <colour r="255"
@@ -133,7 +124,6 @@
         </override>
 
         <override tag_name="LR_KaerMorhen_candle_holder_large_wood_a_w2ent"
-                  label="kaer_morhen_candle_holder_large_wood_a_w2ent"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_a.w2ent</match>
           <shadows casting_mode="Normal" />
@@ -144,7 +134,6 @@
 
         <!-- Fireplace - Tutorial -->
         <override tag_name="LR_KaerMorhen_Tutorial_fireplace"
-                  label="kaer_morhen_tutorial_fireplace"
                   brightness="75"
                   radius="6.4"
                   attenuation="1">

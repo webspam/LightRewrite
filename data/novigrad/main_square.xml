@@ -9,7 +9,6 @@
         <!-- Vivaldi's -->
         <!-- Candelabra -->
         <override tag_name="LR_Vivaldis_Candelabra"
-                  label="vivaldis_candelabra"
                   radius="3"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>

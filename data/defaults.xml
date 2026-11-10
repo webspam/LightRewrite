@@ -8,7 +8,6 @@
                  weight="0">
         <!-- Candles -->
         <override tag_name="LR_Candle"
-                  label="candle"
                   brightness="5"
                   radius="4"
                   attenuation="1"
@@ -38,14 +37,12 @@
         <!-- Small Group B - Complex -->
         <!-- Two flames on one point light, brightness calculated as Base=5, coefficient=0.4: 5 * 2^0.4 = 6.6 -->
         <override tag_name="LR_candle_small_group_melted_b_complex"
-                  label="candle_small_group_melted_b_complex"
                   brightness="6.6">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
         </override>
 
         <!-- Torches -->
         <!-- <override tag_name="LR_Torch"
-                  label="torch"
                   brightness="30"
                   radius="10"
                   attenuation="1.0">
@@ -57,7 +54,6 @@
 
         <!-- Braziers -->
         <!-- <override tag_name="LR_Brazier"
-                  label="brazier"
                   brightness="40"
                   radius="10"
                   attenuation="1.0">
@@ -69,7 +65,6 @@
 
         <!-- Candelabras -->
         <!-- <override tag_name="LR_Candelabra"
-                  label="candelabra"
                   brightness="8"
                   radius="10"
                   attenuation="1.0">
@@ -84,7 +79,6 @@
 
         <!-- Campfires -->
         <!-- <override tag_name="LR_Campfire"
-                  label="campfire"
                   brightness="50"
                   radius="12"
                   attenuation="0.85">
@@ -96,7 +90,6 @@
 
         <!-- Chandeliers -->
         <!-- <override tag_name="LR_Chandelier"
-                  label="chandelier"
                   brightness="12"
                   radius="18"
                   attenuation="1.0">

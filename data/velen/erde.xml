@@ -13,7 +13,6 @@
 
         <!-- Erde - Colour, Shadows, & Attenuation -->
         <override tag_name="LR_Erde_Shadows"
-                  label="erde_shadows"
                   attenuation="1">
           <shadows fade_distance="20"
                    fade_range="20" />
@@ -24,7 +23,6 @@
 
         <!-- Erde Candle -->
         <override tag_name="LR_Erde_Candle"
-                  label="erde_candle"
                   brightness="4"
                   radius="5">
           <match>candle</match>
@@ -32,7 +30,6 @@
 
         <!-- Lantern -->
         <override tag_name="LR_Erde_Lantern"
-                  label="erde_lantern"
                   brightness="15"
                   radius="5"
                   attenuation="1">
@@ -46,8 +43,7 @@
         </override>
 
         <!-- Candleholder -->
-        <override tag_name="LR_Erde_Candleholder"
-                  label="erde_candleholder">
+        <override tag_name="LR_Erde_Candleholder">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
           <spotlight>
             <lum exclude_scene="true" />
@@ -56,7 +52,6 @@
 
         <!-- Torch on a Stick -->
         <override tag_name="LR_Erde_TorchOnAStick"
-                  label="erde_torch_on_a_stick"
                   brightness="20"
                   radius="5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
@@ -67,8 +62,7 @@
         </override>
 
         <!-- Stove -->
-        <override tag_name="LR_Erde_Stove"
-                  label="erde_stove">
+        <override tag_name="LR_Erde_Stove">
           <match mode="exact">coal_small_double_spotlight_complex.w2ent</match>
           <spotlight index="0"
                      radius="2.25"
@@ -79,7 +73,6 @@
 
         <!-- Cellar Candles -->
         <override tag_name="LR_Erde_CandleGroupC"
-                  label="erde_candle_group_c"
                   brightness="3">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="1"
@@ -88,7 +81,6 @@
                  radius="2" />
         </override>
         <override tag_name="LR_Erde_CandleGroupB"
-                  label="erde_candle_group_b"
                   brightness="3">
           <match mode="exact">candle_small_group_melted_b.w2ent</match>
           <light index="0">
@@ -99,7 +91,6 @@
 
         </override>
         <override tag_name="LR_Erde_CandleGroupD"
-                  label="erde_candle_group_d"
                   brightness="3">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="0">
@@ -109,7 +100,6 @@
                  radius="2" />
         </override>
         <override tag_name="LR_Erde_CandleMedA"
-                  label="erde_candle_med_a"
                   brightness="3">
           <match mode="exact">candle_med_a_complex.w2ent</match>
           <match type="layer"

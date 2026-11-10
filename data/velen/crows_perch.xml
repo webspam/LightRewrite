@@ -7,7 +7,6 @@
       <overrides profile_name="Default"
                  weight="20">
         <override tag_name="LR_CrowsPerch_ChandelierSmall"
-                  label="crows_perch_chandelier_small"
                   brightness="40">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>
           <match type="layer"

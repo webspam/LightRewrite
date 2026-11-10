@@ -12,7 +12,6 @@
 
         <!-- Candle holder -->
         <override tag_name="LR_Larvik_LargeCandleHolder"
-                  label="larvik_large_candle_holder"
                   brightness="24"
                   radius="4"
                   attenuation="0.9">
@@ -22,15 +21,13 @@
         </override>
 
         <!-- Candles -->
-        <override tag_name="LR_Larvik_MedMeltedCandle"
-                  label="larvik_med_melted_candle">
+        <override tag_name="LR_Larvik_MedMeltedCandle">
           <match mode="exact">candle_med_melted.w2ent</match>
           <shadows fade_distance="15" />
         </override>
 
         <!-- Iron chandelier -->
         <override tag_name="LR_Larvik_IronChandelier"
-                  label="larvik_iron_chandelier"
                   radius="6.5"
                   attenuation="0.9"
                   force_cast_shadows="true">
@@ -44,15 +41,13 @@
         </override>
 
         <!-- Coal firepits -->
-        <override tag_name="LR_Larvik_CoalSmallFirepitComplex"
-                  label="larvik_coal_small_firepit_complex">
+        <override tag_name="LR_Larvik_CoalSmallFirepitComplex">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
           <shadows fade_distance="10"
                    fade_range="7.5" />
         </override>
 
         <override tag_name="LR_Larvik_CoalSmall"
-                  label="larvik_coal_small"
                   radius="6">
           <match mode="exact">coal_small.w2ent</match>
           <!-- Anything higher than 0.15, and the light shines through the pots hanging over the coals -->

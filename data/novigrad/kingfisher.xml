@@ -13,7 +13,6 @@
 
         <!-- Quin-Candleholder - Standing -->
         <override tag_name="LR_Kingfisher_LargeCandleHolderB"
-                  label="kingfisher_largecandleholder_b"
                   brightness="7.76"
                   radius="5"
                   attenuation="1">
@@ -25,7 +24,6 @@
 
         <!-- Candle group near the side door -->
         <override tag_name="LR_Kingfisher_CandleGroupC"
-                  label="kingfisher_candlegroup_c"
                   brightness="4.5">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <shadows fade_distance="25"
@@ -34,7 +32,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Kingfisher_CandelabraComplex"
-                  label="kingfisher_candelabracomplex"
                   brightness="16"
                   radius="4"
                   attenuation="1">
@@ -56,21 +53,18 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Kingfisher_Candelabra"
-                  label="kingfisher_candelabra"
                   radius="5">
           <match mode="exact">candelabra.w2ent</match>
         </override>
 
         <!-- Candle holder - single, short -->
         <override tag_name="LR_Kingfisher_CandleHolderFancy"
-                  label="kingfisher_candleholderfancy"
                   radius="3.5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <!-- Stage -->
-        <override tag_name="LR_Kingfisher_StageFloorCandles"
-                  label="kingfisher_stage_floor_candles">
+        <override tag_name="LR_Kingfisher_StageFloorCandles">
           <any>
             <match mode="exact">candle_small_group_melted_d.w2ent</match>
             <match mode="exact">candle_small_group_melted_b.w2ent</match>
@@ -112,7 +106,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Kingfisher3_CandelabraComplex"
-                  label="kingfisher3_candelabracomplex"
                   brightness="17"
                   radius="2.65"
                   attenuation="1">
@@ -135,14 +128,12 @@
 
         <!-- Candle holder - foot of bed -->
         <override tag_name="LR_Kingfisher3_CandleHolderFancy"
-                  label="kingfisher3_candleholderfancy"
                   radius="2">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <!-- Floor candles -->
         <override tag_name="LR_Kingfisher3_FloorCandleD"
-                  label="kingfisher3_floorcandle_d"
                   radius="3">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="0"
@@ -156,7 +147,6 @@
 
         <!-- Floor candles -->
         <override tag_name="LR_Kingfisher3_FloorCandleA"
-                  label="kingfisher3_floorcandle_a"
                   radius="3">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
           <light index="1"
@@ -166,8 +156,7 @@
         </override>
 
         <!-- Floor candles -->
-        <override tag_name="LR_Kingfisher3_FloorCandleC"
-                  label="kingfisher3_floorcandle_c">
+        <override tag_name="LR_Kingfisher3_FloorCandleC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="0"
                  brightness="2.5"
@@ -181,7 +170,6 @@
         </override>
 
         <override tag_name="LR_Kingfisher3_Med_FloorCandle"
-                  label="kingfisher3_med_floorcandle"
                   radius="3">
           <match mode="exact">candle_med_melted_complex.w2ent</match>
         </override>

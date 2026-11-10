@@ -12,8 +12,7 @@
         </matches>
 
         <!-- All morgue shadows -->
-        <override tag_name="LR_Novigrad_Morgue_Shadows"
-                  label="novigrad_morgue_shadows">
+        <override tag_name="LR_Novigrad_Morgue_Shadows">
           <shadows fade_distance="20"
                    fade_range="15"
                    blend_factor="0.8" />
@@ -21,7 +20,6 @@
 
         <!-- Braziers -->
         <override tag_name="LR_Novigrad_Morgue_Brazier"
-                  label="novigrad_morgue_brazier"
                   brightness="30"
                   radius="6.25"
                   attenuation="0.85">
@@ -33,7 +31,6 @@
 
         <!-- Torches -->
         <override tag_name="LR_Novigrad_Morgue_Torch"
-                  label="novigrad_morgue_torch"
                   brightness="20"
                   radius="5"
                   attenuation="1">
@@ -44,14 +41,12 @@
         <override tag_name="LR_Novigrad_Morgue_Candle"
                   brightness="6.6"
                   radius="3"
-                  attenuation="1"
-                  label="novigrad_morgue_candle">
+                  attenuation="1">
           <match mode="startsWith">candle_small_group_melted_</match>
         </override>
         <!-- Candles - group of 3 -->
         <override tag_name="LR_Novigrad_Morgue_TriCandle"
-                  brightness="7.76"
-                  label="novigrad_morgue_tricandle">
+                  brightness="7.76">
           <match mode="exact">candle_small_group_melted_c_morgue.w2ent</match>
         </override>
       </overrides>

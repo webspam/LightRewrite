@@ -12,7 +12,6 @@
 
         <!-- Chandelier Small -->
         <override tag_name="LR_KaerTrolde_Village_ChandelierSmall"
-                  label="kaertrolde_village_chandeliersmall"
                   radius="5.5">
           <match mode="exact">chandelier_small.w2ent</match>
           <shadows casting_mode="Normal"
@@ -22,7 +21,6 @@
 
         <!-- Wall Torch -->
         <override tag_name="LR_KaerTrolde_Village_TorchWall"
-                  label="kaertrolde_village_torch_wall"
                   brightness="20">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
           <shadows fade_distance="30" />
@@ -30,7 +28,6 @@
 
         <!-- Brazier -->
         <override tag_name="LR_KaerTrolde_Village_Brazier"
-                  label="kaertrolde_village_brazier"
                   radius="6">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <shadows fade_distance="30"
@@ -49,7 +46,6 @@
 
         <!-- Fireplace -->
         <override tag_name="LR_KaerTrolde_Village_Fireplace"
-                  label="kaertrolde_village_fireplace"
                   attenuation="1">
           <match mode="exact">fireplace_grate_complex.w2ent</match>
           <shadows fade_distance="10"
@@ -58,7 +54,6 @@
 
         <!-- Coal Firepit -->
         <override tag_name="LR_KaerTrolde_Village_CoalFirepit"
-                  label="kaertrolde_village_coal_firepit"
                   brightness="50"
                   radius="3.5">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
@@ -79,7 +74,6 @@
         </matches>
 
         <override tag_name="LR_KaerTrolde_Village_TorchHandLongComplex"
-                  label="kaertrolde_village_torch_hand_long_complex"
                   radius="5.5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <offset x="-0.076057"

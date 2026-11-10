@@ -12,7 +12,6 @@
 
         <!-- Chandelier has no shadows -->
         <override tag_name="LR_NowhereInn_Chandelier"
-                  label="nowhere_inn_chandelier"
                   radius="6.5"
                   force_cast_shadows="true">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>

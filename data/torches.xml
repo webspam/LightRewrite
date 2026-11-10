@@ -8,7 +8,6 @@
                  weight="2">
         <!-- Wall torch -->
         <override tag_name="LR_torch_wall_metal"
-                  label="torch_wall_metal"
                   brightness="20"
                   min_radius="5">
           <!--
@@ -24,8 +23,7 @@
         </override>
 
         <!-- Torch on a stick -->
-        <override tag_name="LR_torch_hand_long"
-                  label="torch_hand_long">
+        <override tag_name="LR_torch_hand_long">
           <match>torch_hand_long</match>
           <offset x="0.03"
                   y="0"
@@ -33,8 +31,7 @@
         </override>
 
         <!-- Wall Torch - Wood -->
-        <override tag_name="LR_torch_wall_wooden"
-                  label="torch_wall_wooden">
+        <override tag_name="LR_torch_wall_wooden">
           <match>torch_wall_wooden</match>
           <offset x="-0.283"
                   y="0"

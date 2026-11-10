@@ -13,7 +13,6 @@
 
         <!-- Wall torch -->
         <override tag_name="LR_Ultra_KaerTrolde_CastlePath_WallTorch"
-                  label="kaer_trolde_castle_path_wall_torch"
                   radius="6.5"
                   attenuation="1">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
@@ -30,7 +29,6 @@
 
         <!-- Round wall brazier -->
         <override tag_name="LR_Ultra_KaerTrolde_BrazierRoundWall"
-                  label="kaer_trolde_brazier_round_wall"
                   radius="8">
           <match mode="exact">braziers_wall_round_bounce.w2ent</match>
           <shadows fade_distance="25"
@@ -48,7 +46,6 @@
 
         <!-- Wall torch -->
         <override tag_name="LR_Ultra_KaerTrolde_WallTorch"
-                  label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="6.5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>

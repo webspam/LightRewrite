@@ -11,7 +11,6 @@
         </matches>
 
         <override tag_name="LR_Wyzima_Torch"
-                  label="wyzima_castle_torch"
                   brightness="30"
                   radius="6.5"
                   attenuation="1">
@@ -27,7 +26,6 @@
         </override>
 
         <override tag_name="LR_Wyzima_Brazier"
-                  label="wyzima_castle_brazier"
                   brightness="50">
           <match>brazier</match>
           <shadows fade_distance="20"
@@ -35,7 +33,6 @@
         </override>
 
         <override tag_name="LR_Wyzima_Chandelier"
-                  label="chandelier"
                   brightness="65"
                   radius="15"
                   attenuation="1">
@@ -45,7 +42,6 @@
         </override>
 
         <override tag_name="LR_Wyzima_Candelabra"
-                  label="wyzima_castle_candelabra"
                   brightness="30"
                   radius="6"
                   attenuation="1">
@@ -56,7 +52,6 @@
 
         <!-- Tree Lantern -->
         <override tag_name="LR_Wyzima_Tree_Lantern"
-                  label="wyzima_castle_tree_lantern"
                   brightness="100"
                   attenuation="1">
           <match mode="exact">hanging_lamp.w2ent</match>

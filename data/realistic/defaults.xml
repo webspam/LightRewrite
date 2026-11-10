@@ -10,7 +10,6 @@
 
         <!-- Candles -->
         <override tag_name="LR_Realistic_Candle"
-                  label="candle"
                   brightness="3">
           <any>
             <match>candle_small</match>

@@ -7,8 +7,7 @@
       <overrides profile_name="Default"
                  weight="13">
         <!-- Udalryk's house candle shadows -->
-        <override tag_name="LR_Spikeroog_CandleShadows"
-                  label="spikeroog_candle_shadows">
+        <override tag_name="LR_Spikeroog_CandleShadows">
           <match>candle</match>
           <match type="layer">levels\skellige\spikeroog\abandoned_house\</match>
           <shadows fade_distance="20"
@@ -34,7 +33,6 @@
 
         <!-- Candles -->
         <override tag_name="LR_SpikeroogInn_Candle"
-                  label="spikeroog_inn_candle"
                   radius="4"
                   use_spotlight_colour="true">
           <any>
@@ -50,7 +48,6 @@
 
         <!-- Coal fireplace (pair) -->
         <override tag_name="LR_Spikeroog_CoalFireplace"
-                  label="spikeroog_coal_fireplace"
                   brightness="50"
                   radius="7">
           <match mode="exact">coal_small.w2ent</match>
@@ -58,7 +55,6 @@
                  mode="exact">levels\skellige\spikeroog\village_buildings\lights_interior.w2l</match>
         </override>
         <override tag_name="LR_Spikeroog_CoalSmallNoshadow"
-                  label="spikeroog_coal_small_noshadow"
                   brightness="5.5"
                   radius="5.5"
                   attenuation="1">
@@ -69,7 +65,6 @@
 
         <!-- Exterior torches -->
         <override tag_name="LR_Spikeroog_WoodenWallTorches"
-                  label="spikeroog_wooden_wall_torches"
                   brightness="30"
                   radius="5">
           <match mode="exact">torch_wall_wooden_small_bounce.w2ent</match>
@@ -77,7 +72,6 @@
                  mode="exact">levels\skellige\an_skellig\warriors_village\house_big_porch\lights.w2l</match>
         </override>
         <override tag_name="LR_Spikeroog_MetalWallTorches"
-                  label="spikeroog_metal_wall_torches"
                   brightness="20"
                   radius="5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
@@ -88,7 +82,6 @@
 
         <!-- Standing torches -->
         <override tag_name="LR_Spikeroog_StandingTorches"
-                  label="spikeroog_standing_torches"
                   radius="7.5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <match type="layer"
@@ -100,7 +93,6 @@
                   z="0.7" />
         </override>
         <override tag_name="LR_Spikeroog_TorchHandLong"
-                  label="spikeroog_torch_hand_long"
                   brightness="30"
                   radius="6">
           <match mode="exact">torch_hand_long.w2ent</match>
@@ -112,7 +104,6 @@
 
         <!-- Standing candleholder -->
         <override tag_name="LR_Spikeroog_StandingCandleHolder"
-                  label="spikeroog_standing_candle_holder"
                   brightness="14"
                   radius="6"
                   attenuation="0.9">
@@ -127,7 +118,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Spikeroog_Candelabra"
-                  label="spikeroog_candelabra"
                   brightness="14"
                   radius="6"
                   attenuation="0.9">
@@ -139,7 +129,6 @@
 
         <!-- Inn chandelier -->
         <override tag_name="LR_Spikeroog_ChandelierSmallNoshadow"
-                  label="spikeroog_chandelier_small_noshadow"
                   radius="6.5"
                   attenuation="0.9"
                   force_cast_shadows="true">
@@ -155,8 +144,7 @@
         </override>
 
         <!-- Fireplace (coal firepit) -->
-        <override tag_name="LR_Spikeroog_Fireplace"
-                  label="spikeroog_fireplace">
+        <override tag_name="LR_Spikeroog_Fireplace">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\skellige\spikeroog\village_buildings\lights_interior.w2l</match>

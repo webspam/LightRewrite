@@ -11,8 +11,7 @@
           <match type="layer">levels\prolog_village\village\buildings\herbalist_hut\</match>
         </matches>
 
-        <override tag_name="LR_Tomira_Colour"
-                  label="tomira_colour">
+        <override tag_name="LR_Tomira_Colour">
           <colour r="245"
                   g="250"
                   b="255" />
@@ -22,7 +21,6 @@
         <!-- <match mode="exact">candle_small_group_melted_b.w2ent</match> -->
 
         <override tag_name="LR_Tomira_CoalSmaller"
-                  label="tomira_coal_smaller"
                   brightness="37.5"
                   radius="5">
           <match mode="exact">coal_smaller.w2ent</match>
