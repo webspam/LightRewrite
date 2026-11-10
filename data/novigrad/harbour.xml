@@ -12,7 +12,6 @@
 
         <!-- Brazier -->
         <override tag_name="LR_Novigrad_HarbourRight_Brazier"
-                  label="novigrad_harbour_right_brazier"
                   brightness="50">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <spotlight attenuation="1" />
@@ -20,7 +19,6 @@
 
         <!-- Lamp -->
         <override tag_name="LR_Novigrad_Harbour_Lamp"
-                  label="novigrad_harbour_lamp"
                   brightness="15">
           <match mode="exact">lamp_standing_complex.w2ent</match>
           <match type="layer"
@@ -38,7 +36,6 @@
         </matches>
         <!-- Brazier -->
         <override tag_name="LR_Novigrad_HarbourSouth_Brazier"
-                  label="novigrad_harbour_south_brazier"
                   brightness="50">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <shadows fade_distance="15.36"

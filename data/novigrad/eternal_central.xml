@@ -12,8 +12,7 @@
         </matches>
 
         <!-- Radiates light from the middle of the archway above the overcompensating fire -->
-        <override tag_name="LR_Edited_city_bouncelight_fire_w2ent"
-                  label="edited_city_bouncelight_fire_w2ent">
+        <override tag_name="LR_Edited_city_bouncelight_fire_w2ent">
           <match mode="exact">city_bouncelight_fire.w2ent</match>
 
           <lum exclude_scene="true" />
@@ -21,7 +20,6 @@
 
         <!-- Centre shrine -->
         <override tag_name="LR_Edited_shrine_of_ethernal_fire_bounce_w2ent"
-                  label="edited_shrine_of_ethernal_fire_bounce_w2ent"
                   use_spotlight_colour="true">
           <match mode="exact">shrine_of_ethernal_fire_bounce.w2ent</match>
           <light index="0"

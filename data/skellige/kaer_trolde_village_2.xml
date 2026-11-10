@@ -6,7 +6,7 @@
       <!-- TODO: Unfiltered, direct export - needs to be verified and cleaned up. -->
       <overrides profile_name="Default" weight="20">
         <!-- ?Inn fireplace -->
-        <override tag_name="LR_KaerTroldeVillage2_CoalSmallFirepitComplex" label="kaer_trolde_village_2_coal_small_firepit_complex" brightness="70" radius="5">
+        <override tag_name="LR_KaerTroldeVillage2_CoalSmallFirepitComplex" brightness="70" radius="5">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
           <match type="layer" mode="exact">levels\skellige\ard_skellig\kaer_trolde\buildings_interior\lights.w2l</match>
           <shadows fade_distance="15" fade_range="10" />
@@ -17,7 +17,7 @@
         </override>
 
         <!-- ?Inn candle group -->
-        <override tag_name="LR_KaerTroldeVillage2_SmallCandleComplexC" label="kaer_trolde_village_2_small_candle_complex_c">
+        <override tag_name="LR_KaerTroldeVillage2_SmallCandleComplexC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <match type="layer" mode="exact">levels\skellige\ard_skellig\kaer_trolde\buildings_interior\lights_interior_ns.w2l</match>
           <light index="1" radius="1.85">

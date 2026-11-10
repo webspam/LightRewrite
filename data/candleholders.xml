@@ -8,7 +8,6 @@
       <overrides profile_name="Default"
                  weight="2">
         <override tag_name="LR_candle_holder_large_wood_a_complex"
-                  label="candle_holder_large_wood_a_complex"
                   brightness="4">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
           <light index="0"
@@ -31,7 +30,6 @@
 
         <!-- Candle Holder - Large A -->
         <override tag_name="LR_Testing_CandleHolderLargeA"
-                  label="testing_candle_holder_large_a"
                   max_brightness="7.76"
                   min_radius="4.5"
                   attenuation="1">

@@ -10,8 +10,7 @@
           <match type="layer">levels\novigrad\novigrad\fishmarket\</match>
         </matches>
 
-        <override tag_name="LR_Novigrad_Fishmarket_CandleCComplex"
-                  label="novigrad_candle_small_group_melted_c_complex">
+        <override tag_name="LR_Novigrad_Fishmarket_CandleCComplex">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <!-- levels\novigrad\novigrad\fishmarket\interiors\lights.w2l -->
           <shadows casting_mode="Normal" />

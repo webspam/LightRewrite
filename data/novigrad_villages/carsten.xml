@@ -11,7 +11,6 @@
                  mode="exact">levels\novigrad\novigrad_suburbian\windmill_village\lights.w2l</match>
         </matches>
         <override tag_name="LR_qYQerJKo_coal_small_firepit_complex"
-                  label="edited_coal_small_firepit_complex"
                   brightness="40"
                   radius="5.5">
           <match mode="exact">coal_small_firepit_complex.w2ent</match>
@@ -24,7 +23,6 @@
         </override>
 
         <override tag_name="LR_qYQerJKo_torch_hand_long_complex"
-                  label="edited_torch_hand_long_complex"
                   brightness="30">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <offset x="0"

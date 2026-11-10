@@ -15,7 +15,6 @@
 
         <!-- All candles in White Orchard -->
         <override tag_name="LR_WhiteOrchard_Candle"
-                  label="white_orchard_candle"
                   radius="5">
           <!-- Match all entities with a file name starting with "candle" -->
           <match>candle</match>
@@ -30,7 +29,6 @@
 
         <!-- Hanging lamps -->
         <override tag_name="LR_WhiteOrchard_HangingLamp"
-                  label="hanging_lamp"
                   radius="5"
                   attenuation="1">
           <match>hanging_lamp</match>
@@ -41,7 +39,6 @@
 
         <!-- Braziers -->
         <override tag_name="LR_WhiteOrchard_Brazier"
-                  label="brazier"
                   brightness="40"
                   radius="10"
                   attenuation="1.0">
@@ -53,7 +50,6 @@
 
         <!-- Candelabras -->
         <override tag_name="LR_WhiteOrchard_Candelabra"
-                  label="candelabra"
                   brightness="8"
                   radius="10"
                   attenuation="1.0">
@@ -65,7 +61,6 @@
 
         <!-- Campfires -->
         <override tag_name="LR_WhiteOrchard_Campfire"
-                  label="campfire"
                   brightness="40"
                   radius="12"
                   attenuation="0.95">
@@ -77,7 +72,6 @@
 
         <!-- Chandeliers -->
         <override tag_name="LR_WhiteOrchard_Chandelier"
-                  label="chandelier"
                   brightness="12"
                   radius="18"
                   attenuation="1.0">
@@ -88,7 +82,6 @@
         </override>
 
         <override tag_name="LR_WhiteOrchard_HornChandelier"
-                  label="white_orchard_horn_chandelier"
                   brightness="14"
                   radius="8"
                   attenuation="1.0">
@@ -100,7 +93,6 @@
 
         <!-- Wall torches (Cemetary & Nilfgaard Captain) -->
         <override tag_name="LR_WhiteOrchard_WallTorches"
-                  label="white_orchard_wall_torches"
                   brightness="20"
                   radius="6"
                   attenuation="1">
@@ -136,8 +128,7 @@
         </override>
 
         <!-- Stoves -->
-        <override tag_name="LR_WhiteOrchard_Stove"
-                  label="white_orchard_stove">
+        <override tag_name="LR_WhiteOrchard_Stove">
           <match mode="exact">coal_small_double_spotlight_complex.w2ent</match>
           <spotlight index="0"
                      radius="2.5"
@@ -149,7 +140,6 @@
 
         <!-- Cooking fire -->
         <override tag_name="LR_WhiteOrchard_CookingFire"
-                  label="white_orchard_cooking_fire"
                   brightness="40"
                   radius="5.5"
                   attenuation="1">
@@ -161,7 +151,6 @@
 
         <!-- Forge -->
         <override tag_name="LR_WhiteOrchard_Forge"
-                  label="white_orchard_forge"
                   radius="5.5">
           <match mode="exact">ob_forge_px.w2ent</match>
           <shadows fade_distance="25"

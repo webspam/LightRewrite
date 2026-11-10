@@ -11,15 +11,13 @@
                  mode="exact">levels\novigrad\novigrad\sq306_warehouse\interior.w2l</match>
         </matches>
 
-        <override tag_name="LR_Novigrad_HvWarehouse_Interior"
-                  label="novigrad_warehouse_interior">
+        <override tag_name="LR_Novigrad_HvWarehouse_Interior">
           <shadows fade_distance="15"
                    fade_range="25" />
         </override>
 
         <!-- Candle Shelf -->
         <override tag_name="LR_Novigrad_HvWarehouse_CandleShelf"
-                  label="novigrad_warehouse_candle_shelf"
                   brightness="12"
                   radius="5">
           <match mode="exact">candle_shelf.w2ent</match>

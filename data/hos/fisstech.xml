@@ -11,22 +11,19 @@
                  mode="exact">dlc\ep1\levels\novigrad\locations\poi\fisstech_lab\fx.w2l</match>
         </matches>
 
-        <override tag_name="LR_Fisstech_Shadows"
-                  label="fisstech_shadows">
+        <override tag_name="LR_Fisstech_Shadows">
           <shadows fade_distance="30"
                    fade_range="20" />
         </override>
 
         <!-- Candlestick -->
         <override tag_name="LR_Fisstech_CandleholderFancyComplex"
-                  label="fisstech_candleholder_fancy_complex"
                   radius="5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <!-- Torch -->
         <override tag_name="LR_Fisstech_TorchWallWoodenComplex"
-                  label="fisstech_torch_wall_wooden_complex"
                   brightness="20"
                   radius="5">
           <match mode="exact">torch_wall_wooden_complex.w2ent</match>
@@ -34,7 +31,6 @@
 
         <!-- Entry Lantern -->
         <override tag_name="LR_Fisstech_HangingLamp"
-                  label="fisstech_entry_lantern"
                   brightness="15"
                   attenuation="1">
           <match mode="exact">hanging_lamp.w2ent</match>
@@ -42,7 +38,6 @@
 
         <!-- Lantern -->
         <override tag_name="LR_Fisstech_HangingLampComplex"
-                  label="fisstech_hanging_lamp_complex"
                   brightness="20"
                   radius="5.5"
                   attenuation="1">
@@ -53,8 +48,7 @@
         </override>
 
         <!-- Brazier -->
-        <override tag_name="LR_Fisstech_BraziersFloorSquareBounce"
-                  label="fisstech_braziers_floor_square_bounce">
+        <override tag_name="LR_Fisstech_BraziersFloorSquareBounce">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <colour r="255"
                   g="255"

@@ -12,15 +12,13 @@
 
         <!-- Wall torches -->
         <override tag_name="LR_Oxenfurt_Wall_Torches"
-                  label="oxenfurt_wall_torch"
                   brightness="20">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
           <shadows fade_distance="20" />
         </override>
 
         <!-- Wall braziers - city gates, exterior -->
-        <override tag_name="LR_Oxenfurt_GateExterior_Brazier"
-                  label="oxenfurt_gateexterior_brazier">
+        <override tag_name="LR_Oxenfurt_GateExterior_Brazier">
           <match mode="exact">braziers_wall_chain_bounce.w2ent</match>
           <offset x="-1.1"
                   y="0"
@@ -28,8 +26,7 @@
         </override>
 
         <!-- Wall braziers - city gates, interior -->
-        <override tag_name="LR_Oxenfurt_GateInterior_Brazier"
-                  label="oxenfurt_gateinterior_brazier">
+        <override tag_name="LR_Oxenfurt_GateInterior_Brazier">
           <match mode="exact">braziers_wall_wire_bounce.w2ent</match>
           <offset x="-1.375"
                   y="0"
@@ -39,7 +36,6 @@
 
         <!-- Hanging lamp holders - exterior -->
         <override tag_name="LR_Oxenfurt_HangingLamp"
-                  label="oxenfurt_hanginglamp"
                   brightness="12"
                   radius="5">
           <match mode="exact">hanging_lamp_holder_complex.w2ent</match>
@@ -50,7 +46,6 @@
 
         <!-- Iron chandelier -->
         <override tag_name="LR_Oxenfurt_ChandelierSmall"
-                  label="oxenfurt_chandelier_small"
                   radius="6">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>
           <shadows fade_distance="20"
@@ -59,14 +54,12 @@
 
         <!-- Iron chandelier - West archway  -->
         <override tag_name="LR_Oxenfurt_ChandelierSmallBounce"
-                  label="oxenfurt_chandelier_small_bounce"
                   radius="4.75">
           <match mode="exact">chandelier_small_bounce.w2ent</match>
         </override>
 
         <!-- Braziers - Floor, Square -->
         <override tag_name="LR_Oxenfurt_BraziersFloorSquare"
-                  label="oxenfurt_braziers_floor_square"
                   brightness="40"
                   attenuation="0.9">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>

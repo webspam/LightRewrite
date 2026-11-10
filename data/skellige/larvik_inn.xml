@@ -11,15 +11,13 @@
                  mode="exact">levels\skellige\hindarsfjall\larvik\buildings\larvik_inn\fx.w2l</match>
         </matches>
 
-        <override tag_name="LR_LarvikInn_Shadow"
-                  label="larvik_inn_shadow">
+        <override tag_name="LR_LarvikInn_Shadow">
           <shadows fade_distance="20"
                    fade_range="15" />
         </override>
 
         <!-- First firepit -->
         <override tag_name="LR_LarvikInn_CoalFirepit"
-                  label="larvik_inn_coal_firepit"
                   radius="5.5">
           <match>coal_small</match>
           <shadows casting_mode="Normal" />
@@ -33,7 +31,6 @@
 
         <!-- Second firepit -->
         <!-- <override tag_name="LR_LarvikInn_CoalFirepitNoShadow"
-                  label="larvik_inn_coal_firepit_noshadow"
                   radius="5.5">
           <match mode="exact">coal_small_noshadow.w2ent</match>
           <offset x="0"
@@ -43,7 +40,6 @@
 
         <!-- Hanging lamp -->
         <override tag_name="LR_LarvikInn_HangingLampHolderComplex"
-                  label="larvik_inn_hanging_lamp_holder_complex"
                   brightness="30"
                   radius="3"
                   attenuation="0.85">

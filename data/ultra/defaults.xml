@@ -11,7 +11,6 @@
 
         <!-- Candles -->
         <override tag_name="LR_Ultra_Candle"
-                  label="candle"
                   brightness="5"
                   min_radius="5"
                   attenuation="1"
@@ -38,7 +37,6 @@
 
         <!-- Torches -->
         <!-- <override tag_name="LR_Torch"
-                  label="torch"
                   brightness="30"
                   radius="10"
                   attenuation="1.0">
@@ -50,7 +48,6 @@
 
         <!-- Braziers -->
         <!-- <override tag_name="LR_Brazier"
-                  label="brazier"
                   brightness="40"
                   radius="10"
                   attenuation="1.0">
@@ -62,7 +59,6 @@
 
         <!-- Candelabras -->
         <!-- <override tag_name="LR_Candelabra"
-                  label="candelabra"
                   brightness="8"
                   radius="10"
                   attenuation="1.0">
@@ -77,7 +73,6 @@
 
         <!-- Campfires -->
         <!-- <override tag_name="LR_Campfire"
-                  label="campfire"
                   brightness="50"
                   radius="12"
                   attenuation="0.85">
@@ -89,7 +84,6 @@
 
         <!-- Chandeliers -->
         <!-- <override tag_name="LR_Chandelier"
-                  label="chandelier"
                   brightness="12"
                   radius="18"
                   attenuation="1.0">

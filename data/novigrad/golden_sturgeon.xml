@@ -13,14 +13,12 @@
 
         <!-- Force candle group -> single light -->
         <override tag_name="LR_GoldenSturgeon_Candle_Group_C"
-                  label="golden_sturgeon_candle_group_c"
                   brightness="12"
                   force_single_light="true">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <shadows fade_distance="15" />
         </override>
         <override tag_name="LR_GoldenSturgeon_CandleSmallGroupMelted"
-                  label="golden_sturgeon_candle_small_group_melted"
                   brightness="10"
                   force_single_light="true">
           <match mode="exact">candle_small_group_melted_complex.w2ent</match>
@@ -28,14 +26,12 @@
 
         <!-- No-shadow candle C -->
         <override tag_name="LR_GoldenSturgeon_Candle_Group_C_NoShadow"
-                  label="golden_sturgeon_candle_group_c_noshadow"
                   radius="5">
           <match mode="exact">candle_small_group_melted_c_noshadow.w2ent</match>
         </override>
 
         <!-- Long distance shadows - downstairs on the right -->
-        <override tag_name="LR_GoldenSturgeon_CandleholderSmallMeltedFakeShadowComplex"
-                  label="golden_sturgeon_candleholder_small_melted_fake_shadow_complex">
+        <override tag_name="LR_GoldenSturgeon_CandleholderSmallMeltedFakeShadowComplex">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
           <shadows fade_distance="15"
                    fade_range="15" />
@@ -43,7 +39,6 @@
 
         <!-- Candle holder large -->
         <override tag_name="LR_GoldenSturgeon_CandleHolderLarge"
-                  label="golden_sturgeon_candle_holder_large"
                   brightness="14"
                   radius="5"
                   attenuation="0.9">
@@ -52,7 +47,6 @@
 
         <!-- Horn Chandelier -->
         <override tag_name="LR_GoldenSturgeon_HornChandelier"
-                  label="golden_sturgeon_horn_chandelier"
                   brightness="15"
                   radius="3"
                   attenuation="0.9">

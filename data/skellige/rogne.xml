@@ -12,28 +12,24 @@
 
         <!-- Standing torch -->
         <override tag_name="LR_Rogne_Standing_Torch"
-                  label="rogne_standing_torch"
                   radius="6">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
         </override>
 
         <!-- Wall torches -->
         <override tag_name="LR_Rogne_Wall_Torch_Wood"
-                  label="rogne_wall_torch_wood"
                   brightness="20"
                   radius="7">
           <match mode="exact">torch_wall_wooden_small_bounce.w2ent</match>
         </override>
         <override tag_name="LR_Rogne_Wall_Torch"
-                  label="rogne_wall_torch"
                   brightness="20"
                   radius="6">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
         </override>
 
         <!-- Lamp - standing -->
-        <override tag_name="LR_Rogne_Lamp_Standing"
-                  label="rogne_lamp_standing">
+        <override tag_name="LR_Rogne_Lamp_Standing">
           <match mode="exact">lamp_standing_complex.w2ent</match>
           <offset x="0"
                   y="0"
@@ -42,7 +38,6 @@
 
         <!-- Chandelier -->
         <override tag_name="LR_Rogne_Chandelier_Small"
-                  label="rogne_chandelier_small"
                   radius="6"
                   force_cast_shadows="true">
           <match mode="exact">chandelier_small_noshadow.w2ent</match>
@@ -53,14 +48,12 @@
 
         <!-- Fireplace -->
         <override tag_name="LR_Rogne_Fireplace"
-                  label="rogne_fireplace"
                   radius="6">
           <match mode="exact">coal_small.w2ent</match>
         </override>
 
         <!-- Candles -->
-        <override tag_name="LR_Rogne_Candle_Small_Group_Melted_C"
-                  label="edited_candle_small_group_melted_c_w2ent">
+        <override tag_name="LR_Rogne_Candle_Small_Group_Melted_C">
           <match mode="exact">candle_small_group_melted_c.w2ent</match>
           <light index="0"
                  radius="6" />
@@ -70,14 +63,12 @@
                  radius="2.75" />
         </override>
         <override tag_name="LR_Rogne_Candle_Med_Melted"
-                  label="rogne_candle_med_melted"
                   radius="8">
           <match mode="exact">candle_med_melted.w2ent</match>
         </override>
 
         <!-- Candle - back of house -->
         <override tag_name="LR_Rogne_Candle_Med_B"
-                  label="rogne_candle_med_b"
                   brightness="4"
                   radius="6"
                   attenuation="0.5">

@@ -11,14 +11,12 @@
         </matches>
 
         <!-- All shadows -->
-        <override tag_name="LR_gf08_military_camp_shadows"
-                  label="gf08_military_camp_shadows">
+        <override tag_name="LR_gf08_military_camp_shadows">
           <shadows fade_distance="30"
                    fade_range="20" />
         </override>
 
         <override tag_name="LR_gf08_military_camp_Campfire"
-                  label="gf08_military_camp_campfire"
                   radius="7.5"
                   attenuation="0.85">
           <match mode="exact">campfire_01.w2ent</match>
@@ -33,7 +31,6 @@
       <overrides profile_name="Default"
                  weight="10">
         <override tag_name="LR_gf16_vineyards_Campfire"
-                  label="gf16_vineyards_campfire"
                   radius="7.5"
                   attenuation="0.9">
           <match mode="exact">campfire_01.w2ent</match>
@@ -54,7 +51,6 @@
         </matches>
 
         <override tag_name="LR_Honeymead_Candelabra"
-                  label="honeymead_candelabra"
                   brightness="10.24"
                   radius="6.5"
                   attenuation="0.95">
@@ -62,7 +58,6 @@
         </override>
 
         <override tag_name="LR_Honeymead_CandelabraOnAStick"
-                  label="honeymead_candelabra_on_a_stick"
                   brightness="9.52"
                   radius="6.5"
                   attenuation="0.95">
@@ -70,7 +65,6 @@
         </override>
 
         <override tag_name="LR_Honeymead_Chandelier"
-                  label="honeymead_chandelier"
                   brightness="30"
                   radius="6.5"
                   attenuation="0.85">

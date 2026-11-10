@@ -15,7 +15,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Bathhouse_Candelabra"
-                  label="bathhouse_candelabra"
                   brightness="8"
                   radius="4"
                   attenuation="1">
@@ -24,7 +23,6 @@
 
         <!-- Candelabra NoShadow -->
         <override tag_name="LR_Bathhouse_Candelabra_NoShadow"
-                  label="bathhouse_candelabra_no_shadow"
                   brightness="8"
                   radius="4.5"
                   attenuation="1">
@@ -33,7 +31,6 @@
 
         <!-- Candelabra Standing -->
         <override tag_name="LR_Bathhouse_Candelabra_Standing"
-                  label="bathhouse_candelabra_standing"
                   brightness="9.52"
                   radius="5"
                   attenuation="1">
@@ -54,7 +51,6 @@
 
         <!-- Floor Brazier -->
         <override tag_name="LR_Bathhouse_Floor_Brazier"
-                  label="bathhouse_floor_brazier"
                   brightness="20"
                   radius="6.5"
                   attenuation="1">
@@ -76,7 +72,6 @@
 
         <!-- Chandelier -->
         <override tag_name="LR_Bathhouse_Chandelier"
-                  label="bathhouse_chandelier"
                   brightness="20"
                   radius="5"
                   attenuation="1">
@@ -91,7 +86,6 @@
 
         <!-- Torches -->
         <override tag_name="LR_Edited_torch_wall_metal_w2ent"
-                  label="edited_torch_wall_metal_w2ent"
                   brightness="20"
                   radius="5"
                   attenuation="0.9">

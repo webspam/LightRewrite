@@ -8,8 +8,7 @@
                  weight="10">
 
         <!-- Lighthouse colour default -->
-        <override tag_name="LR_HoSLighthouse_Colour"
-                  label="HoS_Lighthouse_Colour">
+        <override tag_name="LR_HoSLighthouse_Colour">
           <match type="layer"
                  mode="exact">dlc\ep1\levels\novigrad\locations\poi\lighthouse\fx.w2l</match>
           <colour r="255"
@@ -19,7 +18,6 @@
 
         <!-- Beach House Basement -->
         <override tag_name="LR_HoSBeachHouse_HangingLantern"
-                  label="hos_beach_house_hanging_lantern"
                   brightness="40"
                   attenuation="1">
           <match mode="exact">hanging_lamp_holder.w2ent</match>

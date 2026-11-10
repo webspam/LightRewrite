@@ -14,14 +14,12 @@
 
         <!-- Candleholder Small -->
         <override tag_name="LR_Yantra_CandleholderSmallMeltedFakeShadow"
-                  label="yantra_candleholder_small_melted_fake_shadow"
                   radius="5">
           <match mode="exact">candleholder_small_melted_fake_shadow_complex.w2ent</match>
         </override>
 
         <!-- Wall Lantern -->
         <override tag_name="LR_Yantra_HangingLampHolder"
-                  label="yantra_hanging_lamp_holder"
                   brightness="15"
                   radius="5"
                   attenuation="1">
@@ -33,7 +31,6 @@
 
         <!-- Hanging Lamp -->
         <override tag_name="LR_Yantra_HangingLamp"
-                  label="yantra_hanging_lamp"
                   brightness="15"
                   radius="6">
           <match mode="exact">hanging_lamp_complex.w2ent</match>
@@ -49,14 +46,12 @@
 
         <!-- Torch on a Stick -->
         <override tag_name="LR_Yantra_TorchHandLong"
-                  label="yantra_torch_hand_long"
                   radius="5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
           <shadows fade_range="20" />
         </override>
         <!-- Horn Chandelier -->
         <override tag_name="LR_Yantra_HornChandelier"
-                  label="yantra_horn_chandelier"
                   brightness="30"
                   radius="7"
                   attenuation="1">
@@ -65,8 +60,7 @@
         </override>
 
         <!-- Kitchen Stove -->
-        <override tag_name="LR_Yantra_KitchenStove"
-                  label="yantra_kitchen_stove">
+        <override tag_name="LR_Yantra_KitchenStove">
           <match mode="exact">coal_small_double_spotlight_complex.w2ent</match>
           <spotlight index="0"
                      attenuation="1"
@@ -94,8 +88,7 @@
       <!-- Cauldron -->
       <overrides profile_name="Default"
                  weight="10">
-        <override tag_name="LR_Yantra_Cauldron"
-                  label="yantra_cauldron">
+        <override tag_name="LR_Yantra_Cauldron">
           <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
           <match type="layer"
                  mode="exact">levels\novigrad\communities\gustfields\farm_village_2\house3\ap.w2l</match>

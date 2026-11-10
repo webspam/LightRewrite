@@ -7,8 +7,7 @@
       <!-- TODO: Fine-tune, label properly -->
       <overrides profile_name="Default"
                  weight="20">
-        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC"
-                  label="kaer_trolde_village_small_candle_complex_c">
+        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\skellige\ard_skellig\kaer_trolde\village\decorations\fx.w2l</match>
@@ -19,7 +18,6 @@
         </override>
 
         <override tag_name="LR_KaerTrolde_Village_FireplaceGrateComplex"
-                  label="kaer_trolde_village_fireplace_grate_complex"
                   brightness="60"
                   radius="7"
                   attenuation="1">
@@ -38,8 +36,7 @@
           </spotlight>
         </override>
 
-        <override tag_name="LR_KaerTrolde_Village_Chandelier"
-                  label="kaer_trolde_village_chandelier">
+        <override tag_name="LR_KaerTrolde_Village_Chandelier">
           <match mode="exact">chandelier.w2ent</match>
           <match type="layer"
                  mode="exact">levels\skellige\ard_skellig\kaer_trolde\buildings_interior\building_meshes.w2l</match>
@@ -61,8 +58,7 @@
         </override>
 
         <!-- Shjy..oosta? -->
-        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC_3"
-                  label="kaer_trolde_village_small_candle_complex_c_3">
+        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC_3">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <match type="layer"
                  mode="exact">levels\skellige\ard_skellig\kaer_trolde\q201_tailor_seller\lights.w2l</match>
@@ -77,7 +73,6 @@
         </override>
 
         <override tag_name="LR_KaerTrolde_Village_CoalSmallFirepitComplex"
-                  label="kaer_trolde_village_coal_small_firepit_complex"
                   brightness="70"
                   radius="7.5"
                   attenuation="1">
@@ -94,8 +89,7 @@
           <match type="layer"
                  mode="exact">levels\skellige\ard_skellig\kaer_trolde\buildings_interior\lights.w2l</match>
         </matches>
-        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC_2"
-                  label="kaer_trolde_village_small_candle_complex_c_2">
+        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexC_2">
           <match mode="exact">candle_small_group_melted_c_complex.w2ent</match>
           <light index="1"
                  radius="1">
@@ -107,12 +101,10 @@
           </light>
         </override>
         <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexB"
-                  label="kaer_trolde_village_small_candle_complex_b"
                   brightness="12">
           <match mode="exact">candle_small_group_melted_b_complex.w2ent</match>
         </override>
-        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexD"
-                  label="kaer_trolde_village_small_candle_complex_d">
+        <override tag_name="LR_KaerTrolde_Village_SmallCandleComplexD">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="1"
                  radius="1.5" />
@@ -127,13 +119,11 @@
                  mode="exact">levels\skellige\ard_skellig\kaer_trolde\buildings_interior\yennifers_room\fx.w2l</match>
         </matches>
         <override tag_name="LR_KaerTrolde_YennifersRoom_CandleHolderLargeWoodBComplex"
-                  label="kaer_trolde_yennifers_room_candle_holder_large_wood_b_complex"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
         </override>
         <override tag_name="LR_KaerTrolde_YennifersRoom_CandelabraComplex"
-                  label="kaer_trolde_yennifers_room_candelabra_complex"
                   radius="3.75"
                   attenuation="1">
           <match mode="exact">candelabra_complex.w2ent</match>

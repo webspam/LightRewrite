@@ -7,7 +7,6 @@
       <overrides profile_name="Default"
                  weight="25">
         <override tag_name="LR_TirLaNia_Chandelier"
-                  label="tir_la_nia_chandelier"
                   radius="10">
           <match mode="exact">chandelier_bright_noshadow.w2ent</match>
           <match type="layer"
@@ -16,7 +15,6 @@
 
         <!-- Stone braziers -->
         <override tag_name="LR_TirLaNia_StoneCampfire"
-                  label="tir_la_nia_stone_campfire"
                   radius="8"
                   attenuation="0.8">
           <match mode="exact">campfire_01_no_meditation_no_loot.w2ent</match>
@@ -26,7 +24,6 @@
 
         <!-- Wall braziers -->
         <override tag_name="LR_TirLaNia_Brazier"
-                  label="tir_la_nia_brazier"
                   brightness="60"
                   radius="10"
                   attenuation="0.8">
@@ -37,7 +34,6 @@
 
         <!-- Candles -->
         <override tag_name="LR_Edited_candle_small_group_melted_b_noshadow_w2ent"
-                  label="edited_candle_small_group_melted_b_noshadow_w2ent"
                   brightness="16"
                   radius="6"
                   attenuation="0.9">
@@ -46,7 +42,6 @@
                  mode="exact">levels\the_spiral\quests\q311_geels\aen_elle\objects\geels_objects.w2l</match>
         </override>
         <override tag_name="LR_Edited_candle_med_b_noshadow_w2ent"
-                  label="edited_candle_med_b_noshadow_w2ent"
                   brightness="16"
                   radius="6"
                   attenuation="0.9">
@@ -55,7 +50,6 @@
                  mode="exact">levels\the_spiral\quests\q311_geels\aen_elle\objects\geels_objects.w2l</match>
         </override>
         <override tag_name="LR_Edited_candle_large_group_caves_w2ent"
-                  label="edited_candle_large_group_caves_w2ent"
                   brightness="16"
                   radius="6"
                   attenuation="0.9">

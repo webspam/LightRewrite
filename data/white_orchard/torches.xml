@@ -9,7 +9,6 @@
         <!-- No group-wide filter for these `overrides` -->
 
         <override tag_name="LR_WhiteOrchard_Torch"
-                  label="white_orchard_torch"
                   brightness="22.5"
                   radius="7.5"
                   attenuation="1.0">

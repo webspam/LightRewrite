@@ -8,7 +8,6 @@
                  weight="20">
         <!-- Candles -->
         <override tag_name="LR_IsleOfMist_Candle"
-                  label="isle_of_mist_candle"
                   brightness="30"
                   radius="7">
           <match>candle</match>
@@ -20,7 +19,6 @@
 
         <!-- Red lantern (dock) -->
         <override tag_name="LR_IsleOfMist_Red_Lantern"
-                  label="isle_of_mist_red_lantern"
                   radius="8">
           <match mode="exact">hanging_lantern_red.w2ent</match>
           <match type="layer"
@@ -29,7 +27,6 @@
 
         <!-- Hanging lamps -->
         <override tag_name="LR_IsleOfMist_Lantern"
-                  label="hanging_lamp"
                   radius="9"
                   attenuation="1">
           <match>hanging_lamp</match>

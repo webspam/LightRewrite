@@ -7,8 +7,7 @@
       <overrides profile_name="Default"
                  weight="10">
         <!-- An Skellig - Wall Torch - Wooden -->
-        <override tag_name="LR_AnSkellig_TorchWallWooden"
-                  label="an_skellig_torch_wall_wooden">
+        <override tag_name="LR_AnSkellig_TorchWallWooden">
           <match mode="exact">torch_wall_wooden_small_bounce.w2ent</match>
           <match type="layer">levels\skellige\an_skellig\</match>
           <shadows fade_distance="30"

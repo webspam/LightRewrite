@@ -8,8 +8,7 @@
                  weight="2">
 
         <!-- Iron Chandelier - Small -->
-        <override tag_name="LR_IronChandelierSmall"
-                  label="iron_chandelier_small">
+        <override tag_name="LR_IronChandelierSmall">
           <match>chandelier_small</match>
           <offset x="0"
                   y="0"

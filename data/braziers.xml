@@ -7,8 +7,7 @@
       <overrides profile_name="Default"
                  weight="2">
         <!-- Floor Square Bounce -->
-        <override tag_name="LR_BraziersFloorSquareBounce"
-                  label="braziers_floor_square_bounce">
+        <override tag_name="LR_BraziersFloorSquareBounce">
           <match mode="exact">braziers_floor_square_bounce.w2ent</match>
           <shadows blend_factor="0.66" />
         </override>

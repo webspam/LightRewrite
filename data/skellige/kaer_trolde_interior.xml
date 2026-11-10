@@ -13,14 +13,12 @@
 
         <!-- Fancy Small Candleholder -->
         <override tag_name="LR_KaerTrolde_CandleholderFancyComplex"
-                  label="kaer_trolde_candleholder_fancy_complex"
                   radius="6">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
         </override>
 
         <!-- Candle Group - small, group of 2 -->
         <override tag_name="LR_KaerTrolde_CandleSmallGroupMeltedDComplex"
-                  label="kaer_trolde_candle_small_group_melted_d_complex"
                   brightness="8">
           <match mode="exact">candle_small_group_melted_d_complex.w2ent</match>
           <light index="0"
@@ -31,7 +29,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_KaerTrolde_CandleabraComplex"
-                  label="kaer_trolde_candleabra_complex"
                   brightness="10.23"
                   radius="5"
                   attenuation="1">
@@ -48,14 +45,12 @@
 
         <!-- Standing Candleholder - large, row of candles -->
         <override tag_name="LR_KaerTrolde_CandleHolderLarge"
-                  label="kaer_trolde_candle_holder_large"
                   radius="5">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
         </override>
 
         <!-- Standing Candelabra -->
         <override tag_name="LR_KaerTrolde_CandleabraStanding"
-                  label="kaer_trolde_candleabra_standing"
                   radius="5">
           <match mode="exact">candelabra_standing_complex.w2ent</match>
           <shadows fade_distance="30"
@@ -69,7 +64,6 @@
 
         <!-- Fireplaces -->
         <override tag_name="LR_KaerTrolde_Fireplace"
-                  label="kaer_trolde_fireplace"
                   radius="7">
           <match mode="exact">fireplace_grate.w2ent</match>
           <shadows fade_distance="30"
@@ -78,7 +72,6 @@
 
         <!-- Fireplace near smithing area -->
         <override tag_name="LR_KaerTrolde_SmithingFireplace"
-                  label="kaer_trolde_smithing_fireplace"
                   brightness="70"
                   radius="7.5"
                   attenuation="0.9">
@@ -89,7 +82,6 @@
 
         <!-- Wall torch -->
         <override tag_name="LR_KaerTrolde_Interior_WallTorch"
-                  label="kaer_trolde_wall_torch"
                   brightness="20"
                   radius="7"
                   attenuation="1">

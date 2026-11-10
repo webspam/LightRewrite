@@ -12,7 +12,6 @@
 
         <!-- Staircase candles -->
         <override tag_name="LR_Chameleon_Staircase_Candle"
-                  label="chameleon_staircase_candle"
                   attenuation="0.95">
           <match mode="exact">candle_shelf_complex.w2ent</match>
           <shadows fade_distance="10"
@@ -26,7 +25,6 @@
 
         <!-- Staircase on railing -->
         <override tag_name="LR_Chameleon_Staircase_Railing_Candle"
-                  label="chameleon_staircase_railing_candle"
                   brightness="5">
           <match mode="exact">candleholder_fancy_complex.w2ent</match>
           <match type="layer"
@@ -42,7 +40,6 @@
 
         <!-- Candelabra -->
         <override tag_name="LR_Chameleon_Candelabra"
-                  label="chameleon_candelabra_complex"
                   brightness="6"
                   radius="5"
                   attenuation="1">
@@ -67,7 +64,6 @@
 
         <!-- Candelabra on a stick -->
         <override tag_name="LR_Chameleon_Candelabra_Standing"
-                  label="chameleon_candelabra_standing"
                   brightness="6"
                   radius="7"
                   attenuation="1">
@@ -86,7 +82,6 @@
 
         <!-- Hanging red lantern -->
         <override tag_name="LR_Chameleon_Hanging_Lantern_Red"
-                  label="chameleon_hanging_lantern_red"
                   brightness="25"
                   radius="6.5"
                   attenuation="1">
@@ -101,7 +96,6 @@
         </override>
         <!-- Hanging red lantern - interior only -->
         <override tag_name="LR_Chameleon_Hanging_Lantern_Red_Interior"
-                  label="chameleon_hanging_lantern_red_interior"
                   radius="5">
           <match mode="exact">hanging_lantern_red.w2ent</match>
           <match type="layer"
@@ -110,7 +104,6 @@
 
         <!-- Horn chandelier -->
         <override tag_name="LR_Chameleon_Horn_Chandelier"
-                  label="chameleon_horn_chandelier"
                   brightness="30"
                   attenuation="1">
           <match mode="exact">horn_chandelier.w2ent</match>
@@ -131,19 +124,16 @@
         </matches>
 
         <override tag_name="LR_ChameleonBoudoir_Chandelier"
-                  label="chameleon_boudoir_chandelier"
                   radius="5">
           <match mode="exact">chandelier_small.w2ent</match>
         </override>
 
         <override tag_name="LR_ChameleonBoudoir_Candelabra"
-                  label="chameleon_boudoir_candelabra"
                   brightness="10.23">
           <match mode="exact">candelabra_complex.w2ent</match>
         </override>
 
         <override tag_name="LR_ChameleonBoudoir_HornChandelier"
-                  label="chameleon_boudoir_horn_chandelier"
                   brightness="30">
           <match mode="exact">horn_chandelier.w2ent</match>
         </override>

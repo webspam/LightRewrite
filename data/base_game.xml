@@ -6,8 +6,7 @@
       <!-- Base entities - no layer to match against -->
       <overrides profile_name="Default"
                  weight="20">
-        <override tag_name="LR_Edited_gameplay_boat_base_w2ent"
-                  label="edited_gameplay_boat_base_w2ent">
+        <override tag_name="LR_Edited_gameplay_boat_base_w2ent">
           <match mode="exact">gameplay_boat_base.w2ent</match>
           <offset x="-0.185"
                   y="0.8"

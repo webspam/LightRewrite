@@ -10,8 +10,7 @@
         </matches>
 
         <!-- Shadow & colour reset -->
-        <override tag_name="LR_OlgierdMansion_Shared"
-                  label="olgierd_mansion_shared">
+        <override tag_name="LR_OlgierdMansion_Shared">
           <colour r="255"
                   g="250"
                   b="245" />
@@ -22,7 +21,6 @@
 
         <!-- Wall torch (Front) -->
         <override tag_name="LR_OlgierdMansion_torch_wall_metal_bounce"
-                  label="olgierd_mansion_torch_wall_metal_bounce"
                   brightness="20"
                   radius="4.5">
           <match mode="exact">torch_wall_metal_bounce.w2ent</match>
@@ -31,7 +29,6 @@
 
         <!-- Wall single-candle holders -->
         <override tag_name="LR_OlgierdMansion_candle_holder_wall_complex_b"
-                  label="olgierd_mansion_candle_holder_wall_complex_b"
                   brightness="6"
                   radius="4"
                   attenuation="1">
@@ -42,15 +39,13 @@
         </override>
 
         <override tag_name="LR_OlgierdMansion_candle_holder_large_wood_b_complex"
-                  label="olgierd_mansion_candle_holder_large_wood_b_complex"
                   brightness="16"
                   radius="5"
                   attenuation="1">
           <match mode="exact">candle_holder_large_wood_b_complex.w2ent</match>
         </override>
 
-        <override tag_name="LR_OlgierdMansion_candle_holder_large_wood_a_complex"
-                  label="olgierd_mansion_candle_holder_large_wood_a_complex">
+        <override tag_name="LR_OlgierdMansion_candle_holder_large_wood_a_complex">
           <match mode="exact">candle_holder_large_wood_a_complex.w2ent</match>
           <light index="0"
                  radius="5">
@@ -67,7 +62,6 @@
         </override>
 
         <override tag_name="LR_OlgierdMansion_candelabra_complex"
-                  label="olgierd_mansion_candelabra_complex"
                   brightness="26"
                   radius="5"
                   attenuation="1">
@@ -80,14 +74,12 @@
         <!-- Exterior Stables -->
         <!-- Candle on Shelf -->
         <override tag_name="LR_OlgierdMansion_Candle_Shelf"
-                  label="olgierd_mansion_candle_shelf"
                   radius="6">
           <match mode="exact">candle_shelf.w2ent</match>
           <!-- <match type="layer" mode="exact">dlc\ep1\levels\novigrad\locations\q601\olgierd_mansion\house\interior.w2l</match> -->
         </override>
         <!-- Lamp -->
         <override tag_name="LR_OlgierdMansion_hanging_lamp_holder"
-                  label="olgierd_mansion_hanging_lamp_holder"
                   brightness="16"
                   radius="6">
           <match mode="exact">hanging_lamp_holder.w2ent</match>

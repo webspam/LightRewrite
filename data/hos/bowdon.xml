@@ -7,7 +7,6 @@
       <overrides profile_name="Default"
                  weight="20">
         <override tag_name="LR_HosFlamingRoseCamp_candleholder_fancy"
-                  label="hos_flaming_rose_camp_candleholder_fancy"
                   brightness="5"
                   radius="8.75">
           <match mode="exact">candleholder_fancy.w2ent</match>
@@ -19,7 +18,6 @@
       <overrides profile_name="Default"
                  weight="20">
         <override tag_name="LR_xrux3jlX_campfire_01"
-                  label="hos_flaming_rose_camp_campfire_01"
                   brightness="72.5"
                   radius="8"
                   attenuation="0.75">

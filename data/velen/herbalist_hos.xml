@@ -16,14 +16,12 @@
 
         <!-- Torch Wall Wooden -->
         <override tag_name="LR_HosHerbalist_TorchWallWooden"
-                  label="hos_herbalist_torch_wall_wooden"
                   brightness="20">
           <match mode="exact">torch_wall_wooden_complex.w2ent</match>
         </override>
 
         <!-- Torch on a Stick -->
         <override tag_name="LR_HosHerbalist_TorchOnAStick"
-                  label="hos_herbalist_torch_on_a_stick"
                   brightness="19.93"
                   radius="4.5">
           <match mode="exact">torch_hand_long_complex.w2ent</match>
@@ -38,14 +36,12 @@
 
         <!-- Candle - Med B -->
         <override tag_name="LR_HosHerbalist_CandleMedB"
-                  label="hos_herbalist_candle_med_b"
                   radius="5">
           <match mode="exact">candle_med_b.w2ent</match>
         </override>
 
         <!-- Candle - Med Melted No Shadow -->
         <override tag_name="LR_HosHerbalist_CandleMedMelted"
-                  label="hos_herbalist_candle_med_melted"
                   brightness="5"
                   radius="5"
                   attenuation="1">
@@ -54,7 +50,6 @@
 
         <!-- Candelabra - Tall Three Point -->
         <override tag_name="LR_HosHerbalist_CandelabraTallThreePoint"
-                  label="hos_herbalist_candelabra_tall_three_point"
                   brightness="5"
                   attenuation="1">
           <match mode="exact">candelabra_tall_three_point.w2ent</match>

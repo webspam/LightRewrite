@@ -12,7 +12,6 @@
 
         <!-- Candles -->
         <override tag_name="LR_Skellige_Candle"
-                  label="skellige_candle"
                   radius="5"
                   use_spotlight_colour="true">
           <any>
@@ -31,7 +30,6 @@
 
         <!-- Lamp - Standing -->
         <override tag_name="LR_Skellige_LampStanding"
-                  label="skellige_lamp_standing"
                   brightness="15"
                   radius="5"
                   attenuation="1">
@@ -55,7 +53,6 @@
 
         <!-- Horn chandelier -->
         <override tag_name="LR_Skellige_HornChandelier"
-                  label="skellige_horn_chandelier"
                   brightness="20"
                   radius="8"
                   attenuation="0.9">
@@ -66,7 +63,6 @@
 
         <!-- Tri-candelabra - standing -->
         <override tag_name="LR_KaerTrolde_TriCandleabra"
-                  label="kaer_trolde_tri_candleabra"
                   brightness="8"
                   rewriter_type="LRT_Candle">
           <match>candelabra_tall_three_point</match>
@@ -87,7 +83,6 @@
 
         <!-- Candle holder large wood c -->
         <override tag_name="LR_Skellige_CandleHolderLargeWoodC"
-                  label="skellige_candle_holder_large_wood_c"
                   brightness="13"
                   radius="5"
                   attenuation="1">
@@ -96,7 +91,6 @@
 
         <!-- Campfire -->
         <override tag_name="LR_Skellige_Campfire01"
-                  label="skellige_campfire_01"
                   brightness="50"
                   radius="5.5"
                   attenuation="0.9">
@@ -105,14 +99,12 @@
 
         <!-- Cauldron -->
         <override tag_name="LR_Skellige_Cauldron"
-                  label="skellige_cauldron"
                   radius="5.5">
           <match mode="exact">stand_mw_cooking_big_cauldron_ap.w2ent</match>
         </override>
 
         <!-- Forge -->
         <override tag_name="LR_aN4rPuRI_ob_forge_px"
-                  label="edited_ob_forge_px"
                   radius="5">
           <match mode="exact">ob_forge_px.w2ent</match>
         </override>
