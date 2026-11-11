@@ -15,6 +15,20 @@ const REMASTERED = "https://webspam.github.io/remastered/";
 
 export const REMASTERED_GALLERY: GalleryItem[] = [
   {
+    id: "kingfisher-suite",
+    title: "The Kingfisher",
+    tag: "Suite",
+    before: REMASTERED + "kingfisher-suite-before.jpg",
+    after: REMASTERED + "kingfisher-suite-after.jpg",
+  },
+  {
+    id: "nilfgaardian-camp",
+    title: "Nilfgaardian camp",
+    tag: "White Orchard",
+    before: REMASTERED + "nilfgaard-camp-before.jpg",
+    after: REMASTERED + "nilfgaard-camp-after.jpg",
+  },
+  {
     id: "kaer-trolde-cellar",
     title: "Kaer Trolde",
     tag: "Cellar",
@@ -64,6 +78,13 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     after: REMASTERED + "chameleon-suite-bed-after.jpg",
   },
   {
+    id: "lindenvale-tavern-pt",
+    title: "Lindenvale",
+    tag: "Tavern",
+    before: REMASTERED + "lindenvale-tavern-pt-before.jpg",
+    after: REMASTERED + "lindenvale-tavern-pt-after.jpg",
+  },
+  {
     id: "lindenvale-tomb",
     title: "Lindenvale",
     tag: "Tomb",
@@ -97,6 +118,20 @@ export const REMASTERED_GALLERY: GalleryItem[] = [
     tag: "Distant fires",
     before: REMASTERED + "novigrad-distance-before.jpg",
     after: REMASTERED + "novigrad-distance-after.jpg",
+  },
+  {
+    id: "adder-and-jewels-side-pt",
+    title: "The Adder & Jewels",
+    tag: "Side room",
+    before: REMASTERED + "adder-and-jewels-side-pt-before.jpg",
+    after: REMASTERED + "adder-and-jewels-side-pt-after.jpg",
+  },
+  {
+    id: "adder-jewels-bar-pt",
+    title: "The Adder & Jewels",
+    tag: "Bar",
+    before: REMASTERED + "adder-jewels-bar-pt-before.jpg",
+    after: REMASTERED + "adder-jewels-bar-pt-after.jpg",
   },
 ];
 
