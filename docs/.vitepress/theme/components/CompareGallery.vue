@@ -94,7 +94,7 @@ const setRow = (el: Element | ComponentPublicInstance | null, i: number) => {
 const active = ref(0);
 
 // Offset alternate dividers so neighbouring sliders don't start at the same position
-const positions = ref(props.items.map((_, i) => 50 + (i % 2 ? -6 : 6)));
+const positions = ref(props.items.map((_, i) => 50 + (i % 2 ? -1 : 1)));
 const activePos = computed({
   get: () => positions.value[active.value] ?? 50,
   set: v => (positions.value[active.value] = v),
