@@ -44,7 +44,7 @@
             <match mode="exact">candelabra.w2ent</match>
           </any>
           <lum exclude_scene="true" />
-          <spotlight brightness="10.23"
+          <spotlight brightness="6.14"
                      radius="5"
                      attenuation="1"
                      innerAngle="268"
@@ -58,6 +58,22 @@
           <fire_fx_offset x="0"
                           y="0"
                           z="0.07" />
+        </override>
+
+        <!-- Fix for no-spotlight version in Priscilla's room -->
+        <override tag_name="LR_UltraPT_Kingfisher_candelabra"
+                  brightness="6.14">
+          <match mode="exact">candelabra.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\lights.w2l</match>
+          <spotlight spawn="true" />
+        </override>
+        <!-- Priscilla's Room - Candleholder -->
+        <override tag_name="LR_UltraPT_Kingfisher_candleholder_fancy"
+                  brightness="3">
+          <match mode="exact">candleholder_fancy.w2ent</match>
+          <match type="layer"
+                 mode="exact">levels\novigrad\novigrad\zimorodek_inn\building\lights.w2l</match>
         </override>
 
         <override tag_name="LR_UltraPT_Kingfisher_CandleHolderFancy"
@@ -82,7 +98,7 @@
 
         <override tag_name="LR_Ultra_Kingfisher_CandelabraStanding"
                   radius="5.5"
-                  brightness="9.52"
+                  brightness="5.71"
                   rewriter_type="LRT_FxAlign">
           <match mode="exact">candelabra_standing.w2ent</match>
           <fire_fx_offset x="0"
@@ -97,7 +113,7 @@
           <!-- building\lights.w2l -->
           <lum exclude_scene="true" />
 
-          <spotlight brightness="9.52"
+          <spotlight brightness="5.71"
                      radius="5.5"
                      attenuation="1"
                      innerAngle="280"
