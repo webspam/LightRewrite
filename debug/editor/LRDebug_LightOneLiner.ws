@@ -55,9 +55,17 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
         return html + "'>" + prefix + " " + count + "</font>";
     }
 
-    private function ActiveCountToHtml(prefix: string, count: int, activeIndex: int): string {
-        if (count < 2) return CountToHtml(prefix, count);
-        return "<font color='#00ff00'>" + prefix + " " + (activeIndex + 1) + "/" + count + "</font>";
+    private function ActiveCountToHtml(prefix: string, count: int, type: name): string {
+        var editor: LRDebug_AttributeEditor = thePlayer.lrDebugAttrEditor;
+
+        if (!editor.IsEditingComponent(type)) {
+            return "<font color='#00ff00'>" + prefix + " *" + count + "</font>";
+        }
+        if (count < 2) {
+            return CountToHtml(prefix, count);
+        }
+        return "<font color='#00ff00'>" + prefix + " "
+            + (editor.GetActiveLightIndex(entity, type) + 1) + "/" + count + "</font>";
     }
 
     public function GetAttributeValueString(attr: name, type: name): string {
@@ -385,19 +393,11 @@ statemachine class LRDebug_LightOneLiner extends LRDebug_WorldMarker {
             sSeg = CountToHtml("S", spotLights);
 
             if (type == 'spot') {
-                sSeg = ActiveCountToHtml(
-                    "S",
-                    spotLights,
-                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
-                );
+                sSeg = ActiveCountToHtml("S", spotLights, type);
                 sSeg = "<font color='#dd88ff'>[</font>" + sSeg + "<font color='#dd88ff'>]</font>";
             }
             else {
-                pSeg = ActiveCountToHtml(
-                    "P",
-                    pointLights,
-                    thePlayer.lrDebugAttrEditor.GetActiveLightIndex(entity, type)
-                );
+                pSeg = ActiveCountToHtml("P", pointLights, type);
                 pSeg = "<font color='#dd88ff'>[</font>" + pSeg + "<font color='#dd88ff'>]</font>";
             }
             countString = marker + pSeg + " / " + sSeg + " <font color='#dd88ff'>-</font>";

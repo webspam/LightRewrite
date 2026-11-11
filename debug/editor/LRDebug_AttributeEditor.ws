@@ -16,6 +16,8 @@ class LRDebug_AttributeEditor {
     private var groupEditTarget: CGameplayEntity;
     private var groupMembers   : array<CGameplayEntity>;
 
+    private var componentEdit: bool;  default componentEdit = true;
+
     private var history      : LRDebug_EditHistory;
     private var adjustChanged: bool;
 
@@ -191,13 +193,13 @@ class LRDebug_AttributeEditor {
         return LRDebug_PointLightAt(target, GetActiveLightIndex(target, type));
     }
 
-    /** Edits always land in the per-component arrays; entity-wide fields stay an XML-authoring layer */
     private function GetActiveLightParams(
         params: CLightRewriteSourceParams,
         target: CGameplayEntity,
         type: name
     ): ILightRewriteParams {
         if (type == 'spot') return GetActiveSpotParams(params, target);
+        if (!componentEdit) return params;
         return params.GetOrCreatePointLightParams(GetActiveLightIndex(target, type));
     }
 
@@ -755,7 +757,7 @@ class LRDebug_AttributeEditor {
         var params: CLightRewriteSourceParams;
         var type: name;
         var index: int;
-        var nextState: ELRDebug_LUM_FlagState;
+        var inheritedState, nextState: ELRDebug_LUM_FlagState;
         var scope: array<CGameplayEntity>;
         var i, count: int;
 
@@ -769,21 +771,24 @@ class LRDebug_AttributeEditor {
         type = GetSelectedLightType(target);
         index = GetActiveLightIndex(target, type);
 
-        nextState = LRDebug_NextVisibleUsageFlagState(
-            LRDebug_GetUsageFlagState(LRDebug_EffectiveUsageMask(params, type, index), flag),
-            LRDebug_GetUsageFlagState(LRDebug_InheritedUsageMask(params, type), flag)
-        );
+        inheritedState = LRDebug_GetUsageFlagState(LRDebug_InheritedUsageMask(params, type), flag);
+        nextState = IsEditingComponent(type)
+            ? LRDebug_NextVisibleUsageFlagState(
+                LRDebug_GetUsageFlagState(LRDebug_EffectiveUsageMask(params, type, index), flag),
+                inheritedState
+            )
+            : LRDebug_NextUsageFlagState(inheritedState);
 
         count = scope.Size();
         for (i = 0; i < count; i += 1) {
-            SetComponentUsageFlag(scope[i], type, index, flag, nextState);
+            SetUsageFlag(scope[i], type, index, flag, nextState);
         }
 
         ApplyParams(target, rewriter, params);
         history.Commit(true);
     }
 
-    private function SetComponentUsageFlag(
+    private function SetUsageFlag(
         entity: CGameplayEntity,
         type: name,
         index: int,
@@ -793,10 +798,13 @@ class LRDebug_AttributeEditor {
         var params: CLightRewriteSourceParams = entity.LRDebug_GetParams(
             entity.LRDebug_GetOrCreateRewriter()
         );
-        var lightParams: ILightRewriteParams;
+        var lightParams: ILightRewriteParams = params;
 
-        if (type == 'spot') lightParams = params.GetOrCreateSpotLightParams(index);
-        else lightParams = params.GetOrCreatePointLightParams(index);
+        if (IsEditingComponent(type)) {
+            lightParams = type == 'spot'
+                ? (ILightRewriteParams)params.GetOrCreateSpotLightParams(index)
+                : (ILightRewriteParams)params.GetOrCreatePointLightParams(index);
+        }
 
         lightParams.usageMask = LRDebug_WithUsageFlagState(lightParams.usageMask, flag, flagState);
     }
@@ -818,6 +826,14 @@ class LRDebug_AttributeEditor {
 
     public function IsGroupEditing(): bool {
         return groupEdit;
+    }
+
+    public function IsEditingComponent(type: name): bool {
+        return componentEdit || type == 'spot';
+    }
+
+    public function ToggleComponentEdit(): void {
+        componentEdit = !componentEdit;
     }
 
     /** Group size is the target plus every matched member (CacheGroupMembers excludes the target) */
