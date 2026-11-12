@@ -310,7 +310,7 @@ abstract class ILightSourceRewriter {
         return false;
     }
 
-    private function GetSpawnedSpotlightComponent(): CSpotLightComponent {
+    protected function GetSpawnedSpotlightComponent(): CSpotLightComponent {
         if (!spawnedSpotlight) return NULL;
 
         return (CSpotLightComponent)spawnedSpotlight.GetComponentByClassName('CSpotLightComponent');
@@ -339,6 +339,8 @@ abstract class ILightSourceRewriter {
                 return NULL;
             }
 
+            spawnedSpotlight.CreateAttachment(parentEntity);
+
             SyncSpawnedSpotlight();
 
             parentEntity.AddTimer('SyncLightRewriteSpawnedSpotlight', 15.0f, true);
@@ -350,6 +352,7 @@ abstract class ILightSourceRewriter {
     public function DestroySpawnedSpotlight() {
         if (spawnedSpotlight) {
             parentEntity.RemoveTimer('SyncLightRewriteSpawnedSpotlight');
+            spawnedSpotlight.BreakAttachment();
             spawnedSpotlight.Destroy();
             spawnedSpotlight = NULL;
         }

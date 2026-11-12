@@ -63,9 +63,21 @@ class CFxAlignLightRewriter extends IFireFxLightRewriter {
                 }
                 slotIndex += 1;
             }
+
+            if (p.spotlight && !p.spotlight.offset.has) {
+                AlignSpawnedSpotlight(slotIndex);
+            }
         }
 
         ApplyForceCastShadows();
+    }
+
+    private function AlignSpawnedSpotlight(slotIndex: int) {
+        var spawnedSpot: CSpotLightComponent = GetSpawnedSpotlightComponent();
+
+        if (spawnedSpot && IsRenderedInScene(spawnedSpot)) {
+            AlignLightToFireFxSlot(slotIndex, spawnedSpot);
+        }
     }
 
     private function IsRenderedInScene(light: CLightComponent): bool {
