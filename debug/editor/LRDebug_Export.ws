@@ -229,6 +229,9 @@ function LRDebug_BuildEditedFields(
         else line += " useSpotlightColor=0";
     }
 
+    line += LRDebug_BuildLightFieldSegment(params, baseline, "");
+    line += LRDebug_BuildOffsetSegment(params, baseline, "");
+
     pointCount = params.pointLights.Size();
     for (i = 0; i < pointCount; i += 1) {
         pBase = baseline.GetEffectivePointLightParams(params.pointLights[i].index);
