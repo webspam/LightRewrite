@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../LightRewriteDefinitions.xsd">
+  <custom>
+    <light_rewrite>
+      <overrides profile_name="Ultra"
+                 weight="20">
+        <!-- Ultra PT: Oxenfurt city lights -->
+        <transport>pt, rtshadows</transport>
+
+        <matches>
+          <match type="layer">levels\novigrad\white_bridge\ligths</match>
+        </matches>
+
+        <!-- Candelabra -->
+        <override tag_name="LR_UltraPT_Oxenfurt_Candelabra">
+          <match mode="exact">candelabra_complex.w2ent</match>
+          <lum exclude_scene="true" />
+          <spotlight brightness="10.23"
+                     min_radius="5"
+                     attenuation="1"
+                     innerAngle="225"
+                     outerAngle="350"
+                     softness="0.8">
+            <lum exclude_scene="false" />
+          </spotlight>
+        </override>
+      </overrides>
+    </light_rewrite>
+  </custom>
+</redxml>
